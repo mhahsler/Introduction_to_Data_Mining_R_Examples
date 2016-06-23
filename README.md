@@ -1,11 +1,16 @@
+
 # R Examples for the Book Introduction to Data Mining
+
+<a href="http://www-users.cs.umn.edu/~kumar/dmbook"><img src="http://www-users.cs.umn.edu/~kumar/dmbook/book_small.jpg" align="right"></a>
 
 This repository contains documented examples in R to accompany several chapters of the popular book
 
 > Pang-Ning Tan, Michael Steinbach and Vipin Kumar, 
 [_Introduction to Data Mining,_](http://www-users.cs.umn.edu/~kumar/dmbook) Addison Wesley, 2006 or 2014 edition.
 
-The examples are used in a [Data Mining Course](http://michael.hahsler.net/SMU/EMIS7332) and will be regularly updated and improved. 
+
+
+The examples are used in my [data mining course](http://michael.hahsler.net/SMU/EMIS7332) at SMU and will be regularly updated and improved. 
 All code is shared under creative commons attribution license and you can
 share and adapt them freely. Please contact [me](http://michael.hahsler.net) to correct mistakes or to improve the content. 
 
