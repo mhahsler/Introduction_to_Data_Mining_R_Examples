@@ -20,8 +20,8 @@ for corrections or improvements.
 
 * Chapter 2: [Data](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap2.html)
 * Chapter 3: [Exploring Data](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap3.html)
-* Chapter 4: [Classication: Basic Concepts, Decision Trees, and Model Evaluation](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap4.html)
-* Chapter 5: [Classication: Alternative Techniques](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap5.html)
+* Chapter 4: [Classification: Basic Concepts, Decision Trees, and Model Evaluation](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap4.html)
+* Chapter 5: [Classification: Alternative Techniques](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap5.html)
 * Chapter 6: [Association Analysis](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap6.html)
 * Chapter 8: [Cluster Analysis: Basic Concepts and Algorithms](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap8.html)
 
