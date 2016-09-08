@@ -72,7 +72,7 @@ s2 <- iris[id2$ID_unit,]
 plot(s2, col=s2$Species)
 
 #' # Features
-#' ## Dimensionality reduciton (Principal Components Analysis - PCA)
+#' ## Dimensionality reduction (Principal Components Analysis - PCA)
 
 #' Look at data first
 library(scatterplot3d)
