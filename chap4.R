@@ -332,6 +332,8 @@ summary(difs)
 #'
 #' # Dealing With the Class Imbalance Problem
 #'
+#' Here is a very good [article about the problem and solutions.](http://www.kdnuggets.com/2016/08/learning-from-imbalanced-classes.html)
+#'
 #' We want to decide if an animal is an reptile. First we change the class variable
 #' to make it into a binary reptile/no reptile classification problem.
 #' __Note:__ We use here the training data for testing. You should use a
@@ -375,7 +377,7 @@ confusionMatrix(data = predict(fit, Zoo_reptile),
 #'
 #' We use stradified sampling with replacement (to oversample the
 #' minority/positive class).
-#' You could also use SMOTE (in package __DMwR__) or other sampling strategies. We
+#' You could also use SMOTE (in package __DMwR__) or other sampling strategies (e.g., from package __unbalanced__). We
 #' use only 50+50 observations here since our dataset has only 101 observations total.
 library(sampling)
 id <- strata(Zoo_reptile, stratanames="type", size=c(50,50), method="srswr")
