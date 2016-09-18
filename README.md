@@ -1,7 +1,8 @@
 
 # R Code Examples for Introduction to Data Mining
 
-<a href="http://www-users.cs.umn.edu/~kumar/dmbook"><img src="http://www-users.cs.umn.edu/~kumar/dmbook/book_small.jpg" align="right"></a>
+<img src="book_small_e2.jpg" align="right">
+<img src="book_small.jpg" align="right">
 
 This repository contains documented examples in R to accompany several chapters of the popular data mining text book:
 

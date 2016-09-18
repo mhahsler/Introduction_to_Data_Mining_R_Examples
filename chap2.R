@@ -81,6 +81,7 @@ scatterplot3d(iris[,1:3], color=as.integer(iris$Species))
 #' Intereactive 3d plots (needs package rgl)
 #library(rgl)
 #plot3d(as.matrix(iris[,1:3]), col=as.integer(iris$Species), size=5)
+
 #' Intereactive 3d plots (needs package plotly)
 #library(plotly)
 #plot_ly(iris, x = Sepal.Length, y= Petal.Length, z = Sepal.Width,
