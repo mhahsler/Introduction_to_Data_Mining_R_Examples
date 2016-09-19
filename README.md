@@ -7,7 +7,7 @@
 This repository contains documented examples in R to accompany several chapters of the popular data mining text book:
 
 > Pang-Ning Tan, Michael Steinbach and Vipin Kumar, 
-[_Introduction to Data Mining,_](http://www-users.cs.umn.edu/~kumar/dmbook) Addison Wesley, 2006 or 2014 edition.
+[_Introduction to Data Mining,_](http://www-users.cs.umn.edu/~kumar/dmbook) Addison Wesley, 2006 or 2017 edition.
 
 
 
