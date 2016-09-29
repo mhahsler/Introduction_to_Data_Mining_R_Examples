@@ -16,7 +16,7 @@
 #'
 
 
-#' # Prepare Zoo data set
+#' # Prepare Zoo Data Set
 data(Zoo, package="mlbench")
 head(Zoo)
 
@@ -29,19 +29,20 @@ for(i in c(1:12, 14:16)) Zoo[[i]] <- as.factor(Zoo[[i]])
 summary(Zoo)
 
 
-#' # Recursive partitioning (similar to CART)
+#' # A First Decision Tree
 #'
-#' Uses the Gini index to make splitting decisions and early stopping
-#' (pre-pruning).
+#' Recursive Partitioning (similar to CART) uses the Gini index to make
+#' splitting decisions and early stopping (pre-pruning).
 
 library(rpart)
 
-#' ## Create tree with default settings (uses pre-pruning)
+#' ## Create Tree With Default Settings (uses pre-pruning)
 tree1 <- rpart(type ~ ., data=Zoo)
 tree1
 
 #' __Note:__ the class variable needs a factor (nominal) or rpart
-#' will create a regression tree instead of a decision tree.
+#' will create a regression tree instead of a decision tree. Use `as.factor()`
+#' if necessary.
 #'
 #' Plotting
 library(rpart.plot)
@@ -50,7 +51,7 @@ rpart.plot(tree1, extra = 2, under = TRUE, varlen=0, faclen=0)
 #' classified objects from data and the total number of objects
 #' from the training data falling into that node (correct/total).
 #'
-#' ## Create a full tree
+#' ## Create a Full Tree
 #'
 #' To create a full tree, we set the complexity parameter cp to 0 (split even
 #' if it does not improve the tree) and we set the minimum number of
@@ -92,7 +93,7 @@ accuracy(Zoo$type, predict(tree2, Zoo, type="class"))
 library(caret)
 confusionMatrix(data = pred, reference = Zoo$type)
 
-#' # Generalization Error
+#' # Model Evaluation
 #' ## Use training and test set
 
 n_train <- as.integer(nrow(Zoo)*.66)
@@ -110,7 +111,7 @@ accuracy(train$type, predict(tree1, train, type="class"))
 #' Generalization error
 accuracy(test_type, predict(tree1, test, type="class"))
 
-#' ## 10-fold cross-validation
+#' ## 10-Fold Cross-Validation
 
 index <- 1:nrow(Zoo)
 index <- sample(index) ### shuffle index
@@ -129,14 +130,14 @@ accs
 #' Report the average
 mean(accs)
 
-#' # Use caret for easier model building and evaluation
+#' ## Caret: For Easier Model Building and Evaluation
 #' see http://cran.r-project.org/web/packages/caret/vignettes/caret.pdf
 #'
 #' Use multi-core
 library(doParallel)
 registerDoParallel()
 
-#' ## Cross-Validation
+#' ### Cross-Validation
 #' Evaluation with caret. Train tries to tune cp for rpart using accuracy to
 #' chose the best model. Minsplit is set to 2 since we have not much data.
 #' __Note:__ Parameters used for tuning (in this case `cp`) need to be set using
@@ -174,7 +175,7 @@ fit <- train(type ~ ., data = Zoo, method = "rpart",
 	tuneLength=5)
 fit
 
-#' ## Do train/test sample
+#' ### Train/Test Sample
 inTrain <- createDataPartition(y=Zoo$type, p = .75, list=FALSE)
 training <- Zoo[ inTrain,]
 testing <- Zoo[-inTrain,]
@@ -215,14 +216,14 @@ confusionMatrix(data = pred, testing$type)
 #'   contain examples for all values in a nominal (factor) variable. This most
 #'   likely happens for variables which have one very rare value.
 #'
-#' # Feature selection
+#' # Feature Selection
 
 #' Decision trees implicitly select features for splitting, but we can also
 #' select features manually.
 library(FSelector)
 #' see: http://en.wikibooks.org/wiki/Data_Mining_Algorithms_In_R/Dimensionality_Reduction/Feature_Selection#The_Feature_Ranking_Approach
 #'
-#' ## Univariate feature importance score
+#' ## Univariate Feature Importance Score
 #' These scores measure how related
 #' each feature is to the class variable.
 #' For discrete features (as in our case), the chi-square statistic can be used
@@ -255,7 +256,7 @@ gain.ratio(type ~ ., data=Zoo)
 information.gain(type ~ ., data=Zoo)
 # linear.correlation for continuous attributes
 
-#' ## Feature subset selection
+#' ## Feature Subset Selection
 #' Often features are related and calculating importance for each feature
 #' independently is not optimal. We can use greedy search heuristics. For
 #' example `cfs` uses correlation/entropy with best first search.
@@ -291,7 +292,7 @@ features <- names(Zoo)[1:16]
 #subset
 
 
-#' # Compare two models
+#' # Model Comparison
 library(caret)
 
 #' Create fixed sampling scheme (10-folds) so we compare the different models
