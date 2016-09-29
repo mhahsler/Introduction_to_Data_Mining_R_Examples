@@ -37,7 +37,9 @@ library(arules)
 #' * coercion (casting): `as(from, "class_name")`
 #' * help: `class? class_name`
 #'
-#' # Create transactions
+#'
+#' # Transactions
+#' ## Create transactions
 #'
 #' The data in the data.frame need to be converted into a set of transactions where each column is translated into items.
 try(trans <- as(Zoo, "transactions"))
@@ -72,7 +74,7 @@ Zoo[["legs"]] <- has_legs
 trans <- as(Zoo, "transactions")
 trans
 
-#' # Inspect transactions
+#' ## Inspect Transactions
 summary(trans)
 
 #' Look at created items. They are still called column names since the transactions are actually stored as a large sparse logical matrix (see below).
@@ -109,14 +111,15 @@ trans_insects <- trans2[trans %in% "type=insect"]
 trans_insects
 inspect(trans_insects)
 
-#' # Vertical layout
+#' ## Vertical layout (Transaction ID Lists)
 #'
 #' The default layout for transactions is horizontal layout (i.e. each transaction is a row).
 #' The vertical layout represents transaction data as a list of transaction IDs for each item (= transaction ID lists).
 vertical <- as(trans, "tidLists")
 as(vertical, "matrix")[1:10,1:5]
 
-#' # Find frequent itemsets
+#' # Frequent Itemsets
+#' ## Mine Frequent Itemsets
 #'
 #' For this dataset we have already a hugh number of possible itemsets
 2^ncol(trans)
@@ -145,7 +148,7 @@ inspect(head(is, n=10))
 barplot(table(size(is)), xlab="itemset size", ylab="count")
 inspect(is[size(is)>8])
 
-#' # Concise representation of itemsets
+#' ## Concise Representation of Itemsets
 #'
 #' Find maximal frequent itemsets (no superset if frequent)
 is_max <- is[is.maximal(is)]
@@ -160,7 +163,9 @@ barplot(c(
   maximal=length(is_max)
   ), ylab="count", xlab="itemsets")
 #'
-#' # Mine association rules
+#'
+#' # Association Rules
+#' ## Mine Association Rules
 
 rules <- apriori(trans, parameter=list(support=0.05, confidence=.9))
 length(rules)
@@ -180,7 +185,7 @@ print(object.size(r), unit="Mb")
 inspect(r[1:10])
 inspect(sort(r, by="lift")[1:10])
 
-#' # Calculate additional interest measures
+#' ## Additional Interest Measures
 interestMeasure(rules[1:10], measure=c("phi", "gini"),
   trans=trans)
 
@@ -191,7 +196,7 @@ quality(rules) <- cbind(quality(rules),
 
 inspect(head(sort(rules, by="phi")))
 
-#' # Templates
+#' ## Mine using Templates
 #'
 #' Sometimes it is beneficial to specify what items should be where in the rule. For apriori we can use the parameter appearance to specify this (see `? apriori`).
 type <- grep("type=", itemLabels(trans), value = TRUE)
