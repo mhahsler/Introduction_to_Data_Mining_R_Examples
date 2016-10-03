@@ -194,7 +194,12 @@ quality(rules) <- cbind(quality(rules),
   interestMeasure(rules, measure=c("phi", "gini"),
     trans=trans))
 
-inspect(head(sort(rules, by="phi")))
+#' Find rules which score high for Phi correlation
+inspect(head(rules, by="phi"))
+
+#' Use a scatterplot matrix to see the relationship between the
+#' quality measures for the top 1000 list rules.
+plot(quality(head(rules, n=1000, by = "lift")))
 
 #' ## Mine using Templates
 #'
@@ -228,4 +233,9 @@ plot(rules, method="grouped")
 #' As a graph
 plot(sample(rules, 100), method="graph", control=list(type="items"))
 plot(sort(rules, by="phi")[1:100], method="graph", control=list(type="items"))
+
+#' ## More interactive visualization
+#'
+#' Interactive visualizations using datatable and plotly can be found [here.](chap6_interactive.html)
+#'
 
