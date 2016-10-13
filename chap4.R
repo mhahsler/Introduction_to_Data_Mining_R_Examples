@@ -94,11 +94,20 @@ library(caret)
 confusionMatrix(data = pred, reference = Zoo$type)
 
 #' # Model Evaluation
-#' ## Use training and test set
+#' ## Pure R Implementation
+#' ### Holdout Sample
+#'
+#' Use a simple split into 2/3 training and 1/3 testing data. Find the size
+#' of the training set.
 
 n_train <- as.integer(nrow(Zoo)*.66)
-train_id <- sample(1:nrow(Zoo), n_train)
+n_train
 
+#' Randomly choose the rows of the training examples.
+train_id <- sample(1:nrow(Zoo), n_train)
+head(train_id)
+
+#' Split the data
 train <- Zoo[train_id,]
 test <- Zoo[-train_id, colnames(Zoo) != "type"]
 test_type <- Zoo[-train_id, "type"]
@@ -111,7 +120,7 @@ accuracy(train$type, predict(tree1, train, type="class"))
 #' Generalization error
 accuracy(test_type, predict(tree1, test, type="class"))
 
-#' ## 10-Fold Cross-Validation
+#' ### 10-Fold Cross Validation
 
 index <- 1:nrow(Zoo)
 index <- sample(index) ### shuffle index
@@ -137,7 +146,7 @@ mean(accs)
 library(doParallel)
 registerDoParallel()
 
-#' ### Cross-Validation
+#' ### k-fold Cross Validation
 #' Evaluation with caret. Train tries to tune cp for rpart using accuracy to
 #' chose the best model. Minsplit is set to 2 since we have not much data.
 #' __Note:__ Parameters used for tuning (in this case `cp`) need to be set using
@@ -161,13 +170,14 @@ rpart.plot(fit$finalModel, extra = 2, under = TRUE,  varlen=0, faclen=0)
 #' like `milkTRUE>=0.5`.
 #'
 #' caret also computes variable importance. By default it uses competing splits
-#' for rpart models
+#' (splits which would be runners up, but do not get chosen by the tree)
+#' for rpart models (see `? varImp`). Toothed is comes out to be the
+#' runner up alot, but never gets chosen!
 varImp(fit)
 varImp(fit, compete = FALSE)
 dotPlot(varImp(fit, compete=FALSE))
-#' For Recursive Partitioning:  reduction in the loss function (e.g. mean squared error) attributed to each variable at each split is tabulated and the sum is returned.
 
-
+#' ### Repeated Bootstrap Sampling
 #' An alternative to CV is repeated bootstrap sampling
 fit <- train(type ~ ., data = Zoo, method = "rpart",
 	control=rpart.control(minsplit=2),
@@ -175,8 +185,10 @@ fit <- train(type ~ ., data = Zoo, method = "rpart",
 	tuneLength=5)
 fit
 
-#' ### Train/Test Sample
-inTrain <- createDataPartition(y=Zoo$type, p = .75, list=FALSE)
+#' ### Holdout Sample
+#'
+#' Partition data 66%/34%
+inTrain <- createDataPartition(y=Zoo$type, p = .66, list=FALSE)
 training <- Zoo[ inTrain,]
 testing <- Zoo[-inTrain,]
 
@@ -215,6 +227,45 @@ confusionMatrix(data = pred, testing$type)
 #' * Sampling in train might create a sample that does not
 #'   contain examples for all values in a nominal (factor) variable. This most
 #'   likely happens for variables which have one very rare value.
+#'
+#' ## Model Comparison
+library(caret)
+
+#' Create fixed sampling scheme (10-folds) so we compare the different models
+#' using exactly the same folds.
+train <- createFolds(Zoo$type,k=10)
+
+
+#' Build models
+rpartFit <- train(type ~ .,  data = Zoo, method = "rpart",
+	tuneLength = 10,
+	trControl = trainControl(
+		method = "cv", indexOut = train))
+
+#' __Note:__ for kNN you might want to scale the data first. Logicals will
+#' be used as 0-1 variables in euclidean distance calculation.
+knnFit <- train(type ~ .,  data = Zoo, method = "knn",
+	tuneLength = 10,
+	trControl = trainControl(
+		method = "cv", indexOut = train))
+
+#' Compare accuracy
+resamps <- resamples(list(
+		CART = rpartFit,
+		kNearestNeighbors = knnFit
+		))
+summary(resamps)
+
+#' Plot the accuracy of the two models models for each resampling. If the
+#' models are the same then all points will fall on the diagonal.
+xyplot(resamps)
+#'
+#' Find out if one models is statistically better than the other (is
+#' the difference in accuracy is not zero).
+difs <- diff(resamps)
+difs
+summary(difs)
+#' p-values tells you the probability of seeing an even more extreme value (difference between accuracy) given that the null hypothesis (difference = 0) is true. For a better classifier p-value should be less than .05 or 0.01. `diff` automatically applies Bonferoni correction for multiple testing. In this case, the classifiers do not perform statistically differently.
 #'
 #' # Feature Selection
 
@@ -291,45 +342,6 @@ features <- names(Zoo)[1:16]
 #subset <- hill.climbing.search(features, evaluator)
 #subset
 
-
-#' # Model Comparison
-library(caret)
-
-#' Create fixed sampling scheme (10-folds) so we compare the different models
-#' using exactly the same folds.
-train <- createFolds(Zoo$type,k=10)
-
-
-#' Build models
-rpartFit <- train(type ~ .,  data = Zoo, method = "rpart",
-	tuneLength = 10,
-	trControl = trainControl(
-		method = "cv", indexOut = train))
-
-#' __Note:__ for kNN you might want to scale the data first. Logicals will
-#' be used as 0-1 variables in euclidean distance calculation.
-knnFit <- train(type ~ .,  data = Zoo, method = "knn",
-	tuneLength = 10,
-	trControl = trainControl(
-		method = "cv", indexOut = train))
-
-#' Compare accuracy
-resamps <- resamples(list(
-		CART = rpartFit,
-		kNearestNeighbors = knnFit
-		))
-summary(resamps)
-
-#' Plot the accuracy of the two models models for each resampling. If the
-#' models are the same then all points will fall on the diagonal.
-xyplot(resamps)
-#'
-#' Find out if one models is statistically better than the other (is
-#' the difference in accuracy is not zero).
-difs <- diff(resamps)
-difs
-summary(difs)
-#' p-values tells you the probability of seeing an even more extreme value (difference between accuracy) given that the null hypothesis (difference = 0) is true. For a better classifier p-value should be less than .05 or 0.01. `diff` automatically applies Bonferoni correction for multiple testing. In this case, the classifiers do not perform statistically differently.
 #'
 #' # Dealing With the Class Imbalance Problem
 #'
@@ -351,6 +363,8 @@ summary(Zoo_reptile)
 barplot(table(Zoo_reptile$type), xlab = "Reptile", ylab="Count")
 #' the new class variable is clearly not balanced. This is a problem
 #' for building a tree!
+#'
+#' ## Option 1: Use the Data As Is and Hope For The Best
 
 fit <- train(type ~ ., data=Zoo_reptile, method = "rpart",
   trControl = trainControl(method = "cv"))
@@ -374,7 +388,7 @@ confusionMatrix(data = predict(fit, Zoo_reptile),
 #' you want to detect) is set manually to reptile.
 #' Otherwise sensitivity/specificity will not be correctly calculated.
 #'
-#' ## Option 1: Balance Data With Resampling
+#' ## Option 2: Balance Data With Resampling
 #'
 #' We use stradified sampling with replacement (to oversample the
 #' minority/positive class).
@@ -411,10 +425,11 @@ confusionMatrix(data = predict(fit, Zoo_reptile),
 #' proportions.
 #'
 
-#' ## Option 2: Build A Larger Tree and use Predicted Probabilities
+#' ## Option 3: Build A Larger Tree and use Predicted Probabilities
 #'
 #' Increase complexity and require less data for splitting a node.
-#' Here I also use AUC (ROC) as the tuning metric. You need to specify the two class
+#' Here I also use AUC (area under the ROC) as the tuning metric.
+#' You need to specify the two class
 #' summary function. Note that the tree still trying to improve accuracy on the
 #' data and not AUC! I also enable class probabilities since I want to predict
 #' probabilities later.
@@ -427,19 +442,15 @@ fit <- train(type ~ ., data=Zoo_reptile, method = "rpart",
   metric = "ROC",
   control = rpart.control(minsplit = 5))
 fit
-rpart.plot(fit$finalModel, extra = 2, under = TRUE, varlen = 0, faclen = 0)
 
-#' predict with `type = "prob"` returns probabilities for each
-#' class. These probabilities
-#' are the result of the distribution of observations from the training
-#' data in the leaf notes.
-t(predict(fit, Zoo_reptile, type = "prob"))
+rpart.plot(fit$finalModel, extra = 2, under = TRUE, varlen = 0, faclen = 0)
 
 confusionMatrix(data = predict(fit, Zoo_reptile),
   ref = Zoo_reptile$type, positive = "reptile")
 #' __Note:__ the accuracy is high, but it is close to the no-information rate!
 #'
-#' ## Create A Biased Classifier
+#' ### Create A Biased Classifier
+#'
 #' We can create a classifier which will detect more reptiles
 #' at the expense of misclassifying non-reptiles. This is equivalent
 #' to increasing the cost of misclassifying a reptile as a non-reptile.
@@ -452,6 +463,7 @@ confusionMatrix(data = predict(fit, Zoo_reptile),
 #'  will be classified as a reptile. __Note__ that you should use an unseen test set
 #'  for `predict()` here! I did not do that since the data set is too small!
 prob <- predict(fit, Zoo_reptile, type = "prob")
+tail(prob)
 pred <- as.factor(ifelse(prob[,"reptile"]>=.25, "reptile", "nonreptile"))
 
 confusionMatrix(data = pred,
@@ -462,7 +474,7 @@ confusionMatrix(data = pred,
 #' reptiles (sensitivity is .8) while before we only found 2 out of 5
 #' (sensitivity of .4)
 #'
-#' ## Plot the ROC Curve
+#' ### Plot the ROC Curve
 #' since we have a binary classification problem, we can also use ROC.
 #' For the ROC curve all different cutoff thresholds for the probability
 #' are used and then connected with a line.
@@ -471,4 +483,4 @@ r <- roc(Zoo_reptile$type == "reptile", prob[,"reptile"])
 r
 plot(r)
 #' This also reports the area under the curve.
-
+#'
