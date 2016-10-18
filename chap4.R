@@ -142,13 +142,20 @@ mean(accs)
 #' ## Caret: For Easier Model Building and Evaluation
 #' see http://cran.r-project.org/web/packages/caret/vignettes/caret.pdf
 #'
-#' Use multi-core
+#' Enable multi-core
 library(doParallel)
 registerDoParallel()
 
 #' ### k-fold Cross Validation
-#' Evaluation with caret. Train tries to tune cp for rpart using accuracy to
-#' chose the best model. Minsplit is set to 2 since we have not much data.
+#' caret packages training and testing into a single function called `train()`.
+#' It internally splits the data into training and testing sets and thus will
+#' provide you with generalization error estimates. `trainControl` is used
+#' to choose how testing is performed.
+#'
+#' Train also tries to tune extra parameters by trying different values.
+#' For rpart, train tries to tune the cp parameter (tree complexity)
+#' using accuracy to chose the best model. I set minsplit to 2 since we have
+#' not much data.
 #' __Note:__ Parameters used for tuning (in this case `cp`) need to be set using
 #' a data.frame in the argument `tuneGrid`! Setting it in control will be ignored.
 library(caret)
@@ -172,13 +179,16 @@ rpart.plot(fit$finalModel, extra = 2, under = TRUE,  varlen=0, faclen=0)
 #' caret also computes variable importance. By default it uses competing splits
 #' (splits which would be runners up, but do not get chosen by the tree)
 #' for rpart models (see `? varImp`). Toothed is comes out to be the
-#' runner up alot, but never gets chosen!
+#' runner up a lot, but never gets chosen!
 varImp(fit)
+
+#' Here is the variable importance without competing splits.
 varImp(fit, compete = FALSE)
 dotPlot(varImp(fit, compete=FALSE))
 
 #' ### Repeated Bootstrap Sampling
-#' An alternative to CV is repeated bootstrap sampling
+#' An alternative to CV is repeated bootstrap sampling. It will give you
+#' very similar estimates.
 fit <- train(type ~ ., data = Zoo, method = "rpart",
 	control=rpart.control(minsplit=2),
 	trControl = trainControl(method = "boot", number = 10),
@@ -187,12 +197,13 @@ fit
 
 #' ### Holdout Sample
 #'
-#' Partition data 66%/34%
+#' Partition data 66%/34%. __Note:__ CV and repeated bootstrap sampling
+#' is typically preferred.
 inTrain <- createDataPartition(y=Zoo$type, p = .66, list=FALSE)
 training <- Zoo[ inTrain,]
 testing <- Zoo[-inTrain,]
 
-#' Find best model (trying more values for tuning)
+#' Find best model (trying more values for tuning using `tuneLength`).
 fit <- train(type ~ ., data = training, method = "rpart",
 	control=rpart.control(minsplit=2),
 	trControl = trainControl(method = "cv", number = 10),
