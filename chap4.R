@@ -186,6 +186,8 @@ varImp(fit)
 varImp(fit, compete = FALSE)
 dotPlot(varImp(fit, compete=FALSE))
 
+#' __Note:__ Not all models provide a variable importance function. In this case caret might calculate varImp by itself and ignore the model (see `? varImp`)!
+#'
 #' ### Repeated Bootstrap Sampling
 #' An alternative to CV is repeated bootstrap sampling. It will give you
 #' very similar estimates.

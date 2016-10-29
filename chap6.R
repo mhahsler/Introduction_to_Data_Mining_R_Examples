@@ -41,7 +41,10 @@ library(arules)
 #' # Transactions
 #' ## Create transactions
 #'
-#' The data in the data.frame need to be converted into a set of transactions where each column is translated into items.
+#' The data in the data.frame need to be converted into a set of transactions where each row represents a transaction and each column is translated into items.
+#' For the Zoo data set this means that we consider animals as transactions
+#' and the different traits (features) will become items that each animal has. For
+#' example the animal _antelope_ has the item _hair_ in its transaction.
 try(trans <- as(Zoo, "transactions"))
 #' ```
 #' ## Error in asMethod(object) :
@@ -67,7 +70,8 @@ Zoo[["legs"]] <- has_legs
 #'
 #' * use each unique value as an item:
 #'  `Zoo[["legs"]] <- as.factor(legs)`
-#' * use discretize for continuous data (see `? discretize`):
+#' * use discretize for continuous data (see `? discretize` and
+#' [discretization in the code for Chapter 2](chap2.html#discretrize-features)):
 #'  `Zoo[["legs"]] <- discretize(legs, categories = 2, method="interval")`
 #'
 #'  Convert data into a set of transactions
@@ -121,7 +125,7 @@ as(vertical, "matrix")[1:10,1:5]
 #' # Frequent Itemsets
 #' ## Mine Frequent Itemsets
 #'
-#' For this dataset we have already a hugh number of possible itemsets
+#' For this dataset we have already a huge number of possible itemsets
 2^ncol(trans)
 
 #' Find frequent itemsets (target="frequent") with the default settings.
@@ -236,6 +240,7 @@ plot(sort(rules, by="phi")[1:100], method="graph", control=list(type="items"))
 
 #' ## More interactive visualization
 #'
-#' Interactive visualizations using datatable and plotly can be found [here.](chap6_interactive.html)
+#' Interactive visualizations using datatable and plotly can be found [here.](chap6_interactive.html) __Note:__ the page might load slowly because it makes
+#' heavy use of client side computation.
 #'
 
