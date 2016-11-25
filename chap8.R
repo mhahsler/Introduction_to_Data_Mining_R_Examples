@@ -111,6 +111,10 @@ str(db)
 plot(ruspini_scaled, col=db$cluster+1L)
 #' __Note:__ 0 is not a color so we add 1 to cluster (0 is black now).
 #'
+#' Alternative visualization from package dbscan
+hullplot(ruspini_scaled, db)
+
+#'
 #' Play with eps (neighborhood size) and MinPts (minimum of points needed for core cluster)
 
 #'
@@ -191,11 +195,15 @@ abline(v=ks[which.max(DI)], col="red", lty=2)
 
 #' ### Gap Statistic
 #' Compares the change in within-cluster dispersion with that expected
-#' from a null model (see `? clusGap`)
+#' from a null model (see `? clusGap`).
+#' The default method is to
+#' choose the smallest k such that its value Gap(k) is not more
+#' than 1 standard error away from the first local maximum.
 library(cluster)
-k <- clusGap(ruspini_scaled, kmeans, K.max = 10)
+k <- clusGap(ruspini_scaled, FUN = kmeans,  nstart = 10, K.max = 10)
 k
 plot(k)
+
 
 #' __Note:__ these methods can also be used for hierarchical clustering.
 #'
