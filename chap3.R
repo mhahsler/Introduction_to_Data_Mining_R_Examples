@@ -110,7 +110,7 @@ pairs(iris, col=iris$Species)
 
 #' Alternative scatter plot matrix
 library("GGally")
-ggpairs(iris, color = "Species")
+ggpairs(iris,  ggplot2::aes(colour=Species))
 #' ### Boxplot
 #'
 #' Compare the distribution of continuous variables grouped by a nominal variable
