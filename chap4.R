@@ -62,7 +62,7 @@ tree2 <- rpart(type ~., data=Zoo, control=rpart.control(minsplit=2, cp=0))
 rpart.plot(tree2, extra = 2, under = TRUE,  varlen=0, faclen=0)
 tree2
 
-# training error on tree with pre-pruning
+#' Training error on tree with pre-pruning
 head(predict(tree1, Zoo))
 pred <- predict(tree1, Zoo, type="class")
 head(pred)
