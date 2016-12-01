@@ -8,6 +8,7 @@
 
 #' This code covers chapter 5 of _"Introduction to Data Mining"_
 #' by Pang-Ning Tan, Michael Steinbach and Vipin Kumar.
+#' __See [table of contents](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples#readme) for code examples for other chapters.__
 #'
 #' ![CC](https://i.creativecommons.org/l/by/4.0/88x31.png)
 #' This work is licensed under the
@@ -15,15 +16,19 @@
 #' [Michael Hahsler](http://michael.hahsler.net).
 #'
 
+#' Show fewer digits
+options(digits=3)
+
 #' Load the data set
 data(Zoo, package="mlbench")
 head(Zoo)
 
 
-#' Use multi-core support for cross-validation
-library(doParallel)
-registerDoParallel()
-getDoParWorkers()
+#' Use multi-core support for cross-validation.
+#' __Note:__ Does not work with rJava used in RWeka below.
+#library(doParallel)
+#registerDoParallel()
+#getDoParWorkers()
 
 #' # Fitting Different Classification Models
 #'
@@ -38,7 +43,7 @@ train <- createFolds(Zoo$type, k=10)
 #' For help with building models in caret see: ? train
 #'
 #' __Note:__ Be careful if you have many `NA` values in your data. `train()`
-#' and cross-validation may fail in some cases. If that is the case then you
+#' and cross-validation many fail in some cases. If that is the case then you
 #' can remove features (columns) which have many `NA`s, omit `NA`s using
 #' `na.omit()` or use imputation to replace them with reasonable
 #' values (e.g., by the feature mean or via kNN).
@@ -66,7 +71,7 @@ C45Fit$finalModel
 
 #' ## K-Nearest Neighbors
 #'
-#' __Note:__ kNN uses Euclidean distance, so data should be scaled first.
+#' __Note:__ kNN uses Euclidean distance, so data should be standardized (scaled) first.
 #' Here legs are measured between 0 and 6 while all other variables are between
 #' 0 and 1.
 Zoo_scaled <- cbind(as.data.frame(scale(Zoo[,-17])), type = Zoo[,17])
@@ -99,7 +104,8 @@ svmFit$finalModel
 nnetFit <- train(type ~ ., method = "nnet", data = Zoo,
 	tuneLength = 5,
 	trControl = trainControl(
-		method = "cv", indexOut = train))
+		method = "cv", indexOut = train),
+  trace = FALSE)
 nnetFit
 nnetFit$finalModel
 

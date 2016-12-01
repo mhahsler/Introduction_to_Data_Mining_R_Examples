@@ -31,7 +31,8 @@ rules <- apriori(Groceries, parameter=list(support=0.001, confidence=.7))
 inspectDT(rules)
 
 #' # Interactive plot with rule information and zoom
-plotly_arules(rules)
+plotly_arules(rules, jitter = .5)
 
 #' _Note:_ plotly currently does not do well with too many points, so plotly_arules
 #' selects the top 1000 rules only (with a warning).
+

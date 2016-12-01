@@ -8,6 +8,7 @@
 
 #' This code covers chapter 6 of _"Introduction to Data Mining"_
 #' by Pang-Ning Tan, Michael Steinbach and Vipin Kumar.
+#' __See [table of contents](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples#readme) for code examples for other chapters.__
 #'
 #' ![CC](https://i.creativecommons.org/l/by/4.0/88x31.png)
 #' This work is licensed under the
@@ -201,10 +202,6 @@ quality(rules) <- cbind(quality(rules),
 #' Find rules which score high for Phi correlation
 inspect(head(rules, by="phi"))
 
-#' Use a scatterplot matrix to see the relationship between the
-#' quality measures for the top 1000 list rules.
-plot(quality(head(rules, n=1000, by = "lift")))
-
 #' ## Mine using Templates
 #'
 #' Sometimes it is beneficial to specify what items should be where in the rule. For apriori we can use the parameter appearance to specify this (see `? apriori`).
@@ -225,9 +222,12 @@ library(arulesViz)
 
 #' Default scatterplot
 plot(rules)
-plot(rules, control=list(jitter=10))
 
-plot(rules, shading="order", control=list(jitter=10))
+#' Add some jitter (randomly move points) to show how many rules have the
+#' same confidence and support value.
+plot(rules, control=list(jitter=.5))
+
+plot(rules, shading="order", control=list(jitter=.5))
 #plot(rules, interactive=TRUE)
 
 #' Grouped plot

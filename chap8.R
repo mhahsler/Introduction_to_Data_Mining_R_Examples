@@ -8,6 +8,7 @@
 
 #' This code covers chapter 8 of _"Introduction to Data Mining"_
 #' by Pang-Ning Tan, Michael Steinbach and Vipin Kumar.
+#' __See [table of contents](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples#readme) for code examples for other chapters.__
 #'
 #' ![CC](https://i.creativecommons.org/l/by/4.0/88x31.png)
 #' This work is licensed under the
