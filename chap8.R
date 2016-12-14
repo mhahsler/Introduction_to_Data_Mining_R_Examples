@@ -134,6 +134,12 @@ m <- Mclust(ruspini_scaled, G=4)
 summary(m)
 plot(m, what = "classification")
 
+#' ## Spectral clustering
+library("kernlab")
+cluster_spec <- specc(ruspini_scaled, centers = 4)
+
+plot(ruspini_scaled, col=cluster_spec)
+
 
 #' # Internal Cluster Validation
 #'
@@ -277,6 +283,11 @@ plot(ks, ASW, type="l")
 hc_4 <- cutree(hc, 4)
 plot(shapes, col=hc_4)
 
+#' Spectral Clustering
+spec <- specc(shapes, centers = 4)
+plot(shapes, col=spec)
+
+
 #' Compare with ground truth with the corrected (=adjusted) Rand index (ARI),
 #' the variation of information (VI) index, entropy and purity.
 #
@@ -326,6 +337,11 @@ r <- rbind(
     unlist(fpc::cluster.stats(d, hc_4, truth, compareonly = TRUE)),
     entropy = entropy(hc_4, truth),
     purity = purity(hc_4, truth)
+    ),
+  spec = c(
+    unlist(fpc::cluster.stats(d, spec, truth, compareonly = TRUE)),
+    entropy = entropy(spec, truth),
+    purity = purity(spec, truth)
     ),
   random4 = c(
     unlist(fpc::cluster.stats(d, random4, truth, compareonly = TRUE)),
