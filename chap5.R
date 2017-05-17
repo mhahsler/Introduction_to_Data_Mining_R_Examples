@@ -137,6 +137,7 @@ summary(difs)
 #'
 #' # More Information
 #'
+#'* A visual comparison of decision boundaries can be found [here.](chap5_decisionboundary.html)
 #'* Package caret: http://topepo.github.io/caret/index.html
 #'* R taskview on machine learning: http://cran.r-project.org/web/views/MachineLearning.html
 
