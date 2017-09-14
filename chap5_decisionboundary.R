@@ -161,6 +161,15 @@ decisionplot(model, x, class = "Species", main = "NN (4)")
 model <- nnet(Species ~ ., data=x, size = 10, maxit = 1000, trace = FALSE)
 decisionplot(model, x, class = "Species", main = "NN")
 
+
+#' ## Deep neural network
+#'
+#' Use two hidden layers with 5 and 10 neurons
+
+library(darch)
+model <- darch(Species ~ ., data=x, layers = c(2,5,10,3), logLevel = "WARN")
+decisionplot(model, x, class = "Species", main = "Deep NN")
+
 #' # Circle Dataset
 #'
 #' This set is not linearly separable!
@@ -259,4 +268,12 @@ decisionplot(model, x, class = "class", main = "NN (4)")
 
 model <- nnet(class ~ ., data=x, size = 10, maxit = 10000, trace = FALSE)
 decisionplot(model, x, class = "class", main = "NN (10)")
+
+#' ## Deep neural network
+#'
+#' Use two hidden layers with 10 and 5 neurons
+
+library(darch)
+model <- darch(class ~ ., data=x, layers = c(2,10,5,2), logLevel = "WARN")
+decisionplot(model, x, class = "class", main = "Deep NN")
 
