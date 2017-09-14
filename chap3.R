@@ -30,6 +30,13 @@ summary(iris)
 mean(iris$Sepal.Length)
 sd(iris$Sepal.Length)
 
+#' Ignor missing values (Note: this data does not contain any, but this is
+#' what you would do)
+mean(iris$Sepal.Length, na.rm = TRUE)
+
+#' Robust mean (trim 10% of observations from each end of the distribution)
+mean(iris$Sepal.Length, trim = .1)
+
 #' Apply mean, sd and median to columns (MARGIN=2)
 apply(iris[1:4], MARGIN=2, mean)
 apply(iris[1:4], MARGIN=2, median)
