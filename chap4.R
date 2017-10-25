@@ -227,8 +227,10 @@ confusionMatrix(data = pred, testing$type)
 #' __Some notes__
 #'
 #' * Many classification algorithms and `train` in caret do not deal well
-#'   with missing values. You can remove observations with missing values with
-#'   `na.omit` or use imputation to replace the missing values. Make sure that
+#'   with missing values.
+#'   If your classification model can deal with outliers (e.g., `rpart`) then use `na.action = na.pass` when you call `train` and `predict`.
+#'   Otherwise, you need to remove observations with missing values with
+#'   `na.omit` or use imputation to replace the missing values before you train the model. Make sure that
 #'   you still have enough observations left.
 #' * Make sure that nominal variables (this includes logical variables)
 #'   are coded as factors.
