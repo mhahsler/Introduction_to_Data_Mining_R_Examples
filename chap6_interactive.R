@@ -30,9 +30,15 @@ rules <- apriori(Groceries, parameter=list(support=0.001, confidence=.7))
 #' # Interactive inspect with sorting, filtering and paging
 inspectDT(rules)
 
-#' # Interactive plot with rule information and zoom
-plotly_arules(rules, jitter = .5)
+#' # Plot rules as a scatter plot using an interactive html widget
+plot(rules, engine = "html")
 
-#' _Note:_ plotly currently does not do well with too many points, so plotly_arules
+#' _Note:_ plotly currently does not do well with too many points, so plot
 #' selects the top 1000 rules only (with a warning).
+#'
+#' # Plot rules as a graph using an interactive html widget
 
+plot(rules, method = "graph", engine = "html")
+
+#' _Note:_  currently does not do well with too many points, so plot
+#' selects the top 100 rules only (with a warning).
