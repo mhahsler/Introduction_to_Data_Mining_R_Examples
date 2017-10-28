@@ -38,8 +38,8 @@ summary(Zoo)
 library(rpart)
 
 #' ## Create Tree With Default Settings (uses pre-pruning)
-tree1 <- rpart(type ~ ., data=Zoo)
-tree1
+tree_default <- rpart(type ~ ., data = Zoo)
+tree_default
 
 #' __Note:__ the class variable needs a factor (nominal) or rpart
 #' will create a regression tree instead of a decision tree. Use `as.factor()`
@@ -47,7 +47,7 @@ tree1
 #'
 #' Plotting
 library(rpart.plot)
-rpart.plot(tree1, extra = 2, under = TRUE, varlen=0, faclen=0)
+rpart.plot(tree_default, extra = 2, under = TRUE, varlen=0, faclen=0)
 #' _Note:_ `extra=2` prints for each leaf node the number of correctly
 #' classified objects from data and the total number of objects
 #' from the training data falling into that node (correct/total).
@@ -59,13 +59,13 @@ rpart.plot(tree1, extra = 2, under = TRUE, varlen=0, faclen=0)
 #' observations in a node needed to split to the smallest value of 2
 #' (see: `?rpart.control`).
 #' _Note:_ full trees overfit the training data!
-tree2 <- rpart(type ~., data=Zoo, control=rpart.control(minsplit=2, cp=0))
-rpart.plot(tree2, extra = 2, under = TRUE,  varlen=0, faclen=0)
-tree2
+tree_full <- rpart(type ~., data=Zoo, control=rpart.control(minsplit=2, cp=0))
+rpart.plot(tree_full, extra = 2, under = TRUE,  varlen=0, faclen=0)
+tree_full
 
 #' Training error on tree with pre-pruning
-head(predict(tree1, Zoo))
-pred <- predict(tree1, Zoo, type="class")
+head(predict(tree_default, Zoo))
+pred <- predict(tree_default, Zoo, type="class")
 head(pred)
 
 confusion_table <- table(Zoo$type, pred)
@@ -88,7 +88,7 @@ accuracy <- function(truth, prediction) {
 accuracy(Zoo$type, pred)
 
 #' Training error of the full tree
-accuracy(Zoo$type, predict(tree2, Zoo, type="class"))
+accuracy(Zoo$type, predict(tree_full, Zoo, type="class"))
 
 #' Get a confusion table with more statistics (using caret)
 library(caret)
@@ -113,13 +113,13 @@ train <- Zoo[train_id,]
 test <- Zoo[-train_id, colnames(Zoo) != "type"]
 test_type <- Zoo[-train_id, "type"]
 
-tree1 <- rpart(type ~., data=train,control=rpart.control(minsplit=2))
+tree <- rpart(type ~., data=train,control=rpart.control(minsplit=2))
 
 #' Training error
-accuracy(train$type, predict(tree1, train, type="class"))
+accuracy(train$type, predict(tree, train, type="class"))
 
 #' Generalization error
-accuracy(test_type, predict(tree1, test, type="class"))
+accuracy(test_type, predict(tree, test, type="class"))
 
 #' ### 10-Fold Cross Validation
 
@@ -357,6 +357,39 @@ features <- names(Zoo)[1:16]
 #subset <- best.first.search(features, evaluator)
 #subset <- hill.climbing.search(features, evaluator)
 #subset
+
+#'
+#' # Using Dummy Variables for Factors
+#'
+#' Nominal features (factors) are often encoded as a series of 0-1 dummy variables.
+#' For example, let us try to predict if an animal is a predator given the type.
+#' First we use the original encoding of type as a factor with several values.
+
+tree_predator <- rpart(predator ~ type, Zoo)
+rpart.plot(tree_predator, extra = 2, under = TRUE, varlen=0, faclen=0)
+
+#' __Note:__ Some splits use multiple values. Building the tree will become
+#' very slow if a factor has many values.
+#'
+#' Recode type as a set of 0-1 dummy variables using `class2ind`. See also
+#' `? dummyVars` in package `caret`.
+library(caret)
+Zoo_dummy <- as.data.frame(class2ind(Zoo$type))
+Zoo_dummy$predator <- Zoo$predator
+head(Zoo_dummy)
+
+tree_predator <- rpart(predator ~ ., Zoo_dummy)
+rpart.plot(tree_predator, extra = 2, under = TRUE, varlen=0, faclen=0)
+
+#' Since we have 0-1 variables, insect >= 0.5 yes means that the insect dummy
+#' variable has a value of 1 (and not 0) and therefore it is an insect.
+#'
+#' Using `caret` on the orginal factor encoding automatically translates factors
+#' (here type) into 0-1 dummy variables. The reason is that some models cannot
+#' directly use factors.
+fit <- train(predator ~ type, Zoo, method = "rpart")
+rpart.plot(fit$finalModel, extra = 2, under = TRUE, varlen=0, faclen=0)
+
 
 #'
 #' # Dealing With the Class Imbalance Problem
