@@ -17,7 +17,6 @@
 
 library(arules)
 library(arulesViz)
-library(plotly)
 
 #' Load the data set
 data(Groceries)
@@ -25,7 +24,7 @@ summary(Groceries)
 inspect(head(Groceries))
 
 #' Mine Association Rules
-rules <- apriori(Groceries, parameter=list(support=0.001, confidence=.7))
+rules <- apriori(Groceries, parameter=list(support=0.001, confidence=.8))
 
 #' # Interactive inspect with sorting, filtering and paging
 inspectDT(rules)
