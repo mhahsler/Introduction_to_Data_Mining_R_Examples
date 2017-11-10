@@ -157,9 +157,11 @@ inspect(is[size(is)>8])
 #'
 #' Find maximal frequent itemsets (no superset if frequent)
 is_max <- is[is.maximal(is)]
+is_max
 inspect(head(sort(is_max, by="support")))
 #' Find closed frequent itemsets (no superset if frequent)
 is_closed <- is[is.closed(is)]
+is_closed
 inspect(head(sort(is_closed, by="support")))
 
 barplot(c(
