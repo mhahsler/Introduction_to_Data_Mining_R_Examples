@@ -164,11 +164,29 @@ decisionplot(model, x, class = "Species", main = "NN")
 
 #' ## Deep neural network
 #'
-#' Use two hidden layers with 5 and 10 neurons
+#' Use two hidden layers with 5 and 10 neurons (parameters come from
+#' https://github.com/maddin79/darch/blob/v0.12.0/examples/example.iris.R)
 
 library(darch)
-model <- darch(Species ~ ., data=x, layers = c(2,5,10,3), logLevel = "WARN")
+model <- darch(Species ~ ., data=x, layers = c(2,5,10,3), logLevel = "WARN",
+  preProc.params = list("method" = c("scale", "center")),
+  normalizeWeights = T,
+  normalizeWeightsBound = 1,
+  darch.batchSize = 30,
+  darch.fineTuneFunction = "rpropagation",
+  darch.unitFunction = "softmaxUnit",
+  darch.stopValidClassErr = 0,
+  darch.stopValidErr = .15,
+  bootstrap = T,
+  bootstrap.unique = F,
+  rprop.incFact = 1.3,
+  rprop.decFact = .7,
+  rprop.initDelta = .1,
+  rprop.maxDelta = 5,
+  rprop.method = "iRprop-",
+  rprop.minDelta = 1e-5)
 decisionplot(model, x, class = "Species", main = "Deep NN")
+
 
 #' # Circle Dataset
 #'
@@ -176,10 +194,10 @@ decisionplot(model, x, class = "Species", main = "Deep NN")
 set.seed(1000)
 
 library(mlbench)
-x <- mlbench.circle(100)
-#x <- mlbench.cassini(100)
-#x <- mlbench.spirals(100, sd = .1)
-#x <- mlbench.smiley(100)
+x <- mlbench.circle(500)
+#x <- mlbench.cassini(500)
+#x <- mlbench.spirals(500, sd = .1)
+#x <- mlbench.smiley(500)
 x <- cbind(as.data.frame(x$x), factor(x$classes))
 colnames(x) <- c("x", "y", "class")
 

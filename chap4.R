@@ -530,6 +530,7 @@ confusionMatrix(data = pred,
 library("pROC")
 r <- roc(Zoo_reptile$type == "reptile", prob[,"reptile"])
 r
+
 plot(r)
 #' This also reports the area under the curve.
 #'
