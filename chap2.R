@@ -269,11 +269,13 @@ plot(iris$Petal.Length, jitter(rep(1, nrow(iris))), ylab ="", yaxt = "n")
 
 #' Histograms work better
 hist(iris$Petal.Length)
-rug(iris$Petal.Length)
+rug(jitter(iris$Petal.Length, factor = 10))
+#' We add jitter to the rug to prevent overplotting
 
+#'
 #' We can also add a kernel density estimate KDE (red line)
 hist(iris$Petal.Length, freq=FALSE)
-rug(iris$Petal.Length)
+rug(jitter(iris$Petal.Length, factor = 10))
 lines(density(iris$Petal.Length), col="red", lwd = 2)
 
 #' Plot 2d kernel density estimate
@@ -289,8 +291,4 @@ points(jitter(iris$Sepal.Length, 2), jitter(iris$Sepal.Width, 2),
 #' Use a 3d plot instead
 persp(dens, xlab="Sepal.Length", ylab="Sepal.Width", zlab="density",
   shade=.5)
-
-# Use plotly
-#library(plotly)
-#plot_ly(dens, z = z, type = "surface")
 
