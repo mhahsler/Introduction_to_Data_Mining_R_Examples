@@ -94,6 +94,26 @@ accuracy(Zoo$type, predict(tree_full, Zoo, type="class"))
 library(caret)
 confusionMatrix(data = pred, reference = Zoo$type)
 
+#' ## Make Predictions for New Data
+#'
+#' Make up my own animal: A lion with feathered wings
+
+my_animal <- data.frame(hair = TRUE, feathers = TRUE, eggs = FALSE,
+  milk = TRUE, airborne = TRUE, aquatic = FALSE, predator = TRUE,
+  toothed = TRUE, backbone = TRUE, breathes = TRUE, venomous = FALSE,
+  fins = FALSE, legs = 4, tail = TRUE, domestic = FALSE,
+  catsize = FALSE, type = NA)
+
+#' Fix columns to be factors like in the training set.
+
+for(i in c(1:12, 14:16)) my_animal[[i]] <- factor(my_animal[[i]],
+  levels = c(TRUE, FALSE))
+
+my_animal
+
+#' Make a prediction using the default tree
+predict(tree_default , my_animal, type = "class")
+
 #' # Model Evaluation
 #' ## Pure R Implementation
 #' ### Holdout Sample
