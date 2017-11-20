@@ -166,17 +166,21 @@ b <- rbind(
   )
 b
 
-#' Jaccard index
+#' ### Jaccard index
 #'
 #' Jaccard index is a similarity measure so R reports 1-Jaccard
 dist(b, method="binary")
-#' Hamming distance
+#' ### Hamming distance
 #'
-#' Hamming distance is the number of mis-matches
+#' Hamming distance is the number of mis-matches (equivalent to
+#' Manhattan distance on 0-1 data and also the squared Euclidean distance).
 dist(b, method="manhattan")
 
+dist(b, method = "euclidean")^2
 
-#' ## Gower's distance
+#' ## Distances for mixed data
+
+#' ### Gower's distance
 #'
 #' Works with mixed data
 data <- data.frame(
@@ -188,11 +192,35 @@ data
 
 library(proxy)
 dist(data, method="Gower")
+#' __Note:__ Gower's distance automatically scales, so no need to scale
+#' the data first.
+
+#'
+#' ### Using Euclidean distance with mixed data
+#'
+#' Sometimes methods (e.g., k-means) only can use Euclidean distance. In this
+#' case, nominal features can be converted into 0-1 dummy variables. Euclidean
+#' distance on these will result in a usable distance measure.
+#'
+#' Create dummy variables
+library(caret)
+data_dummy <- predict(dummyVars(~., data), data)
+data_dummy
+
+#' Since sex hsa now two columns, we need to weight them by 1/2 after scaling.
+weights <- c(1, 1, 1/2, 1/2)
+data_dummy_scaled <- scale(data_dummy) * weights
+
+dist(scale(data_dummy_scaled))
+
+#' Distance is (mostly) consistent with Gower's distance (other than that
+#' Gower's distance is scaled between 0 and 1).
+plot(dist(scale(data_dummy_scaled)),
+  dist(data, method="Gower"), xlab = "Euclidean_dummy", ylab = "Gower")
 
 #' ## Additional proximity measures available in package proxy
 library(proxy)
 names(pr_DB$get_entries())
-
 
 
 #' # Relationship between features
