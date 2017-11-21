@@ -191,7 +191,8 @@ data <- data.frame(
 data
 
 library(proxy)
-dist(data, method="Gower")
+d_Gower <- dist(data, method="Gower")
+d_Gower
 #' __Note:__ Gower's distance automatically scales, so no need to scale
 #' the data first.
 
@@ -207,16 +208,16 @@ library(caret)
 data_dummy <- predict(dummyVars(~., data), data)
 data_dummy
 
-#' Since sex hsa now two columns, we need to weight them by 1/2 after scaling.
-weights <- c(1, 1, 1/2, 1/2)
-data_dummy_scaled <- scale(data_dummy) * weights
+#' Since sex has now two columns, we need to weight them by 1/2 after scaling.
+weight <- matrix(c(1,1,1/2,1/2), ncol = 4, nrow = nrow(data_dummy), byrow = TRUE)
+data_dummy_scaled <- scale(data_dummy) * weight
 
-dist(scale(data_dummy_scaled))
+d_dummy <- dist(data_dummy_scaled)
+d_dummy
 
 #' Distance is (mostly) consistent with Gower's distance (other than that
 #' Gower's distance is scaled between 0 and 1).
-plot(dist(scale(data_dummy_scaled)),
-  dist(data, method="Gower"), xlab = "Euclidean_dummy", ylab = "Gower")
+plot(d_dummy, d_Gower, xlab = "Euclidean w/dummy", ylab = "Gower")
 
 #' ## Additional proximity measures available in package proxy
 library(proxy)
