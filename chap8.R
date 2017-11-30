@@ -137,7 +137,6 @@ plot(m, what = "classification")
 #' ## Spectral clustering
 library("kernlab")
 cluster_spec <- specc(ruspini_scaled, centers = 4)
-
 plot(ruspini_scaled, col=cluster_spec)
 
 
@@ -164,11 +163,14 @@ sapply(list(
          fpc::cluster.stats(d, x))[c("within.cluster.ss","avg.silwidth"),]
 
 #' ## Silhouette plot
+library(cluster)
 plot(silhouette(km$cluster, d))
 #' __Note:__ The silhouette plot does not show correctly in R Studio if you have too many objects (bars are missing). I will work when you open a new plotting device with `windows()`, `x11()` or `quartz()`.
 #'
 
 #' ## Find Optimal Number of Clusters for k-means
+plot(ruspini_scaled)
+
 set.seed(1234)
 ks <- 2:10
 
@@ -222,11 +224,15 @@ plot(k)
 #' ## Visualize the Distance Matrix
 #'
 #' Visualizing the unordered distance matrix does not show much structure.
+
+plot(ruspini_scaled)
+d <- dist(ruspini_scaled)
+
 library(seriation)
-pimage(d, colorkey=TRUE)
+pimage(d)
 
 #' Reorder using cluster labels
-pimage(d, order=order(km$cluster), colorkey=TRUE)
+pimage(d, order=order(km$cluster))
 
 #' Use dissplot which rearranges clusters, adds cluster labels,
 #'  and shows average dissimilarity in the lower half of the plot.
@@ -284,6 +290,7 @@ hc_4 <- cutree(hc, 4)
 plot(shapes, col=hc_4)
 
 #' Spectral Clustering
+library("kernlab")
 spec <- specc(shapes, centers = 4)
 plot(shapes, col=spec)
 
