@@ -79,14 +79,17 @@ plot(s2, col=s2$Species)
 library(scatterplot3d)
 scatterplot3d(iris[,1:3], color=as.integer(iris$Species))
 
-#' Intereactive 3d plots (needs package rgl)
+#' Interactive 3d plots (needs package rgl)
 #library(rgl)
+#data(iris)
 #plot3d(as.matrix(iris[,1:3]), col=as.integer(iris$Species), size=5)
 
-#' Intereactive 3d plots (needs package plotly)
+#' Interactive 3d plots (needs package plotly)
 #library(plotly)
-#plot_ly(iris, x = Sepal.Length, y= Petal.Length, z = Sepal.Width,
-#  size = Petal.Width, color = Species, type="scatter3d", mode="markers")
+#data(iris)
+#plot_ly(iris, x = ~Sepal.Length, y = ~Petal.Length, z = ~Sepal.Width,
+#  size = ~Petal.Width, color = ~Species, type="scatter3d",
+# mode="markers")
 
 #' Calculate the principal components
 pc <- prcomp(as.matrix(iris[,1:4]))
