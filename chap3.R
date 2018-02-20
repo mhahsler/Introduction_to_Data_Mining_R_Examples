@@ -45,6 +45,11 @@ apply(iris[1:4], MARGIN=2, var)
 apply(iris[1:4], MARGIN=2, min)
 apply(iris[1:4], MARGIN=2, max)
 
+
+#' Define your own statistic: E.g., MAD (median absolute deviation)
+mad <- function(x) median(abs(x-mean(x)))
+apply(iris[1:4], MARGIN=2, mad)
+
 #' # Tabulate data
 
 #' Discretize the data first since there are too many values (cut divides the range by breaks, see package discretization for other methods)
@@ -94,9 +99,6 @@ apply(iris[1:4], MARGIN=2, quantile)
 quantile(iris$Petal.Length)
 quantile(iris$Petal.Length)[4] - quantile(iris$Petal.Length)[2]
 
-#' Define your own statistic: E.g., MAD (median average deviation)
-mad <- function(x) median(abs(x-mean(x)))
-apply(iris[1:4], MARGIN=2, mad)
 
 #' # Visualizations
 
