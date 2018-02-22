@@ -121,10 +121,16 @@ pairs(iris, col=iris$Species)
 #' Alternative scatter plot matrix
 library("GGally")
 ggpairs(iris,  ggplot2::aes(colour=Species))
+
 #' ### Boxplot
 #'
-#' Compare the distribution of continuous variables grouped by a nominal variable
+
+#' Compare the distribution of several continuous variables
 boxplot(iris[,1:4])
+
+#' Compare the distribution of a single continuous variables grouped by a nominal variable
+boxplot(Sepal.Length ~ Species, data = iris,
+  ylab = "Sepal Length", ylim = c(0,8))
 
 #' Group-wise averages
 aggregate(Sepal.Length ~ Species, data=iris, FUN = mean)
