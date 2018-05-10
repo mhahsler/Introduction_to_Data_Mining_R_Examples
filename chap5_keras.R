@@ -86,7 +86,6 @@ plot(history)
 #'
 #' # Make predictions on the test set
 #'
-#' _Note: _
 classes <- model %>% predict_classes(Zoo_predictors[!train,], batch_size = 128)
 
 library(caret)
