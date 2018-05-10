@@ -190,7 +190,7 @@ r
 print(object.size(r), unit="Mb")
 
 inspect(r[1:10])
-inspect(sort(r, by="lift")[1:10])
+inspect(head(r, by="lift", n = 10))
 
 #' ## Additional Interest Measures
 interestMeasure(rules[1:10], measure=c("phi", "gini"),
@@ -234,11 +234,11 @@ plot(rules, shading="order", control=list(jitter=.5))
 
 #' Grouped plot
 plot(rules, method="grouped")
-#plot(rules, method="grouped", interactive=TRUE)
+#plot(rules, method="grouped", engine = "interactive")
 
 #' As a graph
-plot(sample(rules, 100), method="graph", control=list(type="items"))
-plot(sort(rules, by="phi")[1:100], method="graph", control=list(type="items"))
+plot(rules, method="graph")
+plot(head(rules, by="phi", n = 100), method="graph")
 
 #' ## More interactive visualization
 #'
