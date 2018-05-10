@@ -254,7 +254,7 @@ confusionMatrix(data = pred, testing$type)
 #'   you still have enough observations left.
 #' * Make sure that nominal variables (this includes logical variables)
 #'   are coded as factors.
-#' * The class variable for for train in caret cannot have level names that are
+#' * The class variable for train in caret cannot have level names that are
 #'   keywords in R (e.g., `TRUE` and `FALSE`). Rename them to, for example,
 #'    "yes" and "no."
 #' * Make sure that nominal variables (factors) have examples for all possible

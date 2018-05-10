@@ -99,6 +99,13 @@ svmFit <- train(type ~., method = "svmLinear", data = Zoo,
 svmFit
 svmFit$finalModel
 
+#' ## Random Forest
+randomForestFit <- train(type ~ ., method = "rf", data = Zoo,
+	tuneLength = 5,
+	trControl = trainControl(
+		method = "cv", indexOut = train))
+randomForestFit
+randomForestFit$finalModel
 
 #' ## Artificial Neural Network
 nnetFit <- train(type ~ ., method = "nnet", data = Zoo,
@@ -108,15 +115,6 @@ nnetFit <- train(type ~ ., method = "nnet", data = Zoo,
   trace = FALSE)
 nnetFit
 nnetFit$finalModel
-
-
-#' ## Random Forest
-randomForestFit <- train(type ~ ., method = "rf", data = Zoo,
-	tuneLength = 5,
-	trControl = trainControl(
-		method = "cv", indexOut = train))
-randomForestFit
-randomForestFit$finalModel
 
 #' # Compare Models
 resamps <- resamples(list(
@@ -137,7 +135,8 @@ summary(difs)
 #'
 #' # More Information
 #'
-#'* A visual comparison of decision boundaries can be found [here.](chap5_decisionboundary.html)
+#'* [Example using deep learning with keras.](chap5_keras.html)
+#'* [A visual comparison of decision boundaries.](chap5_decisionboundary.html)
 #'* Package caret: http://topepo.github.io/caret/index.html
 #'* R taskview on machine learning: http://cran.r-project.org/web/views/MachineLearning.html
 

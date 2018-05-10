@@ -161,32 +161,47 @@ decisionplot(model, x, class = "Species", main = "NN (4)")
 model <- nnet(Species ~ ., data=x, size = 10, maxit = 1000, trace = FALSE)
 decisionplot(model, x, class = "Species", main = "NN")
 
+#' ## Deep Learning with keras
 
-#' ## Deep neural network
-#'
-#' Use two hidden layers with 5 and 10 neurons (parameters come from
-#' https://github.com/maddin79/darch/blob/v0.12.0/examples/example.iris.R)
+library(keras)
 
-library(darch)
-model <- darch(Species ~ ., data=x, layers = c(2,5,10,3), logLevel = "WARN",
-  preProc.params = list("method" = c("scale", "center")),
-  normalizeWeights = T,
-  normalizeWeightsBound = 1,
-  darch.batchSize = 30,
-  darch.fineTuneFunction = "rpropagation",
-  darch.unitFunction = "softmaxUnit",
-  darch.stopValidClassErr = 0,
-  darch.stopValidErr = .15,
-  bootstrap = T,
-  bootstrap.unique = F,
-  rprop.incFact = 1.3,
-  rprop.decFact = .7,
-  rprop.initDelta = .1,
-  rprop.maxDelta = 5,
-  rprop.method = "iRprop-",
-  rprop.minDelta = 1e-5)
-decisionplot(model, x, class = "Species", main = "Deep NN")
+#' redefine predict so it works with decision plot
+predict.keras.engine.training.Model <- function(object, newdata, ...)
+  cl <- predict_classes(object, as.matrix(newdata))
 
+model <- keras_model_sequential() %>%
+  layer_dense(units = 10, activation = 'relu', input_shape = c(2)) %>%
+  layer_dense(units = 4, activation = 'softmax') %>%
+  compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
+
+history <- model %>% fit(
+  as.matrix(x[,1:2]),
+  to_categorical(x[,3]),
+  epochs = 100,
+  batch_size = 10
+)
+
+history
+
+decisionplot(model, x, class = "Species", main = "keras (relu)")
+
+
+
+model <- keras_model_sequential() %>%
+  layer_dense(units = 10, activation = 'tanh', input_shape = c(2)) %>%
+  layer_dense(units = 4, activation = 'softmax') %>%
+  compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
+
+history <- model %>% fit(
+  as.matrix(x[,1:2]),
+  to_categorical(x[,3]),
+  epochs = 100,
+  batch_size = 10
+)
+
+history
+
+decisionplot(model, x, class = "Species", main = "keras (tanh)")
 
 #' # Circle Dataset
 #'
@@ -287,11 +302,44 @@ decisionplot(model, x, class = "class", main = "NN (4)")
 model <- nnet(class ~ ., data=x, size = 10, maxit = 10000, trace = FALSE)
 decisionplot(model, x, class = "class", main = "NN (10)")
 
-#' ## Deep neural network
-#'
-#' Use two hidden layers with 10 and 5 neurons
+#' ## Deep Learning with keras
 
-library(darch)
-model <- darch(class ~ ., data=x, layers = c(2,10,5,2), logLevel = "WARN")
-decisionplot(model, x, class = "class", main = "Deep NN")
+library(keras)
 
+#' redefine predict so it works with decision plot
+predict.keras.engine.training.Model <- function(object, newdata, ...)
+  cl <- predict_classes(object, as.matrix(newdata))
+
+model <- keras_model_sequential() %>%
+  layer_dense(units = 10, activation = 'relu', input_shape = c(2)) %>%
+  layer_dense(units = 3, activation = 'softmax') %>%
+  compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
+
+history <- model %>% fit(
+  as.matrix(x[,1:2]),
+  to_categorical(x[,3]),
+  epochs = 100,
+  batch_size = 10
+)
+
+history
+
+decisionplot(model, x, class = "class", main = "keras (relu)")
+
+
+
+model <- keras_model_sequential() %>%
+  layer_dense(units = 10, activation = 'tanh', input_shape = c(2)) %>%
+  layer_dense(units = 3, activation = 'softmax') %>%
+  compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
+
+history <- model %>% fit(
+  as.matrix(x[,1:2]),
+  to_categorical(x[,3]),
+  epochs = 100,
+  batch_size = 10
+)
+
+history
+
+decisionplot(model, x, class = "class", main = "keras (tanh)")
