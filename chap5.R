@@ -107,6 +107,25 @@ randomForestFit <- train(type ~ ., method = "rf", data = Zoo,
 randomForestFit
 randomForestFit$finalModel
 
+
+#' ## Gradient Boosted Decision Trees (xgboost)
+xgboostFit <- train(type ~ ., method = "xgbTree", data = Zoo,
+  tuneLength = 5,
+  trControl = trainControl(
+    method = "cv", indexOut = train),
+  tuneGrid = expand.grid(
+    nrounds = 20,
+    max_depth = 3,
+    colsample_bytree = .6,
+    eta = 0.1,
+    gamma=0,
+    min_child_weight = 1,
+    subsample = .5
+  ))
+xgboostFit
+xgboostFit$finalModel
+
+
 #' ## Artificial Neural Network
 nnetFit <- train(type ~ ., method = "nnet", data = Zoo,
 	tuneLength = 5,
@@ -123,8 +142,10 @@ resamps <- resamples(list(
   SVM=svmFit,
   KNN=knnFit,
   rules=rulesFit,
-  NeuralNet=nnetFit,
-  randomForest=randomForestFit))
+  randomForest=randomForestFit,
+  xgboost=xgboostFit,
+  NeuralNet=nnetFit
+    ))
 resamps
 summary(resamps)
 
