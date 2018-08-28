@@ -108,7 +108,7 @@ biplot(pc, col = c("grey", "red"))
 #'
 #' We will talk about feature selection when we discuss classification models.
 #'
-#' ## Discretrize features
+#' ## Discretize features
 
 plot(iris$Petal.Width, 1:150, ylab="index")
 #' A histogram is a better visualization for the distribution of a single
