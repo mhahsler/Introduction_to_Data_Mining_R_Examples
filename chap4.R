@@ -248,7 +248,7 @@ confusionMatrix(data = pred, testing$type)
 #'
 #' * Many classification algorithms and `train` in caret do not deal well
 #'   with missing values.
-#'   If your classification model can deal with outliers (e.g., `rpart`) then use `na.action = na.pass` when you call `train` and `predict`.
+#'   If your classification model can deal with missing values (e.g., `rpart`) then use `na.action = na.pass` when you call `train` and `predict`.
 #'   Otherwise, you need to remove observations with missing values with
 #'   `na.omit` or use imputation to replace the missing values before you train the model. Make sure that
 #'   you still have enough observations left.
@@ -259,10 +259,12 @@ confusionMatrix(data = pred, testing$type)
 #'    "yes" and "no."
 #' * Make sure that nominal variables (factors) have examples for all possible
 #'   values. Some methods might have problems with variable values
-#'   without examples. You can drop empty levels using `factor`.
+#'   without examples. You can drop empty levels using `droplevels` or `factor`.
 #' * Sampling in train might create a sample that does not
-#'   contain examples for all values in a nominal (factor) variable. This most
-#'   likely happens for variables which have one very rare value.
+#'   contain examples for all values in a nominal (factor) variable. You will get
+#'   an error message. This most
+#'   likely happens for variables which have one very rare value. You may have to
+#'   remove the variable.
 #'
 #' ## Model Comparison
 library(caret)
