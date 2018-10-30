@@ -354,7 +354,7 @@ cfs(type ~ ., data=Zoo)
 #' A consistency measure can also be used with best first search.
 consistency(type ~ ., data=Zoo)
 
-#' Back-box feature selection uses an evaluator function (the black box)
+#' Black-box feature selection uses an evaluator function (the black box)
 #' to calculate a score to be maximized.
 #' First, we define an evaluation function that builds a model given a subset
 #' of features and calculates a quality score. We use here the
