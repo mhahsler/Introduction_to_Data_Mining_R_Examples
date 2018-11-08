@@ -45,7 +45,7 @@ Zoo_predictors <- normalize(as.matrix(Zoo_predictors))
 head(Zoo_predictors)
 
 #' One-hot encode the class variable
-Zoo_class <- to_categorical(Zoo_class)
+Zoo_class <- to_categorical(as.integer(Zoo_class))
 head(Zoo_class)
 
 #' # Construct the model structure
@@ -76,7 +76,7 @@ history <- model %>% fit(
   Zoo_predictors[train,],
   Zoo_class[train,],
   validation_data = list(Zoo_predictors[!train,], Zoo_class[!train,]),
-  epochs = 500,
+  epochs = 200,
   batch_size = 5
 )
 
