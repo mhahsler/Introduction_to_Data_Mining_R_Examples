@@ -16,29 +16,43 @@
 #' [Michael Hahsler](http://michael.hahsler.net).
 #'
 
-#' Install arules and arulesViz
-# install.packages("arules")
-# install.packages("arulesViz")
-
-#' Load the data set
-data(Zoo, package="mlbench")
-head(Zoo)
+#' # Used packages
+#'
+#' Install the following packages.
+#'
+#' * [`arules`](https://www.rdocumentation.org/packages/arules/)
+#' * [`arulesViz`](https://www.rdocumentation.org/packages/arulesViz/)
+#'
 
 library(arules)
-#' For information about the package try:
+library(arulesViz)
+
+#' For information about the `arules` package try:
 #' `help(package="arules")`
 #' and
-#' `vignette("arules")` (also available at http://cran.r-project.org/web/packages/arules/vignettes/arules.pdf)
+#' `vignette("arules")` (also available at [CRAN](http://cran.r-project.org/web/packages/arules/vignettes/arules.pdf))
 #'
-
-#' __Note:__ arules (and many other R packages) used S4 object-oriented programming style (= formal class definitions)
+#' ## S4 object system
 #'
-#' Some important differences of S4 objects are:
+#' Standard R objects use the [S3 object system](http://adv-r.had.co.nz/S3.html)
+#' which do not use formal class definitions and are usually implemented
+#' as a list with a class attribute.
+#' `arules` and many other R packages use the
+#' [S4 object system](http://adv-r.had.co.nz/S4.html) which is based on
+#' formal class definitions (similar to object-oriented programming languages like
+#' Java and C++).
+#' Some important differences of using S4 objects compared to the usual S3
+#' objects are:
 #'
 #' * coercion (casting): `as(from, "class_name")`
 #' * help: `class? class_name`
 #'
-#'
+
+#' # Used data
+data(Zoo, package="mlbench")
+head(Zoo)
+
+
 #' # Transactions
 #' ## Create transactions
 #'
@@ -71,7 +85,7 @@ Zoo[["legs"]] <- has_legs
 #'
 #' * use each unique value as an item:
 #'  `Zoo[["legs"]] <- as.factor(legs)`
-#' * use discretize for continuous data (see `? discretize` and
+#' * use discretize for continuous data (see [`? discretize`](https://www.rdocumentation.org/packages/arules/topics/discretize) and
 #' [discretization in the code for Chapter 2](chap2.html#discretrize-features)):
 #'  `Zoo[["legs"]] <- discretize(legs, categories = 2, method="interval")`
 #'
@@ -173,6 +187,8 @@ barplot(c(
 #'
 #' # Association Rules
 #' ## Mine Association Rules
+#'
+#' We use the APRIORI algorithm (see (`? apriori`)[? https://www.rdocumentation.org/packages/arules/topics/apriori])
 
 rules <- apriori(trans, parameter=list(support=0.05, confidence=.9))
 length(rules)
@@ -206,7 +222,9 @@ inspect(head(rules, by="phi"))
 
 #' ## Mine using Templates
 #'
-#' Sometimes it is beneficial to specify what items should be where in the rule. For apriori we can use the parameter appearance to specify this (see `? apriori`).
+#' Sometimes it is beneficial to specify what items should be where in the rule. For apriori we can use the parameter appearance to specify this (see [`? APappearance`](https://www.rdocumentation.org/packages/arules/topics/APappearance)). In
+#' the following we restrict rules to an animal `type` in the RHS and any item in
+#' the LHS.
 type <- grep("type=", itemLabels(trans), value = TRUE)
 type
 
