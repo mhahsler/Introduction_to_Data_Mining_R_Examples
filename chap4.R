@@ -476,10 +476,10 @@ fit <- train(type ~ ., data = Zoo_reptile_balanced, method = "rpart",
 fit
 rpart.plot(fit$finalModel, extra = 2, under = TRUE,  varlen = 0, faclen = 0)
 
-#' check on balanced training data
+#' Check on balanced training data.
 confusionMatrix(data = predict(fit, Zoo_reptile_balanced),
   ref = Zoo_reptile_balanced$type, positive = "reptile")
-#' we see that sensitivity is now 1 which means that we are able to identify all
+#' We see that sensitivity is now 1 which means that we are able to identify all
 #' reptiles (pos. examples).
 #'
 #'
@@ -518,7 +518,7 @@ rpart.plot(fit$finalModel, extra = 2, under = TRUE, varlen = 0, faclen = 0)
 
 confusionMatrix(data = predict(fit, Zoo_reptile),
   ref = Zoo_reptile$type, positive = "reptile")
-#' __Note:__ the accuracy is high, but it is close to the no-information rate!
+#' __Note:__ Accuracy is high, but it is close to the no-information rate!
 #'
 #' ### Create A Biased Classifier
 #'
@@ -531,23 +531,29 @@ confusionMatrix(data = predict(fit, Zoo_reptile),
 #' In the following, we reduce this threshold to 25% or more.
 #' This means that if the new observation ends up in a leaf node with 25% or
 #'  more reptiles from training then the observation
-#'  will be classified as a reptile. __Note__ that you should use an unseen test set
+#'  will be classified as a reptile.
+#'
+#'  __Note__ that you should use an unseen test set
 #'  for `predict()` here! I did not do that since the data set is too small!
 prob <- predict(fit, Zoo_reptile, type = "prob")
 tail(prob)
 pred <- as.factor(ifelse(prob[,"reptile"]>=.25, "reptile", "nonreptile"))
 
+
 confusionMatrix(data = pred,
   ref = Zoo_reptile$type, positive = "reptile")
-#' Note that accuracy goes down and is below the no information rate.
+#' __Note__ that accuracy goes down and is below the no information rate.
 #' However, both measures are based on the idea that all errors have the same
 #' cost. What is important is that we are now able to find all almost all
 #' reptiles (sensitivity is .8) while before we only found 2 out of 5
 #' (sensitivity of .4)
 #'
+
 #' ### Plot the ROC Curve
-#' since we have a binary classification problem, we can also use ROC.
-#' For the ROC curve all different cutoff thresholds for the probability
+#' Since we have a binary classification problem and a classifier that predicts
+#' a probability for an observation to be a reptile, we can also use a
+#' [receiver operating characteristic (ROC)](https://en.wikipedia.org/wiki/Receiver_operating_characteristic)
+#' curve. For the ROC curve all different cutoff thresholds for the probability
 #' are used and then connected with a line.
 library("pROC")
 r <- roc(Zoo_reptile$type == "reptile", prob[,"reptile"])
@@ -556,3 +562,37 @@ r
 plot(r)
 #' This also reports the area under the curve.
 #'
+
+#' ## Option 4: Use a Cost-Sensitive Classifier
+#'
+#' The implementation of CART in `rpart` can use a cost matrix for making splitting
+#' decisions (as parameter `loss`). The matrix has the form
+#'
+#'  TP FP
+#'  FN TN
+#'
+#' TP and TN have to be 0. We make FN very expensive (100).
+
+cost <- matrix(c(
+  0,  1,
+  100,0
+  ), byrow=TRUE, nrow=2)
+cost
+
+
+fit <- train(type ~ ., data=Zoo_reptile, method = "rpart",
+  parms = list(loss = cost),
+  trControl = trainControl(method = "cv"))
+#' The warning "There were missing values in resampled performance measures"
+#' means that some folds did not contain any reptiles (because of the class imbalance)
+#' and thus the performance measures could not be calculates.
+
+fit
+
+rpart.plot(fit$finalModel, extra = 2, under = TRUE, varlen = 0, faclen = 0)
+
+confusionMatrix(data = predict(fit, Zoo_reptile),
+  ref = Zoo_reptile$type, positive = "reptile")
+#' The high cost for false negatives results in a classifier that does not miss any reptile.
+#'
+#' __Note:__ Using a cost-sensitive classifier is often the best option. Unfortunately, the most classification algorithms (or their implementation) do not have the ability to consider misclassification cost.
