@@ -86,7 +86,7 @@ Zoo[["legs"]] <- has_legs
 #' * use each unique value as an item:
 #'  `Zoo[["legs"]] <- as.factor(legs)`
 #' * use discretize for continuous data (see [`? discretize`](https://www.rdocumentation.org/packages/arules/topics/discretize) and
-#' [discretization in the code for Chapter 2](chap2.html#discretrize-features)):
+#' [discretization in the code for Chapter 2](chap2.html#discretize-features)):
 #'  `Zoo[["legs"]] <- discretize(legs, categories = 2, method="interval")`
 #'
 #'  Convert data into a set of transactions
@@ -188,7 +188,7 @@ barplot(c(
 #' # Association Rules
 #' ## Mine Association Rules
 #'
-#' We use the APRIORI algorithm (see (`? apriori`)[? https://www.rdocumentation.org/packages/arules/topics/apriori])
+#' We use the APRIORI algorithm (see (`? apriori`)[https://www.rdocumentation.org/packages/arules/topics/apriori])
 
 rules <- apriori(trans, parameter=list(support=0.05, confidence=.9))
 length(rules)
