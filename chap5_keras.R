@@ -45,7 +45,9 @@ Zoo_predictors <- normalize(as.matrix(Zoo_predictors))
 head(Zoo_predictors)
 
 #' One-hot encode the class variable
-Zoo_class <- to_categorical(as.integer(Zoo_class))
+#'
+#' __Note:__ needs an integer with the first class being 0 and not 1
+Zoo_class <- to_categorical(as.integer(Zoo_class)-1L)
 head(Zoo_class)
 
 #' # Construct the model structure
@@ -53,7 +55,9 @@ model <- keras_model_sequential()
 model
 
 model %>%
-  layer_dense(units = 8, activation = 'relu', input_shape = c(ncol(Zoo_predictors))) %>%
+  layer_dense(units = 16, activation = 'relu', input_shape = c(ncol(Zoo_predictors))) %>%
+  layer_dropout(.1) %>%
+  layer_dense(units = 8, activation = 'relu') %>%
   layer_dense(units = ncol(Zoo_class), activation = 'softmax')
 model
 #' See `? layer_dense` to learn more about creating the model structure
@@ -77,7 +81,7 @@ history <- model %>% fit(
   Zoo_class[train,],
   validation_data = list(Zoo_predictors[!train,], Zoo_class[!train,]),
   epochs = 200,
-  batch_size = 5
+  batch_size = 2^3
 )
 
 history
@@ -86,9 +90,11 @@ plot(history)
 #'
 #' # Make predictions on the test set
 #'
-classes <- model %>% predict_classes(Zoo_predictors[!train,], batch_size = 128)
+#' __Note:__ classes starts with index 0 not 1
+#'
+classes <- model %>% predict_classes(Zoo_predictors[!train,], batch_size = 2^7)
 
 library(caret)
-confusionMatrix(data = factor(classes, levels = 1:length(levels(Zoo$type)), labels = levels(Zoo$type)),
+confusionMatrix(data = factor(classes+1L, levels = 1:length(levels(Zoo$type)), labels = levels(Zoo$type)),
   ref = Zoo$type[!train])
 
