@@ -188,7 +188,7 @@ barplot(c(
 #' # Association Rules
 #' ## Mine Association Rules
 #'
-#' We use the APRIORI algorithm (see (`? apriori`)[https://www.rdocumentation.org/packages/arules/topics/apriori])
+#' We use the APRIORI algorithm (see [`? apriori`](https://www.rdocumentation.org/packages/arules/topics/apriori))
 
 rules <- apriori(trans, parameter=list(support=0.05, confidence=.9))
 length(rules)
