@@ -41,5 +41,13 @@ plot(rules, method = "graph", engine = "html")
 
 #' _Note:_  currently does not do well with too many points, so plot
 #' selects the top 100 rules only (with a warning).
-
-#' try: ruleExplorer(Groceries, parameter = list(support = 0.001, conf = 0.8))
+#'
+#' # Interactive Rule Explorer
+#'
+#' Paste this into your R session:
+#'
+#' `library("arulesViz")`
+#'
+#' `data(Groceries)`
+#'
+#' `ruleExplorer(Groceries, parameter = list(support = 0.001, conf = 0.8))`
