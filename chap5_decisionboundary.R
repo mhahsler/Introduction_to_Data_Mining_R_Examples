@@ -101,15 +101,11 @@ library(MASS)
 model <- lda(Species ~ ., data=x)
 decisionplot(model, x, class = "Species", main = "LDA")
 
-#' ## Logistic Regression
+#' ## Multinomial Logistic Regression
 #'
-#' Only considers 2 classes
 
-model <- glm(Species ~., data = x, family=binomial(link='logit'))
-class(model) <- c("lr", class(model))
-predict.lr <- function(object, newdata, ...)
-  predict.glm(object, newdata, type = "response") > .5
-
+library(nnet)
+model <- multinom(Species ~., data = x)
 decisionplot(model, x, class = "Species", main = "Logistic Regression")
 
 
@@ -135,16 +131,16 @@ decisionplot(model, x, class = "Species", main = "Random Forest")
 
 library(e1071)
 model <- svm(Species ~ ., data=x, kernel="linear")
-decisionplot(model, x, class = "Species", main = "SVD (linear)")
+decisionplot(model, x, class = "Species", main = "SVM (linear)")
 
 model <- svm(Species ~ ., data=x, kernel = "radial")
-decisionplot(model, x, class = "Species", main = "SVD (radial)")
+decisionplot(model, x, class = "Species", main = "SVM (radial)")
 
 model <- svm(Species ~ ., data=x, kernel = "polynomial")
-decisionplot(model, x, class = "Species", main = "SVD (polynomial)")
+decisionplot(model, x, class = "Species", main = "SVM (polynomial)")
 
 model <- svm(Species ~ ., data=x, kernel = "sigmoid")
-decisionplot(model, x, class = "Species", main = "SVD (sigmoid)")
+decisionplot(model, x, class = "Species", main = "SVM (sigmoid)")
 
 #' ## Single Layer Feed-forward Neural Networks
 
@@ -176,7 +172,7 @@ model <- keras_model_sequential() %>%
 
 history <- model %>% fit(
   as.matrix(x[,1:2]),
-  to_categorical(x[,3]),
+  to_categorical(as.integer(x[,3])),
   epochs = 100,
   batch_size = 10
 )
@@ -194,7 +190,7 @@ model <- keras_model_sequential() %>%
 
 history <- model %>% fit(
   as.matrix(x[,1:2]),
-  to_categorical(x[,3]),
+  to_categorical(as.integer(x[,3])),
   epochs = 100,
   batch_size = 10
 )
@@ -243,8 +239,6 @@ model <- lda(class ~ ., data=x)
 decisionplot(model, x, class = "class", main = "LDA")
 
 #' ## Logistic Regression
-#'
-#' Only considers for 2 classes
 
 model <- glm(class ~., data = x, family=binomial(link='logit'))
 class(model) <- c("lr", class(model))
@@ -261,7 +255,7 @@ model <- rpart(class ~ ., data=x)
 decisionplot(model, x, class = "class", main = "CART")
 
 model <- rpart(class ~ ., data=x,
-  control = rpart.control(cp = 0.001, minsplit = 1))
+  control = rpart.control(cp = 0.0001, minsplit = 1))
 decisionplot(model, x, class = "class", main = "CART (overfitting)")
 
 library(C50)
@@ -276,16 +270,16 @@ decisionplot(model, x, class = "class", main = "Random Forest")
 
 library(e1071)
 model <- svm(class ~ ., data=x, kernel="linear")
-decisionplot(model, x, class = "class", main = "SVD (linear)")
+decisionplot(model, x, class = "class", main = "SVM (linear)")
 
 model <- svm(class ~ ., data=x, kernel = "radial")
-decisionplot(model, x, class = "class", main = "SVD (radial)")
+decisionplot(model, x, class = "class", main = "SVM (radial)")
 
 model <- svm(class ~ ., data=x, kernel = "polynomial")
-decisionplot(model, x, class = "class", main = "SVD (polynomial)")
+decisionplot(model, x, class = "class", main = "SVM (polynomial)")
 
 model <- svm(class ~ ., data=x, kernel = "sigmoid")
-decisionplot(model, x, class = "class", main = "SVD (sigmoid)")
+decisionplot(model, x, class = "class", main = "SVM (sigmoid)")
 
 #' ## Single Layer Feed-forward Neural Networks
 
@@ -317,7 +311,7 @@ model <- keras_model_sequential() %>%
 
 history <- model %>% fit(
   as.matrix(x[,1:2]),
-  to_categorical(x[,3]),
+  to_categorical(as.integer(x[,3])),
   epochs = 100,
   batch_size = 10
 )
@@ -335,7 +329,7 @@ model <- keras_model_sequential() %>%
 
 history <- model %>% fit(
   as.matrix(x[,1:2]),
-  to_categorical(x[,3]),
+  to_categorical(as.integer(x[,3])),
   epochs = 100,
   batch_size = 10
 )
