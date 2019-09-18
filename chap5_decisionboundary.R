@@ -84,10 +84,10 @@ plot(x[,1:2], col = x[,3])
 
 library(caret)
 model <- knn3(Species ~ ., data=x, k = 1)
-decisionplot(model, x, class = "Species", main = "kNN (1)")
+decisionplot(model, x, class = "Species", main = "kNN (1 neighbor)")
 
 model <- knn3(Species ~ ., data=x, k = 10)
-decisionplot(model, x, class = "Species", main = "kNN (10)")
+decisionplot(model, x, class = "Species", main = "kNN (10 neighbors)")
 
 #' ## Naive Bayes Classifier
 
@@ -101,12 +101,12 @@ library(MASS)
 model <- lda(Species ~ ., data=x)
 decisionplot(model, x, class = "Species", main = "LDA")
 
-#' ## Multinomial Logistic Regression
+#' ## Multinomial Logistic Regression (implemented in nnet)
 #'
 
 library(nnet)
 model <- multinom(Species ~., data = x)
-decisionplot(model, x, class = "Species", main = "Logistic Regression")
+decisionplot(model, x, class = "Species", main = "Multinomial Logistic Regression")
 
 
 #' ## Decision Trees
@@ -131,31 +131,31 @@ decisionplot(model, x, class = "Species", main = "Random Forest")
 
 library(e1071)
 model <- svm(Species ~ ., data=x, kernel="linear")
-decisionplot(model, x, class = "Species", main = "SVM (linear)")
+decisionplot(model, x, class = "Species", main = "SVM (linear kernel)")
 
 model <- svm(Species ~ ., data=x, kernel = "radial")
-decisionplot(model, x, class = "Species", main = "SVM (radial)")
+decisionplot(model, x, class = "Species", main = "SVM (radial kernel)")
 
 model <- svm(Species ~ ., data=x, kernel = "polynomial")
-decisionplot(model, x, class = "Species", main = "SVM (polynomial)")
+decisionplot(model, x, class = "Species", main = "SVM (polynomial kernel)")
 
 model <- svm(Species ~ ., data=x, kernel = "sigmoid")
-decisionplot(model, x, class = "Species", main = "SVM (sigmoid)")
+decisionplot(model, x, class = "Species", main = "SVM (sigmoid kernel)")
 
 #' ## Single Layer Feed-forward Neural Networks
 
 library(nnet)
 model <- nnet(Species ~ ., data=x, size = 1, maxit = 1000, trace = FALSE)
-decisionplot(model, x, class = "Species", main = "NN (1)")
+decisionplot(model, x, class = "Species", main = "NN (1 neuron)")
 
 model <- nnet(Species ~ ., data=x, size = 2, maxit = 1000, trace = FALSE)
-decisionplot(model, x, class = "Species", main = "NN (2)")
+decisionplot(model, x, class = "Species", main = "NN (2 neurons)")
 
 model <- nnet(Species ~ ., data=x, size = 4, maxit = 1000, trace = FALSE)
-decisionplot(model, x, class = "Species", main = "NN (4)")
+decisionplot(model, x, class = "Species", main = "NN (4 neurons)")
 
 model <- nnet(Species ~ ., data=x, size = 10, maxit = 1000, trace = FALSE)
-decisionplot(model, x, class = "Species", main = "NN")
+decisionplot(model, x, class = "Species", main = "NN (10 neurons)")
 
 #' ## Deep Learning with keras
 
@@ -179,7 +179,7 @@ history <- model %>% fit(
 
 history
 
-decisionplot(model, x, class = "Species", main = "keras (relu)")
+decisionplot(model, x, class = "Species", main = "keras (relu actiavtion)")
 
 
 
@@ -197,7 +197,7 @@ history <- model %>% fit(
 
 history
 
-decisionplot(model, x, class = "Species", main = "keras (tanh)")
+decisionplot(model, x, class = "Species", main = "keras (tanh activation)")
 
 #' # Circle Dataset
 #'
@@ -221,10 +221,10 @@ plot(x[,1:2], col = x[,3])
 
 library(caret)
 model <- knn3(class ~ ., data=x, k = 1)
-decisionplot(model, x, class = "class", main = "kNN (1)")
+decisionplot(model, x, class = "class", main = "kNN (1 neighbor)")
 
 model <- knn3(class ~ ., data=x, k = 10)
-decisionplot(model, x, class = "class", main = "kNN (10)")
+decisionplot(model, x, class = "class", main = "kNN (10 neighbors)")
 
 #' ## Naive Bayes Classifier
 
@@ -270,31 +270,31 @@ decisionplot(model, x, class = "class", main = "Random Forest")
 
 library(e1071)
 model <- svm(class ~ ., data=x, kernel="linear")
-decisionplot(model, x, class = "class", main = "SVM (linear)")
+decisionplot(model, x, class = "class", main = "SVM (linear kernel)")
 
 model <- svm(class ~ ., data=x, kernel = "radial")
-decisionplot(model, x, class = "class", main = "SVM (radial)")
+decisionplot(model, x, class = "class", main = "SVM (radial kernel)")
 
 model <- svm(class ~ ., data=x, kernel = "polynomial")
-decisionplot(model, x, class = "class", main = "SVM (polynomial)")
+decisionplot(model, x, class = "class", main = "SVM (polynomial kernel)")
 
 model <- svm(class ~ ., data=x, kernel = "sigmoid")
-decisionplot(model, x, class = "class", main = "SVM (sigmoid)")
+decisionplot(model, x, class = "class", main = "SVM (sigmoid kernel)")
 
 #' ## Single Layer Feed-forward Neural Networks
 
 library(nnet)
 model <- nnet(class ~ ., data=x, size = 1, maxit = 1000, trace = FALSE)
-decisionplot(model, x, class = "class", main = "NN (1)")
+decisionplot(model, x, class = "class", main = "NN (1 neighbor)")
 
 model <- nnet(class ~ ., data=x, size = 2, maxit = 1000, trace = FALSE)
-decisionplot(model, x, class = "class", main = "NN (2)")
+decisionplot(model, x, class = "class", main = "NN (2 neighbors)")
 
 model <- nnet(class ~ ., data=x, size = 4, maxit = 10000, trace = FALSE)
-decisionplot(model, x, class = "class", main = "NN (4)")
+decisionplot(model, x, class = "class", main = "NN (4 neighbors)")
 
 model <- nnet(class ~ ., data=x, size = 10, maxit = 10000, trace = FALSE)
-decisionplot(model, x, class = "class", main = "NN (10)")
+decisionplot(model, x, class = "class", main = "NN (10 neighbors)")
 
 #' ## Deep Learning with keras
 
@@ -318,7 +318,7 @@ history <- model %>% fit(
 
 history
 
-decisionplot(model, x, class = "class", main = "keras (relu)")
+decisionplot(model, x, class = "class", main = "keras (relu activation)")
 
 
 
@@ -336,4 +336,4 @@ history <- model %>% fit(
 
 history
 
-decisionplot(model, x, class = "class", main = "keras (tanh)")
+decisionplot(model, x, class = "class", main = "keras (tanh activation)")
