@@ -52,7 +52,6 @@ head(Zoo_class)
 
 #' # Construct the model structure
 model <- keras_model_sequential()
-model
 
 model %>%
   layer_dense(units = 16, activation = 'relu', input_shape = c(ncol(Zoo_predictors))) %>%
@@ -85,8 +84,10 @@ history <- model %>% fit(
 )
 
 history
-plot(history)
+
 #' `val_acc` is the accuracy on the test (validation) set.
+
+plot(history)
 #'
 #' # Make predictions on the test set
 #'
