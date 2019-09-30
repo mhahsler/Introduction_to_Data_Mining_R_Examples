@@ -103,7 +103,8 @@ decisionplot(model, x, class = "Species", main = "LDA")
 
 #' ## Multinomial Logistic Regression (implemented in nnet)
 #'
-
+#' Multinomial logistic regression is an extension of logistic regression to problems with more than two classes.
+#'
 library(nnet)
 model <- multinom(Species ~., data = x)
 decisionplot(model, x, class = "Species", main = "Multinomial Logistic Regression")
