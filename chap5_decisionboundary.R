@@ -28,8 +28,10 @@
 #' the decision boundary look like it has small steps even if it is a
 #' (straight) line.
 
+library(scales)
+
 decisionplot <- function(model, data, class = NULL, predict_type = "class",
-  resolution = 100, showgrid = TRUE, ...) {
+  resolution = 100, showgrid = TRUE, alpha = 0.3, ...) {
 
   if(!is.null(class)) cl <- data[,class] else cl <- 1
   data <- data[,1:2]
@@ -51,7 +53,7 @@ decisionplot <- function(model, data, class = NULL, predict_type = "class",
   if(is.list(p)) p <- p$class
   p <- as.factor(p)
 
-  if(showgrid) points(g, col = as.integer(p)+1L, pch = ".")
+  if(showgrid) points(g, col = alpha(as.integer(p)+1L, alpha = alpha), pch = ".")
 
   z <- matrix(as.integer(p), nrow = resolution, byrow = TRUE)
   contour(xs, ys, z, add = TRUE, drawlabels = FALSE,
@@ -166,8 +168,14 @@ library(keras)
 predict.keras.engine.training.Model <- function(object, newdata, ...)
   cl <- predict_classes(object, as.matrix(newdata))
 
+#' Choices are the activation function, number of layers, number of units per layer and the optimizer.
+#' A L2 regularizer is used for the dense layer weights to reduce overfitting. The output is a
+#' categorical class value, therefore the output layer uses the softmax activation function,
+#' the loss is categorical crossentropy, and the metric is accuracy.
+
 model <- keras_model_sequential() %>%
-  layer_dense(units = 10, activation = 'relu', input_shape = c(2)) %>%
+  layer_dense(units = 10, activation = 'relu', input_shape = c(2),
+    kernel_regularizer=regularizer_l2(l=0.01)) %>%
   layer_dense(units = 4, activation = 'softmax') %>%
   compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
 
@@ -180,12 +188,13 @@ history <- model %>% fit(
 
 history
 
-decisionplot(model, x, class = "Species", main = "keras (relu actiavtion)")
+decisionplot(model, x, class = "Species", main = "keras (relu activation)")
 
 
 
 model <- keras_model_sequential() %>%
-  layer_dense(units = 10, activation = 'tanh', input_shape = c(2)) %>%
+  layer_dense(units = 10, activation = 'tanh', input_shape = c(2),
+    kernel_regularizer=regularizer_l2(l=0.01)) %>%
   layer_dense(units = 4, activation = 'softmax') %>%
   compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
 
@@ -306,7 +315,8 @@ predict.keras.engine.training.Model <- function(object, newdata, ...)
   cl <- predict_classes(object, as.matrix(newdata))
 
 model <- keras_model_sequential() %>%
-  layer_dense(units = 10, activation = 'relu', input_shape = c(2)) %>%
+  layer_dense(units = 10, activation = 'relu', input_shape = c(2),
+    kernel_regularizer=regularizer_l2(l=0.0001)) %>%
   layer_dense(units = 3, activation = 'softmax') %>%
   compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
 
@@ -324,7 +334,8 @@ decisionplot(model, x, class = "class", main = "keras (relu activation)")
 
 
 model <- keras_model_sequential() %>%
-  layer_dense(units = 10, activation = 'tanh', input_shape = c(2)) %>%
+  layer_dense(units = 10, activation = 'tanh', input_shape = c(2),
+    kernel_regularizer=regularizer_l2(l=0.0001)) %>%
   layer_dense(units = 3, activation = 'softmax') %>%
   compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
 
