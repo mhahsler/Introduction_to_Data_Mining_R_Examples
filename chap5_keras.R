@@ -54,9 +54,11 @@ head(Zoo_class)
 model <- keras_model_sequential()
 
 model %>%
-  layer_dense(units = 16, activation = 'relu', input_shape = c(ncol(Zoo_predictors))) %>%
+  layer_dense(units = 16, activation = 'relu', input_shape = c(ncol(Zoo_predictors)),
+    kernel_regularizer=regularizer_l2(l=0.001)) %>%
   layer_dropout(.1) %>%
-  layer_dense(units = 8, activation = 'relu') %>%
+  layer_dense(units = 8, activation = 'relu',
+    kernel_regularizer=regularizer_l2(l=0.001)) %>%
   layer_dense(units = ncol(Zoo_class), activation = 'softmax')
 model
 #' See `? layer_dense` to learn more about creating the model structure
@@ -68,6 +70,12 @@ model %>% compile(
   metrics = 'accuracy'
 )
 
+#' _Note:_ Choices are the activation function, number of layers, number of units per layer and the optimizer.
+#' A dropout layer and L2 regularizer is used for the dense layer weights to reduce overfitting.
+#' The output is a
+#' categorical class value, therefore the output layer uses the softmax activation function,
+#' the loss is categorical crossentropy, and the metric is accuracy.
+#'
 
 #' # Fit the model
 #'
