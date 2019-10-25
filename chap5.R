@@ -1,5 +1,5 @@
 #' ---
-#' title: "R Code for Chapter 5 of Introduction to Data Mining: Classification"
+#' title: "R Code for Chapter 5 of Introduction to Data Mining: Association Rule Mining"
 #' author: "Michael Hahsler"
 #' output:
 #'  html_document:
@@ -16,148 +16,251 @@
 #' [Michael Hahsler](http://michael.hahsler.net).
 #'
 
-#' Show fewer digits
-options(digits=3)
+#' # Used packages
+#'
+#' Install the following packages.
+#'
+#' * [`arules`](https://www.rdocumentation.org/packages/arules/)
+#' * [`arulesViz`](https://www.rdocumentation.org/packages/arulesViz/)
+#'
 
-#' Load the data set
+library(arules)
+library(arulesViz)
+
+#' For information about the `arules` package try:
+#' `help(package="arules")`
+#' and
+#' `vignette("arules")` (also available at [CRAN](http://cran.r-project.org/web/packages/arules/vignettes/arules.pdf))
+#'
+#' ## S4 object system
+#'
+#' Standard R objects use the [S3 object system](http://adv-r.had.co.nz/S3.html)
+#' which do not use formal class definitions and are usually implemented
+#' as a list with a class attribute.
+#' `arules` and many other R packages use the
+#' [S4 object system](http://adv-r.had.co.nz/S4.html) which is based on
+#' formal class definitions (similar to object-oriented programming languages like
+#' Java and C++).
+#' Some important differences of using S4 objects compared to the usual S3
+#' objects are:
+#'
+#' * coercion (casting): `as(from, "class_name")`
+#' * help: `class? class_name`
+#'
+
+#' # Used data
 data(Zoo, package="mlbench")
 head(Zoo)
 
 
-#' Use multi-core support for cross-validation.
-#' __Note:__ Does not work with rJava used in RWeka below.
-#library(doParallel)
-#registerDoParallel()
-#getDoParWorkers()
-
-#' # Fitting Different Classification Models
+#' # Transactions
+#' ## Create transactions
 #'
-#' Load the caret data mining package
-library(caret)
-
-#' Create fixed sampling scheme (10-folds) so we can compare the models
-#' later on.
-train <- createFolds(Zoo$type, k=10)
-
-
-#' For help with building models in caret see: ? train
+#' The data in the data.frame need to be converted into a set of transactions where each row represents a transaction and each column is translated into items.
+#' For the Zoo data set this means that we consider animals as transactions
+#' and the different traits (features) will become items that each animal has. For
+#' example the animal _antelope_ has the item _hair_ in its transaction.
+try(trans <- as(Zoo, "transactions"))
+#' ```
+#' ## Error in asMethod(object) :
+#' ##          column(s) 13 not logical or a factor. Use as.factor or categorize first.
+#' ```
 #'
-#' __Note:__ Be careful if you have many `NA` values in your data. `train()`
-#' and cross-validation many fail in some cases. If that is the case then you
-#' can remove features (columns) which have many `NA`s, omit `NA`s using
-#' `na.omit()` or use imputation to replace them with reasonable
-#' values (e.g., by the feature mean or via kNN).
+#' Conversion fails because all variables need to be a factors or logical! Note that the `try()` is not necessary and I just use it so that the error does not stop the translation of this document.
 #'
+#' What is column 13?
+colnames(Zoo)[13]
+legs <- Zoo[["legs"]]
+summary(legs)
+hist(legs)
+table(legs)
 
-#' ## Conditional Inference Tree (Decision Tree)
-ctreeFit <- train(type ~ ., method = "ctree", data = Zoo,
-	tuneLength = 5,
-	trControl = trainControl(
-		method = "cv", indexOut = train))
-ctreeFit
-plot(ctreeFit$finalModel)
+#' Possible solution: Make legs into has/does not have legs
+has_legs <- legs>0
+has_legs
+table(has_legs)
+Zoo[["legs"]] <- has_legs
 
-#' The final model can be directly used for predict()
-predict(ctreeFit, Zoo[1:2,])
-
-#' ## C 4.5 Decision Tree
-library(RWeka)
-C45Fit <- train(type ~ ., method = "J48", data = Zoo,
-	tuneLength = 5,
-	trControl = trainControl(
-		method = "cv", indexOut = train))
-C45Fit
-C45Fit$finalModel
-
-#' ## K-Nearest Neighbors
+#' __Alternatives:__
 #'
-#' __Note:__ kNN uses Euclidean distance, so data should be standardized (scaled) first.
-#' Here legs are measured between 0 and 6 while all other variables are between
-#' 0 and 1.
-Zoo_scaled <- cbind(as.data.frame(scale(Zoo[,-17])), type = Zoo[,17])
-knnFit <- train(type ~ ., method = "knn", data = Zoo_scaled,
-	tuneLength = 5,  tuneGrid=data.frame(k=1:10),
-	trControl = trainControl(
-		method = "cv", indexOut = train))
-knnFit
-knnFit$finalModel
-
-#' ## PART (Rule-based classifier)
-rulesFit <- train(type ~ ., method = "PART", data = Zoo,
-  tuneLength = 5,
-  trControl = trainControl(
-    method = "cv", indexOut = train))
-rulesFit
-rulesFit$finalModel
-
-
-#' ## Linear Support Vector Machines
-svmFit <- train(type ~., method = "svmLinear", data = Zoo,
-	tuneLength = 5,
-	trControl = trainControl(
-		method = "cv", indexOut = train))
-svmFit
-svmFit$finalModel
-
-#' ## Random Forest
-randomForestFit <- train(type ~ ., method = "rf", data = Zoo,
-	tuneLength = 5,
-	trControl = trainControl(
-		method = "cv", indexOut = train))
-randomForestFit
-randomForestFit$finalModel
-
-
-#' ## Gradient Boosted Decision Trees (xgboost)
-xgboostFit <- train(type ~ ., method = "xgbTree", data = Zoo,
-  tuneLength = 5,
-  trControl = trainControl(
-    method = "cv", indexOut = train),
-  tuneGrid = expand.grid(
-    nrounds = 20,
-    max_depth = 3,
-    colsample_bytree = .6,
-    eta = 0.1,
-    gamma=0,
-    min_child_weight = 1,
-    subsample = .5
-  ))
-xgboostFit
-xgboostFit$finalModel
-
-
-#' ## Artificial Neural Network
-nnetFit <- train(type ~ ., method = "nnet", data = Zoo,
-	tuneLength = 5,
-	trControl = trainControl(
-		method = "cv", indexOut = train),
-  trace = FALSE)
-nnetFit
-nnetFit$finalModel
-
-#' # Compare Models
-resamps <- resamples(list(
-  ctree=ctreeFit,
-  C45=C45Fit,
-  SVM=svmFit,
-  KNN=knnFit,
-  rules=rulesFit,
-  randomForest=randomForestFit,
-  xgboost=xgboostFit,
-  NeuralNet=nnetFit
-    ))
-resamps
-summary(resamps)
-
-difs <- diff(resamps)
-difs
-summary(difs)
-#' All perform similarly well except ctree
+#' * use each unique value as an item:
+#'  `Zoo[["legs"]] <- as.factor(legs)`
+#' * use discretize for continuous data (see [`? discretize`](https://www.rdocumentation.org/packages/arules/topics/discretize) and
+#' [discretization in the code for Chapter 2](chap2.html#discretize-features)):
+#'  `Zoo[["legs"]] <- discretize(legs, categories = 2, method="interval")`
 #'
-#' # More Information
+#'  Convert data into a set of transactions
+trans <- as(Zoo, "transactions")
+trans
+
+#' ## Inspect Transactions
+summary(trans)
+
+#' Look at created items. They are still called column names since the transactions are actually stored as a large sparse logical matrix (see below).
+colnames(trans)
+#' Compare with the original features (column names) from Zoo
+colnames(Zoo)
+
+#' Look at a (first) few transactions as a matrix. 1 indicates the presence of an item.
+as(trans, "matrix")[1:3,]
+#' Look at the transactions as sets of items
+inspect(trans[1:3])
+#' Plot the binary matrix. Dark dots represent 1s.
+image(trans)
+#' Look at the relative frequency (=support) of items in the data set. Here we look at the 10 most frequent items.
+itemFrequencyPlot(trans,topN=20)
+plot(sort(itemFrequency(trans, type="absolute"), decreasing=TRUE),
+  xlab = "Items", ylab="Support Count", type="l")
+
+
+#' __Alternative encoding:__ Also create items for FALSE (use factor)
+sapply(Zoo, class)
+Zoo2 <- Zoo
+for(i in 1:ncol(Zoo2)) Zoo2[[i]] <- as.factor(Zoo2[[i]])
+sapply(Zoo2, class)
+summary(Zoo2)
+
+trans2 <- as(Zoo2, "transactions")
+trans2
+
+itemFrequencyPlot(trans2, topN=20)
+
+# Select transactions that contain a certain item
+trans_insects <- trans2[trans %in% "type=insect"]
+trans_insects
+inspect(trans_insects)
+
+#' ## Vertical layout (Transaction ID Lists)
 #'
-#'* [Example using deep learning with keras.](chap5_keras.html)
-#'* [A visual comparison of decision boundaries.](chap5_decisionboundary.html)
-#'* Package caret: http://topepo.github.io/caret/index.html
-#'* R taskview on machine learning: http://cran.r-project.org/web/views/MachineLearning.html
+#' The default layout for transactions is horizontal layout (i.e. each transaction is a row).
+#' The vertical layout represents transaction data as a list of transaction IDs for each item (= transaction ID lists).
+vertical <- as(trans, "tidLists")
+as(vertical, "matrix")[1:10,1:5]
+
+#' # Frequent Itemsets
+#' ## Mine Frequent Itemsets
+#'
+#' For this dataset we have already a huge number of possible itemsets
+2^ncol(trans)
+
+#' Find frequent itemsets (target="frequent") with the default settings.
+is <- apriori(trans, parameter=list(target="frequent"))
+is
+#' Default minimum support is .1 (10\%).
+#' __Note:__ We use here a very small data set. For larger datasets
+#' the default minimum support might be to low and you may run out of memory. You probably want to start out with a higher minimum support like
+#' .5 (50\%) and then work your way down.
+
+5/nrow(trans)
+
+#' In order to find itemsets that effect 5 animals I need to go down to a
+#' support of about 5\%.
+is <- apriori(trans, parameter=list(target="frequent", support=0.05))
+is
+
+#' Sort by support
+is <- sort(is, by="support")
+inspect(head(is, n=10))
+
+#' Look at frequent itemsets with many items (set breaks manually since
+#' Automatically chosen breaks look bad)
+barplot(table(size(is)), xlab="itemset size", ylab="count")
+inspect(is[size(is)>8])
+
+#' ## Concise Representation of Itemsets
+#'
+#' Find maximal frequent itemsets (no superset if frequent)
+is_max <- is[is.maximal(is)]
+is_max
+inspect(head(sort(is_max, by="support")))
+#' Find closed frequent itemsets (no superset if frequent)
+is_closed <- is[is.closed(is)]
+is_closed
+inspect(head(sort(is_closed, by="support")))
+
+barplot(c(
+  frequent=length(is),
+  closed=length(is_closed),
+  maximal=length(is_max)
+  ), ylab="count", xlab="itemsets")
+#'
+#'
+#' # Association Rules
+#' ## Mine Association Rules
+#'
+#' We use the APRIORI algorithm (see [`? apriori`](https://www.rdocumentation.org/packages/arules/topics/apriori))
+
+rules <- apriori(trans, parameter=list(support=0.05, confidence=.9))
+length(rules)
+
+inspect(head(rules))
+quality(head(rules))
+
+#' Look at rules with highest lift
+rules <- sort(rules, by="lift")
+inspect(head(rules, n=10))
+
+#' Create rules using the alternative encoding (with "FALSE" item)
+r <- apriori(trans2)
+r
+print(object.size(r), unit="Mb")
+
+inspect(r[1:10])
+inspect(head(r, by="lift", n = 10))
+
+#' ## Additional Interest Measures
+interestMeasure(rules[1:10], measure=c("phi", "gini"),
+  trans=trans)
+
+#' Add measures to the rules
+quality(rules) <- cbind(quality(rules),
+  interestMeasure(rules, measure=c("phi", "gini"),
+    trans=trans))
+
+#' Find rules which score high for Phi correlation
+inspect(head(rules, by="phi"))
+
+#' ## Mine using Templates
+#'
+#' Sometimes it is beneficial to specify what items should be where in the rule. For apriori we can use the parameter appearance to specify this (see [`? APappearance`](https://www.rdocumentation.org/packages/arules/topics/APappearance)). In
+#' the following we restrict rules to an animal `type` in the RHS and any item in
+#' the LHS.
+type <- grep("type=", itemLabels(trans), value = TRUE)
+type
+
+rules_type <- apriori(trans,
+  appearance= list(rhs=type, default="lhs"))
+
+inspect(head(sort(rules_type, by="lift")))
+
+#' Saving rules as a CSV-file to be opened with Excel or other tools.
+#'
+#' `write(rules, file="rules.csv", quote=TRUE)`
+#'
+#' # Association rule visualization
+library(arulesViz)
+
+#' Default scatterplot
+plot(rules)
+
+#' Add some jitter (randomly move points) to show how many rules have the
+#' same confidence and support value.
+plot(rules, control=list(jitter=.5))
+
+plot(rules, shading="order", control=list(jitter=.5))
+#plot(rules, interactive=TRUE)
+
+#' Grouped plot
+plot(rules, method="grouped")
+#plot(rules, method="grouped", engine = "interactive")
+
+#' As a graph
+plot(rules, method="graph")
+plot(head(rules, by="phi", n = 100), method="graph")
+
+#' ## More interactive visualization
+#'
+#' Interactive visualizations using datatable and plotly can be found [here.](chap6_interactive.html) __Note:__ the page might load slowly because it makes
+#' heavy use of client side computation.
+#'
 
