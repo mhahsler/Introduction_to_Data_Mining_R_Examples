@@ -1,5 +1,5 @@
 #' ---
-#' title: "R Code for Chapter 5 of Introduction to Data Mining: Association Rule Mining"
+#' title: "R Code for Chapter 5 of Introduction to Data Mining: Association Analysis"
 #' author: "Michael Hahsler"
 #' output:
 #'  html_document:

@@ -6,7 +6,7 @@
 #'    toc: true
 #' ---
 
-#' This code covers chapter 8 of _"Introduction to Data Mining"_
+#' This code covers chapter 7 of _"Introduction to Data Mining"_
 #' by Pang-Ning Tan, Michael Steinbach and Vipin Kumar.
 #' __See [table of contents](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples#readme) for code examples for other chapters.__
 #'

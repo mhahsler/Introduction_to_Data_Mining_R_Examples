@@ -1,5 +1,5 @@
 #' ---
-#' title: "R Code for Chapter 2 of Introduction to Data Mining: Sampling, PCA, distances, correlation and density"
+#' title: "R Code for Chapter 2 of Introduction to Data Mining: Data"
 #' author: "Michael Hahsler"
 #' output:
 #'  html_document:
