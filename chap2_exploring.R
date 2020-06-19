@@ -38,17 +38,17 @@ mean(iris$Sepal.Length, na.rm = TRUE)
 mean(iris$Sepal.Length, trim = .1)
 
 #' Apply mean, sd and median to columns (MARGIN=2)
-apply(iris[1:4], MARGIN=2, mean)
-apply(iris[1:4], MARGIN=2, median)
-apply(iris[1:4], MARGIN=2, sd)
-apply(iris[1:4], MARGIN=2, var)
-apply(iris[1:4], MARGIN=2, min)
-apply(iris[1:4], MARGIN=2, max)
+apply(iris[ , 1:4], MARGIN=2, mean)
+apply(iris[ , 1:4], MARGIN=2, median)
+apply(iris[ , 1:4], MARGIN=2, sd)
+apply(iris[ , 1:4], MARGIN=2, var)
+apply(iris[ , 1:4], MARGIN=2, min)
+apply(iris[ , 1:4], MARGIN=2, max)
 
 
 #' Define your own statistic: E.g., MAD (median absolute deviation)
-mad <- function(x) median(abs(x-mean(x)))
-apply(iris[1:4], MARGIN=2, mad)
+mad <- function(x) median(abs(x - mean(x)))
+apply(iris[, 1:4], MARGIN = 2, mad)
 
 #' # Tabulate data
 
@@ -69,10 +69,9 @@ head(iris_discrete)
 summary(iris_discrete)
 
 #' Create some tables
-table(iris_discrete$Sepal.Length, iris_discrete$Sepal.Width)
-table(iris_discrete$Petal.Length, iris_discrete$Petal.Width)
-table(iris_discrete$Petal.Length, iris_discrete$Species)
-i
+with(iris_discrete, table(Sepal.Length, Sepal.Width))
+with(iris_discrete, table(Petal.Length, Petal.Width))
+with(iris_discrete, table(Petal.Length, Species))
 #table(iris_discrete)
 
 #' Test if the two features are independent given the counts in the
@@ -81,7 +80,7 @@ i
 #' p-value: the probability of seeing a more extreme value of the test
 #' statistic under the assumption that H0 is correct. Low p-values (typically
 #' less than .05 or .01) indicate that H0 should be rejected.
-tbl <- table(iris_discrete$Sepal.Length, iris_discrete$Sepal.Width)
+tbl <- with(iris_discrete, table(Sepal.Length, Sepal.Width))
 tbl
 chisq.test(tbl)
 
@@ -89,11 +88,11 @@ chisq.test(tbl)
 fisher.test(tbl)
 
 #' Plot the distribution for a discrete variable
-table(iris_discrete$Sepal.Length)
-barplot(table(iris_discrete$Sepal.Length))
+with(iris_discrete, table(Sepal.Length))
+barplot(with(iris_discrete, table(Sepal.Length)))
 
 #' # Percentiles
-apply(iris[1:4], MARGIN=2, quantile)
+apply(iris[1:4], MARGIN = 2, quantile)
 
 #' Interquartile range
 quantile(iris$Petal.Length)
@@ -106,59 +105,55 @@ quantile(iris$Petal.Length)[4] - quantile(iris$Petal.Length)[2]
 #'
 #' Show the distribution of a single numeric variable
 hist(iris$Petal.Width)
-hist(iris$Petal.Width, breaks=20, col="grey")
+hist(iris$Petal.Width, breaks = 20, col = "grey")
 
 #' ### Scatter plot
 #'
 #' Show the relationship between two numeric variables
-plot(x=iris$Petal.Length, y=iris$Petal.Width, col=iris$Species)
+plot(x = iris$Petal.Length, y = iris$Petal.Width, col = iris$Species)
 
 #' ### Scatter plot matrix
 #'
 #' Show the relationship between several numeric variables
-pairs(iris, col=iris$Species)
-
-#' Alternative scatter plot matrix
-library("GGally")
-ggpairs(iris,  ggplot2::aes(colour=Species))
+pairs(iris, col = iris$Species)
 
 #' ### Boxplot
 #'
 
 #' Compare the distribution of several continuous variables
-boxplot(iris[,1:4])
+boxplot(iris[ , 1:4])
 
 #' Compare the distribution of a single continuous variables grouped by a nominal variable
 boxplot(Sepal.Length ~ Species, data = iris,
-  ylab = "Sepal Length", ylim = c(0,8))
+  ylab = "Sepal Length", ylim = c(0, 8))
 
 #' Group-wise averages
-aggregate(Sepal.Length ~ Species, data=iris, FUN = mean)
-aggregate(Sepal.Width ~ Species, data=iris, FUN = mean)
+aggregate(Sepal.Length ~ Species, data = iris, FUN = mean)
+aggregate(Sepal.Width ~ Species, data = iris, FUN = mean)
 
 
 #' ### ECDF: Empirical Cumulative Distribution Function
 e <- ecdf(iris$Petal.Width)
-hist(iris$Petal.Width, breaks=20, freq=FALSE, col="gray")
-lines(e, col="red", lwd=2)
+hist(iris$Petal.Width, breaks = 20, freq = FALSE, col = "gray")
+lines(e, col = "red", lwd = 2)
 
 #' ### Data matrix visualization
-iris_matrix <- as.matrix(iris[,1:4])
+iris_matrix <- as.matrix(iris[ , 1:4])
 image(iris_matrix)
 
 library(seriation) ## for pimage
-pimage(iris_matrix, ylab="Object (ordered by species)",
-  main="Original values", colorkey=TRUE)
+pimage(iris_matrix, ylab = "Object (ordered by species)",
+  main = "Original values", colorkey = TRUE)
 
 #' values smaller than the average are blue and larger ones are red
 iris_scaled <- scale(iris_matrix)
 pimage(iris_scaled,
-  ylab="Object (ordered by species)",
-	main="Standard deviations from the feature mean")
+  ylab = "Object (ordered by species)",
+	main = "Standard deviations from the feature mean")
 
 #' use reordering of features and objects
 pimage(iris_scaled, order = seriate(iris_scaled),
-  main="Standard deviations (reordered)")
+  main = "Standard deviations (reordered)")
 
 #' ### Correlation matrix
 #'
@@ -168,30 +163,30 @@ cm1
 
 library(seriation) ## for pimage and hmap
 pimage(cm1)
-hmap(cm1, margin = c(7,7), cexRow = 1, cexCol = 1)
+hmap(cm1, margin = c(7, 7), cexRow = 1, cexCol = 1)
 
 library(corrplot)
-corrplot(cm1, method="ellipse")
-corrplot(cm1, method=c("ellipse"), order="FPC")
+corrplot(cm1, method = "ellipse")
+corrplot(cm1, method = c("ellipse"), order = "FPC")
 
 #' Test if correlation is significantly different from 0
-cor.test(iris$Sepal.Length, iris$Sepal.Width)
-cor.test(iris$Petal.Length, iris$Petal.Width) #this one is significant
+with(iris, cor.test(Sepal.Length, Sepal.Width))
+with(iris, cor.test(Petal.Length, Petal.Width)) #this one is significant
 
 #' Correlation between objects
 cm2 <- cor(t(iris_matrix))
 pimage(cm2,
-	main="Correlation matrix", xlab="Objects", ylab="Objects",
-  zlim = c(-1,1),col = bluered(100))
+	main = "Correlation matrix", xlab = "Objects", ylab = "Objects",
+  zlim = c(-1, 1), col = bluered(100))
 
 #' ### Parallel coordinates plot
 library(MASS)
-parcoord(iris[,1:4], col=iris$Species)
+parcoord(iris[ , 1:4], col = iris$Species)
 
 #' Reorder with placing correlated features next to each other
 library(seriation)
-o <- seriate(as.dist(1-cor(iris[,1:4])), method="BBURCG")
+o <- seriate(as.dist(1 - cor(iris[ , 1:4])), method = "BBURCG")
 get_order(o)
-parcoord(iris[,get_order(o)], col=iris$Species)
+parcoord(iris[ , get_order(o)], col = iris$Species)
 
 #' Look at some example maps at http://rgraphgallery.blogspot.com/search/label/map
