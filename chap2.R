@@ -189,7 +189,7 @@ dist(b, method = "euclidean")^2
 data <- data.frame(
   height= c(      160,    185,    170),
   weight= c(       52,     90,     75),
-  sex=    c( "female", "male", "male")
+  sex=    factor(c( "female", "male", "male"))
 )
 data
 

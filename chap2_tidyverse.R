@@ -55,6 +55,7 @@ iris %>% group_by(Species) %>% summarize_all(median)
 #'
 #' # Sampling
 #' ## Random sampling
+set.seed(1000)
 s <- iris %>% sample_n(15)
 ggpairs(s, aes(color = Species))
 
@@ -80,7 +81,7 @@ plot_ly(iris, x = ~Sepal.Length, y = ~Petal.Length, z = ~Sepal.Width,
  mode="markers")
 
 #' Calculate the principal components
-pc <- prcomp(as.matrix(iris[,1:4]))
+pc <- iris %>% select(-Species) %>% as.matrix() %>% prcomp()
 
 #' How important is each principal component?
 plot(pc)
@@ -105,30 +106,29 @@ ggplot(iris, aes(x = Petal.Width, y = 1:150)) + geom_point()
 ggplot(iris, aes(Petal.Width)) + geom_histogram()
 
 #' Equal interval width
-cut(iris$Sepal.Width, breaks=3)
+iris %>% pull(Sepal.Width) %>% cut(breaks=3)
 
 #' Other methods (equal frequency, k-means clustering, etc.)
 library(arules)
-discretize(iris$Petal.Width, method="interval", categories=3)
-discretize(iris$Petal.Width, method="frequency", categories=3)
-discretize(iris$Petal.Width, method="cluster", categories=3)
-
+iris %>% pull(Petal.Width) %>% discretize(method = "interval", breaks = 3)
+iris %>% pull(Petal.Width) %>% discretize(method = "frequency", breaks = 3)
+iris %>% pull(Petal.Width) %>% discretize(method = "cluster", breaks = 3)
 
 ggplot(iris, aes(Petal.Width)) + geom_histogram() +
   geom_vline(xintercept =
-      discretize(iris$Petal.Width, method="interval", breaks = 3, onlycuts = TRUE),
+      iris %>% pull(Petal.Width) %>% discretize(method = "interval", breaks = 3, onlycuts = TRUE),
     color = "blue") +
   labs(title = "Discretization: interval", subtitle = "Blue lines are boundaries")
 
 ggplot(iris, aes(Petal.Width)) + geom_histogram() +
   geom_vline(xintercept =
-      discretize(iris$Petal.Width, method="frequency", breaks = 3, onlycuts = TRUE),
+      iris %>% pull(Petal.Width) %>% discretize(method = "frequency", breaks = 3, onlycuts = TRUE),
     color = "blue") +
   labs(title = "Discretization: frequency", subtitle = "Blue lines are boundaries")
 
 ggplot(iris, aes(Petal.Width)) + geom_histogram() +
   geom_vline(xintercept =
-      discretize(iris$Petal.Width, method="cluster", breaks = 3, onlycuts = TRUE),
+      iris %>% pull(Petal.Width) %>% discretize(method = "cluster", breaks = 3, onlycuts = TRUE),
     color = "blue") +
   labs(title = "Discretization: cluster", subtitle = "Blue lines are boundaries")
 
@@ -150,9 +150,9 @@ iris_sample <- iris.scaled %>% select(-Species) %>% slice(1:5)
 iris_sample
 
 #' Calculate distances matrices between the first 5 flowers (use only the 4 numeric columns).
-dist(iris_sample, method="euclidean")
-dist(iris_sample, method="manhattan")
-dist(iris_sample, method="maximum")
+iris_sample %>% dist(method="euclidean")
+iris_sample %>% dist(method="manhattan")
+iris_sample %>% dist(method="maximum")
 
 #' __Note:__ Don't forget to scale the data if the ranges are very different!
 #'
@@ -166,21 +166,22 @@ b
 #' ### Jaccard index
 #'
 #' Jaccard index is a similarity measure so R reports 1-Jaccard
-dist(b, method = "binary")
+b %>% dist(method = "binary")
 #' ### Hamming distance
 #'
 #' Hamming distance is the number of mis-matches (equivalent to
 #' Manhattan distance on 0-1 data and also the squared Euclidean distance).
-dist(b, method = "manhattan")
+b %>% dist(method = "manhattan")
 
-dist(b, method = "euclidean")^2
-
+b %>% dist(method = "euclidean") %>% "^"(2)
+#' _Note_: `"^"(2)` calculates the square.
+#'
 #' ## Distances for mixed data
-
+#'
 #' ### Gower's distance
 #'
 #' Works with mixed data
-data <- data.frame(
+data <- tibble(
   height= c(      160,    185,    170),
   weight= c(       52,     90,     75),
   sex=    c( "female", "male", "male")
@@ -190,9 +191,10 @@ data
 #' __Note:__ Nominal variables need to be factors!
 
 data <- data %>% mutate_if(is.character, factor)
+data
 
 library(proxy)
-d_Gower <- dist(data, method="Gower")
+d_Gower <- data %>% dist(method="Gower")
 d_Gower
 #' __Note:__ Gower's distance automatically scales, so no need to scale
 #' the data first.
@@ -206,23 +208,25 @@ d_Gower
 #'
 #' Create dummy variables
 library(caret)
-data_dummy <- predict(dummyVars(~., data), data)
+data_dummy <- dummyVars(~., data) %>% predict(data)
 data_dummy
 
 #' Since sex has now two columns, we need to weight them by 1/2 after scaling.
 weight <- matrix(c(1,1,1/2,1/2), ncol = 4, nrow = nrow(data_dummy), byrow = TRUE)
 data_dummy_scaled <- scale(data_dummy) * weight
 
-d_dummy <- dist(data_dummy_scaled)
+d_dummy <- data_dummy_scaled %>% dist()
 d_dummy
 
 #' Distance is (mostly) consistent with Gower's distance (other than that
 #' Gower's distance is scaled between 0 and 1).
-plot(d_dummy, d_Gower, xlab = "Euclidean w/dummy", ylab = "Gower")
+ggplot(tibble(d_dummy, d_Gower), aes(x = d_dummy, y = d_Gower)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
 
 #' ## Additional proximity measures available in package proxy
 library(proxy)
-names(pr_DB$get_entries())
+pr_DB$get_entries() %>% names()
 
 
 #' # Relationship between features
@@ -230,27 +234,17 @@ names(pr_DB$get_entries())
 #' ## Correlation (for ratio/interval scaled features)
 
 #' Pearson correlation between features (columns)
-cor(iris[,1:4])
+cc <- iris %>% select(-Species) %>% cor()
 
-ggplot(iris, aes(Petal.Length, Petal.Width)) + geom_point()
-cor(iris$Petal.Length, iris$Petal.Width)
-cor.test(iris$Petal.Length, iris$Petal.Width)
+ggplot(iris, aes(Petal.Length, Petal.Width)) + geom_point() +
+  geom_smooth(method = "lm")
+with(iris, cor(Petal.Length, Petal.Width))
+with(iris, cor.test(Petal.Length, Petal.Width))
 
-ggplot(iris, aes(Sepal.Length, Sepal.Width)) + geom_point()
-cor(iris$Sepal.Length, iris$Sepal.Width)
-cor.test(iris$Sepal.Length, iris$Sepal.Width)
-
-#' Correlation between objects (transpose matrix first)
-cc <- cor(t(iris[,1:4]))
-dim(cc)
-cc[1:10,1:10]
-
-library("seriation") # for pimage
-pimage(cc, main = "Correlation between objects")
-
-#' Convert correlations into a dissimilarities
-d <- as.dist(1-abs(cc))
-pimage(d, main = "Dissimilaries between objects")
+ggplot(iris, aes(Sepal.Length, Sepal.Width)) + geom_point() +
+  geom_smooth(method = "lm")
+with(iris, cor(Sepal.Length, Sepal.Width))
+with(iris, cor.test(Sepal.Length, Sepal.Width))
 
 #' ## Rank correlation (for ordinal features)
 #' convert to ordinal variables with cut (see ? cut) into
@@ -260,38 +254,39 @@ iris_ord <- iris %>% mutate_if(is.numeric,
 
 iris_ord
 summary(iris_ord)
-head(iris_ord$Sepal.Length)
+iris_ord %>% pull(Sepal.Length)
 
 #' Kendall's tau rank correlation coefficient
-cor(sapply(iris_ord[,1:4], xtfrm), method="kendall")
+iris_ord %>% select(-Species) %>% sapply(xtfrm) %>% cor(method="kendall")
 #' Spearman's rho
-cor(sapply(iris_ord[,1:4], xtfrm), method="spearman")
+iris_ord %>% select(-Species) %>% sapply(xtfrm) %>% cor(method="spearman")
 #' __Note:__ unfortunately we have to transform the ordered factors
 #' into numbers representing the order with xtfrm first.
 #'
 #' Compare to the Pearson correlation on the original data
-cor(iris[,1:4])
+iris %>% select(-Species) %>% cor()
 
 #' ## Relationship between nominal and ordinal features
 #' Is sepal length and species related? Use cross tabulation
-tbl <- with(iris_ord, table(Sepal.Length, Species))
+tbl <- iris_ord %>% select(Sepal.Length, Species) %>% table()
 tbl
 
 # this is a little more involved using tidyverse
-iris_ord %>% select(c("Species", "Sepal.Length")) %>%
-  pivot_longer(cols = "Sepal.Length") %>%
+iris_ord %>%
+  select(Species, Sepal.Length) %>%
+  pivot_longer(cols = Sepal.Length) %>%
   group_by(Species, value) %>% count() %>% ungroup() %>%
   pivot_wider(names_from = Species, values_from = n)
 
 #' Test of Independence: Pearson's chi-squared test is performed with the null hypothesis that the joint distribution of the cell counts in a 2-dimensional contingency table is the product of the row and column marginals. (h0 is independence)
-chisq.test(tbl)
+tbl %>% chisq.test()
 
 #' Using xtabs instead
-x <- xtabs(~Sepal.Length + Species, data=iris_ord)
+x <- xtabs(~Sepal.Length + Species, data = iris_ord)
 x
 summary(x)
 
-#' Groupwise averages
+#' Group-wise averages
 iris %>% group_by(Species) %>% summarize_at(vars(Sepal.Length), mean)
 iris %>% group_by(Species) %>% summarize_all(mean)
 

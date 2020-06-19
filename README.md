@@ -19,9 +19,10 @@ for corrections or improvements.
 
 ## Covered Chapters
 
-* Chapter 2: [Data](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap2.html)
-(R base version) or [Data](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap2_tidyverse.html) (tidyverse version).
-* Chapter 2 (additional material): [Exploring Data](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap2_exploring.html)
+* Chapter 2: [Data (R base version)](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap2.html)
+ or [Data (tidyverse version)](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap2_tidyverse.html).
+* Chapter 2 (additional material): [Exploring Data  (R base version)](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap2_exploring.html)
+or [Exploring Data  (tidyverse/ggplot2 version)](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap2_exploring_ggplot2.html)
 * Chapter 3: [Classification: Basic Concepts, Decision Trees, and Model Evaluation](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap3.html)
 ([read sample book chapter 3](https://www-users.cs.umn.edu/~kumar001/dmbook/ch3_classification.pdf))
 * Chapter 4: [Classification: Alternative Techniques](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap4.html) 

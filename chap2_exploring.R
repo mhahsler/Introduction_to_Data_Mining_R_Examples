@@ -1,5 +1,5 @@
 #' ---
-#' title: "R Code for Chapter 2 of Introduction to Data Mining: Data (Exploring Data)"
+#' title: "R Code for Chapter 2 of Introduction to Data Mining: Exploring Data"
 #' author: "Michael Hahsler"
 #' output:
 #'  html_document:
@@ -30,7 +30,7 @@ summary(iris)
 mean(iris$Sepal.Length)
 sd(iris$Sepal.Length)
 
-#' Ignor missing values (Note: this data does not contain any, but this is
+#' Ignore missing values (Note: this data does not contain any, but this is
 #' what you would do)
 mean(iris$Sepal.Length, na.rm = TRUE)
 
@@ -72,7 +72,7 @@ summary(iris_discrete)
 table(iris_discrete$Sepal.Length, iris_discrete$Sepal.Width)
 table(iris_discrete$Petal.Length, iris_discrete$Petal.Width)
 table(iris_discrete$Petal.Length, iris_discrete$Species)
-
+i
 #table(iris_discrete)
 
 #' Test if the two features are independent given the counts in the
