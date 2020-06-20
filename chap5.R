@@ -24,6 +24,9 @@
 #' * [`arulesViz`](https://www.rdocumentation.org/packages/arulesViz/)
 #'
 
+library(tidyverse)
+library(ggplot2)
+
 library(arules)
 library(arulesViz)
 
@@ -49,7 +52,7 @@ library(arulesViz)
 #'
 
 #' # Used data
-data(Zoo, package="mlbench")
+data(Zoo, package = "mlbench")
 head(Zoo)
 
 
@@ -60,37 +63,36 @@ head(Zoo)
 #' For the Zoo data set this means that we consider animals as transactions
 #' and the different traits (features) will become items that each animal has. For
 #' example the animal _antelope_ has the item _hair_ in its transaction.
-try(trans <- as(Zoo, "transactions"))
-#' ```
-#' ## Error in asMethod(object) :
-#' ##          column(s) 13 not logical or a factor. Use as.factor or categorize first.
-#' ```
+trans <- as(Zoo, "transactions")
 #'
-#' Conversion fails because all variables need to be a factors or logical! Note that the `try()` is not necessary and I just use it so that the error does not stop the translation of this document.
+#' The conversion gives a warning because only discrete features (`factor` and `logical`) can be
+#' directly translated into items. Continuous features need to be discretizes first.
 #'
 #' What is column 13?
-colnames(Zoo)[13]
-legs <- Zoo[["legs"]]
-summary(legs)
-hist(legs)
-table(legs)
+summary(Zoo[13])
+ggplot(Zoo, aes(legs)) + geom_histogram()
+table(Zoo$legs)
 
 #' Possible solution: Make legs into has/does not have legs
-has_legs <- legs>0
-has_legs
-table(has_legs)
-Zoo[["legs"]] <- has_legs
+Zoo_has_legs <- Zoo %>% mutate(legs = legs > 0)
+ggplot(Zoo_has_legs, aes(legs)) + geom_bar()
+table(Zoo_has_legs$legs)
 
 #' __Alternatives:__
 #'
 #' * use each unique value as an item:
-#'  `Zoo[["legs"]] <- as.factor(legs)`
-#' * use discretize for continuous data (see [`? discretize`](https://www.rdocumentation.org/packages/arules/topics/discretize) and
+Zoo_unique_leg_values <- Zoo %>% mutate(legs = factor(legs))
+head(Zoo_unique_leg_values$legs)
+
+#' * discretize (see [`? discretize`](https://www.rdocumentation.org/packages/arules/topics/discretize) and
 #' [discretization in the code for Chapter 2](chap2.html#discretize-features)):
-#'  `Zoo[["legs"]] <- discretize(legs, categories = 2, method="interval")`
+Zoo_discretized_legs <- Zoo %>% mutate(
+  legs = discretize(legs, breaks = 2, method="interval")
+)
+table(Zoo_discretized_legs$legs)
 #'
 #'  Convert data into a set of transactions
-trans <- as(Zoo, "transactions")
+trans <- as(Zoo_has_legs, "transactions")
 trans
 
 #' ## Inspect Transactions
@@ -108,25 +110,28 @@ inspect(trans[1:3])
 #' Plot the binary matrix. Dark dots represent 1s.
 image(trans)
 #' Look at the relative frequency (=support) of items in the data set. Here we look at the 10 most frequent items.
-itemFrequencyPlot(trans,topN=20)
-plot(sort(itemFrequency(trans, type="absolute"), decreasing=TRUE),
-  xlab = "Items", ylab="Support Count", type="l")
+itemFrequencyPlot(trans,topN = 20)
+
+ggplot(
+  tibble(
+    Support = sort(itemFrequency(trans, type = "absolute"), decreasing = TRUE),
+    Item = seq_len(ncol(trans))
+  ), aes(x = Item, y = Support)) + geom_line()
 
 
 #' __Alternative encoding:__ Also create items for FALSE (use factor)
-sapply(Zoo, class)
-Zoo2 <- Zoo
-for(i in 1:ncol(Zoo2)) Zoo2[[i]] <- as.factor(Zoo2[[i]])
-sapply(Zoo2, class)
-summary(Zoo2)
+sapply(Zoo_has_legs, class)
+Zoo_factors <- Zoo_has_legs %>% mutate_if(is.logical, factor)
+sapply(Zoo_factors, class)
+summary(Zoo_factors)
 
-trans2 <- as(Zoo2, "transactions")
-trans2
+trans_factors <- as(Zoo_factors, "transactions")
+trans_factors
 
-itemFrequencyPlot(trans2, topN=20)
+itemFrequencyPlot(trans_factors, topN = 20)
 
 # Select transactions that contain a certain item
-trans_insects <- trans2[trans %in% "type=insect"]
+trans_insects <- trans_factors[trans %in% "type=insect"]
 trans_insects
 inspect(trans_insects)
 
@@ -135,7 +140,7 @@ inspect(trans_insects)
 #' The default layout for transactions is horizontal layout (i.e. each transaction is a row).
 #' The vertical layout represents transaction data as a list of transaction IDs for each item (= transaction ID lists).
 vertical <- as(trans, "tidLists")
-as(vertical, "matrix")[1:10,1:5]
+as(vertical, "matrix")[1:10, 1:5]
 
 #' # Frequent Itemsets
 #' ## Mine Frequent Itemsets
@@ -144,8 +149,8 @@ as(vertical, "matrix")[1:10,1:5]
 2^ncol(trans)
 
 #' Find frequent itemsets (target="frequent") with the default settings.
-is <- apriori(trans, parameter=list(target="frequent"))
-is
+its <- apriori(trans, parameter=list(target = "frequent"))
+its
 #' Default minimum support is .1 (10\%).
 #' __Note:__ We use here a very small data set. For larger datasets
 #' the default minimum support might be to low and you may run out of memory. You probably want to start out with a higher minimum support like
@@ -155,34 +160,38 @@ is
 
 #' In order to find itemsets that effect 5 animals I need to go down to a
 #' support of about 5\%.
-is <- apriori(trans, parameter=list(target="frequent", support=0.05))
-is
+its <- apriori(trans, parameter=list(target = "frequent", support = 0.05))
+its
 
 #' Sort by support
-is <- sort(is, by="support")
-inspect(head(is, n=10))
+its <- sort(its, by = "support")
+inspect(head(its, n = 10))
 
 #' Look at frequent itemsets with many items (set breaks manually since
 #' Automatically chosen breaks look bad)
-barplot(table(size(is)), xlab="itemset size", ylab="count")
-inspect(is[size(is)>8])
+ggplot(tibble(`Itemset Size` = factor(size(its))), aes(`Itemset Size`)) + geom_bar()
+inspect(its[size(its) > 8])
 
 #' ## Concise Representation of Itemsets
 #'
 #' Find maximal frequent itemsets (no superset if frequent)
-is_max <- is[is.maximal(is)]
-is_max
-inspect(head(sort(is_max, by="support")))
+its_max <- its[is.maximal(its)]
+its_max
+inspect(head(its_max, by = "support"))
 #' Find closed frequent itemsets (no superset if frequent)
-is_closed <- is[is.closed(is)]
-is_closed
-inspect(head(sort(is_closed, by="support")))
+its_closed <- its[is.closed(its)]
+its_closed
+inspect(head(its_closed, by = "support"))
 
-barplot(c(
-  frequent=length(is),
-  closed=length(is_closed),
-  maximal=length(is_max)
-  ), ylab="count", xlab="itemsets")
+counts <- c(
+  frequent=length(its),
+  closed=length(its_closed),
+  maximal=length(its_max)
+)
+
+ggplot(as_tibble(counts, rownames = "Itemsets"),
+  aes(Itemsets, counts)) + geom_bar(stat = "identity")
+
 #'
 #'
 #' # Association Rules
@@ -190,35 +199,35 @@ barplot(c(
 #'
 #' We use the APRIORI algorithm (see [`? apriori`](https://www.rdocumentation.org/packages/arules/topics/apriori))
 
-rules <- apriori(trans, parameter=list(support=0.05, confidence=.9))
+rules <- apriori(trans, parameter = list(support = 0.05, confidence = 0.9))
 length(rules)
 
 inspect(head(rules))
 quality(head(rules))
 
 #' Look at rules with highest lift
-rules <- sort(rules, by="lift")
-inspect(head(rules, n=10))
+rules <- sort(rules, by = "lift")
+inspect(head(rules, n = 10))
 
 #' Create rules using the alternative encoding (with "FALSE" item)
-r <- apriori(trans2)
+r <- apriori(trans_factors)
 r
-print(object.size(r), unit="Mb")
+print(object.size(r), unit = "Mb")
 
 inspect(r[1:10])
-inspect(head(r, by="lift", n = 10))
+inspect(head(r, n = 10, by = "lift"))
 
-#' ## Additional Interest Measures
-interestMeasure(rules[1:10], measure=c("phi", "gini"),
-  trans=trans)
+#' ## Calculate Additional Interest Measures
+interestMeasure(rules[1:10], measure = c("phi", "gini"),
+  trans = trans)
 
 #' Add measures to the rules
 quality(rules) <- cbind(quality(rules),
-  interestMeasure(rules, measure=c("phi", "gini"),
-    trans=trans))
+  interestMeasure(rules, measure = c("phi", "gini"),
+    trans = trans))
 
 #' Find rules which score high for Phi correlation
-inspect(head(rules, by="phi"))
+inspect(head(rules, by = "phi"))
 
 #' ## Mine using Templates
 #'
@@ -228,14 +237,13 @@ inspect(head(rules, by="phi"))
 type <- grep("type=", itemLabels(trans), value = TRUE)
 type
 
-rules_type <- apriori(trans,
-  appearance= list(rhs=type, default="lhs"))
+rules_type <- apriori(trans, appearance= list(rhs = type))
 
-inspect(head(sort(rules_type, by="lift")))
+inspect(head(sort(rules_type, by = "lift")))
 
 #' Saving rules as a CSV-file to be opened with Excel or other tools.
 #'
-#' `write(rules, file="rules.csv", quote=TRUE)`
+#' `write(rules, file = "rules.csv", quote = TRUE)`
 #'
 #' # Association rule visualization
 library(arulesViz)
@@ -245,18 +253,18 @@ plot(rules)
 
 #' Add some jitter (randomly move points) to show how many rules have the
 #' same confidence and support value.
-plot(rules, control=list(jitter=.5))
+plot(rules, control=list(jitter = .5))
 
-plot(rules, shading="order", control=list(jitter=.5))
-#plot(rules, interactive=TRUE)
+plot(rules, shading = "order", control = list(jitter = .5))
+#plot(rules, interactive = TRUE)
 
 #' Grouped plot
-plot(rules, method="grouped")
-#plot(rules, method="grouped", engine = "interactive")
+plot(rules, method = "grouped")
+#plot(rules, method = "grouped", engine = "interactive")
 
 #' As a graph
-plot(rules, method="graph")
-plot(head(rules, by="phi", n = 100), method="graph")
+plot(rules, method = "graph")
+plot(head(rules, by = "phi", n = 100), method = "graph")
 
 #' ## More interactive visualization
 #'

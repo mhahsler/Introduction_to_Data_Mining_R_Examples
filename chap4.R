@@ -16,12 +16,16 @@
 #' [Michael Hahsler](http://michael.hahsler.net).
 #'
 
+library(tidyverse)
+library(ggplot2)
+
 #' Show fewer digits
 options(digits=3)
 
 #' Load the data set
 data(Zoo, package="mlbench")
-head(Zoo)
+Zoo <- as_tibble(Zoo)
+Zoo
 
 
 #' Use multi-core support for cross-validation.
@@ -37,7 +41,7 @@ library(caret)
 
 #' Create fixed sampling scheme (10-folds) so we can compare the models
 #' later on.
-train <- createFolds(Zoo$type, k=10)
+train <- createFolds(Zoo$type, k = 10)
 
 
 #' For help with building models in caret see: ? train
@@ -50,22 +54,24 @@ train <- createFolds(Zoo$type, k=10)
 #'
 
 #' ## Conditional Inference Tree (Decision Tree)
-ctreeFit <- train(type ~ ., method = "ctree", data = Zoo,
+ctreeFit <- Zoo %>% train(type ~ .,
+  method = "ctree",
+  data = .,
 	tuneLength = 5,
-	trControl = trainControl(
-		method = "cv", indexOut = train))
+	trControl = trainControl(method = "cv", indexOut = train))
 ctreeFit
 plot(ctreeFit$finalModel)
 
 #' The final model can be directly used for predict()
-predict(ctreeFit, Zoo[1:2,])
+predict(ctreeFit, head(Zoo))
 
 #' ## C 4.5 Decision Tree
 library(RWeka)
-C45Fit <- train(type ~ ., method = "J48", data = Zoo,
+C45Fit <- Zoo %>% train(type ~ .,
+  method = "J48",
+  data = .,
 	tuneLength = 5,
-	trControl = trainControl(
-		method = "cv", indexOut = train))
+	trControl = trainControl(method = "cv", indexOut = train))
 C45Fit
 C45Fit$finalModel
 
@@ -74,45 +80,52 @@ C45Fit$finalModel
 #' __Note:__ kNN uses Euclidean distance, so data should be standardized (scaled) first.
 #' Here legs are measured between 0 and 6 while all other variables are between
 #' 0 and 1.
-Zoo_scaled <- cbind(as.data.frame(scale(Zoo[,-17])), type = Zoo[,17])
-knnFit <- train(type ~ ., method = "knn", data = Zoo_scaled,
-	tuneLength = 5,  tuneGrid=data.frame(k=1:10),
-	trControl = trainControl(
-		method = "cv", indexOut = train))
+Zoo_scaled <- Zoo %>% mutate_at(vars(-17), function(x) as.vector(scale(x)))
+
+knnFit <- Zoo_scaled %>% train(type ~ .,
+  method = "knn",
+  data = .,
+	tuneLength = 5,
+  tuneGrid=data.frame(k = 1:10),
+	trControl = trainControl(method = "cv", indexOut = train))
 knnFit
 knnFit$finalModel
 
 #' ## PART (Rule-based classifier)
-rulesFit <- train(type ~ ., method = "PART", data = Zoo,
+rulesFit <- Zoo %>% train(type ~ .,
+  method = "PART",
+  data = .,
   tuneLength = 5,
-  trControl = trainControl(
-    method = "cv", indexOut = train))
+  trControl = trainControl(method = "cv", indexOut = train))
 rulesFit
 rulesFit$finalModel
 
 
 #' ## Linear Support Vector Machines
-svmFit <- train(type ~., method = "svmLinear", data = Zoo,
+svmFit <- Zoo %>% train(type ~.,
+  method = "svmLinear",
+  data = .,
 	tuneLength = 5,
-	trControl = trainControl(
-		method = "cv", indexOut = train))
+	trControl = trainControl(method = "cv", indexOut = train))
 svmFit
 svmFit$finalModel
 
 #' ## Random Forest
-randomForestFit <- train(type ~ ., method = "rf", data = Zoo,
+randomForestFit <- Zoo %>% train(type ~ .,
+  method = "rf",
+  data = .,
 	tuneLength = 5,
-	trControl = trainControl(
-		method = "cv", indexOut = train))
+	trControl = trainControl(method = "cv", indexOut = train))
 randomForestFit
 randomForestFit$finalModel
 
 
 #' ## Gradient Boosted Decision Trees (xgboost)
-xgboostFit <- train(type ~ ., method = "xgbTree", data = Zoo,
+xgboostFit <- Zoo %>% train(type ~ .,
+  method = "xgbTree",
+  data = .,
   tuneLength = 5,
-  trControl = trainControl(
-    method = "cv", indexOut = train),
+  trControl = trainControl(method = "cv", indexOut = train),
   tuneGrid = expand.grid(
     nrounds = 20,
     max_depth = 3,
@@ -127,24 +140,25 @@ xgboostFit$finalModel
 
 
 #' ## Artificial Neural Network
-nnetFit <- train(type ~ ., method = "nnet", data = Zoo,
+nnetFit <- Zoo %>% train(type ~ .,
+  method = "nnet",
+  data = .,
 	tuneLength = 5,
-	trControl = trainControl(
-		method = "cv", indexOut = train),
+	trControl = trainControl(method = "cv", indexOut = train),
   trace = FALSE)
 nnetFit
 nnetFit$finalModel
 
 #' # Compare Models
 resamps <- resamples(list(
-  ctree=ctreeFit,
-  C45=C45Fit,
-  SVM=svmFit,
-  KNN=knnFit,
-  rules=rulesFit,
-  randomForest=randomForestFit,
-  xgboost=xgboostFit,
-  NeuralNet=nnetFit
+  ctree = ctreeFit,
+  C45 = C45Fit,
+  SVM = svmFit,
+  KNN = knnFit,
+  rules = rulesFit,
+  randomForest = randomForestFit,
+  xgboost = xgboostFit,
+  NeuralNet = nnetFit
     ))
 resamps
 summary(resamps)
@@ -170,33 +184,43 @@ summary(difs)
 #'
 #' Here is a very good [article about the problem and solutions.](http://www.kdnuggets.com/2016/08/learning-from-imbalanced-classes.html)
 #'
-#' We want to decide if an animal is an reptile. First we change the class variable
+library(rpart)
+library(rpart.plot)
+data(Zoo, package="mlbench")
+Zoo <- as_tibble(Zoo)
+
+#' Class distribution
+ggplot(Zoo, aes(y = type)) + geom_bar()
+
+#' To create an imbalanced problem, we want to decide if an animal is an reptile.
+#' First, we change the class variable
 #' to make it into a binary reptile/no reptile classification problem.
 #' __Note:__ We use here the training data for testing. You should use a
 #' separate testing data set!
-data(Zoo)
-library(rpart)
-library(rpart.plot)
 
-Zoo_reptile <- Zoo
-Zoo_reptile$type <- factor(Zoo$type == "reptile",
-  levels = c(FALSE, TRUE), labels =c("nonreptile", "reptile"))
+Zoo_reptile <- Zoo %>% mutate(
+  type = factor(Zoo$type == "reptile", levels = c(FALSE, TRUE),
+    labels = c("nonreptile", "reptile")))
+
 #' Do not forget to make the class variable a factor (a nominal variable)
 #' or you will get a regression tree instead of a classification tree.
 
 summary(Zoo_reptile)
 
 #' See if we have a class imbalance problem.
-barplot(table(Zoo_reptile$type), xlab = "Reptile", ylab="Count")
+ggplot(Zoo_reptile, aes(y = type)) + geom_bar()
+
 #' the new class variable is clearly not balanced. This is a problem
 #' for building a tree!
 #'
 #' ## Option 1: Use the Data As Is and Hope For The Best
 
-fit <- train(type ~ ., data=Zoo_reptile, method = "rpart",
+fit <- Zoo_reptile %>% train(type ~ .,
+  data = .,
+  method = "rpart",
   trControl = trainControl(method = "cv"))
 fit
-rpart.plot(fit$finalModel, extra = 2, under = TRUE, varlen = 0, faclen = 0)
+rpart.plot(fit$finalModel, extra = 2)
 #' the tree predicts everything as non-reptile. Have a look at the error on
 #' the training set.
 
@@ -222,15 +246,17 @@ confusionMatrix(data = predict(fit, Zoo_reptile),
 #' You could also use SMOTE (in package __DMwR__) or other sampling strategies (e.g., from package __unbalanced__). We
 #' use only 50+50 observations here since our dataset has only 101 observations total.
 library(sampling)
-id <- strata(Zoo_reptile, stratanames="type", size=c(50,50), method="srswr")
-Zoo_reptile_balanced <- Zoo_reptile[id$ID_unit, ]
+id <- strata(Zoo_reptile, stratanames = "type", size = c(50, 50), method = "srswr")
+Zoo_reptile_balanced <- Zoo_reptile %>% slice(id$ID_unit)
 table(Zoo_reptile_balanced$type)
 
-fit <- train(type ~ ., data = Zoo_reptile_balanced, method = "rpart",
+fit <- Zoo_reptile_balanced %>% train(type ~ .,
+  data = .,
+  method = "rpart",
   trControl = trainControl(method = "cv"),
   control = rpart.control(minsplit = 5))
 fit
-rpart.plot(fit$finalModel, extra = 2, under = TRUE,  varlen = 0, faclen = 0)
+rpart.plot(fit$finalModel, extra = 2)
 
 #' Check on balanced training data.
 confusionMatrix(data = predict(fit, Zoo_reptile_balanced),
@@ -261,8 +287,10 @@ confusionMatrix(data = predict(fit, Zoo_reptile),
 #' data and not AUC! I also enable class probabilities since I want to predict
 #' probabilities later.
 
-fit <- train(type ~ ., data=Zoo_reptile, method = "rpart",
-  tuneLength=20,
+fit <- Zoo_reptile %>% train(type ~ .,
+  data = .,
+  method = "rpart",
+  tuneLength = 20,
   trControl = trainControl(method = "cv",
     classProbs = TRUE,                 ## necessary for predict with type="prob"
     summaryFunction=twoClassSummary),  ## necessary for ROC
@@ -270,7 +298,7 @@ fit <- train(type ~ ., data=Zoo_reptile, method = "rpart",
   control = rpart.control(minsplit = 5))
 fit
 
-rpart.plot(fit$finalModel, extra = 2, under = TRUE, varlen = 0, faclen = 0)
+rpart.plot(fit$finalModel, extra = 2)
 
 confusionMatrix(data = predict(fit, Zoo_reptile),
   ref = Zoo_reptile$type, positive = "reptile")
@@ -330,13 +358,15 @@ plot(r)
 #' TP and TN have to be 0. We make FN very expensive (100).
 
 cost <- matrix(c(
-  0,  1,
-  100,0
-), byrow=TRUE, nrow=2)
+  0,   1,
+  100, 0
+), byrow = TRUE, nrow = 2)
 cost
 
 
-fit <- train(type ~ ., data=Zoo_reptile, method = "rpart",
+fit <- Zoo_reptile %>% train(type ~ .,
+  data = .,
+  method = "rpart",
   parms = list(loss = cost),
   trControl = trainControl(method = "cv"))
 #' The warning "There were missing values in resampled performance measures"
@@ -345,7 +375,7 @@ fit <- train(type ~ ., data=Zoo_reptile, method = "rpart",
 
 fit
 
-rpart.plot(fit$finalModel, extra = 2, under = TRUE, varlen = 0, faclen = 0)
+rpart.plot(fit$finalModel, extra = 2)
 
 confusionMatrix(data = predict(fit, Zoo_reptile),
   ref = Zoo_reptile$type, positive = "reptile")

@@ -19,18 +19,12 @@ for corrections or improvements.
 
 ## Covered Chapters
 
-* Chapter 2: [Data (R base version)](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap2.html)
- or [Data (tidyverse version)](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap2_tidyverse.html).
-* Chapter 2 (additional material): [Exploring Data  (R base version)](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap2_exploring.html)
-or [Exploring Data  (tidyverse/ggplot2 version)](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap2_exploring_ggplot2.html)
+* Chapter 2: [Data](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap2.html), [Exploring Data](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap2_exploring.html)
 * Chapter 3: [Classification: Basic Concepts, Decision Trees, and Model Evaluation](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap3.html)
 ([read sample book chapter 3](https://www-users.cs.umn.edu/~kumar001/dmbook/ch3_classification.pdf))
-* Chapter 4: [Classification: Alternative Techniques](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap4.html) 
-* Chapter 4 (additional material): [Comparison of decision boundaries](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap4_decisionboundary.html)
-* Chapter 4 (additional material): [Deep Learning with keras](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap4_keras.html)
+* Chapter 4: [Classification: Alternative Techniques](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap4.html), [Comparison of Decision Boundaries](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap4_decisionboundary.html), [Deep Learning with keras](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap4_keras.html)
 * Chapter 5: [Association Analysis](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap5.html) 
-([read sample book chapter 5](https://www-users.cs.umn.edu/~kumar001/dmbook/ch5_association_analysis.pdf))
-* Chapeter 5 (additional material): [Interactive visualization of association rules](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap5_interactive.html)
+([read sample book chapter 5](https://www-users.cs.umn.edu/~kumar001/dmbook/ch5_association_analysis.pdf)), [Interactive visualization of association rules](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap5_interactive.html)
 * Chapter 7: [Cluster Analysis](https://rawgit.com/mhahsler/Introduction_to_Data_Mining_R_Examples/master/chap7.html)
 ([read sample book chapter 7](https://www-users.cs.umn.edu/~kumar001/dmbook/ch7_clustering.pdf))
 

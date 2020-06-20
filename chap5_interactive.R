@@ -15,6 +15,8 @@
 #' [Michael Hahsler](http://michael.hahsler.net).
 #'
 
+library(tidyverse)
+
 library(arules)
 library(arulesViz)
 
@@ -24,7 +26,7 @@ summary(Groceries)
 inspect(head(Groceries))
 
 #' Mine Association Rules
-rules <- apriori(Groceries, parameter=list(support=0.001, confidence=.8))
+rules <- apriori(Groceries, parameter=list(support = 0.001, confidence = 0.8))
 
 #' # Interactive inspect with sorting, filtering and paging
 inspectDT(rules)

@@ -16,19 +16,20 @@
 #' [Michael Hahsler](http://michael.hahsler.net).
 #'
 
+library(tidyverse)
+library(ggplot2)
 
 #' # Prepare Zoo Data Set
 data(Zoo, package="mlbench")
-head(Zoo)
+Zoo <- as_tibble(Zoo)
+Zoo
 
 #' Get summary statistics
-summary(Zoo)
-
-#' translate all the TRUE/FALSE values into factors (nominal) or the tree
-for(i in c(1:12, 14:16)) Zoo[[i]] <- as.factor(Zoo[[i]])
-
-summary(Zoo)
-
+#'
+#' translate all the TRUE/FALSE values into factors (nominal). This is often needed for
+#' building models.
+Zoo <- Zoo %>% modify_if(is.logical, factor, levels = c(TRUE, FALSE))
+Zoo %>% summary()
 
 #' # A First Decision Tree
 #'
@@ -38,16 +39,26 @@ summary(Zoo)
 library(rpart)
 
 #' ## Create Tree With Default Settings (uses pre-pruning)
-tree_default <- rpart(type ~ ., data = Zoo)
+tree_default <- Zoo %>% rpart(type ~ ., data = .)
 tree_default
 
-#' __Note:__ the class variable needs a factor (nominal) or rpart
-#' will create a regression tree instead of a decision tree. Use `as.factor()`
-#' if necessary.
+
+
+#' __Notes:__
+#'
+#' - The formula models the `type` variable by all other features represented by `.`. `data = .`
+#'   means that the data provided by the pipe (`%>%`) will be passed to rpart as the
+#'   argument `data`.
+#'
+#' - the class variable needs a factor (nominal) or rpart
+#'   will create a regression tree instead of a decision tree. Use `as.factor()`
+#'   if necessary.
 #'
 #' Plotting
+
 library(rpart.plot)
-rpart.plot(tree_default, extra = 2, under = TRUE, varlen=0, faclen=0)
+rpart.plot(tree_default, extra = 2)
+
 #' _Note:_ `extra=2` prints for each leaf node the number of correctly
 #' classified objects from data and the total number of objects
 #' from the training data falling into that node (correct/total).
@@ -59,24 +70,25 @@ rpart.plot(tree_default, extra = 2, under = TRUE, varlen=0, faclen=0)
 #' observations in a node needed to split to the smallest value of 2
 #' (see: `?rpart.control`).
 #' _Note:_ full trees overfit the training data!
-tree_full <- rpart(type ~., data=Zoo, control=rpart.control(minsplit=2, cp=0))
-rpart.plot(tree_full, extra = 2, under = TRUE,  varlen=0, faclen=0)
+tree_full <- Zoo %>% rpart(type ~., data = ., control = rpart.control(minsplit = 2, cp = 0))
+rpart.plot(tree_full, extra = 2)
 tree_full
 
 #' Training error on tree with pre-pruning
-head(predict(tree_default, Zoo))
+predict(tree_default, Zoo) %>% head ()
+
 pred <- predict(tree_default, Zoo, type="class")
 head(pred)
 
-confusion_table <- table(Zoo$type, pred)
+confusion_table <- with(Zoo, table(type, pred))
 confusion_table
 
-correct <- sum(diag(confusion_table))
+correct <- confusion_table %>% diag() %>% sum()
 correct
-error <- sum(confusion_table)-correct
+error <- confusion_table %>% sum() - correct
 error
 
-accuracy <- correct / (correct+error)
+accuracy <- correct / (correct + error)
 accuracy
 
 #' Use a function for accuracy
@@ -85,30 +97,27 @@ accuracy <- function(truth, prediction) {
     sum(diag(tbl))/sum(tbl)
 }
 
-accuracy(Zoo$type, pred)
+accuracy(Zoo %>% pull(type), pred)
 
 #' Training error of the full tree
-accuracy(Zoo$type, predict(tree_full, Zoo, type="class"))
+accuracy(Zoo %>% pull(type), predict(tree_full, Zoo, type="class"))
 
 #' Get a confusion table with more statistics (using caret)
 library(caret)
-confusionMatrix(data = pred, reference = Zoo$type)
+confusionMatrix(data = pred, reference = Zoo %>% pull(type))
 
 #' ## Make Predictions for New Data
 #'
 #' Make up my own animal: A lion with feathered wings
 
-my_animal <- data.frame(hair = TRUE, feathers = TRUE, eggs = FALSE,
+my_animal <- tibble(hair = TRUE, feathers = TRUE, eggs = FALSE,
   milk = TRUE, airborne = TRUE, aquatic = FALSE, predator = TRUE,
   toothed = TRUE, backbone = TRUE, breathes = TRUE, venomous = FALSE,
   fins = FALSE, legs = 4, tail = TRUE, domestic = FALSE,
   catsize = FALSE, type = NA)
 
 #' Fix columns to be factors like in the training set.
-
-for(i in c(1:12, 14:16)) my_animal[[i]] <- factor(my_animal[[i]],
-  levels = c(TRUE, FALSE))
-
+my_animal <- my_animal %>% modify_if(is.logical, factor, levels = c(TRUE, FALSE))
 my_animal
 
 #' Make a prediction using the default tree
@@ -121,51 +130,61 @@ predict(tree_default , my_animal, type = "class")
 #' Use a simple split into 2/3 training and 1/3 testing data. Find the size
 #' of the training set.
 
-n_train <- as.integer(nrow(Zoo)*.66)
+n_train <- floor(nrow(Zoo) * .66)
 n_train
 
 #' Randomly choose the rows of the training examples.
-train_id <- sample(1:nrow(Zoo), n_train)
+train_id <- sample(seq_len(nrow(Zoo)), n_train)
 head(train_id)
 
 #' Split the data
-train <- Zoo[train_id,]
-test <- Zoo[-train_id, colnames(Zoo) != "type"]
-test_type <- Zoo[-train_id, "type"]
+train <- Zoo %>% slice(train_id)
+test <- Zoo %>% slice(-train_id) %>% select(-type)
+test_type <- Zoo %>% slice(-train_id) %>% pull(type)
 
-tree <- rpart(type ~., data=train,control=rpart.control(minsplit=2))
+tree <- train %>% rpart(type ~., data = ., control = rpart.control(minsplit = 2))
 
-#' Training error
+#' Training error (on training data)
 accuracy(train$type, predict(tree, train, type="class"))
 
-#' Generalization error
+#' Generalization error (on unseen testing data)
 accuracy(test_type, predict(tree, test, type="class"))
 
 #' ### 10-Fold Cross Validation
+#'
+#' suffle the data and add fold id
+k <- 10
 
-index <- 1:nrow(Zoo)
-index <- sample(index) ### shuffle index
-fold <- rep(1:10, each=nrow(Zoo)/10)[1:nrow(Zoo)]
+Zoo_k <- Zoo %>%
+  sample_frac() %>%
+  mutate(fold = rep(1:k, each = nrow(Zoo) / k)[1:nrow(Zoo)])
 
-folds <- split(index, fold) ### create list with indices for each fold
+Zoo_k %>% pull(fold)
+
 
 #' Do each fold
-accs <- vector(mode="numeric")
-for(i in 1:length(folds)) {
-    tree <- rpart(type ~., data=Zoo[-folds[[i]],], control=rpart.control(minsplit=2))
-    accs[i] <- accuracy(Zoo[folds[[i]],]$type, predict(tree, Zoo[folds[[i]],], type="class"))
+accs <- rep(NA, k)
+for(i in seq_len(k)) {
+  train <- Zoo_k %>% filter(fold != i)
+  test <- Zoo_k %>% filter(fold == i)
+  tree <- train %>%
+      rpart(type ~., data = ., control = rpart.control(minsplit = 2))
+    accs[i] <- accuracy(test %>% pull(type), predict(tree, test, type="class"))
 }
 accs
 
 #' Report the average
-mean(accs)
+accs %>% mean()
 
 #' ## Caret: For Easier Model Building and Evaluation
 #' see http://cran.r-project.org/web/packages/caret/vignettes/caret.pdf
 #'
-#' Enable multi-core
+#' Enable multi-core using packages `foreach` and `doParallel`.
 library(doParallel)
+getDoParWorkers()
+
 registerDoParallel()
+getDoParWorkers()
 
 #' ### k-fold Cross Validation
 #' caret packages training and testing into a single function called `train()`.
@@ -180,10 +199,13 @@ registerDoParallel()
 #' __Note:__ Parameters used for tuning (in this case `cp`) need to be set using
 #' a data.frame in the argument `tuneGrid`! Setting it in control will be ignored.
 library(caret)
-fit <- train(type ~ ., data = Zoo , method = "rpart",
-	control=rpart.control(minsplit=2),
-	trControl = trainControl(method = "cv", number = 10),
-	tuneLength=5)
+fit <- Zoo %>%
+  train(type ~ .,
+    data = . ,
+    method = "rpart",
+    control = rpart.control(minsplit = 2),
+    trControl = trainControl(method = "cv", number = 10),
+    tuneLength = 5)
 fit
 #' __Note:__ Train has built 10 trees. Accuracy and kappa for each tree/test fold
 #' can be obtained.
@@ -192,7 +214,7 @@ fit$resample
 #' A model using the best tuning parameters
 #' and using all the data is available as `fit$finalModel`.
 
-rpart.plot(fit$finalModel, extra = 2, under = TRUE,  varlen=0, faclen=0)
+rpart.plot(fit$finalModel, extra = 2)
 #' __Note:__ For many models, caret converts factors into dummy coding, i.e.,
 #' a single 0-1 variable for each factor level. This is why you see split nodes
 #' like `milkTRUE>=0.5`.
@@ -204,36 +226,41 @@ rpart.plot(fit$finalModel, extra = 2, under = TRUE,  varlen=0, faclen=0)
 varImp(fit)
 
 #' Here is the variable importance without competing splits.
-varImp(fit, compete = FALSE)
-dotPlot(varImp(fit, compete=FALSE))
+imp <- varImp(fit, compete = FALSE)
+imp
+ggplot(imp)
 
 #' __Note:__ Not all models provide a variable importance function. In this case caret might calculate varImp by itself and ignore the model (see `? varImp`)!
 #'
 #' ### Repeated Bootstrap Sampling
 #' An alternative to CV is repeated bootstrap sampling. It will give you
 #' very similar estimates.
-fit <- train(type ~ ., data = Zoo, method = "rpart",
-	control=rpart.control(minsplit=2),
-	trControl = trainControl(method = "boot", number = 10),
-	tuneLength=5)
+fit <- Zoo %>% train(type ~ .,
+  data = .,
+  method = "rpart",
+  control=rpart.control(minsplit=2),
+  trControl = trainControl(method = "boot", number = 10),
+  tuneLength = 5)
 fit
 
 #' ### Holdout Sample
 #'
 #' Partition data 66%/34%. __Note:__ CV and repeated bootstrap sampling
 #' is typically preferred.
-inTrain <- createDataPartition(y=Zoo$type, p = .66, list=FALSE)
-training <- Zoo[ inTrain,]
-testing <- Zoo[-inTrain,]
+inTrain <- createDataPartition(y = Zoo$type, p = .66, list = FALSE)
+training <- Zoo %>% slice(inTrain)
+testing <- Zoo %>% slice(-inTrain)
 
 #' Find best model (trying more values for tuning using `tuneLength`).
-fit <- train(type ~ ., data = training, method = "rpart",
-	control=rpart.control(minsplit=2),
-	trControl = trainControl(method = "cv", number = 10),
-	tuneLength=20)
+fit <- training %>% train(type ~ .,
+  data = .,
+  method = "rpart",
+  control = rpart.control(minsplit = 2),
+  trControl = trainControl(method = "cv", number = 10),
+  tuneLength = 20)
 fit
 
-plot(fit)
+ggplot(fit)
 
 #' Use the best model on the test data
 fit$finalModel
@@ -271,21 +298,24 @@ library(caret)
 
 #' Create fixed sampling scheme (10-folds) so we compare the different models
 #' using exactly the same folds.
-train <- createFolds(Zoo$type,k=10)
-
+train <- createFolds(Zoo$type, k = 10)
 
 #' Build models
-rpartFit <- train(type ~ .,  data = Zoo, method = "rpart",
-	tuneLength = 10,
-	trControl = trainControl(
-		method = "cv", indexOut = train))
+rpartFit <- Zoo %>% train(type ~ .,
+  data = .,
+  method = "rpart",
+  tuneLength = 10,
+  trControl = trainControl(method = "cv", indexOut = train)
+  )
 
 #' __Note:__ for kNN you might want to scale the data first. Logicals will
 #' be used as 0-1 variables in euclidean distance calculation.
-knnFit <- train(type ~ .,  data = Zoo, method = "knn",
+knnFit <- Zoo %>% train(type ~ .,
+  data = .,
+  method = "knn",
 	tuneLength = 10,
-	trControl = trainControl(
-		method = "cv", indexOut = train))
+	trControl = trainControl(method = "cv", indexOut = train)
+  )
 
 #' Compare accuracy
 resamps <- resamples(list(
@@ -317,14 +347,14 @@ library(FSelector)
 #' each feature is to the class variable.
 #' For discrete features (as in our case), the chi-square statistic can be used
 #' to derive a score.
-weights <- chi.squared(type ~ ., data=Zoo)
+weights <- chi.squared(type ~ ., data = Zoo)
 weights
 
 #' plot importance (ordered)
 str(weights)
-o <- order(weights$attr_importance)
-dotchart(weights$attr_importance[o], labels = rownames(weights)[o],
-  xlab = "Importance")
+
+ggplot(as_tibble(weights, rownames = "feature"), aes(x = attr_importance, y = reorder(feature, attr_importance))) +
+  geom_bar(stat = "identity")
 
 #' Get the 5 best features
 subset <- cutoff.k(weights, 5)
@@ -334,25 +364,25 @@ subset
 f <- as.simple.formula(subset, "type")
 f
 
-m <- rpart(f, data=Zoo)
-rpart.plot(m, extra = 2, under = TRUE,  varlen=0, faclen=0)
+m <- Zoo %>% rpart(f, data = .)
+rpart.plot(m, extra = 2)
 
 #' There are many alternative ways to calculate univariate importance
 #' scores (see package FSelector). Some of them (also) work for continuous
 #' features.
-oneR(type ~ ., data=Zoo)
-gain.ratio(type ~ ., data=Zoo)
-information.gain(type ~ ., data=Zoo)
+Zoo %>% oneR(type ~ ., data = .)
+Zoo %>% gain.ratio(type ~ ., data = .)
+Zoo %>% information.gain(type ~ ., data = .)
 # linear.correlation for continuous attributes
 
 #' ## Feature Subset Selection
 #' Often features are related and calculating importance for each feature
 #' independently is not optimal. We can use greedy search heuristics. For
 #' example `cfs` uses correlation/entropy with best first search.
-cfs(type ~ ., data=Zoo)
+Zoo %>% cfs(type ~ ., data = .)
 
 #' A consistency measure can also be used with best first search.
-consistency(type ~ ., data=Zoo)
+Zoo %>% consistency(type ~ ., data = .)
 
 #' Black-box feature selection uses an evaluator function (the black box)
 #' to calculate a score to be maximized.
@@ -361,16 +391,19 @@ consistency(type ~ ., data=Zoo)
 #' average for 5 bootstrap samples, no tuning (to be faster), and the
 #' average accuracy as the score.
 evaluator <- function(subset) {
-  m <- train(as.simple.formula(subset, "type"), data = Zoo, method = "rpart",
-    trControl = trainControl(method = "boot", number = 5), tuneLength = 0)
-  results <- m$resample$Accuracy
+  model <- Zoo %>% train(as.simple.formula(subset, "type"),
+    data = ., method = "rpart",
+    trControl = trainControl(method = "boot", number = 5),
+    tuneLength = 0)
+  results <- model$resample$Accuracy
   print(subset)
-  print(mean(results))
-  mean(results)
+  m <- mean(results)
+  print(m)
+  m
 }
 
 #' Start with all features (not the class variable)
-features <- names(Zoo)[1:16]
+features <- Zoo %>% colnames() %>% setdiff("type")
 
 #' There are several (greedy) search strategies available. These run
 #' for a while!
@@ -387,8 +420,8 @@ features <- names(Zoo)[1:16]
 #' For example, let us try to predict if an animal is a predator given the type.
 #' First we use the original encoding of type as a factor with several values.
 
-tree_predator <- rpart(predator ~ type, Zoo)
-rpart.plot(tree_predator, extra = 2, under = TRUE, varlen=0, faclen=0)
+tree_predator <- Zoo %>% rpart(predator ~ type, data = .)
+rpart.plot(tree_predator, extra = 2)
 
 #' __Note:__ Some splits use multiple values. Building the tree will become
 #' very slow if a factor has many values.
@@ -396,20 +429,16 @@ rpart.plot(tree_predator, extra = 2, under = TRUE, varlen=0, faclen=0)
 #' Recode type as a set of 0-1 dummy variables using `class2ind`. See also
 #' `? dummyVars` in package `caret`.
 library(caret)
-Zoo_dummy <- as.data.frame(class2ind(Zoo$type))
-Zoo_dummy$predator <- Zoo$predator
-head(Zoo_dummy)
+Zoo_dummy <- as_tibble(class2ind(Zoo$type)) %>% mutate_all(as.factor) %>%
+  add_column(predator = Zoo$predator)
+Zoo_dummy
 
-tree_predator <- rpart(predator ~ ., Zoo_dummy)
-rpart.plot(tree_predator, extra = 2, under = TRUE, varlen=0, faclen=0)
+tree_predator <- Zoo_dummy %>% rpart(predator ~ ., data = .)
+rpart.plot(tree_predator, extra = 2, roundint = FALSE)
 
-#' Since we have 0-1 variables, insect >= 0.5 yes means that the insect dummy
-#' variable has a value of 1 (and not 0) and therefore it is an insect.
-#'
 #' Using `caret` on the orginal factor encoding automatically translates factors
-#' (here type) into 0-1 dummy variables. The reason is that some models cannot
+#' (here type) into 0-1 dummy variables (e.g., `typeinsect = 0`).
+#' The reason is that some models cannot
 #' directly use factors.
-fit <- train(predator ~ type, Zoo, method = "rpart")
-rpart.plot(fit$finalModel, extra = 2, under = TRUE, varlen=0, faclen=0)
-
-
+fit <- Zoo %>% train(predator ~ type, data = ., method = "rpart")
+rpart.plot(fit$finalModel, extra = 2)

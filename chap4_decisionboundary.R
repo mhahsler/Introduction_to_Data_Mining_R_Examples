@@ -29,23 +29,22 @@
 #' (straight) line.
 
 library(scales)
+library(tidyverse)
+library(ggplot2)
 
-decisionplot <- function(model, data, class = NULL, predict_type = "class",
-  resolution = 100, showgrid = TRUE, alpha = 0.3, ...) {
+decisionplot <- function(model, x, cl = NULL, predict_type = "class",
+  resolution = 100) {
 
-  if(!is.null(class)) cl <- data[,class] else cl <- 1
-  data <- data[,1:2]
+  if(!is.null(cl)) cl <- x[ , cl] else cl <- 1
   k <- length(unique(cl))
 
-  plot(data, col = as.integer(cl)+1L, pch = as.integer(cl)+1L, ...)
-
   # make grid
-  r <- sapply(data, range, na.rm = TRUE)
+  r <- sapply(x[, 1:2], range, na.rm = TRUE)
   xs <- seq(r[1,1], r[2,1], length.out = resolution)
   ys <- seq(r[1,2], r[2,2], length.out = resolution)
-  g <- cbind(rep(xs, each=resolution), rep(ys, time = resolution))
+  g <- cbind(rep(xs, each = resolution), rep(ys, time = resolution))
   colnames(g) <- colnames(r)
-  g <- as.data.frame(g)
+  g <- as_tibble(g)
 
   ### guess how to get class labels from predict
   ### (unfortunately not very consistent between models)
@@ -53,13 +52,16 @@ decisionplot <- function(model, data, class = NULL, predict_type = "class",
   if(is.list(p)) p <- p$class
   p <- as.factor(p)
 
-  if(showgrid) points(g, col = alpha(as.integer(p)+1L, alpha = alpha), pch = ".")
+  g <- g %>% add_column(p)
 
-  z <- matrix(as.integer(p), nrow = resolution, byrow = TRUE)
-  contour(xs, ys, z, add = TRUE, drawlabels = FALSE,
-    lwd = 2, levels = (1:(k-1))+.5)
-
-  invisible(z)
+  ggplot(g, mapping = aes_string(
+    x = colnames(g)[1],
+    y = colnames(g)[2])) +
+    geom_tile(mapping = aes(fill = p)) +
+    geom_point(data = x, mapping =  aes_string(
+      x = colnames(x)[1],
+      y = colnames(x)[2],
+      shape = colnames(x)[3]), alpha = .5)
 }
 
 #' # Iris Dataset
@@ -68,97 +70,91 @@ decisionplot <- function(model, data, class = NULL, predict_type = "class",
 
 set.seed(1000)
 data(iris)
+iris <- as_tibble(iris)
 
-# Two class case
-#x <- iris[1:100, c("Sepal.Length", "Sepal.Width", "Species")]
-#x$Species <- factor(x$Species)
+# Three classes (MASS also has a select function)
+x <- iris %>% dplyr::select(Sepal.Length, Sepal.Width, Species)
+x
 
-# Three classes
-x <- iris[1:150, c("Sepal.Length", "Sepal.Width", "Species")]
-
-# Easier to separate
-#x <- iris[1:150, c("Petal.Length", "Petal.Width", "Species")]
-
-head(x)
-plot(x[,1:2], col = x[,3])
+ggplot(x, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
 
 #' ## K-Nearest Neighbors Classifier
 
 library(caret)
-model <- knn3(Species ~ ., data=x, k = 1)
-decisionplot(model, x, class = "Species", main = "kNN (1 neighbor)")
+model <- x %>% knn3(Species ~ ., data = ., k = 1)
+decisionplot(model, x, cl = "Species") + labs(title = "kNN (1 neighbor)")
 
-model <- knn3(Species ~ ., data=x, k = 10)
-decisionplot(model, x, class = "Species", main = "kNN (10 neighbors)")
+model <- x %>% knn3(Species ~ ., data = ., k = 10)
+decisionplot(model, x, cl = "Species") + labs(title = "kNN (10 neighbor)")
 
 #' ## Naive Bayes Classifier
 
 library(e1071)
-model <- naiveBayes(Species ~ ., data=x)
-decisionplot(model, x, class = "Species", main = "naive Bayes")
+model <- x %>% naiveBayes(Species ~ ., data = .)
+decisionplot(model, x, cl = "Species") + labs(title = "naive Bayes")
 
 #' ## Linear Discriminant Analysis
 
 library(MASS)
-model <- lda(Species ~ ., data=x)
-decisionplot(model, x, class = "Species", main = "LDA")
+model <- x %>% lda(Species ~ ., data = .)
+decisionplot(model, x, cl = "Species") + labs(title = "LDA")
 
 #' ## Multinomial Logistic Regression (implemented in nnet)
 #'
 #' Multinomial logistic regression is an extension of logistic regression to problems with more than two classes.
 #'
 library(nnet)
-model <- multinom(Species ~., data = x)
-decisionplot(model, x, class = "Species", main = "Multinomial Logistic Regression")
+model <- x %>% multinom(Species ~., data = .)
+decisionplot(model, x, cl = "Species") + labs(titel = "Multinomial Logistic Regression")
 
 
 #' ## Decision Trees
 
 library("rpart")
-model <- rpart(Species ~ ., data=x)
-decisionplot(model, x, class = "Species", main = "CART")
+model <- x %>% rpart(Species ~ ., data = .)
+decisionplot(model, x, cl = "Species") + labs(title = "CART")
 
-model <- rpart(Species ~ ., data=x,
+model <- x %>% rpart(Species ~ ., data = .,
   control = rpart.control(cp = 0.001, minsplit = 1))
-decisionplot(model, x, class = "Species", main = "CART (overfitting)")
+decisionplot(model, x, cl = "Species") + labs(title = "CART (overfitting)")
 
 library(C50)
-model <- C5.0(Species ~ ., data=x)
-decisionplot(model, x, class = "Species", main = "C5.0")
+model <- x %>% C5.0(Species ~ ., data = .)
+decisionplot(model, x, cl = "Species") + labs(title = "C5.0")
 
 library(randomForest)
-model <- randomForest(Species ~ ., data=x)
-decisionplot(model, x, class = "Species", main = "Random Forest")
+model <- x %>% randomForest(Species ~ ., data = .)
+decisionplot(model, x, cl = "Species") + labs(title = "Random Forest")
 
 #' ## SVM
 
 library(e1071)
-model <- svm(Species ~ ., data=x, kernel="linear")
-decisionplot(model, x, class = "Species", main = "SVM (linear kernel)")
+model <- x %>% svm(Species ~ ., data = ., kernel = "linear")
+decisionplot(model, x, cl = "Species") + labs(title = "SVM (linear kernel)")
 
-model <- svm(Species ~ ., data=x, kernel = "radial")
-decisionplot(model, x, class = "Species", main = "SVM (radial kernel)")
+model <- x %>% svm(Species ~ ., data = ., kernel = "radial")
+decisionplot(model, x, cl = "Species") + labs(title = "SVM (radial kernel)")
 
-model <- svm(Species ~ ., data=x, kernel = "polynomial")
-decisionplot(model, x, class = "Species", main = "SVM (polynomial kernel)")
+model <- x %>% svm(Species ~ ., data = ., kernel = "polynomial")
+decisionplot(model, x, cl = "Species") + labs(title = "SVM (polynomial kernel)")
 
-model <- svm(Species ~ ., data=x, kernel = "sigmoid")
-decisionplot(model, x, class = "Species", main = "SVM (sigmoid kernel)")
+model <- x %>% svm(Species ~ ., data = ., kernel = "sigmoid")
+decisionplot(model, x, cl = "Species") + labs(title = "SVM (sigmoid kernel)")
 
 #' ## Single Layer Feed-forward Neural Networks
 
 library(nnet)
-model <- nnet(Species ~ ., data=x, size = 1, maxit = 1000, trace = FALSE)
-decisionplot(model, x, class = "Species", main = "NN (1 neuron)")
+model <-x %>% nnet(Species ~ ., data = ., size = 1, maxit = 1000, trace = FALSE)
+decisionplot(model, x, cl = "Species") + labs(title = "NN (1 neuron)")
 
-model <- nnet(Species ~ ., data=x, size = 2, maxit = 1000, trace = FALSE)
-decisionplot(model, x, class = "Species", main = "NN (2 neurons)")
+model <-x %>% nnet(Species ~ ., data = ., size = 2, maxit = 1000, trace = FALSE)
+decisionplot(model, x, cl = "Species") + labs(title = "NN (2 neurons)")
 
-model <- nnet(Species ~ ., data=x, size = 4, maxit = 1000, trace = FALSE)
-decisionplot(model, x, class = "Species", main = "NN (4 neurons)")
+model <-x %>% nnet(Species ~ ., data = ., size = 4, maxit = 1000, trace = FALSE)
+decisionplot(model, x, cl = "Species") + labs(title = "NN (4 neurons)")
 
-model <- nnet(Species ~ ., data=x, size = 10, maxit = 1000, trace = FALSE)
-decisionplot(model, x, class = "Species", main = "NN (10 neurons)")
+model <-x %>% nnet(Species ~ ., data = ., size = 10, maxit = 1000, trace = FALSE)
+decisionplot(model, x, cl = "Species") + labs(title = "NN (10 neurons)")
 
 #' ## Deep Learning with keras
 
@@ -181,33 +177,32 @@ model <- keras_model_sequential() %>%
 
 history <- model %>% fit(
   as.matrix(x[,1:2]),
-  to_categorical(as.integer(x[,3])),
+  x %>% pull(3) %>% as.integer %>% to_categorical(),
   epochs = 100,
   batch_size = 10
 )
 
 history
 
-decisionplot(model, x, class = "Species", main = "keras (relu activation)")
-
+decisionplot(model, x, cl = "Species") + labs(title = "keras (relu activation)")
 
 
 model <- keras_model_sequential() %>%
   layer_dense(units = 10, activation = 'tanh', input_shape = c(2),
-    kernel_regularizer=regularizer_l2(l=0.01)) %>%
+    kernel_regularizer = regularizer_l2(l = 0.01)) %>%
   layer_dense(units = 4, activation = 'softmax') %>%
   compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
 
 history <- model %>% fit(
   as.matrix(x[,1:2]),
-  to_categorical(as.integer(x[,3])),
+  x %>% pull(3) %>% as.integer %>% to_categorical(),
   epochs = 100,
   batch_size = 10
 )
 
 history
 
-decisionplot(model, x, class = "Species", main = "keras (tanh activation)")
+decisionplot(model, x, cl = "Species") + labs(title = "keras (tanh activation)")
 
 #' # Circle Dataset
 #'
@@ -221,90 +216,88 @@ x <- mlbench.circle(500)
 #x <- mlbench.smiley(500)
 x <- cbind(as.data.frame(x$x), factor(x$classes))
 colnames(x) <- c("x", "y", "class")
+x <- as_tibble(x)
+x
 
-head(x)
-plot(x[,1:2], col = x[,3])
-
-
+ggplot(x, aes(x = x, y = y, color = class)) + geom_point()
 
 #' ## K-Nearest Neighbors Classifier
 
 library(caret)
-model <- knn3(class ~ ., data=x, k = 1)
-decisionplot(model, x, class = "class", main = "kNN (1 neighbor)")
+model <- x %>% knn3(class ~ ., data = ., k = 1)
+decisionplot(model, x, cl = "class") + labs(title = "kNN (1 neighbor)")
 
-model <- knn3(class ~ ., data=x, k = 10)
-decisionplot(model, x, class = "class", main = "kNN (10 neighbors)")
+model <- x %>% knn3(class ~ ., data = ., k = 10)
+decisionplot(model, x, cl = "class") + labs(title = "kNN (10 neighbor)")
 
 #' ## Naive Bayes Classifier
 
 library(e1071)
-model <- naiveBayes(class ~ ., data=x)
-decisionplot(model, x, class = "class", main = "naive Bayes")
+model <- x %>% naiveBayes(class ~ ., data = .)
+decisionplot(model, x, cl = "class") + labs(title = "naive Bayes")
 
 #' ## Linear Discriminant Analysis
 
 library(MASS)
-model <- lda(class ~ ., data=x)
-decisionplot(model, x, class = "class", main = "LDA")
+model <- x %>% lda(class ~ ., data = .)
+decisionplot(model, x, cl = "class") + labs(title = "LDA")
 
-#' ## Logistic Regression
-
-model <- glm(class ~., data = x, family=binomial(link='logit'))
-class(model) <- c("lr", class(model))
-predict.lr <- function(object, newdata, ...)
-  predict.glm(object, newdata, type = "response") > .5
-
-decisionplot(model, x, class = "class", main = "Logistic Regression")
+#' ## Multinomial Logistic Regression (implemented in nnet)
+#'
+#' Multinomial logistic regression is an extension of logistic regression to problems with more than two classes.
+#'
+library(nnet)
+model <- x %>% multinom(class ~., data = .)
+decisionplot(model, x, cl = "class") + labs(titel = "Multinomial Logistic Regression")
 
 
 #' ## Decision Trees
 
 library("rpart")
-model <- rpart(class ~ ., data=x)
-decisionplot(model, x, class = "class", main = "CART")
+model <- x %>% rpart(class ~ ., data = .)
+decisionplot(model, x, cl = "class") + labs(title = "CART")
 
-model <- rpart(class ~ ., data=x,
-  control = rpart.control(cp = 0.0001, minsplit = 1))
-decisionplot(model, x, class = "class", main = "CART (overfitting)")
+model <- x %>% rpart(class ~ ., data = .,
+  control = rpart.control(cp = 0.001, minsplit = 1))
+decisionplot(model, x, cl = "class") + labs(title = "CART (overfitting)")
 
 library(C50)
-model <- C5.0(class ~ ., data=x)
-decisionplot(model, x, class = "class", main = "C5.0")
+model <- x %>% C5.0(class ~ ., data = .)
+decisionplot(model, x, cl = "class") + labs(title = "C5.0")
 
 library(randomForest)
-model <- randomForest(class ~ ., data=x)
-decisionplot(model, x, class = "class", main = "Random Forest")
+model <- x %>% randomForest(class ~ ., data = .)
+decisionplot(model, x, cl = "class") + labs(title = "Random Forest")
 
 #' ## SVM
 
 library(e1071)
-model <- svm(class ~ ., data=x, kernel="linear")
-decisionplot(model, x, class = "class", main = "SVM (linear kernel)")
+model <- x %>% svm(class ~ ., data = ., kernel = "linear")
+decisionplot(model, x, cl = "class") + labs(title = "SVM (linear kernel)")
 
-model <- svm(class ~ ., data=x, kernel = "radial")
-decisionplot(model, x, class = "class", main = "SVM (radial kernel)")
+model <- x %>% svm(class ~ ., data = ., kernel = "radial")
+decisionplot(model, x, cl = "class") + labs(title = "SVM (radial kernel)")
 
-model <- svm(class ~ ., data=x, kernel = "polynomial")
-decisionplot(model, x, class = "class", main = "SVM (polynomial kernel)")
+model <- x %>% svm(class ~ ., data = ., kernel = "polynomial")
+decisionplot(model, x, cl = "class") + labs(title = "SVM (polynomial kernel)")
 
-model <- svm(class ~ ., data=x, kernel = "sigmoid")
-decisionplot(model, x, class = "class", main = "SVM (sigmoid kernel)")
+model <- x %>% svm(class ~ ., data = ., kernel = "sigmoid")
+decisionplot(model, x, cl = "class") + labs(title = "SVM (sigmoid kernel)")
 
 #' ## Single Layer Feed-forward Neural Networks
 
 library(nnet)
-model <- nnet(class ~ ., data=x, size = 1, maxit = 1000, trace = FALSE)
-decisionplot(model, x, class = "class", main = "NN (1 neighbor)")
+model <-x %>% nnet(class ~ ., data = ., size = 1, maxit = 1000, trace = FALSE)
+decisionplot(model, x, cl = "class") + labs(title = "NN (1 neuron)")
 
-model <- nnet(class ~ ., data=x, size = 2, maxit = 1000, trace = FALSE)
-decisionplot(model, x, class = "class", main = "NN (2 neighbors)")
+model <-x %>% nnet(class ~ ., data = ., size = 2, maxit = 1000, trace = FALSE)
+decisionplot(model, x, cl = "class") + labs(title = "NN (2 neurons)")
 
-model <- nnet(class ~ ., data=x, size = 4, maxit = 10000, trace = FALSE)
-decisionplot(model, x, class = "class", main = "NN (4 neighbors)")
+model <-x %>% nnet(class ~ ., data = ., size = 4, maxit = 1000, trace = FALSE)
+decisionplot(model, x, cl = "class") + labs(title = "NN (4 neurons)")
 
-model <- nnet(class ~ ., data=x, size = 10, maxit = 10000, trace = FALSE)
-decisionplot(model, x, class = "class", main = "NN (10 neighbors)")
+model <-x %>% nnet(class ~ ., data = ., size = 10, maxit = 1000, trace = FALSE)
+decisionplot(model, x, cl = "class") + labs(title = "NN (10 neurons)")
 
 #' ## Deep Learning with keras
 
@@ -314,38 +307,43 @@ library(keras)
 predict.keras.engine.training.Model <- function(object, newdata, ...)
   cl <- predict_classes(object, as.matrix(newdata))
 
+#' Choices are the activation function, number of layers, number of units per layer and the optimizer.
+#' A L2 regularizer is used for the dense layer weights to reduce overfitting. The output is a
+#' categorical class value, therefore the output layer uses the softmax activation function,
+#' the loss is categorical crossentropy, and the metric is accuracy.
+
 model <- keras_model_sequential() %>%
   layer_dense(units = 10, activation = 'relu', input_shape = c(2),
-    kernel_regularizer=regularizer_l2(l=0.0001)) %>%
+    kernel_regularizer=regularizer_l2(l = 0.0001)) %>%
   layer_dense(units = 3, activation = 'softmax') %>%
   compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
 
 history <- model %>% fit(
   as.matrix(x[,1:2]),
-  to_categorical(as.integer(x[,3])),
+  x %>% pull(3) %>% as.integer %>% to_categorical(),
   epochs = 100,
   batch_size = 10
 )
 
 history
 
-decisionplot(model, x, class = "class", main = "keras (relu activation)")
-
+decisionplot(model, x, cl = "class") + labs(title = "keras (relu activation)")
 
 
 model <- keras_model_sequential() %>%
   layer_dense(units = 10, activation = 'tanh', input_shape = c(2),
-    kernel_regularizer=regularizer_l2(l=0.0001)) %>%
+    kernel_regularizer = regularizer_l2(l = 0.0001)) %>%
   layer_dense(units = 3, activation = 'softmax') %>%
   compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
 
 history <- model %>% fit(
   as.matrix(x[,1:2]),
-  to_categorical(as.integer(x[,3])),
+  x %>% pull(3) %>% as.integer %>% to_categorical(),
   epochs = 100,
   batch_size = 10
 )
 
 history
 
-decisionplot(model, x, class = "class", main = "keras (tanh activation)")
+decisionplot(model, x, cl = "class") + labs(title = "keras (tanh activation)")
+

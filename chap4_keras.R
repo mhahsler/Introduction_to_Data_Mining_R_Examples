@@ -31,23 +31,25 @@ options(digits=3)
 #'
 
 library(keras)
+library(tidyverse)
 
 #' # Load and prepare the data set
-data(Zoo, package="mlbench")
-head(Zoo)
+data(Zoo, package = "mlbench")
+Zoo <- as_tibble(Zoo)
+Zoo
 
-Zoo_predictors <- Zoo[,-ncol(Zoo)]
-Zoo_class <- Zoo[, ncol(Zoo)]
+Zoo_predictors <- Zoo %>% select(-type)
+Zoo_class <- Zoo %>% pull(type)
 
 #' Create a matrix and normalize the data (using kera's `normalize()` function). If you have nominal variables
 #' (factor), then you need to use kera's `to_categorical()` function to create one-hot encoding.
-Zoo_predictors <- normalize(as.matrix(Zoo_predictors))
+Zoo_predictors <- Zoo_predictors %>% as.matrix() %>% normalize()
 head(Zoo_predictors)
 
 #' One-hot encode the class variable
 #'
 #' __Note:__ needs an integer with the first class being 0 and not 1
-Zoo_class <- to_categorical(as.integer(Zoo_class)-1L)
+Zoo_class <- to_categorical(as.integer(Zoo_class) - 1L)
 head(Zoo_class)
 
 #' # Construct the model structure
@@ -55,10 +57,10 @@ model <- keras_model_sequential()
 
 model %>%
   layer_dense(units = 16, activation = 'relu', input_shape = c(ncol(Zoo_predictors)),
-    kernel_regularizer=regularizer_l2(l=0.001)) %>%
+    kernel_regularizer=regularizer_l2(l = 0.001)) %>%
   layer_dropout(.1) %>%
   layer_dense(units = 8, activation = 'relu',
-    kernel_regularizer=regularizer_l2(l=0.001)) %>%
+    kernel_regularizer=regularizer_l2(l = 0.001)) %>%
   layer_dense(units = ncol(Zoo_class), activation = 'softmax')
 model
 #' See `? layer_dense` to learn more about creating the model structure
@@ -86,7 +88,7 @@ train <- sample(c(TRUE, FALSE), size = nrow(Zoo), prob = c(0.8, 0.2), replace = 
 history <- model %>% fit(
   Zoo_predictors[train,],
   Zoo_class[train,],
-  validation_data = list(Zoo_predictors[!train,], Zoo_class[!train,]),
+  validation_data = list(Zoo_predictors[!train, ], Zoo_class[!train, ]),
   epochs = 200,
   batch_size = 2^3
 )
@@ -104,6 +106,8 @@ plot(history)
 classes <- model %>% predict_classes(Zoo_predictors[!train,], batch_size = 2^7)
 
 library(caret)
-confusionMatrix(data = factor(classes+1L, levels = 1:length(levels(Zoo$type)), labels = levels(Zoo$type)),
-  ref = Zoo$type[!train])
+confusionMatrix(
+  data = factor(classes+1L, levels = 1:length(levels(Zoo$type)), labels = levels(Zoo$type)),
+  ref = Zoo$type[!train]
+  )
 
