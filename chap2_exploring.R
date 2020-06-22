@@ -47,7 +47,7 @@ library(ggplot2)
 
 #' # Basic statistics
 #'
-#' Load the iris data set
+#' Load the iris data set and convert the data.frame into a tidyerse tibble (optional)
 data(iris)
 iris <- as_tibble(iris)
 
@@ -69,11 +69,9 @@ iris %>% pull(Sepal.Length) %>% mean(trim = .1)
 
 #' Calculate a summary for all numeric columns
 iris %>% summarize_if(is.numeric, mean)
-iris %>% summarize_if(is.numeric, median)
 iris %>% summarize_if(is.numeric, sd)
-iris %>% summarize_if(is.numeric, var)
-iris %>% summarize_if(is.numeric, min)
-iris %>% summarize_if(is.numeric, max)
+
+iris %>% summarize_if(is.numeric, list(min = min, median = median, max = max))
 
 #' MAD (median absolute deviation)
 iris %>% summarize_if(is.numeric, mad)
