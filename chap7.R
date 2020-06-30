@@ -138,6 +138,27 @@ hullplot(ruspini_scaled, db)
 #' Play with eps (neighborhood size) and MinPts (minimum of points needed for core cluster)
 
 #'
+#' ## Partitioning Around Medoids (PAM)
+#'
+#' Also called $k$-medoids. Similar to $k$-means, but uses medoids instead of centroids to represent clusters and works on a distance matrix. _Note:_ A medoid is the data point in the center of a cluster.
+
+library(cluster)
+
+d <- dist(ruspini_scaled)
+str(d)
+
+p <- pam(d, k = 4)
+p
+
+ruspini_clustered <- ruspini_scaled %>% add_column(cluster = factor(p$cluster))
+
+medoids <- as_tibble(ruspini_scaled[p$medoids, ], rownames = "cluster")
+medoids
+
+ggplot(ruspini_clustered, aes(x = x, y = y, color = cluster)) + geom_point() +
+  geom_point(data = medoids, aes(x = x, y = y, color = cluster), shape = 3, size = 5)
+
+#'
 #' ## Gaussian Mixture Models
 library(mclust)
 
