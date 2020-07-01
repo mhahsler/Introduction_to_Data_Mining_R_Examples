@@ -189,10 +189,17 @@ ggplot(ruspini_scaled %>% add_column(cluster = factor(cluster_spec)),
 #'
 #' The fuzzy version of the known k-means clustering algorithm. Each data point
 #' has a degree of membership to for each cluster.
-library(e1071)
+library("e1071")
 
 cluster_cmeans <- cmeans(as.matrix(ruspini_scaled), centers = 4)
 cluster_cmeans
+
+#' Plot membership
+library("scatterpie")
+ggplot()  +
+  geom_scatterpie(data = cbind(ruspini_scaled, cluster_cmeans$membership),
+    aes(x = x, y = y), cols = 3:6, legend_name = "Membership") + coord_equal()
+
 
 #' # Internal Cluster Validation
 #'
