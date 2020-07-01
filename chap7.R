@@ -175,11 +175,24 @@ summary(m)
 plot(m, what = "classification")
 
 #' ## Spectral clustering
+#'
+#' Spectral clustering works by embedding the data points of the partitioning problem into the subspace of the k largest eigenvectors of a normalized affinity/kernel matrix. Then uses a simple clustering method like k-means.
 library("kernlab")
+
 cluster_spec <- specc(as.matrix(ruspini_scaled), centers = 4)
+cluster_spec
+
 ggplot(ruspini_scaled %>% add_column(cluster = factor(cluster_spec)),
   aes(x, y, color = cluster)) + geom_point()
 
+#' ## Fuzzy C-Means Clustering
+#'
+#' The fuzzy version of the known k-means clustering algorithm. Each data point
+#' has a degree of membership to for each cluster.
+library(e1071)
+
+cluster_cmeans <- cmeans(as.matrix(ruspini_scaled), centers = 4)
+cluster_cmeans
 
 #' # Internal Cluster Validation
 #'
