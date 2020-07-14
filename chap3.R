@@ -21,14 +21,15 @@ library(ggplot2)
 
 #' # Prepare Zoo Data Set
 data(Zoo, package="mlbench")
-Zoo <- as_tibble(Zoo)
-Zoo
+head(Zoo)
 
 #' Get summary statistics
 #'
 #' translate all the TRUE/FALSE values into factors (nominal). This is often needed for
 #' building models.
-Zoo <- Zoo %>% modify_if(is.logical, factor, levels = c(TRUE, FALSE))
+Zoo <- Zoo %>%
+  modify_if(is.logical, factor, levels = c(TRUE, FALSE)) %>%
+  modify_if(is.character, factor)
 Zoo %>% summary()
 
 #' # A First Decision Tree
@@ -45,7 +46,7 @@ tree_default
 
 
 #' __Notes:__
-#'
+#' - `%>%` supplies the data for `rpart`. Since `data` is not the first argument of `rpart`, the syntax `data = .` is used to specify where the data in `Zoo` goes. The call is equivalent to `tree_default <- rpart(type ~ ., data = Zoo)`.
 #' - The formula models the `type` variable by all other features represented by `.`. `data = .`
 #'   means that the data provided by the pipe (`%>%`) will be passed to rpart as the
 #'   argument `data`.
