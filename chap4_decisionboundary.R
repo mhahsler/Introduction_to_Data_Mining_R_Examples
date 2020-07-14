@@ -32,14 +32,29 @@
 library(scales)
 library(tidyverse)
 library(ggplot2)
+library(caret)
 
 decisionplot <- function(model, x, cl = NULL, predict_type = "class",
   resolution = 100) {
 
-  if(!is.null(cl)) cl <- x[ , cl] else cl <- 1
+  if(!is.null(cl)) {
+    x_data <- x %>% dplyr::select(-all_of(cl))
+    cl <- x %>% pull(cl)
+  } else cl <- 1
   k <- length(unique(cl))
 
-  # make grid
+  # resubstitution accuracy
+  prediction <- predict(model, x_data, type = predict_type)
+  if(is.list(prediction)) prediction <- prediction$class
+  if(is.numeric(prediction))
+    prediction <-  factor(prediction, labels = levels(cl))
+  else
+    prediction <- factor(prediction, levels = levels(cl))
+
+  cm <- confusionMatrix(data = prediction, reference = cl)
+  acc <- cm$overall["Accuracy"]
+
+  # evaluate model on a grid
   r <- sapply(x[, 1:2], range, na.rm = TRUE)
   xs <- seq(r[1,1], r[2,1], length.out = resolution)
   ys <- seq(r[1,2], r[2,2], length.out = resolution)
@@ -51,7 +66,10 @@ decisionplot <- function(model, x, cl = NULL, predict_type = "class",
   ### (unfortunately not very consistent between models)
   prediction <- predict(model, g, type = predict_type)
   if(is.list(prediction)) prediction <- prediction$class
-  prediction <- as.factor(prediction)
+  if(is.numeric(prediction))
+    prediction <-  factor(prediction, labels = levels(cl))
+  else
+    prediction <- factor(prediction, levels = levels(cl))
 
   g <- g %>% add_column(prediction)
 
@@ -62,7 +80,8 @@ decisionplot <- function(model, x, cl = NULL, predict_type = "class",
     geom_point(data = x, mapping =  aes_string(
       x = colnames(x)[1],
       y = colnames(x)[2],
-      shape = colnames(x)[3]), alpha = .5)
+      shape = colnames(x)[3]), alpha = .5) +
+    labs(subtitle = paste("Training accuracy:", round(acc, 2)))
 }
 
 #' # Iris Dataset
@@ -78,7 +97,8 @@ x <- iris %>% dplyr::select(Sepal.Length, Sepal.Width, Species)
 x
 
 ggplot(x, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
-
+#' _Note:_ There is some overplotting and you could use `geom_jitter()` instead of `geom_point()`.
+#'
 #' ## K-Nearest Neighbors Classifier
 
 library(caret)
@@ -161,9 +181,9 @@ decisionplot(model, x, cl = "Species") + labs(title = "NN (10 neurons)")
 
 library(keras)
 
-#' redefine predict so it works with decision plot
+#' define predict so it works with decision plot
 predict.keras.engine.training.Model <- function(object, newdata, ...)
-  cl <- predict_classes(object, as.matrix(newdata))
+  predict_classes(object, as.matrix(newdata))
 
 #' Choices are the activation function, number of layers, number of units per layer and the optimizer.
 #' A L2 regularizer is used for the dense layer weights to reduce overfitting. The output is a
@@ -306,7 +326,7 @@ library(keras)
 
 #' redefine predict so it works with decision plot
 predict.keras.engine.training.Model <- function(object, newdata, ...)
-  cl <- predict_classes(object, as.matrix(newdata))
+  predict_classes(object, as.matrix(newdata))
 
 #' Choices are the activation function, number of layers, number of units per layer and the optimizer.
 #' A L2 regularizer is used for the dense layer weights to reduce overfitting. The output is a
