@@ -16,6 +16,7 @@
 #'
 
 #' # Decision Boundaries
+#'
 #' Classifiers create decision boundaries to discriminate between classes.
 #' Different classifiers are able to create different shapes of decision
 #' boundaries (e.g., some are strictly linear) and thus some classifiers
@@ -48,16 +49,16 @@ decisionplot <- function(model, x, cl = NULL, predict_type = "class",
 
   ### guess how to get class labels from predict
   ### (unfortunately not very consistent between models)
-  p <- predict(model, g, type = predict_type)
-  if(is.list(p)) p <- p$class
-  p <- as.factor(p)
+  prediction <- predict(model, g, type = predict_type)
+  if(is.list(prediction)) prediction <- prediction$class
+  prediction <- as.factor(prediction)
 
-  g <- g %>% add_column(p)
+  g <- g %>% add_column(prediction)
 
   ggplot(g, mapping = aes_string(
     x = colnames(g)[1],
     y = colnames(g)[2])) +
-    geom_tile(mapping = aes(fill = p)) +
+    geom_tile(mapping = aes(fill = prediction)) +
     geom_point(data = x, mapping =  aes_string(
       x = colnames(x)[1],
       y = colnames(x)[2],
@@ -91,7 +92,7 @@ decisionplot(model, x, cl = "Species") + labs(title = "kNN (10 neighbor)")
 
 library(e1071)
 model <- x %>% naiveBayes(Species ~ ., data = .)
-decisionplot(model, x, cl = "Species") + labs(title = "naive Bayes")
+decisionplot(model, x, cl = "Species") + labs(title = "Naive Bayes")
 
 #' ## Linear Discriminant Analysis
 
