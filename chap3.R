@@ -268,8 +268,11 @@ fit$finalModel
 pred <- predict(fit, newdata = testing)
 head(pred)
 
-#' Confusion matrix (incl. confidence interval) on test data
-confusionMatrix(data = pred, testing$type)
+#' ## Confusion Matrix and Confidence Interval for Accuracy
+#'
+#' Caret's `confusionMatrix()` function calculates accuracy, confidence intervals, kappa and many more evaluation metrics. Use test data.
+pred <- predict(fit, newdata = testing)
+confusionMatrix(data = pred, ref = testing$type)
 
 #'
 #' __Some notes__
