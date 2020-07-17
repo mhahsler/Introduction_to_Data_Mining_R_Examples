@@ -29,7 +29,7 @@ ruspini
 ggplot(ruspini, aes(x = x, y = y)) + geom_point()
 
 #' Scale each column in the data to zero mean and unit standard deviation (z-scores). This prevents one attribute with a large range to dominate the others for the distance calculation.
-ruspini_scaled <- as_tibble(scale(ruspini))
+ruspini_scaled <- ruspini %>% scale() %>% as_tibble()
 ggplot(ruspini_scaled, aes(x = x, y = y)) + geom_point()
 
 #' # Clustering methods
