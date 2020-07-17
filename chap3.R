@@ -156,15 +156,14 @@ accuracy(test_type, predict(tree, test, type="class"))
 #' add shuffled fold ids
 k <- 10
 
-Zoo_k <- Zoo %>%
-  sample_frac() %>%
-  add_column(fold = head(rep(seq_len(k), times = ceiling(nrow(Zoo) / k)), nrow(Zoo)) %>%
+Zoo_k <- Zoo %>% add_column(
+  fold = head(rep(seq_len(k), times = ceiling(nrow(Zoo) / k)), nrow(Zoo)) %>%
       sample())
 
 head(Zoo_k)
 
 #' Fold sizes
-table(Zoo_k %>% pull(fold))
+Zoo_k %>% pull(fold) %>% table()
 
 
 #' Do each fold
@@ -184,13 +183,11 @@ accs %>% mean()
 #' ## Caret: For Easier Model Building and Evaluation
 #' see http://cran.r-project.org/web/packages/caret/vignettes/caret.pdf
 #'
-#' Enable multi-core using packages `foreach` and `doParallel`.
+#' Cross-validation runs can be done in parallel. We need to enable multi-core support for `caret` using packages `foreach` and `doParallel`.
 library(doParallel)
-getDoParWorkers()
-
 registerDoParallel()
 getDoParWorkers()
-
+#'
 #' ### k-fold Cross Validation
 #' caret packages training and testing into a single function called `train()`.
 #' It internally splits the data into training and testing sets and thus will
@@ -220,14 +217,11 @@ fit$resample
 #' and using all the data is available as `fit$finalModel`.
 
 rpart.plot(fit$finalModel, extra = 2)
-#' __Note:__ For many models, caret converts factors into dummy coding, i.e.,
-#' a single 0-1 variable for each factor level. This is why you see split nodes
-#' like `milkTRUE>=0.5`.
-#'
+
 #' caret also computes variable importance. By default it uses competing splits
 #' (splits which would be runners up, but do not get chosen by the tree)
-#' for rpart models (see `? varImp`). Toothed is comes out to be the
-#' runner up a lot, but never gets chosen!
+#' for rpart models (see `? varImp`). Toothed is the
+#' runner up for many splits, but it never gets chosen!
 varImp(fit)
 
 #' Here is the variable importance without competing splits.
@@ -256,12 +250,12 @@ inTrain <- createDataPartition(y = Zoo$type, p = .66, list = FALSE)
 training <- Zoo %>% slice(inTrain)
 testing <- Zoo %>% slice(-inTrain)
 
-#' Find best model (trying more values for tuning using `tuneLength`).
+#' Find best model. For tuning bootstrap sampling is used on the training data and `tuneLength` many parameters are checked. The best parameter is ued to learn the final model on all the training data.
 fit <- training %>% train(type ~ .,
   data = .,
   method = "rpart",
   control = rpart.control(minsplit = 2),
-  trControl = trainControl(method = "cv", number = 10),
+  trControl = trainControl(method = "boot"),
   tuneLength = 20)
 fit
 
@@ -274,7 +268,7 @@ head(pred)
 
 #' ## Confusion Matrix and Confidence Interval for Accuracy
 #'
-#' Caret's `confusionMatrix()` function calculates accuracy, confidence intervals, kappa and many more evaluation metrics. Use test data.
+#' Caret's `confusionMatrix()` function calculates accuracy, confidence intervals, kappa and many more evaluation metrics. You need to use separate test data to create a confusion matrix based on the generalization error.
 pred <- predict(fit, newdata = testing)
 confusionMatrix(data = pred, ref = testing$type)
 
@@ -332,7 +326,7 @@ resamps <- resamples(list(
 		))
 summary(resamps)
 
-#' Plot the accuracy of the two models models for each resampling. If the
+#' Plot the accuracy of the two models for each resampling (e.g., fold). If the
 #' models are the same then all points will fall on the diagonal.
 xyplot(resamps)
 #'
