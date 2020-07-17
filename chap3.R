@@ -32,7 +32,7 @@ Zoo <- Zoo %>%
   modify_if(is.character, factor)
 Zoo %>% summary()
 
-#' # A First Decision Tree
+#' # Decision Trees
 #'
 #' Recursive Partitioning (similar to CART) uses the Gini index to make
 #' splitting decisions and early stopping (pre-pruning).
@@ -339,7 +339,7 @@ difs
 summary(difs)
 #' p-values tells you the probability of seeing an even more extreme value (difference between accuracy) given that the null hypothesis (difference = 0) is true. For a better classifier p-value should be less than .05 or 0.01. `diff` automatically applies Bonferoni correction for multiple testing. In this case, the classifiers do not perform statistically differently.
 #'
-#' # Feature Selection
+#' # Feature Selection and Feature Preparation
 
 #' Decision trees implicitly select features for splitting, but we can also
 #' select features manually.
@@ -418,7 +418,7 @@ features <- Zoo %>% colnames() %>% setdiff("type")
 #subset
 
 #'
-#' # Using Dummy Variables for Factors
+#' ## Using Dummy Variables for Factors
 #'
 #' Nominal features (factors) are often encoded as a series of 0-1 dummy variables.
 #' For example, let us try to predict if an animal is a predator given the type.
@@ -449,7 +449,7 @@ rpart.plot(fit$finalModel, extra = 2)
 
 
 
-#' # Class Imbalance Problem
+#' # Class Imbalance
 #'
 #' Classifiers have a hard time to learn from data where we have much more observations for one class (called the majority class). This is called the class imbalance problem.
 #'
