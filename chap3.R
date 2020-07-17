@@ -134,7 +134,7 @@ predict(tree_default , my_animal, type = "class")
 n_train <- floor(nrow(Zoo) * .66)
 n_train
 
-#' Randomly choose the rows of the training examples.
+#' Randomly choose (without replacement) the rows of the training examples.
 train_id <- sample(seq_len(nrow(Zoo)), n_train)
 head(train_id)
 
@@ -153,24 +153,28 @@ accuracy(test_type, predict(tree, test, type="class"))
 
 #' ### 10-Fold Cross Validation
 #'
-#' suffle the data and add fold id
+#' add shuffled fold ids
 k <- 10
 
 Zoo_k <- Zoo %>%
   sample_frac() %>%
-  mutate(fold = rep(1:k, each = nrow(Zoo) / k)[1:nrow(Zoo)])
+  add_column(fold = head(rep(seq_len(k), times = ceiling(nrow(Zoo) / k)), nrow(Zoo)) %>%
+      sample())
 
-Zoo_k %>% pull(fold)
+head(Zoo_k)
+
+#' Fold sizes
+table(Zoo_k %>% pull(fold))
 
 
 #' Do each fold
 accs <- rep(NA, k)
 for(i in seq_len(k)) {
-  train <- Zoo_k %>% filter(fold != i)
-  test <- Zoo_k %>% filter(fold == i)
+  train <- Zoo_k %>% filter(fold != i) %>% select(!fold)
+  test <- Zoo_k %>% filter(fold == i) %>% select(!fold)
   tree <- train %>%
       rpart(type ~., data = ., control = rpart.control(minsplit = 2))
-    accs[i] <- accuracy(test %>% pull(type), predict(tree, test, type="class"))
+    accs[i] <- accuracy(test %>% pull(type), predict(tree, test, type = "class"))
 }
 accs
 
