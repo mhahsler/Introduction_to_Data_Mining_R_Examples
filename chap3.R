@@ -349,20 +349,20 @@ library(FSelector)
 #' each feature is to the class variable.
 #' For discrete features (as in our case), the chi-square statistic can be used
 #' to derive a score.
-weights <- chi.squared(type ~ ., data = Zoo)
+weights <- Zoo %>% chi.squared(type ~ ., data = .)
 weights
 
-#' plot importance (ordered)
-str(weights)
-
-ggplot(as_tibble(weights, rownames = "feature"), aes(x = attr_importance, y = reorder(feature, attr_importance))) +
-  geom_bar(stat = "identity")
+#' plot importance in descending order (using `reorder` to order factor levels used by `ggplot`).
+ggplot(as_tibble(weights, rownames = "feature"),
+  aes(x = attr_importance, y = reorder(feature, attr_importance))) +
+  geom_bar(stat = "identity") +
+  xlab("Importance score") + ylab("Feature")
 
 #' Get the 5 best features
 subset <- cutoff.k(weights, 5)
 subset
 
-#' Use only the best 5 features to build a model
+#' Use only the best 5 features to build a model (`Fselector` provides `as.simple.formula`)
 f <- as.simple.formula(subset, "type")
 f
 
@@ -375,7 +375,7 @@ rpart.plot(m, extra = 2)
 Zoo %>% oneR(type ~ ., data = .)
 Zoo %>% gain.ratio(type ~ ., data = .)
 Zoo %>% information.gain(type ~ ., data = .)
-# linear.correlation for continuous attributes
+# Use `linear.correlation` for continuous attributes
 
 #' ## Feature Subset Selection
 #' Often features are related and calculating importance for each feature
@@ -398,9 +398,9 @@ evaluator <- function(subset) {
     trControl = trainControl(method = "boot", number = 5),
     tuneLength = 0)
   results <- model$resample$Accuracy
-  print(subset)
+  cat("Trying features:", paste(subset, collapse = " + "), "\n")
   m <- mean(results)
-  print(m)
+  cat("Accuracy:", round(m, 2), "\n\n")
   m
 }
 
@@ -423,10 +423,10 @@ features <- Zoo %>% colnames() %>% setdiff("type")
 #' First we use the original encoding of type as a factor with several values.
 
 tree_predator <- Zoo %>% rpart(predator ~ type, data = .)
-rpart.plot(tree_predator, extra = 2)
+rpart.plot(tree_predator, extra = 2, roundint = FALSE)
 
 #' __Note:__ Some splits use multiple values. Building the tree will become
-#' very slow if a factor has many values.
+#' extremely slow if a factor has many levels (different values) since the tree has to check all possible splits into two subsets. This situation should be avoided.
 #'
 #' Recode type as a set of 0-1 dummy variables using `class2ind`. See also
 #' `? dummyVars` in package `caret`.
@@ -435,17 +435,23 @@ Zoo_dummy <- as_tibble(class2ind(Zoo$type)) %>% mutate_all(as.factor) %>%
   add_column(predator = Zoo$predator)
 Zoo_dummy
 
-tree_predator <- Zoo_dummy %>% rpart(predator ~ ., data = .)
+tree_predator <- Zoo_dummy %>% rpart(predator ~ ., data = .,
+  control = rpart.control(minsplit = 2, cp = 0.01))
 rpart.plot(tree_predator, extra = 2, roundint = FALSE)
 
-#' Using `caret` on the orginal factor encoding automatically translates factors
+#' Using `caret` on the original factor encoding automatically translates factors
 #' (here type) into 0-1 dummy variables (e.g., `typeinsect = 0`).
 #' The reason is that some models cannot
-#' directly use factors.
-fit <- Zoo %>% train(predator ~ type, data = ., method = "rpart")
+#' directly use factors and `caret` tries to consistently work with
+#' all of them.
+fit <- Zoo %>% train(predator ~ type, data = ., method = "rpart",
+  control = rpart.control(minsplit = 2),
+  tuneGrid = data.frame(cp = 0.01))
+fit
+
 rpart.plot(fit$finalModel, extra = 2)
-
-
+#' _Note:_ To use a fixed value for the tuning parameter `cp`, we have to
+#' create a tuning grid that only contains that value.
 
 #' # Class Imbalance
 #'
