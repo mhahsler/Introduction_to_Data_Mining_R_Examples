@@ -349,8 +349,10 @@ library(FSelector)
 #' each feature is to the class variable.
 #' For discrete features (as in our case), the chi-square statistic can be used
 #' to derive a score.
-weights <- Zoo %>% chi.squared(type ~ ., data = .)
+weights <- Zoo %>% chi.squared(type ~ ., data = .) %>%
+  arrange(desc(attr_importance))
 weights
+
 
 #' plot importance in descending order (using `reorder` to order factor levels used by `ggplot`).
 ggplot(as_tibble(weights, rownames = "feature"),
@@ -371,20 +373,16 @@ rpart.plot(m, extra = 2)
 
 #' There are many alternative ways to calculate univariate importance
 #' scores (see package FSelector). Some of them (also) work for continuous
-#' features.
-Zoo %>% oneR(type ~ ., data = .)
-Zoo %>% gain.ratio(type ~ ., data = .)
-Zoo %>% information.gain(type ~ ., data = .)
-# Use `linear.correlation` for continuous attributes
+#' features. One example is the information gain ratio based on entropy as used in decision tree induction.
+Zoo %>% gain.ratio(type ~ ., data = .) %>%
+  arrange(desc(attr_importance))
+
 
 #' ## Feature Subset Selection
 #' Often features are related and calculating importance for each feature
 #' independently is not optimal. We can use greedy search heuristics. For
 #' example `cfs` uses correlation/entropy with best first search.
 Zoo %>% cfs(type ~ ., data = .)
-
-#' A consistency measure can also be used with best first search.
-Zoo %>% consistency(type ~ ., data = .)
 
 #' Black-box feature selection uses an evaluator function (the black box)
 #' to calculate a score to be maximized.
