@@ -452,7 +452,7 @@ fit
 rpart.plot(fit$finalModel, extra = 2)
 #' _Note:_ To use a fixed value for the tuning parameter `cp`, we have to
 #' create a tuning grid that only contains that value.
-
+#'
 #' # Class Imbalance
 #'
 #' Classifiers have a hard time to learn from data where we have much more observations for one class (called the majority class). This is called the class imbalance problem.
