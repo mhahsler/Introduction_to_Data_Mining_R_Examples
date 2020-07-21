@@ -467,22 +467,35 @@ ggplot(ruspini_scaled %>% add_column(outlier = lof >= 1.3), aes(x, y, color = ou
 #' There are many other outlier removal strategies available. See, e.g., package
 #' [outliers](https://cran.r-project.org/package=outliers).
 #'
+#'
+#'
 #' ## Clustering Tendency
 #' Most clustering algorithms will always produce a clustering, even if the
 #' data does not contain a cluster structure. It is typically good to check
 #' cluster tendency before attempting to cluster the data.
 #'
 #' We use again the smiley data.
-d_shapes <- dist(shapes)
+library(mlbench)
+shapes <- mlbench.smiley(n = 500, sd1 = 0.1, sd2 = 0.05)$x
+colnames(shapes) <- c("x", "y")
+shapes <- as_tibble(shapes)
+
+#' The first step is visual inspection using scatter plots.
+ggplot(shapes, aes(x = x, y = y)) + geom_point()
+
+#' Cluster tendency is typically indicated by several separated point clouds. Often an appropriate number of clusters can also be visually obtained by counting the number of point clouds. We see four clusters, but the mouth is not convex/spherical and thus will pose a problems to algorithms like k-means.
+#'
+#' If the data has more than two features then you can use a pairs plot (scatterplot matrix) or look at a scatterplot of the first two principal components using PCA.
 
 library(seriation)
 #' Visual Analysis for Cluster Tendency Assessment (VAT) reorders the
 #' objects to show potential clustering tendency as a block structure
-#' (dark blocks along the main diagonal).
+#' (dark blocks along the main diagonal). Usually they analyze the distance matrix. We scale the data before using Euclidean distance.
+d_shapes <- dist(scale(shapes))
 VAT(d_shapes)
 
-#' iVAT uses largest distances in all possible paths between the objects
-#' instead of the distances to make the block structure better visible.
+#' iVAT uses the largest distances for all possible paths between two objects
+#' instead of the direct distances to make the block structure better visible.
 iVAT(d_shapes)
 
 #' Both plots show a strong cluster structure with 4 clusters.
@@ -491,7 +504,9 @@ iVAT(d_shapes)
 data_random <- tibble(x = runif(500), y = runif(500))
 ggplot(data_random, aes(x, y)) + geom_point()
 
+#' No point clouds are visible, just noise.
+
 d_random <- dist(data_random)
 VAT(d_random)
 iVAT(d_random)
-#' There is very little structure visible.
+#' There is very little clustering structure visible indicating low clustering tendency and clustering should not be performed on this data. However, k-means can be used to partition the data into $k$ regions of roughly equivalent size. This can be used as a data-driven discretization of the space.
