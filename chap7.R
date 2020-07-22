@@ -118,12 +118,12 @@ library(dbscan)
 
 #' Parameters: minPts is often chosen as dimensionality of the data +1.
 #' Decide on epsilon using the knee in the kNN distance plot
-#' (seems to be around eps = .25).
+#' (seems to be around eps = .32).
 kNNdistplot(ruspini_scaled, k = 3)
-abline(h=.25, col="red")
+abline(h=.32, col="red")
 
 #' run dbscan
-db <- dbscan(ruspini_scaled, eps=.25, minPts=3)
+db <- dbscan(ruspini_scaled, eps=.32, minPts=3)
 db
 str(db)
 
@@ -194,11 +194,12 @@ library("e1071")
 cluster_cmeans <- cmeans(as.matrix(ruspini_scaled), centers = 4)
 cluster_cmeans
 
-#' Plot membership
+#' Plot membership (shown as small piecharts)
 library("scatterpie")
 ggplot()  +
   geom_scatterpie(data = cbind(ruspini_scaled, cluster_cmeans$membership),
     aes(x = x, y = y), cols = 3:6, legend_name = "Membership") + coord_equal()
+
 
 
 #' # Internal Cluster Validation
