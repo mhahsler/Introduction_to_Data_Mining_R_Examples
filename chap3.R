@@ -350,18 +350,19 @@ library(FSelector)
 #' For discrete features (as in our case), the chi-square statistic can be used
 #' to derive a score.
 weights <- Zoo %>% chi.squared(type ~ ., data = .) %>%
+  as_tibble(rownames = "feature") %>%
   arrange(desc(attr_importance))
 weights
 
 
 #' plot importance in descending order (using `reorder` to order factor levels used by `ggplot`).
-ggplot(as_tibble(weights, rownames = "feature"),
+ggplot(weights,
   aes(x = attr_importance, y = reorder(feature, attr_importance))) +
   geom_bar(stat = "identity") +
   xlab("Importance score") + ylab("Feature")
 
 #' Get the 5 best features
-subset <- cutoff.k(weights, 5)
+subset <- cutoff.k(weights %>% column_to_rownames("feature"), 5)
 subset
 
 #' Use only the best 5 features to build a model (`Fselector` provides `as.simple.formula`)
@@ -375,6 +376,7 @@ rpart.plot(m, extra = 2)
 #' scores (see package FSelector). Some of them (also) work for continuous
 #' features. One example is the information gain ratio based on entropy as used in decision tree induction.
 Zoo %>% gain.ratio(type ~ ., data = .) %>%
+  as_tibble(rownames = "feature") %>%
   arrange(desc(attr_importance))
 
 
@@ -402,7 +404,7 @@ evaluator <- function(subset) {
   m
 }
 
-#' Start with all features (not the class variable)
+#' Start with all features (but not the class variable `type`)
 features <- Zoo %>% colnames() %>% setdiff("type")
 
 #' There are several (greedy) search strategies available. These run
