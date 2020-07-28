@@ -42,15 +42,18 @@ library(caret)
 #' Create fixed sampling scheme (10-folds) so we can compare the models
 #' later on.
 train <- createFolds(Zoo$type, k = 10)
-
-
-#' For help with building models in caret see: ? train
+#' The fixed folds are used in `train()` with the argument
+#' `trControl = trainControl(method = "cv", indexOut = train))`. If you
+#' don't need fixed folds, then remove `indexOut = train`.
+#'
+#' For help with building models in caret see: `? train`
 #'
 #' __Note:__ Be careful if you have many `NA` values in your data. `train()`
 #' and cross-validation many fail in some cases. If that is the case then you
 #' can remove features (columns) which have many `NA`s, omit `NA`s using
 #' `na.omit()` or use imputation to replace them with reasonable
-#' values (e.g., by the feature mean or via kNN).
+#' values (e.g., by the feature mean or via kNN). Highly imbalanced datasets are also problematic since there is a chance that a fold does
+#' not contain examples of each class leading to a hard to understand error message.
 #'
 
 #' ## Conditional Inference Tree (Decision Tree)

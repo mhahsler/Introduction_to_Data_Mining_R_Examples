@@ -11,7 +11,7 @@
 
 <meta name="author" content="Michael Hahsler" />
 
-<meta name="date" content="2020-07-18" />
+<meta name="date" content="2020-07-28" />
 
 <title>R Code for Chapter 4 of Introduction to Data Mining: Classification: Alternative Techniques</title>
 
@@ -378,7 +378,7 @@ summary {
 
 <h1 class="title toc-ignore">R Code for Chapter 4 of Introduction to Data Mining: Classification: Alternative Techniques</h1>
 <h4 class="author">Michael Hahsler</h4>
-<h4 class="date">2020-07-18</h4>
+<h4 class="date">2020-07-28</h4>
 
 </div>
 
@@ -450,8 +450,9 @@ Zoo</code></pre>
 ##     lift</code></pre>
 <p>Create fixed sampling scheme (10-folds) so we can compare the models later on.</p>
 <pre class="r"><code>train &lt;- createFolds(Zoo$type, k = 10)</code></pre>
-<p>For help with building models in caret see: ? train</p>
-<p><strong>Note:</strong> Be careful if you have many <code>NA</code> values in your data. <code>train()</code> and cross-validation many fail in some cases. If that is the case then you can remove features (columns) which have many <code>NA</code>s, omit <code>NA</code>s using <code>na.omit()</code> or use imputation to replace them with reasonable values (e.g., by the feature mean or via kNN).</p>
+<p>The fixed folds are used in <code>train()</code> with the argument <code>trControl = trainControl(method = &quot;cv&quot;, indexOut = train))</code>. If you don’t need fixed folds, then remove <code>indexOut = train</code>.</p>
+<p>For help with building models in caret see: <code>? train</code></p>
+<p><strong>Note:</strong> Be careful if you have many <code>NA</code> values in your data. <code>train()</code> and cross-validation many fail in some cases. If that is the case then you can remove features (columns) which have many <code>NA</code>s, omit <code>NA</code>s using <code>na.omit()</code> or use imputation to replace them with reasonable values (e.g., by the feature mean or via kNN). Highly imbalanced datasets are also problematic since there is a chance that a fold does not contain examples of each class leading to a hard to understand error message.</p>
 <div id="conditional-inference-tree-decision-tree" class="section level2">
 <h2>Conditional Inference Tree (Decision Tree)</h2>
 <pre class="r"><code>ctreeFit &lt;- Zoo %&gt;% train(type ~ .,
@@ -468,15 +469,15 @@ ctreeFit</code></pre>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (10 fold) 
-## Summary of sample sizes: 91, 91, 93, 90, 92, 90, ... 
+## Summary of sample sizes: 91, 89, 92, 91, 93, 91, ... 
 ## Resampling results across tuning parameters:
 ## 
 ##   mincriterion  Accuracy  Kappa
-##   0.010         0.878     0.841
-##   0.255         0.878     0.841
-##   0.500         0.878     0.841
-##   0.745         0.878     0.841
-##   0.990         0.878     0.841
+##   0.010         0.882     0.846
+##   0.255         0.882     0.846
+##   0.500         0.882     0.846
+##   0.745         0.882     0.846
+##   0.990         0.882     0.846
 ## 
 ## Accuracy was used to select the optimal model using the largest value.
 ## The final value used for the model was mincriterion = 0.99.</code></pre>
@@ -504,35 +505,35 @@ C45Fit</code></pre>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (10 fold) 
-## Summary of sample sizes: 91, 91, 90, 91, 89, 90, ... 
+## Summary of sample sizes: 92, 90, 90, 91, 91, 92, ... 
 ## Resampling results across tuning parameters:
 ## 
 ##   C      M  Accuracy  Kappa
-##   0.010  1  0.971     0.961
-##   0.010  2  0.971     0.961
-##   0.010  3  0.971     0.961
-##   0.010  4  0.962     0.949
-##   0.010  5  0.943     0.925
-##   0.133  1  0.980     0.972
-##   0.133  2  0.971     0.961
-##   0.133  3  0.971     0.961
-##   0.133  4  0.962     0.949
-##   0.133  5  0.943     0.925
+##   0.010  1  0.980     0.974
+##   0.010  2  0.980     0.974
+##   0.010  3  0.971     0.962
+##   0.010  4  0.951     0.936
+##   0.010  5  0.940     0.922
+##   0.133  1  0.980     0.974
+##   0.133  2  0.980     0.974
+##   0.133  3  0.971     0.962
+##   0.133  4  0.951     0.936
+##   0.133  5  0.940     0.922
 ##   0.255  1  1.000     1.000
-##   0.255  2  0.991     0.989
-##   0.255  3  0.971     0.961
-##   0.255  4  0.962     0.949
-##   0.255  5  0.943     0.925
+##   0.255  2  1.000     1.000
+##   0.255  3  0.971     0.962
+##   0.255  4  0.951     0.936
+##   0.255  5  0.940     0.922
 ##   0.378  1  1.000     1.000
-##   0.378  2  0.991     0.989
-##   0.378  3  0.971     0.961
-##   0.378  4  0.962     0.949
-##   0.378  5  0.943     0.925
+##   0.378  2  1.000     1.000
+##   0.378  3  0.971     0.962
+##   0.378  4  0.951     0.936
+##   0.378  5  0.940     0.922
 ##   0.500  1  1.000     1.000
-##   0.500  2  0.991     0.989
-##   0.500  3  0.971     0.961
-##   0.500  4  0.962     0.949
-##   0.500  5  0.943     0.925
+##   0.500  2  1.000     1.000
+##   0.500  3  0.971     0.962
+##   0.500  4  0.951     0.936
+##   0.500  5  0.940     0.922
 ## 
 ## Accuracy was used to select the optimal model using the largest value.
 ## The final values used for the model were C = 0.255 and M = 1.</code></pre>
@@ -581,20 +582,20 @@ knnFit</code></pre>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (10 fold) 
-## Summary of sample sizes: 93, 92, 92, 91, 90, 90, ... 
+## Summary of sample sizes: 91, 89, 91, 92, 92, 90, ... 
 ## Resampling results across tuning parameters:
 ## 
 ##   k   Accuracy  Kappa
-##    1  0.991     0.989
-##    2  0.963     0.951
-##    3  0.954     0.940
-##    4  0.972     0.963
-##    5  0.954     0.940
-##    6  0.963     0.952
-##    7  0.954     0.940
-##    8  0.935     0.915
-##    9  0.914     0.888
-##   10  0.878     0.839
+##    1  1.000     1.000
+##    2  0.980     0.973
+##    3  0.931     0.910
+##    4  0.931     0.911
+##    5  0.952     0.937
+##    6  0.961     0.949
+##    7  0.941     0.922
+##    8  0.942     0.924
+##    9  0.922     0.897
+##   10  0.902     0.871
 ## 
 ## Accuracy was used to select the optimal model using the largest value.
 ## The final value used for the model was k = 1.</code></pre>
@@ -623,23 +624,23 @@ rulesFit</code></pre>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (10 fold) 
-## Summary of sample sizes: 93, 92, 92, 91, 90, 90, ... 
+## Summary of sample sizes: 90, 91, 92, 90, 90, 91, ... 
 ## Resampling results across tuning parameters:
 ## 
 ##   threshold  pruned  Accuracy  Kappa
-##   0.010      yes     0.991     0.989
-##   0.010      no      1.000     1.000
-##   0.133      yes     0.991     0.989
-##   0.133      no      1.000     1.000
-##   0.255      yes     0.991     0.989
-##   0.255      no      1.000     1.000
-##   0.378      yes     0.991     0.989
-##   0.378      no      1.000     1.000
-##   0.500      yes     0.991     0.989
-##   0.500      no      1.000     1.000
+##   0.010      yes     0.98      0.974
+##   0.010      no      0.96      0.948
+##   0.133      yes     0.98      0.974
+##   0.133      no      0.96      0.948
+##   0.255      yes     0.98      0.974
+##   0.255      no      0.96      0.948
+##   0.378      yes     0.98      0.974
+##   0.378      no      0.96      0.948
+##   0.500      yes     0.98      0.974
+##   0.500      no      0.96      0.948
 ## 
 ## Accuracy was used to select the optimal model using the largest value.
-## The final values used for the model were threshold = 0.5 and pruned = no.</code></pre>
+## The final values used for the model were threshold = 0.5 and pruned = yes.</code></pre>
 <pre class="r"><code>rulesFit$finalModel</code></pre>
 <pre><code>## PART decision list
 ## ------------------
@@ -659,17 +660,13 @@ rulesFit</code></pre>
 ## finsTRUE &gt; 0: fish (13.0)
 ## 
 ## backboneTRUE &gt; 0 AND
-## tailTRUE &gt; 0 AND
-## aquaticTRUE &lt;= 0: reptile (4.0)
+## tailTRUE &gt; 0: reptile (6.0/1.0)
 ## 
-## aquaticTRUE &gt; 0 AND
-## venomousTRUE &lt;= 0: amphibian (3.0)
+## aquaticTRUE &gt; 0: amphibian (3.0)
 ## 
-## aquaticTRUE &lt;= 0: mollusc.et.al (2.0)
+## : mollusc.et.al (2.0)
 ## 
-## : reptile (2.0/1.0)
-## 
-## Number of Rules  :   9</code></pre>
+## Number of Rules  :   8</code></pre>
 </div>
 <div id="linear-support-vector-machines" class="section level2">
 <h2>Linear Support Vector Machines</h2>
@@ -687,11 +684,11 @@ svmFit</code></pre>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (10 fold) 
-## Summary of sample sizes: 91, 91, 91, 90, 89, 92, ... 
+## Summary of sample sizes: 92, 91, 92, 91, 90, 90, ... 
 ## Resampling results:
 ## 
 ##   Accuracy  Kappa
-##   1         1    
+##   0.991     0.988
 ## 
 ## Tuning parameter &#39;C&#39; was held constant at a value of 1</code></pre>
 <pre class="r"><code>svmFit$finalModel</code></pre>
@@ -723,7 +720,7 @@ randomForestFit</code></pre>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (10 fold) 
-## Summary of sample sizes: 90, 91, 90, 91, 90, 91, ... 
+## Summary of sample sizes: 91, 90, 91, 91, 91, 92, ... 
 ## Resampling results across tuning parameters:
 ## 
 ##   mtry  Accuracy  Kappa
@@ -743,7 +740,7 @@ randomForestFit</code></pre>
 ##                      Number of trees: 500
 ## No. of variables tried at each split: 2
 ## 
-##         OOB estimate of  error rate: 4.95%
+##         OOB estimate of  error rate: 3.96%
 ## Confusion matrix:
 ##               mammal bird reptile fish amphibian insect mollusc.et.al
 ## mammal            41    0       0    0         0      0             0
@@ -752,7 +749,7 @@ randomForestFit</code></pre>
 ## fish               0    0       0   13         0      0             0
 ## amphibian          0    0       0    0         4      0             0
 ## insect             0    0       0    0         0      8             0
-## mollusc.et.al      0    0       0    0         0      2             8
+## mollusc.et.al      0    0       0    0         0      1             9
 ##               class.error
 ## mammal                0.0
 ## bird                  0.0
@@ -760,7 +757,7 @@ randomForestFit</code></pre>
 ## fish                  0.0
 ## amphibian             0.0
 ## insect                0.0
-## mollusc.et.al         0.2</code></pre>
+## mollusc.et.al         0.1</code></pre>
 </div>
 <div id="gradient-boosted-decision-trees-xgboost" class="section level2">
 <h2>Gradient Boosted Decision Trees (xgboost)</h2>
@@ -787,11 +784,11 @@ xgboostFit</code></pre>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (10 fold) 
-## Summary of sample sizes: 92, 91, 89, 93, 90, 91, ... 
+## Summary of sample sizes: 92, 90, 90, 89, 91, 91, ... 
 ## Resampling results:
 ## 
 ##   Accuracy  Kappa
-##   0.982     0.977
+##   1         1    
 ## 
 ## Tuning parameter &#39;nrounds&#39; was held constant at a value of 20
 ## Tuning
@@ -800,7 +797,7 @@ xgboostFit</code></pre>
 ##  constant at a value of 0.5</code></pre>
 <pre class="r"><code>xgboostFit$finalModel</code></pre>
 <pre><code>## ##### xgb.Booster
-## raw: 45.2 Kb 
+## raw: 43.9 Kb 
 ## call:
 ##   xgboost::xgb.train(params = list(eta = param$eta, max_depth = param$max_depth, 
 ##     gamma = param$gamma, colsample_bytree = param$colsample_bytree, 
@@ -842,23 +839,23 @@ nnetFit</code></pre>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (10 fold) 
-## Summary of sample sizes: 91, 89, 91, 91, 93, 90, ... 
+## Summary of sample sizes: 91, 92, 90, 90, 91, 89, ... 
 ## Resampling results across tuning parameters:
 ## 
 ##   size  decay  Accuracy  Kappa
-##   1     0e+00  0.813     0.738
-##   1     1e-04  0.788     0.714
-##   1     1e-03  0.906     0.876
-##   1     1e-02  0.840     0.790
-##   1     1e-01  0.740     0.650
-##   3     0e+00  0.930     0.901
-##   3     1e-04  0.951     0.933
-##   3     1e-03  1.000     1.000
+##   1     0e+00  0.765     0.676
+##   1     1e-04  0.715     0.597
+##   1     1e-03  0.901     0.864
+##   1     1e-02  0.834     0.781
+##   1     1e-01  0.734     0.639
+##   3     0e+00  0.950     0.934
+##   3     1e-04  0.959     0.943
+##   3     1e-03  0.990     0.987
 ##   3     1e-02  1.000     1.000
-##   3     1e-01  0.982     0.977
-##   5     0e+00  0.982     0.977
-##   5     1e-04  0.981     0.976
-##   5     1e-03  0.991     0.989
+##   3     1e-01  0.960     0.948
+##   5     0e+00  0.950     0.931
+##   5     1e-04  0.990     0.987
+##   5     1e-03  1.000     1.000
 ##   5     1e-02  1.000     1.000
 ##   5     1e-01  1.000     1.000
 ##   7     0e+00  1.000     1.000
@@ -914,24 +911,24 @@ resamps</code></pre>
 ## 
 ## Accuracy 
 ##               Min. 1st Qu. Median  Mean 3rd Qu. Max. NA&#39;s
-## ctree        0.727   0.818  0.894 0.878   0.907    1    0
-## C45          1.000   1.000  1.000 1.000   1.000    1    0
-## SVM          1.000   1.000  1.000 1.000   1.000    1    0
-## KNN          0.909   1.000  1.000 0.991   1.000    1    0
-## rules        1.000   1.000  1.000 1.000   1.000    1    0
-## randomForest 1.000   1.000  1.000 1.000   1.000    1    0
-## xgboost      0.909   1.000  1.000 0.982   1.000    1    0
-## NeuralNet    1.000   1.000  1.000 1.000   1.000    1    0
+## ctree        0.800   0.825    0.9 0.882   0.907    1    0
+## C45          1.000   1.000    1.0 1.000   1.000    1    0
+## SVM          0.909   1.000    1.0 0.991   1.000    1    0
+## KNN          1.000   1.000    1.0 1.000   1.000    1    0
+## rules        0.900   1.000    1.0 0.980   1.000    1    0
+## randomForest 1.000   1.000    1.0 1.000   1.000    1    0
+## xgboost      1.000   1.000    1.0 1.000   1.000    1    0
+## NeuralNet    1.000   1.000    1.0 1.000   1.000    1    0
 ## 
 ## Kappa 
 ##               Min. 1st Qu. Median  Mean 3rd Qu. Max. NA&#39;s
-## ctree        0.656   0.769  0.857 0.841   0.879    1    0
+## ctree        0.740   0.771  0.868 0.846   0.879    1    0
 ## C45          1.000   1.000  1.000 1.000   1.000    1    0
-## SVM          1.000   1.000  1.000 1.000   1.000    1    0
-## KNN          0.885   1.000  1.000 0.989   1.000    1    0
-## rules        1.000   1.000  1.000 1.000   1.000    1    0
+## SVM          0.882   1.000  1.000 0.988   1.000    1    0
+## KNN          1.000   1.000  1.000 1.000   1.000    1    0
+## rules        0.868   1.000  1.000 0.974   1.000    1    0
 ## randomForest 1.000   1.000  1.000 1.000   1.000    1    0
-## xgboost      0.885   1.000  1.000 0.977   1.000    1    0
+## xgboost      1.000   1.000  1.000 1.000   1.000    1    0
 ## NeuralNet    1.000   1.000  1.000 1.000   1.000    1    0</code></pre>
 <pre class="r"><code>difs &lt;- diff(resamps)
 difs</code></pre>
@@ -953,43 +950,43 @@ difs</code></pre>
 ## Lower diagonal: p-value for H0: difference = 0
 ## 
 ## Accuracy 
-##              ctree  C45      SVM      KNN      rules    randomForest xgboost 
-## ctree               -0.12202 -0.12202 -0.11293 -0.12202 -0.12202     -0.10384
-## C45          0.0256           0.00000  0.00909  0.00000  0.00000      0.01818
-## SVM          0.0256 NA                 0.00909  0.00000  0.00000      0.01818
-## KNN          0.0354 1.0000   1.0000            -0.00909 -0.00909      0.00909
-## rules        0.0256 NA       NA       1.0000             0.00000      0.01818
-## randomForest 0.0256 NA       NA       1.0000   NA                     0.01818
-## xgboost      0.0150 1.0000   1.0000   1.0000   1.0000   1.0000               
-## NeuralNet    0.0256 NA       NA       1.0000   NA       NA           1.0000  
+##              ctree   C45      SVM      KNN      rules    randomForest xgboost 
+## ctree                -0.11818 -0.10909 -0.11818 -0.09818 -0.11818     -0.11818
+## C45          0.00444           0.00909  0.00000  0.02000  0.00000      0.00000
+## SVM          0.02124 1.00000           -0.00909  0.01091 -0.00909     -0.00909
+## KNN          0.00444 NA       1.00000            0.02000  0.00000      0.00000
+## rules        0.02165 1.00000  1.00000  1.00000           -0.02000     -0.02000
+## randomForest 0.00444 NA       1.00000  NA       1.00000                0.00000
+## xgboost      0.00444 NA       1.00000  NA       1.00000  NA                   
+## NeuralNet    0.00444 NA       1.00000  NA       1.00000  NA           NA      
 ##              NeuralNet
-## ctree        -0.12202 
+## ctree        -0.11818 
 ## C45           0.00000 
-## SVM           0.00000 
-## KNN          -0.00909 
-## rules         0.00000 
+## SVM          -0.00909 
+## KNN           0.00000 
+## rules        -0.02000 
 ## randomForest  0.00000 
-## xgboost      -0.01818 
+## xgboost       0.00000 
 ## NeuralNet             
 ## 
 ## Kappa 
-##              ctree  C45     SVM     KNN     rules   randomForest xgboost
-## ctree               -0.1590 -0.1590 -0.1475 -0.1590 -0.1590      -0.1361
-## C45          0.0225          0.0000  0.0115  0.0000  0.0000       0.0229
-## SVM          0.0225 NA               0.0115  0.0000  0.0000       0.0229
-## KNN          0.0320 1.0000  1.0000          -0.0115 -0.0115       0.0115
-## rules        0.0225 NA      NA      1.0000           0.0000       0.0229
-## randomForest 0.0225 NA      NA      1.0000  NA                    0.0229
-## xgboost      0.0150 1.0000  1.0000  1.0000  1.0000  1.0000              
-## NeuralNet    0.0225 NA      NA      1.0000  NA      NA           1.0000 
+##              ctree   C45     SVM     KNN     rules   randomForest xgboost
+## ctree                -0.1543 -0.1425 -0.1543 -0.1282 -0.1543      -0.1543
+## C45          0.00419          0.0118  0.0000  0.0261  0.0000       0.0000
+## SVM          0.02061 1.00000         -0.0118  0.0143 -0.0118      -0.0118
+## KNN          0.00419 NA      1.00000          0.0261  0.0000       0.0000
+## rules        0.02104 1.00000 1.00000 1.00000         -0.0261      -0.0261
+## randomForest 0.00419 NA      1.00000 NA      1.00000               0.0000
+## xgboost      0.00419 NA      1.00000 NA      1.00000 NA                  
+## NeuralNet    0.00419 NA      1.00000 NA      1.00000 NA           NA     
 ##              NeuralNet
-## ctree        -0.1590  
+## ctree        -0.1543  
 ## C45           0.0000  
-## SVM           0.0000  
-## KNN          -0.0115  
-## rules         0.0000  
+## SVM          -0.0118  
+## KNN           0.0000  
+## rules        -0.0261  
 ## randomForest  0.0000  
-## xgboost      -0.0229  
+## xgboost       0.0000  
 ## NeuralNet</code></pre>
 <p>All perform similarly well except ctree</p>
 </div>
