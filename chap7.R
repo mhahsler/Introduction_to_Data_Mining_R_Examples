@@ -35,7 +35,7 @@ ggplot(ruspini_scaled, aes(x = x, y = y)) + geom_point()
 #' # Clustering methods
 #' ## k-means Clustering
 #'
-#' Assumes Euclidean distances. We use k = 10 clusters and run the algorithm 10 times with random initialized centroids. The best result is returned.
+#' k-means implicitly assumes Euclidean distances. We use $k = 10$ clusters and run the algorithm 10 times with random initialized centroids. The best result is returned.
 km <- kmeans(ruspini_scaled, centers = 4, nstart = 10)
 km
 
@@ -83,23 +83,24 @@ hc <- hclust(d, method = "complete")
 
 #' Dendrogram
 plot(hc)
-rect.hclust(hc, k=4)
-
-plot(as.dendrogram(hc), leaflab="none") # plot dendrogram without leaf labels
+rect.hclust(hc, k = 4)
 
 #' Use ggplot
 library("ggdendro")
-ggdendrogram(hc)
-
+ggdendrogram(hc, labels = FALSE, theme_dendro = FALSE)
 #' More plotting options for dendrograms, including plotting
 #' parts of large dendrograms can be found [here.](https://rpubs.com/gaston/dendrograms)
+#'
+#' Calculate cluster assignments by cutting the dendrogram into four parts and add the cluster id to the data.
+cluster_complete <- ruspini_scaled %>%
+  add_column(cluster = factor(cutree(hc, k = 4)))
+cluster_complete
 
-cluster_complete <- cutree(hc, k = 4)
-ggplot(ruspini_scaled %>% add_column(cluster = factor(cluster_complete)),
-  aes(x, y, color = cluster)) + geom_point()
+ggplot(cluster_complete, aes(x, y, color = cluster)) +
+  geom_point()
 
 #' Try 8 clusters
-ggplot(ruspini_scaled %>% add_column(cluster = factor(cutree(hc, k=8))),
+ggplot(ruspini_scaled %>% add_column(cluster = factor(cutree(hc, k = 8))),
   aes(x, y, color = cluster)) + geom_point()
 
 #' Clustering with single link
@@ -107,9 +108,9 @@ hc_single <- hclust(d, method = "single")
 plot(hc_single)
 rect.hclust(hc_single, k = 4)
 
-cluster_single <- cutree(hc_single, k = 4)
-ggplot(ruspini_scaled %>% add_column(cluster = factor(cluster_single)),
-  aes(x, y, color = cluster)) + geom_point()
+cluster_single <- ruspini_scaled %>%
+  add_column(cluster = factor(cutree(hc_single, k = 4)))
+ggplot(cluster_single, aes(x, y, color = cluster)) + geom_point()
 
 
 #' ## Density-based clustering with DBSCAN
@@ -120,10 +121,10 @@ library(dbscan)
 #' Decide on epsilon using the knee in the kNN distance plot
 #' (seems to be around eps = .32).
 kNNdistplot(ruspini_scaled, k = 3)
-abline(h=.32, col="red")
+abline(h = .32, col = "red")
 
 #' run dbscan
-db <- dbscan(ruspini_scaled, eps=.32, minPts=3)
+db <- dbscan(ruspini_scaled, eps = .32, minPts = 3)
 db
 str(db)
 
@@ -219,8 +220,8 @@ fpc::cluster.stats(d, km$cluster)
 
 sapply(list(
   km = km$cluster,
-  hc_compl = cluster_complete,
-  hc_single = cluster_single),
+  hc_compl = cutree(hc, k = 4),
+  hc_single = cutree(hc_single, k = 4)),
        FUN = function(x)
          fpc::cluster.stats(d, x))[c("within.cluster.ss", "avg.silwidth"), ]
 
