@@ -23,10 +23,12 @@ library(ggplot2)
 data(Zoo, package="mlbench")
 head(Zoo)
 
-#' Get summary statistics
+#' _Note:_ data.frames in R can have row names. The Zoo data set uses the animal name as the row names. tibbles from `tidyverse` do not support row names. To keep the animal name you can add a column with the animal name.
+as_tibble(Zoo, rownames = "animal")
+#' You will have to remove the animal column before learning a model! In the following I use the data.frame.
 #'
-#' translate all the TRUE/FALSE values into factors (nominal). This is often needed for
-#' building models.
+#'
+#' I translate all the TRUE/FALSE values into factors (nominal). This is often needed for building models. Always check `summary()` to make sure the data is ready for model learning.
 Zoo <- Zoo %>%
   modify_if(is.logical, factor, levels = c(TRUE, FALSE)) %>%
   modify_if(is.character, factor)
@@ -390,7 +392,7 @@ Zoo %>% cfs(type ~ ., data = .)
 #' to calculate a score to be maximized.
 #' First, we define an evaluation function that builds a model given a subset
 #' of features and calculates a quality score. We use here the
-#' average for 5 bootstrap samples, no tuning (to be faster), and the
+#' average for 5 bootstrap samples (`method = "cv"` can also be used instead), no tuning (to be faster), and the
 #' average accuracy as the score.
 evaluator <- function(subset) {
   model <- Zoo %>% train(as.simple.formula(subset, "type"),
