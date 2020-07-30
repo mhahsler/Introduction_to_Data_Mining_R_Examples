@@ -22,14 +22,18 @@ library(ggplot2)
 #' ruspini_scaled data is in package cluster. It is a very simple data set with well separated clusters.
 data(ruspini, package = "cluster")
 
-#' Shuffle rows
+#' Shuffle rows (using `sample_frac` which samples by default 100%).
 ruspini <- as_tibble(ruspini) %>% sample_frac()
 ruspini
 
 ggplot(ruspini, aes(x = x, y = y)) + geom_point()
 
 #' Scale each column in the data to zero mean and unit standard deviation (z-scores). This prevents one attribute with a large range to dominate the others for the distance calculation.
-ruspini_scaled <- ruspini %>% scale() %>% as_tibble()
+#' _Note:_ The standard `scale()` function scales whole data.frames so we implement a function for a single vector and apply it to all numeric
+#' columns.
+scale2 <- function(x) (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)
+ruspini_scaled <- ruspini %>% mutate_if(is.numeric, scale2)
+
 ggplot(ruspini_scaled, aes(x = x, y = y)) + geom_point()
 
 #' # Clustering methods
