@@ -145,28 +145,51 @@ ggplot(iris, aes(Species, Sepal.Length)) + geom_boxplot()
 #' Group-wise averages
 iris %>% group_by(Species) %>% summarize_if(is.numeric, mean)
 
+#' To compare the distribution of the four features using a ggplot boxplot,
+#' we first have to transform the data into long format (i.e., all feature values are combined into a single column).
+library(tidyr)
+iris_long <- iris %>% mutate(id = row_number()) %>% pivot_longer(1:4)
+ggplot(iris_long, aes(name, value)) + geom_boxplot()
+
+
 #' ### ECDF: Empirical Cumulative Distribution Function
+#'
+#' Overlayed on the histogram (scaled as a density)
 e <- iris %>% pull(Petal.Length) %>% ecdf()
 e
-ggplot(iris, aes(Petal.Width)) + stat_ecdf()
+ggplot(iris, aes(Petal.Width)) +
+  geom_histogram(bins = 20, aes(y = ..density..), fill = "gray") +
+  stat_ecdf(col = "red")
+
 
 #' ### Data matrix visualization
-ggplot(iris %>% mutate(id = row_number()) %>% pivot_longer(cols = 1:4),
+#'
+#' We need the long format
+iris_long <- iris %>% mutate(id = row_number()) %>% pivot_longer(1:4)
+head(iris_long)
+
+ggplot(iris_long,
   aes(x = name, y = id, fill = value)) + geom_tile() +
   scale_fill_viridis_c()
 
 #' values smaller than the average are blue and larger ones are red
-iris_scaled <- scale(iris %>% select(-Species))
+iris_scaled <- iris %>% select(-Species) %>% scale()
+iris_scaled_long <- iris_scaled %>% as_tibble() %>%
+  mutate(id = row_number()) %>% pivot_longer(cols = 1:4)
 
-ggplot(as_tibble(iris_scaled) %>% mutate(id = row_number()) %>% pivot_longer(cols = 1:4),
+ggplot(iris_scaled_long,
   aes(x = name, y = id, fill = value)) + geom_tile() +
   scale_fill_gradient2()
 
 #' Reorder
 library(seriation)
-o <- seriate(iris_scaled)
-iris_ordered <- permute(iris_scaled, o)
-ggplot(as_tibble(iris_ordered) %>% mutate(id = row_number()) %>% pivot_longer(cols = 1:4),
+iris_scaled_matrix <- as.matrix(iris_scaled)
+o <- seriate(iris_scaled_matrix)
+iris_ordered <- permute(iris_scaled_matrix, o)
+iris_ordered_long <- iris_ordered %>% as_tibble %>%
+  mutate(id = row_number()) %>% pivot_longer(cols = 1:4)
+
+ggplot(iris_ordered_long,
   aes(x = name, y = id, fill = value)) + geom_tile() +
   scale_fill_gradient2()
 
