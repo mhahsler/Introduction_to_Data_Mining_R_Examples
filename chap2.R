@@ -87,9 +87,13 @@ ggpairs(s2, aes(color = Species))
 #' # Features
 #' ## Dimensionality reduction (Principal Components Analysis - PCA)
 #'
-#' Interactive 3d plots (needs package plotly)
-library(plotly)
-plot_ly(iris, x = ~Sepal.Length, y = ~Petal.Length, z = ~Sepal.Width,
+#' Represents high-dimensional data in fewer dimensions. Points that are
+#' close together in the high-dimensional space, tend also be close together in the lower-dimensional space.
+#' We often use two dimensions for visualizing high-dimensional data as a scatter plot.
+#'
+#' Look at the 3d data using an interactive 3d plot (needs package plotly)
+#library(plotly) # I don't load the package because it's namespace clashes with select in dplyr.
+plotly::plot_ly(iris, x = ~Sepal.Length, y = ~Petal.Length, z = ~Sepal.Width,
   size = ~Petal.Width, color = ~Species, type="scatter3d",
  mode="markers")
 
@@ -105,6 +109,24 @@ ggplot(as_tibble(pc$x), aes(x = PC1, y = PC2, color = iris$Species)) + geom_poin
 
 #' Plot the projected data and add the original dimensions as arrows (this can be done with ggplot2, but is currently painful; see https://stackoverflow.com/questions/6578355/plotting-pca-biplot-with-ggplot2).
 biplot(pc, col = c("grey", "red"))
+
+#' Another popular method to project data in lower dimensions for visualization is __t-distributed stochastic neighbor embedding (t-SNE)__ available in package `Rtsne`.
+#'
+#' __Multi-dimensional scaling (MDS)__ does the reverse process. It takes distances and produces a space where points are placed to represent these distances as well as possible. Let's calculate
+#' distances in the 4-d space of iris.
+
+d <- iris %>% select(-Species) %>% dist()
+
+#' and do metric (classic) MDS to reconstruct a 2-d space.
+fit <- cmdscale(d, k = 2)
+colnames(fit) <- c("comp1", "comp2")
+fit <- as_tibble(fit)
+
+ggplot(fit, aes(x = comp1, y = comp2, color = iris$Species)) + geom_point()
+
+#' Non-parametric scaling is available in package `MASS` as functions
+#' `isoMDS` and `sammon`.
+#'
 
 #' ## Feature selection
 #'
