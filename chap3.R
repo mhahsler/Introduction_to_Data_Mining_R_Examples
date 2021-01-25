@@ -74,7 +74,7 @@ rpart.plot(tree_default, extra = 2)
 #' (see: `?rpart.control`).
 #' _Note:_ full trees overfit the training data!
 tree_full <- Zoo %>% rpart(type ~., data = ., control = rpart.control(minsplit = 2, cp = 0))
-rpart.plot(tree_full, extra = 2)
+rpart.plot(tree_full, extra = 2, roundint=FALSE)
 tree_full
 
 #' Training error on tree with pre-pruning
@@ -126,84 +126,37 @@ my_animal
 #' Make a prediction using the default tree
 predict(tree_default , my_animal, type = "class")
 
-#' # Model Evaluation
-#' ## Pure R Implementation
-#' ### Holdout Sample
+#' # Model Evaluation with Caret
 #'
-#' Use a simple split into 2/3 training and 1/3 testing data. Find the size
-#' of the training set.
-
-n_train <- floor(nrow(Zoo) * .66)
-n_train
-
-#' Randomly choose (without replacement) the rows of the training examples.
-train_id <- sample(seq_len(nrow(Zoo)), n_train)
-head(train_id)
-
-#' Split the data
-train <- Zoo %>% slice(train_id)
-test <- Zoo %>% slice(-train_id) %>% select(-type)
-test_type <- Zoo %>% slice(-train_id) %>% pull(type)
-
-tree <- train %>% rpart(type ~., data = ., control = rpart.control(minsplit = 2))
-
-#' Training error (on training data)
-accuracy(train$type, predict(tree, train, type="class"))
-
-#' Generalization error (on unseen testing data)
-accuracy(test_type, predict(tree, test, type="class"))
-
-#' ### 10-Fold Cross Validation
-#'
-#' add shuffled fold ids
-k <- 10
-
-Zoo_k <- Zoo %>% add_column(
-  fold = head(rep(seq_len(k), times = ceiling(nrow(Zoo) / k)), nrow(Zoo)) %>%
-      sample())
-
-head(Zoo_k)
-
-#' Fold sizes
-Zoo_k %>% pull(fold) %>% table()
-
-
-#' Do each fold
-accs <- rep(NA, k)
-for(i in seq_len(k)) {
-  train <- Zoo_k %>% filter(fold != i) %>% select(!fold)
-  test <- Zoo_k %>% filter(fold == i) %>% select(!fold)
-  tree <- train %>%
-      rpart(type ~., data = ., control = rpart.control(minsplit = 2))
-    accs[i] <- accuracy(test %>% pull(type), predict(tree, test, type = "class"))
-}
-accs
-
-#' Report the average
-accs %>% mean()
-
-#' ## Caret: For Easier Model Building and Evaluation
 #' see http://cran.r-project.org/web/packages/caret/vignettes/caret.pdf
-#'
-#' Cross-validation runs can be done in parallel. We need to enable multi-core support for `caret` using packages `foreach` and `doParallel`.
+library(caret)
+
+#' Cross-validation runs are independent and can be done in parallel. We need to enable multi-core support for `caret` using packages `foreach` and `doParallel`.
 library(doParallel)
 registerDoParallel()
 getDoParWorkers()
 #'
-#' ### k-fold Cross Validation
-#' caret packages training and testing into a single function called `train()`.
-#' It internally splits the data into training and testing sets and thus will
-#' provide you with generalization error estimates. `trainControl` is used
+#' ## Hold out test data
+#'
+#' Partition data 80%/20%.
+inTrain <- createDataPartition(y = Zoo$type, p = .8, list = FALSE)
+training <- Zoo %>% slice(inTrain)
+testing <- Zoo %>% slice(-inTrain)
+
+#'
+#' ## Learn model and tune hyperparameters
+#'
+#' caret packages training and validation for hyperparameter tuning into a single function called `train()`.
+#' It internally splits the data into training and validation sets and thus will
+#' provide you with error estimates for different hyperparameter settings. `trainControl` is used
 #' to choose how testing is performed.
 #'
-#' Train also tries to tune extra parameters by trying different values.
 #' For rpart, train tries to tune the cp parameter (tree complexity)
 #' using accuracy to chose the best model. I set minsplit to 2 since we have
 #' not much data.
 #' __Note:__ Parameters used for tuning (in this case `cp`) need to be set using
 #' a data.frame in the argument `tuneGrid`! Setting it in control will be ignored.
-library(caret)
-fit <- Zoo %>%
+fit <- training %>%
   train(type ~ .,
     data = . ,
     method = "rpart",
@@ -211,12 +164,12 @@ fit <- Zoo %>%
     trControl = trainControl(method = "cv", number = 10),
     tuneLength = 5)
 fit
-#' __Note:__ Train has built 10 trees. Accuracy and kappa for each tree/test fold
-#' can be obtained.
-fit$resample
+#' __Note:__ Train has built 10 trees and the reported values for accuracy and Kappa are the averages.
+
+ggplot(fit)
 
 #' A model using the best tuning parameters
-#' and using all the data is available as `fit$finalModel`.
+#' and using all the data supplied to `train()` is available as `fit$finalModel`.
 
 rpart.plot(fit$finalModel, extra = 2)
 
@@ -232,46 +185,15 @@ imp
 ggplot(imp)
 
 #' __Note:__ Not all models provide a variable importance function. In this case caret might calculate varImp by itself and ignore the model (see `? varImp`)!
+
 #'
-#' ### Repeated Bootstrap Sampling
-#' An alternative to CV is repeated bootstrap sampling. It will give you
-#' very similar estimates.
-fit <- Zoo %>% train(type ~ .,
-  data = .,
-  method = "rpart",
-  control=rpart.control(minsplit=2),
-  trControl = trainControl(method = "boot", number = 10),
-  tuneLength = 5)
-fit
-
-#' ### Holdout Sample
+#' ## Testing: Confusion Matrix and Confidence Interval for Accuracy
 #'
-#' Partition data 66%/34%. __Note:__ CV and repeated bootstrap sampling
-#' is typically preferred.
-inTrain <- createDataPartition(y = Zoo$type, p = .66, list = FALSE)
-training <- Zoo %>% slice(inTrain)
-testing <- Zoo %>% slice(-inTrain)
-
-#' Find best model. For tuning bootstrap sampling is used on the training data and `tuneLength` many parameters are checked. The best parameter is ued to learn the final model on all the training data.
-fit <- training %>% train(type ~ .,
-  data = .,
-  method = "rpart",
-  control = rpart.control(minsplit = 2),
-  trControl = trainControl(method = "boot"),
-  tuneLength = 20)
-fit
-
-ggplot(fit)
-
 #' Use the best model on the test data
-fit$finalModel
 pred <- predict(fit, newdata = testing)
 head(pred)
-
-#' ## Confusion Matrix and Confidence Interval for Accuracy
 #'
 #' Caret's `confusionMatrix()` function calculates accuracy, confidence intervals, kappa and many more evaluation metrics. You need to use separate test data to create a confusion matrix based on the generalization error.
-pred <- predict(fit, newdata = testing)
 confusionMatrix(data = pred, ref = testing$type)
 
 #'
@@ -297,11 +219,13 @@ confusionMatrix(data = pred, ref = testing$type)
 #'   likely happens for variables which have one very rare value. You may have to
 #'   remove the variable.
 #'
-#' ## Model Comparison
+#' # Model Comparison
+#'
+#' We will compare decision trees with a k-nearest neighbors (kNN) classifier.
 library(caret)
 
 #' Create fixed sampling scheme (10-folds) so we compare the different models
-#' using exactly the same folds.
+#' using exactly the same folds. It iis specified as `trControl` during training.
 train <- createFolds(Zoo$type, k = 10)
 
 #' Build models
@@ -313,7 +237,7 @@ rpartFit <- Zoo %>% train(type ~ .,
   )
 
 #' __Note:__ for kNN you might want to scale the data first. Logicals will
-#' be used as 0-1 variables in euclidean distance calculation.
+#' be used as 0-1 variables in Euclidean distance calculation.
 knnFit <- Zoo %>% train(type ~ .,
   data = .,
   method = "knn",
@@ -337,7 +261,7 @@ xyplot(resamps)
 difs <- diff(resamps)
 difs
 summary(difs)
-#' p-values tells you the probability of seeing an even more extreme value (difference between accuracy) given that the null hypothesis (difference = 0) is true. For a better classifier p-value should be less than .05 or 0.01. `diff` automatically applies Bonferoni correction for multiple testing. In this case, the classifiers do not perform statistically differently.
+#' p-values tells you the probability of seeing an even more extreme value (difference between accuracy) given that the null hypothesis (difference = 0) is true. For a better classifier p-value should be less than .05 or 0.01. `diff` automatically applies Bonferroni correction for multiple comparisons. In this case, the classifiers do not perform statistically differently.
 #'
 #' # Feature Selection and Feature Preparation
 
@@ -351,7 +275,7 @@ library(FSelector)
 #' each feature is to the class variable.
 #' For discrete features (as in our case), the chi-square statistic can be used
 #' to derive a score.
-weights <- Zoo %>% chi.squared(type ~ ., data = .) %>%
+weights <- training %>% chi.squared(type ~ ., data = .) %>%
   as_tibble(rownames = "feature") %>%
   arrange(desc(attr_importance))
 weights
@@ -371,13 +295,13 @@ subset
 f <- as.simple.formula(subset, "type")
 f
 
-m <- Zoo %>% rpart(f, data = .)
-rpart.plot(m, extra = 2)
+m <- training %>% rpart(f, data = .)
+rpart.plot(m, extra = 2, roundint=FALSE)
 
 #' There are many alternative ways to calculate univariate importance
 #' scores (see package FSelector). Some of them (also) work for continuous
 #' features. One example is the information gain ratio based on entropy as used in decision tree induction.
-Zoo %>% gain.ratio(type ~ ., data = .) %>%
+training %>% gain.ratio(type ~ ., data = .) %>%
   as_tibble(rownames = "feature") %>%
   arrange(desc(attr_importance))
 
@@ -386,7 +310,7 @@ Zoo %>% gain.ratio(type ~ ., data = .) %>%
 #' Often features are related and calculating importance for each feature
 #' independently is not optimal. We can use greedy search heuristics. For
 #' example `cfs` uses correlation/entropy with best first search.
-Zoo %>% cfs(type ~ ., data = .)
+training %>% cfs(type ~ ., data = .)
 
 #' Black-box feature selection uses an evaluator function (the black box)
 #' to calculate a score to be maximized.
@@ -395,7 +319,7 @@ Zoo %>% cfs(type ~ ., data = .)
 #' average for 5 bootstrap samples (`method = "cv"` can also be used instead), no tuning (to be faster), and the
 #' average accuracy as the score.
 evaluator <- function(subset) {
-  model <- Zoo %>% train(as.simple.formula(subset, "type"),
+  model <- training %>% train(as.simple.formula(subset, "type"),
     data = ., method = "rpart",
     trControl = trainControl(method = "boot", number = 5),
     tuneLength = 0)
@@ -407,7 +331,7 @@ evaluator <- function(subset) {
 }
 
 #' Start with all features (but not the class variable `type`)
-features <- Zoo %>% colnames() %>% setdiff("type")
+features <- training %>% colnames() %>% setdiff("type")
 
 #' There are several (greedy) search strategies available. These run
 #' for a while!
@@ -424,7 +348,7 @@ features <- Zoo %>% colnames() %>% setdiff("type")
 #' For example, let us try to predict if an animal is a predator given the type.
 #' First we use the original encoding of type as a factor with several values.
 
-tree_predator <- Zoo %>% rpart(predator ~ type, data = .)
+tree_predator <- training %>% rpart(predator ~ type, data = .)
 rpart.plot(tree_predator, extra = 2, roundint = FALSE)
 
 #' __Note:__ Some splits use multiple values. Building the tree will become
@@ -433,11 +357,11 @@ rpart.plot(tree_predator, extra = 2, roundint = FALSE)
 #' Recode type as a set of 0-1 dummy variables using `class2ind`. See also
 #' `? dummyVars` in package `caret`.
 library(caret)
-Zoo_dummy <- as_tibble(class2ind(Zoo$type)) %>% mutate_all(as.factor) %>%
-  add_column(predator = Zoo$predator)
-Zoo_dummy
+training_dummy <- as_tibble(class2ind(training$type)) %>% mutate_all(as.factor) %>%
+  add_column(predator = training$predator)
+training_dummy
 
-tree_predator <- Zoo_dummy %>% rpart(predator ~ ., data = .,
+tree_predator <- training_dummy %>% rpart(predator ~ ., data = .,
   control = rpart.control(minsplit = 2, cp = 0.01))
 rpart.plot(tree_predator, extra = 2, roundint = FALSE)
 
@@ -446,7 +370,7 @@ rpart.plot(tree_predator, extra = 2, roundint = FALSE)
 #' The reason is that some models cannot
 #' directly use factors and `caret` tries to consistently work with
 #' all of them.
-fit <- Zoo %>% train(predator ~ type, data = ., method = "rpart",
+fit <- training %>% train(predator ~ type, data = ., method = "rpart",
   control = rpart.control(minsplit = 2),
   tuneGrid = data.frame(cp = 0.01))
 fit
@@ -486,22 +410,32 @@ summary(Zoo_reptile)
 #' See if we have a class imbalance problem.
 ggplot(Zoo_reptile, aes(y = type)) + geom_bar()
 
+#' Create test and training data. I use here a 50/50 split to make sure that the test set has some samples of the rare reptile class.
+set.seed(1234)
+inTrain <- createDataPartition(y = Zoo_reptile$type, p = .5, list = FALSE)
+training_reptile <- Zoo_reptile %>% slice(inTrain)
+testing_reptile <- Zoo_reptile %>% slice(-inTrain)
+
 #' the new class variable is clearly not balanced. This is a problem
 #' for building a tree!
 #'
 #' ## Option 1: Use the Data As Is and Hope For The Best
 
-fit <- Zoo_reptile %>% train(type ~ .,
+fit <- training_reptile %>% train(type ~ .,
   data = .,
   method = "rpart",
   trControl = trainControl(method = "cv"))
+#'__Warnings:__ "There were missing values in resampled performance measures."
+#'means that some test folds did not contain examples of both classes.
+#'This is very likely with class imbalance and small datasets.
+
 fit
 rpart.plot(fit$finalModel, extra = 2)
 #' the tree predicts everything as non-reptile. Have a look at the error on
 #' the training set.
 
-confusionMatrix(data = predict(fit, Zoo_reptile),
-  ref = Zoo_reptile$type, positive = "reptile")
+confusionMatrix(data = predict(fit, testing_reptile),
+  ref = testing_reptile$type, positive = "reptile")
 #' The accuracy is exactly the same as the no-information rate
 #' and kappa is zero. Sensitivity is also zero, meaning that we do not identify
 #' any positive (reptile). If the cost of missing a positive is much
@@ -517,16 +451,18 @@ confusionMatrix(data = predict(fit, Zoo_reptile),
 #'
 #' ## Option 2: Balance Data With Resampling
 #'
-#' We use stradified sampling with replacement (to oversample the
+#' We use stratified sampling with replacement (to oversample the
 #' minority/positive class).
 #' You could also use SMOTE (in package __DMwR__) or other sampling strategies (e.g., from package __unbalanced__). We
-#' use only 50+50 observations here since our dataset has only 101 observations total.
+#' use 50+50 observations here (__Note:__ many samples will be chosen several times).
 library(sampling)
-id <- strata(Zoo_reptile, stratanames = "type", size = c(50, 50), method = "srswr")
-Zoo_reptile_balanced <- Zoo_reptile %>% slice(id$ID_unit)
-table(Zoo_reptile_balanced$type)
+set.seed(1000) # for repeatability
 
-fit <- Zoo_reptile_balanced %>% train(type ~ .,
+id <- strata(training_reptile, stratanames = "type", size = c(50, 50), method = "srswr")
+training_reptile_balanced <- training_reptile %>% slice(id$ID_unit)
+table(training_reptile_balanced$type)
+
+fit <- training_reptile_balanced %>% train(type ~ .,
   data = .,
   method = "rpart",
   trControl = trainControl(method = "cv"),
@@ -534,25 +470,32 @@ fit <- Zoo_reptile_balanced %>% train(type ~ .,
 fit
 rpart.plot(fit$finalModel, extra = 2)
 
-#' Check on balanced training data.
-confusionMatrix(data = predict(fit, Zoo_reptile_balanced),
-  ref = Zoo_reptile_balanced$type, positive = "reptile")
-#' We see that sensitivity is now 1 which means that we are able to identify all
-#' reptiles (pos. examples).
-#'
-#'
-#' However, real data that we will make predictions for will not be balanced.
-#' Check on original data with original class distribution.
+#' Check on the unbalanced testing data.
+confusionMatrix(data = predict(fit, testing_reptile),
+  ref = testing_reptile$type, positive = "reptile")
 
-confusionMatrix(data = predict(fit, Zoo_reptile),
-  ref = Zoo_reptile$type, positive = "reptile")
-
-#' __Note__ that the accuracy is below the no information rate! However,
-#' you see that this model is able to find all reptiles (sensitivity of 1),
-#' but it also misclassifies
-#' many non-reptiles as reptiles. The tradeoff can be controlled using the sample
-#' proportions.
+#' __Note__ that the accuracy is below the no information rate!
+#' However, kappa (improvement of accuracy over randomness) and
+#' sensitivity (the ability to identify reptiles) have increased.
 #'
+#' There is a tradeoff between sensitivity and specificity (how many of the identified animals are really reptiles)
+#' The tradeoff can be controlled using the sample
+#' proportions. We can sample more reptiles to increase sensitivity at the cost of
+#' lower specificity.
+
+id <- strata(training_reptile, stratanames = "type", size = c(50, 100), method = "srswr")
+training_reptile_balanced <- training_reptile %>% slice(id$ID_unit)
+table(training_reptile_balanced$type)
+
+fit <- training_reptile_balanced %>% train(type ~ .,
+  data = .,
+  method = "rpart",
+  trControl = trainControl(method = "cv"),
+  control = rpart.control(minsplit = 5))
+
+confusionMatrix(data = predict(fit, testing_reptile),
+  ref = testing_reptile$type, positive = "reptile")
+
 
 #' ## Option 3: Build A Larger Tree and use Predicted Probabilities
 #'
@@ -563,22 +506,22 @@ confusionMatrix(data = predict(fit, Zoo_reptile),
 #' data and not AUC! I also enable class probabilities since I want to predict
 #' probabilities later.
 
-fit <- Zoo_reptile %>% train(type ~ .,
+fit <- training_reptile %>% train(type ~ .,
   data = .,
   method = "rpart",
-  tuneLength = 20,
+  tuneLength = 10,
   trControl = trainControl(method = "cv",
     classProbs = TRUE,                 ## necessary for predict with type="prob"
     summaryFunction=twoClassSummary),  ## necessary for ROC
   metric = "ROC",
-  control = rpart.control(minsplit = 5))
+  control = rpart.control(minsplit = 3))
 fit
 
 rpart.plot(fit$finalModel, extra = 2)
 
-confusionMatrix(data = predict(fit, Zoo_reptile),
-  ref = Zoo_reptile$type, positive = "reptile")
-#' __Note:__ Accuracy is high, but it is close to the no-information rate!
+confusionMatrix(data = predict(fit, testing_reptile),
+  ref = testing_reptile$type, positive = "reptile")
+#' __Note:__ Accuracy is high, but it is close or below to the no-information rate!
 #'
 #' ### Create A Biased Classifier
 #'
@@ -588,25 +531,22 @@ confusionMatrix(data = predict(fit, Zoo_reptile),
 #' The usual rule is to predict in each node
 #' the majority class from the test data in the node.
 #' For a binary classification problem that means a probability of >50%.
-#' In the following, we reduce this threshold to 25% or more.
-#' This means that if the new observation ends up in a leaf node with 25% or
+#' In the following, we reduce this threshold to 1% or more.
+#' This means that if the new observation ends up in a leaf node with 1% or
 #'  more reptiles from training then the observation
 #'  will be classified as a reptile.
+#'  The data set is small and this works better with more data.
 #'
-#'  __Note__ that you should use an unseen test set
-#'  for `predict()` here! I did not do that since the data set is too small!
-prob <- predict(fit, Zoo_reptile, type = "prob")
+prob <- predict(fit, testing_reptile, type = "prob")
 tail(prob)
-pred <- as.factor(ifelse(prob[,"reptile"]>=.25, "reptile", "nonreptile"))
-
+pred <- as.factor(ifelse(prob[,"reptile"]>=0.01, "reptile", "nonreptile"))
 
 confusionMatrix(data = pred,
-  ref = Zoo_reptile$type, positive = "reptile")
+  ref = testing_reptile$type, positive = "reptile")
 #' __Note__ that accuracy goes down and is below the no information rate.
 #' However, both measures are based on the idea that all errors have the same
-#' cost. What is important is that we are now able to find all almost all
-#' reptiles (sensitivity is .8) while before we only found 2 out of 5
-#' (sensitivity of .4)
+#' cost. What is important is that we are now able to find more
+#' reptiles.
 #'
 
 #' ### Plot the ROC Curve
@@ -616,7 +556,7 @@ confusionMatrix(data = pred,
 #' curve. For the ROC curve all different cutoff thresholds for the probability
 #' are used and then connected with a line.
 library("pROC")
-r <- roc(Zoo_reptile$type == "reptile", prob[,"reptile"])
+r <- roc(testing_reptile$type == "reptile", prob[,"reptile"])
 r
 
 plot(r)
@@ -640,7 +580,7 @@ cost <- matrix(c(
 cost
 
 
-fit <- Zoo_reptile %>% train(type ~ .,
+fit <- training_reptile %>% train(type ~ .,
   data = .,
   method = "rpart",
   parms = list(loss = cost),
@@ -653,8 +593,8 @@ fit
 
 rpart.plot(fit$finalModel, extra = 2)
 
-confusionMatrix(data = predict(fit, Zoo_reptile),
-  ref = Zoo_reptile$type, positive = "reptile")
+confusionMatrix(data = predict(fit, testing_reptile),
+  ref = testing_reptile$type, positive = "reptile")
 #' The high cost for false negatives results in a classifier that does not miss any reptile.
 #'
 #' __Note:__ Using a cost-sensitive classifier is often the best option. Unfortunately, the most classification algorithms (or their implementation) do not have the ability to consider misclassification cost.
