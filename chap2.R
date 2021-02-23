@@ -30,8 +30,12 @@ library(ggplot2)
 library(GGally) # for ggpairs
 
 
-#' # Preparation
-#' Load the iris data set and convert the data.frame into a tibble.
+#' # Data Preparation: The Iris Dataset
+#'
+#' We will use a toy dataset that comes with R. Fisher's iris data set gives the measurements in centimeters of the variables sepal length and width and petal length and width, respectively, for 50 flowers from each of 3 species of iris. The species are Iris setosa, versicolor, and virginica.
+#' For more details see: `? iris`
+#'
+#' Load the iris data set and convert the data.frame into a tibble. _Note:_ datasets that come with R or R packages can be loaded with `data()`.
 data(iris)
 iris <- as_tibble(iris)
 iris
@@ -67,8 +71,9 @@ iris %>% group_by(Species) %>% summarize_all(median)
 #' Sample from a vector with replacement.
 sample(c("A", "B", "C"), size = 10, replace = TRUE)
 
-#' Sampling rows from a tibble.
+#' Sampling rows from a tibble (I set the random number generator seed to make the results reproducible).
 set.seed(1000)
+
 s <- iris %>% sample_n(15)
 ggpairs(s, aes(color = Species))
 
@@ -85,9 +90,9 @@ s2 <- iris %>% slice(id2$ID_unit)
 ggpairs(s2, aes(color = Species))
 
 #' # Features
-#' ## Dimensionality reduction (Principal Components Analysis - PCA)
+#' ## Dimensionality reduction
 #'
-#' Represents high-dimensional data in fewer dimensions. Points that are
+#' Principal Components Analysis (PCA) represents high-dimensional data in fewer dimensions. Points that are
 #' close together in the high-dimensional space, tend also be close together in the lower-dimensional space.
 #' We often use two dimensions for visualizing high-dimensional data as a scatter plot.
 #'
@@ -172,7 +177,12 @@ ggplot(iris, aes(Petal.Width)) + geom_histogram() +
 #' Standardize the scale of features to make them comparable. For each
 #' column the mean is subtracted (centering) and it is divided by the
 #' standard deviation (scaling). Now most values should be in [-3,3].
-iris.scaled <- iris %>% mutate_if(is.numeric, function(x) as.vector(scale(x)))
+#'
+#' _Note:_ tidyverse currently does not have a simple scale function,
+#' so I make one that provides a wrapper for the standard scale function in R:
+scale_numeric <- function(x) x %>% mutate_if(is.numeric, function(y) as.vector(scale(y)))
+
+iris.scaled <- iris %>% scale_numeric()
 iris.scaled
 summary(iris.scaled)
 
