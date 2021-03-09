@@ -284,6 +284,7 @@ cc <- iris %>% select(-Species) %>% cor()
 ggplot(iris, aes(Petal.Length, Petal.Width)) + geom_point() +
   geom_smooth(method = "lm")
 with(iris, cor(Petal.Length, Petal.Width))
+#' _Note:_ `with` is the same as `cor(iris$Petal.Length, iris$Petal.Width)`
 with(iris, cor.test(Petal.Length, Petal.Width))
 
 ggplot(iris, aes(Sepal.Length, Sepal.Width)) + geom_point() +
@@ -316,7 +317,7 @@ iris %>% select(-Species) %>% cor()
 tbl <- iris_ord %>% select(Sepal.Length, Species) %>% table()
 tbl
 
-# this is a little more involved using tidyverse
+# doing this is a little more involved using tidyverse
 iris_ord %>%
   select(Species, Sepal.Length) %>%
   pivot_longer(cols = Sepal.Length) %>%

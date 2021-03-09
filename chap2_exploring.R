@@ -16,44 +16,24 @@
 #' [Michael Hahsler](http://michael.hahsler.net).
 #'
 
-#' # ggplot2
-#'
 #' This code uses `tidyverse` for data preparation and `ggplot2` for most visualizations.
 
 library(tidyverse)
 library(ggplot2)
 
-#'
-#' The gg in `ggplot2` stands for [__grammar of graphics__](https://www.springer.com/statistics/computational/book/978-0-387-24544-7).
-#' The idea is that every graph is built from the same basic components:
-#'
-#' - the data,
-#' - a coordinate system, and
-#' - visual marks representing the data (geoms).
-#'
-#' In `ggplot2`, the components are combined using the `+` operator.
-#'
-#' > `ggplot(data, mapping = aes(x = ..., y = ..., color = ...)) +`
-#' > `geom_point() +`
-#' > `coord_cartesian()`
-#'
-#' Each `geom_X` uses a `stat_Y` function to calculate what is visualizes. For example,
-#' `geom_bar` uses `stat_count` to create a bar chart by counting how often each value appears in the data (see `? geom_bar`). `geom_point` just uses the stat `"identity"` to display the points using the coordinates as they are.
-#'
-#' RStudio's [Data Visualization Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf) offers a comprehensive overview of available components. A good introduction
-#' can be found in the [Chapter on Data Visualization](https://r4ds.had.co.nz/data-visualisation.html) of the free book [R for Data Science](https://r4ds.had.co.nz).
-#'
-
-
 #' # Basic statistics
 #'
-#' Load the iris data set and convert the data.frame into a tidyerse tibble (optional)
+#' Load the iris data set.
 data(iris)
+
+#' [Fisher's iris data set](https://en.wikipedia.org/wiki/Iris_flower_data_set) gives the measurements in centimeters of the variables sepal length and width and petal length and width, respectively, for 50 flowers from each of 3 species of iris. The species are Iris setosa, versicolor, and virginica.
+#'
+#' We convert the data.frame into a tidyerse tibble. This is optional, tidyverse can work directly with data.frames.
 iris <- as_tibble(iris)
 
 iris
 #'
-#' Get summary statistics
+#' Get summary statistics (using base R)
 summary(iris)
 
 #' Get mean and standard deviation for sepal length
@@ -92,7 +72,6 @@ summary(iris_discrete)
 iris_discrete %>% select(Sepal.Length, Sepal.Width) %>% table()
 iris_discrete %>% select(Petal.Length, Petal.Width) %>% table()
 iris_discrete %>% select(Petal.Length, Species) %>% table()
-#table(iris_discrete)
 
 #' Test if the two features are independent given the counts in the
 #' contingency table (H0: independence)
@@ -107,39 +86,48 @@ chisq.test(tbl)
 #' Fisher's exact test is  better for small counts (cells with counts <5)
 fisher.test(tbl)
 
-#' Plot the distribution for a discrete variable
-iris_discrete %>% pull(Sepal.Length) %>% table()
-ggplot(iris_discrete, aes(Sepal.Length)) + geom_bar()
+#' Look at the distribution for a discrete variable
+iris_discrete %>% count(Sepal.Length)
 
-#' # Percentiles
+#' # Percentiles (Quantiles)
+#'
+#' By default calculates quantiles
 iris %>% pull(Petal.Length) %>% quantile()
 
 #' Interquartile range
-quart <- iris %>% pull(Petal.Length) %>% quantile()
-quart[4] - quart[2]
+iris %>% summarize(IQR = quantile(Petal.Length, probs = 0.75) - quantile(Petal.Length, probs = 0.25))
 
-#' # Visualizations
+#' # Visualizations (with ggplot2)
+#'
+#' We focus here on ggplot. The gg in `ggplot2` stands for [__grammar of graphics__](https://www.springer.com/statistics/computational/book/978-0-387-24544-7).
+#' The idea is that every graph is built from the same basic components:
+#'
+#' - the data,
+#' - a coordinate system, and
+#' - visual marks representing the data (geoms).
+#'
+#' In `ggplot2`, the components are combined using the `+` operator.
+#'
+#' > `ggplot(data, mapping = aes(x = ..., y = ..., color = ...)) +`
+#' > `geom_point() +`
+#' > `coord_cartesian()`
+#'
+#' Each `geom_X` uses a `stat_Y` function to calculate what is visualizes. For example,
+#' `geom_bar` uses `stat_count` to create a bar chart by counting how often each value appears in the data (see `? geom_bar`). `geom_point` just uses the stat `"identity"` to display the points using the coordinates as they are.
+#'
+#' RStudio's [Data Visualization Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf) offers a comprehensive overview of available components. A good introduction
+#' can be found in the [Chapter on Data Visualization](https://r4ds.had.co.nz/data-visualisation.html) of the free book [R for Data Science](https://r4ds.had.co.nz).
+#'
 
-#' ### Histogram
+#' ## Histogram
 #'
 #' Show the distribution of a single numeric variable
 ggplot(iris, aes(Petal.Width)) + geom_histogram(bins = 20)
 
-#' ### Scatter plot
-#'
-#' Show the relationship between two numeric variables
-ggplot(iris, aes(x = Petal.Length, y = Petal.Width, color = Species)) + geom_point()
-
-#' ### Scatter plot matrix
-#'
-#' Show the relationship between several numeric variables
-library("GGally")
-ggpairs(iris,  aes(color=Species))
-
-#' ### Boxplot
+#' ## Boxplot
 #'
 
-#' Compare the distribution of several continuous variables
+#' Compare the distribution of a variable between different groups.
 ggplot(iris, aes(Species, Sepal.Length)) + geom_boxplot()
 
 #' Group-wise averages
@@ -152,17 +140,18 @@ iris_long <- iris %>% mutate(id = row_number()) %>% pivot_longer(1:4)
 ggplot(iris_long, aes(name, value)) + geom_boxplot()
 
 
-#' ### ECDF: Empirical Cumulative Distribution Function
+#' ## Scatter plot
 #'
-#' Overlayed on the histogram (scaled as a density)
-e <- iris %>% pull(Petal.Length) %>% ecdf()
-e
-ggplot(iris, aes(Petal.Width)) +
-  geom_histogram(bins = 20, aes(y = ..density..), fill = "gray") +
-  stat_ecdf(col = "red")
+#' Show the relationship between two numeric variables
+ggplot(iris, aes(x = Petal.Length, y = Petal.Width, color = Species)) + geom_point()
 
+#' ## Scatter plot matrix
+#'
+#' Show the relationship between several numeric variables
+library("GGally")
+ggpairs(iris,  aes(color=Species))
 
-#' ### Data matrix visualization
+#' ## Data matrix visualization
 #'
 #' We need the long format
 iris_long <- iris %>% mutate(id = row_number()) %>% pivot_longer(1:4)
@@ -194,7 +183,7 @@ ggplot(iris_ordered_long,
   scale_fill_gradient2()
 
 
-#' ### Correlation matrix
+#' ## Correlation matrix
 #'
 #' Calculate and visualize the correlation between features
 cm1 <- iris %>% select(-Species) %>% as.matrix %>% cor()
@@ -215,7 +204,7 @@ cm2 <- iris %>% select(-Species) %>% as.matrix() %>% t() %>% cor()
 
 ggcorrplot(cm2)
 
-#' ### Parallel coordinates plot
+#' ## Parallel coordinates plot
 library(GGally)
 ggparcoord(as_tibble(iris), columns = 1:4, groupColumn = 5)
 
