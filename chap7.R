@@ -121,14 +121,16 @@ ggplot(cluster_single, aes(x, y, color = cluster)) + geom_point()
 
 library(dbscan)
 
-#' Parameters: minPts is often chosen as dimensionality of the data +1.
-#' Decide on epsilon using the knee in the kNN distance plot
-#' (seems to be around eps = .32).
+#' Parameters: minPts defines how many points in the epsilon neighborhood are needed to make a point
+#' a core point. It is often chosen as a smoothing parameter. I use here minPts = 4.
+#'
+#' To decide on epsilon, the knee in the kNN distance plot is often used. Note that minPts contains the point itself, while the k-nearest neighbor does not. We therefore have to use k = minPts - 1!
+#' The knee is around eps = .32.
 kNNdistplot(ruspini_scaled, k = 3)
 abline(h = .32, col = "red")
 
 #' run dbscan
-db <- dbscan(ruspini_scaled, eps = .32, minPts = 3)
+db <- dbscan(ruspini_scaled, eps = .32, minPts = 4)
 db
 str(db)
 
