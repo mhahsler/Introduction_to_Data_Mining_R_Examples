@@ -201,11 +201,11 @@ library("e1071")
 cluster_cmeans <- cmeans(as.matrix(ruspini_scaled), centers = 4)
 cluster_cmeans
 
-#' Plot membership (shown as small piecharts)
+#' Plot membership (shown as small pie charts)
 library("scatterpie")
 ggplot()  +
   geom_scatterpie(data = cbind(ruspini_scaled, cluster_cmeans$membership),
-    aes(x = x, y = y), cols = 3:6, legend_name = "Membership") + coord_equal()
+    aes(x = x, y = y), cols = colnames(cluster_cmeans$membership), legend_name = "Membership") + coord_equal()
 
 
 
@@ -375,8 +375,8 @@ ggplot(shapes %>% add_column(cluster = factor(spec)), aes(x, y, color = cluster)
 
 #' Compare with ground truth with the corrected (=adjusted) Rand index (ARI),
 #' the variation of information (VI) index, entropy and purity.
-#
-#' define entropy and purity
+#'
+#' Define entropy and purity
 entropy <- function(cluster, truth) {
   k <- max(cluster, truth)
   cluster <- factor(cluster, levels = 1:k)
