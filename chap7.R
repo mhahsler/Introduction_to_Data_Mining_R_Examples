@@ -20,6 +20,7 @@
 #'# Prepare Data
 library(tidyverse)
 
+#' We will use here a small and very clean dataset called Ruspini.
 #' The Ruspini data set, consisting of 75 points in four groups that is popular for illustrating clustering techniques. It is a very simple data set with well separated clusters.
 data(ruspini, package = "cluster")
 
@@ -29,26 +30,42 @@ ruspini
 
 ggplot(ruspini, aes(x = x, y = y)) + geom_point()
 
-#' Scale each column in the data to zero mean and unit standard deviation (z-scores). This prevents one attribute with a large range to dominate the others for the distance calculation.
-#' _Note:_ The standard `scale()` function scales whole data.frames so we implement a function for a single vector and apply it to all numeric
-#' columns.
+#' ## Data cleaning
+summary(ruspini)
+
+#' This data set has not missing values or outlier. For most clustering algorithms it is necessary to handle missing values and outliers (e.g., remove the observations).
+#'
+#' ## Scale data
+#'
+#' Clustering algorithms use distances and the variables with the largest number range will dominate distance calculation. The summary above showed that this is not an issue for the Ruspini dataset with
+#' x and y being roughly between 0 and 150. Most data analysts will still
+#' scale each column in the data to zero mean and unit standard deviation (z-scores).
+#' _Note:_ The standard `scale()` function scales whole data.frames so we implement a function for a single vector and apply it to all numeric columns. Most z-scores will fall in the range $[-3,3]$, where
+#' $0$ means average.
 scale_numeric <- function(x) x %>% mutate_if(is.numeric, function(y) as.vector(scale(y)))
+
 ruspini_scaled <- ruspini %>% scale_numeric()
-ggplot(ruspini_scaled, aes(x = x, y = y)) + geom_point()
+summary(ruspini_scaled)
 
 #' # Clustering methods
+#'
 #' ## k-means Clustering
 #'
 #' k-means implicitly assumes Euclidean distances. We use $k = 10$ clusters and run the algorithm 10 times with random initialized centroids. The best result is returned.
 km <- kmeans(ruspini_scaled, centers = 4, nstart = 10)
 km
 
+#' `km` is an R object implemented as a list. The clustering vector contains the
+#' cluster assignment for each data row and can be accessed using `km$cluster`. I add the
+#' cluster assignment as a column to the scaled dataset (I make it a factor since it represents a
+#' nominal label).
+
 ruspini_clustered <- ruspini_scaled %>% add_column(cluster = factor(km$cluster))
 ruspini_clustered
 
 ggplot(ruspini_clustered, aes(x = x, y = y, color = cluster)) + geom_point()
 
-#' Add centroids
+#' Add the centroids to the plot.
 centroids <- as_tibble(km$centers, rownames = "cluster")
 centroids
 
@@ -85,9 +102,8 @@ d <- dist(ruspini_scaled)
 #' We cluster using complete link
 hc <- hclust(d, method = "complete")
 
-#' Dendrogram
+#' Hierarchical clustering does not return cluster assignments but a dendrogram.
 plot(hc)
-rect.hclust(hc, k = 4)
 
 #' Use ggplot
 library("ggdendro")
@@ -95,9 +111,10 @@ ggdendrogram(hc, labels = FALSE, theme_dendro = FALSE)
 #' More plotting options for dendrograms, including plotting
 #' parts of large dendrograms can be found [here.](https://rpubs.com/gaston/dendrograms)
 #'
-#' Calculate cluster assignments by cutting the dendrogram into four parts and add the cluster id to the data.
+#' Extract cluster assignments by cutting the dendrogram into four parts and add the cluster id to the data.
+clusters <- cutree(hc, k = 4)
 cluster_complete <- ruspini_scaled %>%
-  add_column(cluster = factor(cutree(hc, k = 4)))
+  add_column(cluster = factor(clusters))
 cluster_complete
 
 ggplot(cluster_complete, aes(x, y, color = cluster)) +
@@ -137,9 +154,6 @@ str(db)
 ggplot(ruspini_scaled %>% add_column(cluster = factor(db$cluster)),
   aes(x, y, color = cluster)) + geom_point()
 #' __Note:__ Cluster 0 represents outliers).
-#'
-#' Alternative visualization from package dbscan
-hullplot(ruspini_scaled, db)
 
 #'
 #' Play with eps (neighborhood size) and MinPts (minimum of points needed for core cluster)
@@ -147,7 +161,9 @@ hullplot(ruspini_scaled, db)
 #'
 #' ## Partitioning Around Medoids (PAM)
 #'
-#' Also called $k$-medoids. Similar to $k$-means, but uses medoids instead of centroids to represent clusters and works on a distance matrix. _Note:_ A medoid is the data point in the center of a cluster.
+#' Also called $k$-medoids. Similar to $k$-means, but uses medoids instead of centroids to represent clusters and works on a precomputed distance matrix.
+#' An advantage is that you can use any distance metric not just Euclidean distances.
+#'   _Note:_ A medoid is the data point in the center of a cluster.
 
 library(cluster)
 
@@ -216,35 +232,39 @@ ggplot()  +
 #' Look at the within.cluster.ss and the avg.silwidth
 
 #library(fpc)
-#' Note: I do not load fpc since the NAMESPACE overwrites dbscan.
+#' Notes:
+#' * I do not load fpc since the NAMESPACE overwrites dbscan.
+#' * The clustering (second argument below) has to be supplied as a vector with numbers (cluster IDs) and cannot be a factor (use `as.integer()` to convert the factor to an ID).
 
 fpc::cluster.stats(d, km$cluster)
-#cluster.stats(d, cluster_complete)
-#cluster.stats(d, cluster_single)
 
 #' Read `? cluster.stats` for an explanation of all the available indices.
 
-sapply(list(
-  km = km$cluster,
-  hc_compl = cutree(hc, k = 4),
-  hc_single = cutree(hc_single, k = 4)),
-       FUN = function(x)
-         fpc::cluster.stats(d, x))[c("within.cluster.ss", "avg.silwidth"), ]
+sapply(
+  list(
+    km = km$cluster,
+    hc_compl = cutree(hc, k = 4),
+    hc_single = cutree(hc_single, k = 4)
+  ),
+  FUN = function(x)
+    fpc::cluster.stats(d, x))[c("within.cluster.ss", "avg.silwidth"), ]
 
 #' ## Silhouette plot
 library(cluster)
 plot(silhouette(km$cluster, d))
 #' __Note:__ The silhouette plot does not show correctly in R Studio if you have too many objects (bars are missing). I will work when you open a new plotting device with `windows()`, `x11()` or `quartz()`.
+#' You can find ggplot versions of the plot.
 #'
 
 #' ## Find Optimal Number of Clusters for k-means
 ggplot(ruspini_scaled, aes(x, y)) + geom_point()
 
+# We will use differnt methods and try 1-10 clusters.
 set.seed(1234)
 ks <- 2:10
 
 #' ### Within Sum of Squares
-#' Use within sum of squares and look for the knee (nstart=5 repeats k-means 5 times and returns the best solution)
+#' Use within sum of squares and look for the knee (`nstart = 5` repeats k-means 5 times and returns the best solution)
 WSS <- sapply(ks, FUN = function(k) {
   kmeans(ruspini_scaled, centers = k, nstart = 5)$tot.withinss
   })
@@ -298,12 +318,13 @@ plot(k)
 #' Visualizing the unordered distance matrix does not show much structure.
 
 ggplot(ruspini_scaled, aes(x, y)) + geom_point()
+
 d <- dist(ruspini_scaled)
 
 library(seriation)
 pimage(d)
 
-#' Reorder using cluster labels
+#' Reorder using the k-means cluster labels
 pimage(d, order=order(km$cluster))
 
 #' Use dissplot which rearranges clusters, adds cluster labels,
@@ -347,8 +368,8 @@ WSS <- sapply(ks, FUN = function(k) {
 })
 
 ggplot(as_tibble(ks, WSS), aes(ks, WSS)) + geom_line()
-#' looks like 6 clusters
-km <- kmeans(shapes, centers = 6, nstart = 10)
+#' looks like 7 clusters
+km <- kmeans(shapes, centers = 7, nstart = 10)
 ggplot(shapes %>% add_column(cluster = factor(km$cluster)), aes(x, y, color = cluster)) +
   geom_point()
 
@@ -362,15 +383,9 @@ ASW <- sapply(ks, FUN = function(k) {
 })
 
 ggplot(as_tibble(ks, ASW), aes(ks, ASW)) + geom_line()
-#' 4 clusters
+#' Maximum at 4 clusters
 hc_4 <- cutree(hc, 4)
 ggplot(shapes %>% add_column(cluster = factor(hc_4)), aes(x, y, color = cluster)) +
-  geom_point()
-
-#' Spectral Clustering
-library("kernlab")
-spec <- specc(as.matrix(shapes), centers = 4)
-ggplot(shapes %>% add_column(cluster = factor(spec)), aes(x, y, color = cluster)) +
   geom_point()
 
 #' Compare with ground truth with the corrected (=adjusted) Rand index (ARI),
@@ -423,11 +438,6 @@ r <- rbind(
     entropy = entropy(hc_4, truth),
     purity = purity(hc_4, truth)
     ),
-  spec = c(
-    unlist(fpc::cluster.stats(d, spec, truth, compareonly = TRUE)),
-    entropy = entropy(spec, truth),
-    purity = purity(spec, truth)
-    ),
   random4 = c(
     unlist(fpc::cluster.stats(d, random4, truth, compareonly = TRUE)),
     entropy = entropy(random4, truth),
@@ -448,27 +458,27 @@ r
 
 #'
 #' # Related Topics
+#'
 #' ## Outlier Removal
 #' It is often useful to remove outliers prior to clustering.
 #' A density based method to identify outlier is LOF (Local Outlier Factor).
 #' It is related to dbscan and compares the density around a point with the
-#' densities around its neighbors. The LOF value for a regular data
-#' point is 1. The larger the LOF value gets, the more likely the point is and
-#' outlier.
+#' densities around its neighbors (you have to specify the neighborhood size $k$).
+#' The LOF value for a regular data point is 1.
+#' The larger the LOF value gets, the more likely the point is an outlier.
 library(dbscan)
-lof <- lof(ruspini_scaled, k = 3)
+lof <- lof(ruspini_scaled, k = 10)
 lof
 
 ggplot(ruspini_scaled %>% add_column(lof = lof), aes(x, y, color = lof)) +
     geom_point() + scale_color_gradient(low = "gray", high = "red")
 
-#' Find outliers (find the knee)
-
+#' Find outliers (you can use the knee)
 ggplot(tibble(index = seq_len(length(lof)), lof = sort(lof)), aes(index, lof)) +
-  geom_line() +
-  geom_hline(yintercept = 1.3, color = "red")
+  geom_line()
 
-ggplot(ruspini_scaled %>% add_column(outlier = lof >= 1.3), aes(x, y, color = outlier)) +
+#' choose a threshold
+ggplot(ruspini_scaled %>% add_column(outlier = lof >= 1.1), aes(x, y, color = outlier)) +
   geom_point()
 
 
