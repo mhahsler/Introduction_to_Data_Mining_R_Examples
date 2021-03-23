@@ -259,7 +259,7 @@ plot(silhouette(km$cluster, d))
 #' ## Find Optimal Number of Clusters for k-means
 ggplot(ruspini_scaled, aes(x, y)) + geom_point()
 
-# We will use differnt methods and try 1-10 clusters.
+# We will use different methods and try 1-10 clusters.
 set.seed(1234)
 ks <- 2:10
 
@@ -275,7 +275,7 @@ ggplot(as_tibble(ks, WSS), aes(ks, WSS)) + geom_line() +
 #' ### Average Silhouette Width
 #' Use average silhouette width (look for the max)
 ASW <- sapply(ks, FUN=function(k) {
-  fpc::cluster.stats(d, kmeans(ruspini_scaled, centers=k, nstart=5)$cluster)$avg.silwidth
+  fpc::cluster.stats(d, kmeans(ruspini_scaled, centers=k, nstart = 5)$cluster)$avg.silwidth
   })
 
 best_k <- ks[which.max(ASW)]
@@ -317,7 +317,7 @@ plot(k)
 #'
 #' Visualizing the unordered distance matrix does not show much structure.
 
-ggplot(ruspini_scaled, aes(x, y)) + geom_point()
+ggplot(ruspini_scaled, aes(x, y, color = factor(km$cluster))) + geom_point()
 
 d <- dist(ruspini_scaled)
 
@@ -333,7 +333,7 @@ dissplot(d, labels = km$cluster, options=list(main="k-means with k=4"))
 dissplot(d, labels = db$cluster + 1L, options=list(main="DBSCAN"))
 #' Spot the problem data points for DBSCAN (we use +1 so the noise is now cluster #1)
 #'
-#' Misspecified k
+#' Misspecification of k is visible in the plot
 dissplot(d, labels = kmeans(ruspini_scaled, centers = 3)$cluster)
 dissplot(d, labels = kmeans(ruspini_scaled, centers = 9)$cluster)
 
@@ -348,6 +348,7 @@ dissplot(d, labels = kmeans(ruspini_scaled, centers = 9)$cluster)
 #' cluster the new data. We do k-means and hierarchical clustering.
 
 library(mlbench)
+set.seed(1234)
 shapes <- mlbench.smiley(n = 500, sd1 = 0.1, sd2 = 0.05)
 plot(shapes)
 
