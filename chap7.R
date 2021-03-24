@@ -20,32 +20,38 @@
 #'# Prepare Data
 library(tidyverse)
 
-#' We will use here a small and very clean dataset called Ruspini.
-#' The Ruspini data set, consisting of 75 points in four groups that is popular for illustrating clustering techniques. It is a very simple data set with well separated clusters.
+#' We will use here a small and very clean dataset called Ruspini which is included in the R package __cluster__.
+
 data(ruspini, package = "cluster")
 
+#' The Ruspini data set, consisting of 75 points in four groups that is popular for illustrating clustering techniques. It is a very simple data set with well separated clusters.
 #' The original dataset has the points ordered by group. We can shuffle the data (rows) using `sample_frac` which samples by default 100%.
 ruspini <- as_tibble(ruspini) %>% sample_frac()
 ruspini
 
+#' ## Data cleaning
 ggplot(ruspini, aes(x = x, y = y)) + geom_point()
 
-#' ## Data cleaning
 summary(ruspini)
 
-#' This data set has not missing values or outlier. For most clustering algorithms it is necessary to handle missing values and outliers (e.g., remove the observations).
+#' For most clustering algorithms it is necessary to handle missing values and outliers (e.g., remove the observations).
+#' This data set has not missing values or outlier and looks like it has some very clear groups.
 #'
 #' ## Scale data
 #'
-#' Clustering algorithms use distances and the variables with the largest number range will dominate distance calculation. The summary above showed that this is not an issue for the Ruspini dataset with
-#' x and y being roughly between 0 and 150. Most data analysts will still
+#' Clustering algorithms use distances and the variables with the largest number range will dominate distance calculation. The summary above shows that this is not an issue for the Ruspini dataset with
+#' both, x and y, being roughly between 0 and 150. Most data analysts will still
 #' scale each column in the data to zero mean and unit standard deviation (z-scores).
-#' _Note:_ The standard `scale()` function scales whole data.frames so we implement a function for a single vector and apply it to all numeric columns. Most z-scores will fall in the range $[-3,3]$, where
-#' $0$ means average.
+#' _Note:_ The standard `scale()` function scales a whole data matrix so we implement a function for a single vector and apply it to all numeric columns.
+
+# I use this till tidyverse implements a scale function
 scale_numeric <- function(x) x %>% mutate_if(is.numeric, function(y) as.vector(scale(y)))
 
 ruspini_scaled <- ruspini %>% scale_numeric()
 summary(ruspini_scaled)
+#' After scaling, most z-scores will fall in the range $[-3,3]$ (z-scores are measured in standard deviations from the mean), where
+#' $0$ means average.
+#'
 
 #' # Clustering methods
 #'
