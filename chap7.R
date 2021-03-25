@@ -406,35 +406,33 @@ ggplot(shapes %>% add_column(cluster = factor(hc_4)), aes(x, y, color = cluster)
 #' Compare with ground truth with the [corrected (=adjusted) Rand index (ARI)](https://en.wikipedia.org/wiki/Rand_index#Adjusted_Rand_index),
 #' the [variation of information (VI) index](https://en.wikipedia.org/wiki/Variation_of_information), entropy and purity.
 #'
-#' `cluster_stats` computes ARI and VI as comparative measures. I define entropy and purity here:
+#' `cluster_stats` computes ARI and VI as comparative measures. I define functions for
+#' entropy and purity here:
 entropy <- function(cluster, truth) {
   k <- max(cluster, truth)
   cluster <- factor(cluster, levels = 1:k)
   truth <- factor(truth, levels = 1:k)
-  m <- length(cluster)
-  mi <- table(cluster)
+  w <- table(cluster)/length(cluster)
 
-  cnts <- split(truth, cluster)
-  cnts <- sapply(cnts, FUN = function(n) table(n))
+  cnts <- sapply(split(truth, cluster), table)
   p <- sweep(cnts, 1, rowSums(cnts), "/")
   p[is.nan(p)] <- 0
   e <- -p * log(p, 2)
-  sum(rowSums(e, na.rm = TRUE) * mi / m)
+
+  sum(w * rowSums(e, na.rm = TRUE))
 }
 
 purity <- function(cluster, truth) {
   k <- max(cluster, truth)
   cluster <- factor(cluster, levels = 1:k)
   truth <- factor(truth, levels = 1:k)
-  m <- length(cluster)
-  mi <- table(cluster)
+  w <- table(cluster)/length(cluster)
 
-  cnts <- split(truth, cluster)
-  cnts <- sapply(cnts, FUN = function(n) table(n))
+  cnts <- sapply(split(truth, cluster), table)
   p <- sweep(cnts, 1, rowSums(cnts), "/")
   p[is.nan(p)] <- 0
 
-  sum(apply(p, 1, max) * mi/m)
+  sum(w * apply(p, 1, max))
 }
 
 #' calculate measures (for comparison we also use random "clusterings"
@@ -486,10 +484,15 @@ r
 #' The LOF value for a regular data point is 1.
 #' The larger the LOF value gets, the more likely the point is an outlier.
 library(dbscan)
-lof <- lof(ruspini_scaled, k = 10)
+
+#' Add a clear outlier to the scaled Ruspini dataset
+
+ruspini_scaled_outlier <- ruspini_scaled %>% add_case(x=2,y=2)
+
+lof <- lof(ruspini_scaled_outlier, k = 10)
 lof
 
-ggplot(ruspini_scaled %>% add_column(lof = lof), aes(x, y, color = lof)) +
+ggplot(ruspini_scaled_outlier %>% add_column(lof = lof), aes(x, y, color = lof)) +
     geom_point() + scale_color_gradient(low = "gray", high = "red")
 
 #' Plot the points sorted by increasing LOF.
@@ -498,7 +501,7 @@ ggplot(tibble(index = seq_len(length(lof)), lof = sort(lof)), aes(index, lof)) +
   geom_hline(yintercept = 1, color = "red", linetype = 2)
 
 #' Choose a threshold above 1.
-ggplot(ruspini_scaled %>% add_column(outlier = lof >= 1.1), aes(x, y, color = outlier)) +
+ggplot(ruspini_scaled_outlier %>% add_column(outlier = lof >= 1.5), aes(x, y, color = outlier)) +
   geom_point()
 
 
@@ -538,7 +541,7 @@ iVAT(d_shapes)
 
 #' Both plots show a strong cluster structure with 4 clusters.
 #'
-#' Compare with random data.
+#' ### Data Without Clustering Tendency
 data_random <- tibble(x = runif(500), y = runif(500))
 ggplot(data_random, aes(x, y)) + geom_point()
 
@@ -548,3 +551,12 @@ d_random <- dist(data_random)
 VAT(d_random)
 iVAT(d_random)
 #' There is very little clustering structure visible indicating low clustering tendency and clustering should not be performed on this data. However, k-means can be used to partition the data into $k$ regions of roughly equivalent size. This can be used as a data-driven discretization of the space.
+#'
+#' ### k-means on Data Without Clustering Tendency
+#' What happens if we perform k-means on data that has no inherent clustering structure?
+km <- kmeans(data_random, centers = 4)
+random_clustered<- data_random %>% add_column(cluster = factor(km$cluster))
+ggplot(random_clustered, aes(x = x, y = y, color = cluster)) + geom_point()
+
+#' k-means discretizes the space into similarly sized regions.
+
