@@ -326,27 +326,29 @@ plot(k)
 #' See, e.g.,  package [NbClust](https://cran.r-project.org/package=NbClust).
 #'
 
-#' ## Visualize the Distance Matrix
-#'
-#' Visualizing the unordered distance matrix does not show much structure.
-
+#' ## Visualizing the Distance Matrix
 ggplot(ruspini_scaled, aes(x, y, color = factor(km$cluster))) + geom_point()
 
 d <- dist(ruspini_scaled)
 
+#' Inspect the distance matrix between the first 5 objects.
+as.matrix(d)[1:5, 1:5]
+
+#' A false-color image visualizes each value in the matrix as a pixel with the color representing the value.
+
 library(seriation)
 pimage(d)
 
-#' Reorder using the k-means cluster labels
+#' Rows and columns are the objects as they are ordered in the data set. The diagonal represents the distance between an object and itself and has by definition a distance of 0 (dark line).
+#' Visualizing the unordered distance matrix does not show much structure, but we can reorder
+#' the matrix (rows and columns) using the k-means cluster labels from cluster 1 to 4. A clear block structure representing the clusters becomes visible.
 pimage(d, order=order(km$cluster))
 
-#' Use dissplot which rearranges clusters, adds cluster labels,
-#'  and shows average dissimilarity in the lower half of the plot.
+#' Plot function `dissplot` in package __seriation__ rearranges the matrix and adds lines and cluster labels. In the lower half of the plot, it shows average dissimilarities between clusters. The function
+#' organizes the objects by cluster and then reorders clusters and objects within clusters so that more similar objects are closer together.
 dissplot(d, labels = km$cluster, options=list(main="k-means with k=4"))
-dissplot(d, labels = db$cluster + 1L, options=list(main="DBSCAN"))
-#' Spot the problem data points for DBSCAN (we use +1 so the noise is now cluster #1)
-#'
-#' Misspecification of k is visible in the plot
+
+#' The reordering by `dissplot` makes the misspecification of k visible as blocks.
 dissplot(d, labels = kmeans(ruspini_scaled, centers = 3)$cluster)
 dissplot(d, labels = kmeans(ruspini_scaled, centers = 9)$cluster)
 
@@ -354,11 +356,10 @@ dissplot(d, labels = kmeans(ruspini_scaled, centers = 9)$cluster)
 #' # External Cluster Validation
 #'
 #' External cluster validation uses ground truth information. That is,
-#' the user has an idea how the data should be grouped. This could be a know
+#' the user has an idea how the data should be grouped. This could be a known
 #' class label not provided to the clustering algorithm.
 #'
-#' We use an artificial data set with known groups here. First, we need to
-#' cluster the new data. We do k-means and hierarchical clustering.
+#' We use an artificial data set with known groups.
 
 library(mlbench)
 set.seed(1234)
@@ -382,12 +383,12 @@ WSS <- sapply(ks, FUN = function(k) {
 })
 
 ggplot(as_tibble(ks, WSS), aes(ks, WSS)) + geom_line()
-#' looks like 7 clusters
+#' Looks like it could be 7 clusters
 km <- kmeans(shapes, centers = 7, nstart = 10)
 ggplot(shapes %>% add_column(cluster = factor(km$cluster)), aes(x, y, color = cluster)) +
   geom_point()
 
-#' Hierarchical clustering: single-link because of the mouth
+#' Hierarchical clustering: We use single-link because of the mouth is non-convex and chaining may help.
 d <- dist(shapes)
 hc <- hclust(d, method = "single")
 
@@ -397,15 +398,15 @@ ASW <- sapply(ks, FUN = function(k) {
 })
 
 ggplot(as_tibble(ks, ASW), aes(ks, ASW)) + geom_line()
-#' Maximum at 4 clusters
+#' The maximum is clearly at 4 clusters.
 hc_4 <- cutree(hc, 4)
 ggplot(shapes %>% add_column(cluster = factor(hc_4)), aes(x, y, color = cluster)) +
   geom_point()
 
-#' Compare with ground truth with the corrected (=adjusted) Rand index (ARI),
-#' the variation of information (VI) index, entropy and purity.
+#' Compare with ground truth with the [corrected (=adjusted) Rand index (ARI)](https://en.wikipedia.org/wiki/Rand_index#Adjusted_Rand_index),
+#' the [variation of information (VI) index](https://en.wikipedia.org/wiki/Variation_of_information), entropy and purity.
 #'
-#' Define entropy and purity
+#' `cluster_stats` computes ARI and VI as comparative measures. I define entropy and purity here:
 entropy <- function(cluster, truth) {
   k <- max(cluster, truth)
   cluster <- factor(cluster, levels = 1:k)
@@ -438,34 +439,38 @@ purity <- function(cluster, truth) {
 
 #' calculate measures (for comparison we also use random "clusterings"
 #' with 4 and 6 clusters)
-random4 <- sample(1:4, nrow(shapes), replace = TRUE)
-random6 <- sample(1:6, nrow(shapes), replace = TRUE)
+random_4 <- sample(1:4, nrow(shapes), replace = TRUE)
+random_6 <- sample(1:6, nrow(shapes), replace = TRUE)
 
 r <- rbind(
-  kmeans = c(
+  kmeans_7 = c(
     unlist(fpc::cluster.stats(d, km$cluster, truth, compareonly = TRUE)),
     entropy = entropy(km$cluster, truth),
     purity = purity(km$cluster, truth)
     ),
-  hc = c(
+  hc_4 = c(
     unlist(fpc::cluster.stats(d, hc_4, truth, compareonly = TRUE)),
     entropy = entropy(hc_4, truth),
     purity = purity(hc_4, truth)
     ),
-  random4 = c(
-    unlist(fpc::cluster.stats(d, random4, truth, compareonly = TRUE)),
-    entropy = entropy(random4, truth),
-    purity = purity(random4, truth)
+  random_4 = c(
+    unlist(fpc::cluster.stats(d, random_4, truth, compareonly = TRUE)),
+    entropy = entropy(random_4, truth),
+    purity = purity(random_4, truth)
     ),
-  random6 = c(
-    unlist(fpc::cluster.stats(d, random6, truth, compareonly = TRUE)),
-    entropy = entropy(random6, truth),
-    purity = purity(random6, truth)
+  random_6 = c(
+    unlist(fpc::cluster.stats(d, random_6, truth, compareonly = TRUE)),
+    entropy = entropy(random_6, truth),
+    purity = purity(random_6, truth)
     )
   )
 r
 
-#' Hierarchical clustering found the perfect clustering.
+#' Notes:
+#'
+#' * Hierarchical clustering found the perfect clustering.
+#' * Entropy and purity are heavily impacted by the number of clusters (more clusters improve the metric).
+#' * The corrected rand index shows clearly that the random clusterings have no relationship with the ground truth (very close to 0). This is a very helpful property.
 #'
 #' Read `? cluster.stats` for an explanation of all the available indices.
 
@@ -487,11 +492,12 @@ lof
 ggplot(ruspini_scaled %>% add_column(lof = lof), aes(x, y, color = lof)) +
     geom_point() + scale_color_gradient(low = "gray", high = "red")
 
-#' Find outliers (you can use the knee)
+#' Plot the points sorted by increasing LOF.
 ggplot(tibble(index = seq_len(length(lof)), lof = sort(lof)), aes(index, lof)) +
-  geom_line()
+  geom_line() +
+  geom_hline(yintercept = 1, color = "red", linetype = 2)
 
-#' choose a threshold
+#' Choose a threshold above 1.
 ggplot(ruspini_scaled %>% add_column(outlier = lof >= 1.1), aes(x, y, color = outlier)) +
   geom_point()
 
@@ -522,7 +528,7 @@ ggplot(shapes, aes(x = x, y = y)) + geom_point()
 library(seriation)
 #' Visual Analysis for Cluster Tendency Assessment (VAT) reorders the
 #' objects to show potential clustering tendency as a block structure
-#' (dark blocks along the main diagonal). Usually they analyze the distance matrix. We scale the data before using Euclidean distance.
+#' (dark blocks along the main diagonal). We scale the data before using Euclidean distance.
 d_shapes <- dist(scale(shapes))
 VAT(d_shapes)
 
