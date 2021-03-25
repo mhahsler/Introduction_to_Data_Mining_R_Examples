@@ -76,27 +76,34 @@ centroids <- as_tibble(km$centers, rownames = "cluster")
 centroids
 
 ggplot(ruspini_clustered, aes(x = x, y = y, color = cluster)) + geom_point() +
-  geom_point(data = centroids, aes(x = x, y = y, color = cluster), shape = 3, size = 5)
+  geom_point(data = centroids, aes(x = x, y = y, color = cluster), shape = 3, size = 10)
 
-#' Alternative plot from package cluster (uses principal components analysis for >2 dimensions)
-library(cluster)
-clusplot(ruspini_scaled, km$cluster)
 
-#' Inspect the centroids (cluster profiles)
-ggplot(pivot_longer(centroids, cols = c(x, y)), aes(x = name, y = value)) +
-  geom_bar(stat = "identity") +
-  facet_grid(cols = vars(cluster))
-
-#' Find data for a single cluster
+#' ### Inspect clusters
 #'
-#' All you need is to select the rows corresponding to the cluster. The next
-#' example plots all data points of cluster 1
+#' We inspect the clusters created by the 4-cluster k-means solution. The following code can be adapted to be used for other clustering methods.
+#'
+#' #### Cluster Profiles
+#'
+#' Inspect the centroids with horizontal bar charts organized by cluster.
+ggplot(pivot_longer(centroids, cols = c(x, y), names_to = "feature"),
+  aes(x = value, y = feature)) +
+  geom_bar(stat = "identity") +
+  facet_grid(rows = vars(cluster))
+
+#' #### Extract a single cluster
+#'
+#' You need is to filter the rows corresponding to the cluster index. The next
+#' example calculates summary statistics and then plots all data points of cluster 1.
 cluster1 <- ruspini_clustered %>% filter(cluster == 1)
 cluster1
+summary(cluster1)
+
 ggplot(cluster1, aes(x = x, y = y)) + geom_point() +
   coord_cartesian(xlim = c(-2, 2), ylim = c(-2, 2))
 
-#' Try 8 clusters
+
+#' What happens if we try to cluster with 8 centers?
 ruspini_clustered_8 <- ruspini_scaled %>%
   add_column(cluster = factor(kmeans(ruspini_scaled, centers = 8)$cluster))
 ggplot(ruspini_clustered_8, aes(x = x, y = y, color = cluster)) + geom_point()
@@ -169,7 +176,7 @@ ggplot(ruspini_scaled %>% add_column(cluster = factor(db$cluster)),
 #'
 #' Also called $k$-medoids. Similar to $k$-means, but uses medoids instead of centroids to represent clusters and works on a precomputed distance matrix.
 #' An advantage is that you can use any distance metric not just Euclidean distances.
-#'   _Note:_ A medoid is the data point in the center of a cluster.
+#'   _Note:_ The medoid is the most central data point in the middle of the cluster.
 
 library(cluster)
 
@@ -185,7 +192,7 @@ medoids <- as_tibble(ruspini_scaled[p$medoids, ], rownames = "cluster")
 medoids
 
 ggplot(ruspini_clustered, aes(x = x, y = y, color = cluster)) + geom_point() +
-  geom_point(data = medoids, aes(x = x, y = y, color = cluster), shape = 3, size = 5)
+  geom_point(data = medoids, aes(x = x, y = y, color = cluster), shape = 3, size = 10)
 
 #'
 #' ## Gaussian Mixture Models
