@@ -34,8 +34,8 @@ ggplot(ruspini, aes(x = x, y = y)) + geom_point()
 
 summary(ruspini)
 
-#' For most clustering algorithms it is necessary to handle missing values and outliers (e.g., remove the observations).
-#' This data set has not missing values or outlier and looks like it has some very clear groups.
+#' For most clustering algorithms it is necessary to handle missing values and outliers (e.g., remove the observations). For details see Section "Outlier removal" below.
+#' This data set has not missing values or strong outlier and looks like it has some very clear groups.
 #'
 #' ## Scale data
 #'
@@ -477,8 +477,9 @@ r
 #' # Related Topics
 #'
 #' ## Outlier Removal
-#' It is often useful to remove outliers prior to clustering.
-#' A density based method to identify outlier is LOF (Local Outlier Factor).
+#'
+#' Most clustering algorithms perform complete assignment (i.e., all data points need to be assigned to a cluster). Outliers will affect the clustering. It is useful to identify outliers and remove strong outliers prior to clustering.
+#' A density based method to identify outlier is [LOF](https://en.wikipedia.org/wiki/Local_outlier_factor) (Local Outlier Factor).
 #' It is related to dbscan and compares the density around a point with the
 #' densities around its neighbors (you have to specify the neighborhood size $k$).
 #' The LOF value for a regular data point is 1.
@@ -487,8 +488,24 @@ library(dbscan)
 
 #' Add a clear outlier to the scaled Ruspini dataset
 
-ruspini_scaled_outlier <- ruspini_scaled %>% add_case(x=2,y=2)
+ruspini_scaled_outlier <- ruspini_scaled %>% add_case(x=10,y=10)
 
+#' Outliers can be identified using summary statistics, histograms, scatterplots (pairs plots), and boxplots, etc. We use here a pairs plot (the diagonal contains smoothed histograms). The outlier is visible as the single point at (10, 10) in the scatter plot and as the long tail of the smoothed histograms.
+library("GGally")
+ggpairs(ruspini_scaled_outlier)
+
+#' The outlier is a problem for k-means
+km <- kmeans(ruspini_scaled_outlier, centers = 4, nstart = 10)
+ruspini_scaled_outlier_km <- ruspini_scaled_outlier%>%
+  add_column(cluster = factor(km$cluster))
+centroids <- as_tibble(km$centers, rownames = "cluster")
+
+ggplot(ruspini_scaled_outlier_km, aes(x = x, y = y, color = cluster)) + geom_point() +
+  geom_point(data = centroids, aes(x = x, y = y, color = cluster), shape = 3, size = 10)
+
+#' This problem can be fixed by increasing the number of clusters and removing small clusters in a post-processing step or by identifying and removing outliers before clustering. We will use the
+#' Local Outlier Facto to identify and remove potential outliers.
+#' Calculate the LOF (I choose a neighborhood size of 10 for density estimation),
 lof <- lof(ruspini_scaled_outlier, k = 10)
 lof
 
@@ -504,6 +521,16 @@ ggplot(tibble(index = seq_len(length(lof)), lof = sort(lof)), aes(index, lof)) +
 ggplot(ruspini_scaled_outlier %>% add_column(outlier = lof >= 1.5), aes(x, y, color = outlier)) +
   geom_point()
 
+# Remove outliers and cluster.
+ruspini_scaled_clean <- ruspini_scaled_outlier  %>% filter(lof < 1.5)
+
+km <- kmeans(ruspini_scaled_clean, centers = 4, nstart = 10)
+ruspini_scaled_clean_km <- ruspini_scaled_clean%>%
+  add_column(cluster = factor(km$cluster))
+centroids <- as_tibble(km$centers, rownames = "cluster")
+
+ggplot(ruspini_scaled_clean_km, aes(x = x, y = y, color = cluster)) + geom_point() +
+  geom_point(data = centroids, aes(x = x, y = y, color = cluster), shape = 3, size = 10)
 
 #' There are many other outlier removal strategies available. See, e.g., package
 #' [outliers](https://cran.r-project.org/package=outliers).
