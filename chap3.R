@@ -16,10 +16,13 @@
 #' [Michael Hahsler](http://michael.hahsler.net).
 #'
 
+#' We will use tidyverse to prepare the data.
 library(tidyverse)
-library(ggplot2)
 
-#' # Prepare Zoo Data Set
+#' # Load the Zoo Dataset
+#' We will use the Zoo dataset which is included in the R package __mlbench__ (you may have to install it).
+#' The Zoo dataset containing 17 (mostly logical) variables on different 101 animals as a
+#'   data frame with 17 columns (hair, feathers, eggs, milk, airborne, aquatic, predator, toothed, backbone, breathes, venomous, fins, legs, tail, domestic, catsize, type). We convert the data frame into a tidyverse tibble (optional).
 data(Zoo, package="mlbench")
 head(Zoo)
 
@@ -128,25 +131,29 @@ predict(tree_default , my_animal, type = "class")
 
 #' # Model Evaluation with Caret
 #'
-#' see http://cran.r-project.org/web/packages/caret/vignettes/caret.pdf
+#' The package [`caret`](https://topepo.github.io/caret/) makes preparing training sets, building
+#' classification (and regression) models and evaluation easier. A great cheat sheet can be found [here](https://ugoproto.github.io/ugo_r_doc/pdf/caret.pdf).
 library(caret)
 
-#' Cross-validation runs are independent and can be done in parallel. We need to enable multi-core support for `caret` using packages `foreach` and `doParallel`.
-library(doParallel)
-registerDoParallel()
+#' Cross-validation runs are independent and can be done faster in parallel.
+#' To enable multi-core support, `caret` uses the package `foreach` and
+#' you need to load a `do` backend. For Linux, I use `doMC` with 4 cores. Windows might need a different backend (see `caret` cheat sheet above).
+library(doMC, quietly = TRUE)
+registerDoMC(cores = 4)
 getDoParWorkers()
 #'
 #' ## Hold out test data
 #'
-#' Partition data 80%/20%.
+#' Test data is not used in the model building process and set aside purely for testing the model.
+#' Her here we partition data 80%/20%.
 inTrain <- createDataPartition(y = Zoo$type, p = .8, list = FALSE)
 training <- Zoo %>% slice(inTrain)
 testing <- Zoo %>% slice(-inTrain)
 
 #'
-#' ## Learn model and tune hyperparameters
+#' ## Learn a model and tune hyperparameters
 #'
-#' caret packages training and validation for hyperparameter tuning into a single function called `train()`.
+#' The package `caret` combines training and validation for hyperparameter tuning into a single function called `train()`.
 #' It internally splits the data into training and validation sets and thus will
 #' provide you with error estimates for different hyperparameter settings. `trainControl` is used
 #' to choose how testing is performed.
