@@ -92,7 +92,9 @@ ggpairs(s2, aes(color = Species))
 #' # Features
 #' ## Dimensionality reduction
 #'
-#' Principal Components Analysis (PCA) represents high-dimensional data in fewer dimensions. Points that are
+#' ### Principal Components Analysis (PCA)
+#'
+#' PCA represents high-dimensional data in fewer dimensions. Points that are
 #' close together in the high-dimensional space, tend also be close together in the lower-dimensional space.
 #' We often use two dimensions for visualizing high-dimensional data as a scatter plot.
 #'
@@ -112,12 +114,16 @@ plot(pc)
 str(pc)
 ggplot(as_tibble(pc$x), aes(x = PC1, y = PC2, color = iris$Species)) + geom_point()
 
-#' Plot the projected data and add the original dimensions as arrows (this can be done with ggplot2, but is currently painful; see https://stackoverflow.com/questions/6578355/plotting-pca-biplot-with-ggplot2).
-biplot(pc, col = c("grey", "red"))
+#' Plot the projected data and add the original dimensions as arrows.
+library(factoextra)
+fviz_pca(pc)
+fviz_pca_var(pc)
 
 #' Another popular method to project data in lower dimensions for visualization is __t-distributed stochastic neighbor embedding (t-SNE)__ available in package `Rtsne`.
 #'
-#' __Multi-dimensional scaling (MDS)__ does the reverse process. It takes distances and produces a space where points are placed to represent these distances as well as possible. Let's calculate
+#' ### Multi-dimensional scaling (MDS)
+#'
+#' MDS is similar to PCA. Instead of data points, it takes pairwise distances (i.e., a distance matrix) and produces a space where points are placed to represent these distances as well as possible. The axis in this space are called components and are similar to the principal components in PCA. Let's calculate
 #' distances in the 4-d space of iris.
 
 d <- iris %>% select(-Species) %>% dist()
@@ -129,7 +135,10 @@ fit <- as_tibble(fit)
 
 ggplot(fit, aes(x = comp1, y = comp2, color = iris$Species)) + geom_point()
 
-#' Non-parametric scaling is available in package `MASS` as functions
+
+#' ### Non-parametric Scaling
+#'
+#' Non-parametric Scaling is available in package `MASS` as functions
 #' `isoMDS` and `sammon`.
 #'
 
