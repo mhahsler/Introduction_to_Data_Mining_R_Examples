@@ -78,6 +78,9 @@ centroids
 ggplot(ruspini_clustered, aes(x = x, y = y, color = cluster)) + geom_point() +
   geom_point(data = centroids, aes(x = x, y = y, color = cluster), shape = 3, size = 10)
 
+#' Use the `factoextra` package for visualization
+library(factoextra)
+fviz_cluster(km, data = ruspini_scaled, centroids = TRUE, repel = TRUE, ellipse.type = "norm")
 
 #' ### Inspect clusters
 #'
@@ -85,7 +88,7 @@ ggplot(ruspini_clustered, aes(x = x, y = y, color = cluster)) + geom_point() +
 #'
 #' #### Cluster Profiles
 #'
-#' Inspect the centroids with horizontal bar charts organized by cluster.
+#' Inspect the centroids with horizontal bar charts organized by cluster. To group the plots by cluster, we have to change the data format to the "long"-format using a pivot operation.
 ggplot(pivot_longer(centroids, cols = c(x, y), names_to = "feature"),
   aes(x = value, y = feature)) +
   geom_bar(stat = "identity") +
@@ -104,9 +107,8 @@ ggplot(cluster1, aes(x = x, y = y)) + geom_point() +
 
 
 #' What happens if we try to cluster with 8 centers?
-ruspini_clustered_8 <- ruspini_scaled %>%
-  add_column(cluster = factor(kmeans(ruspini_scaled, centers = 8)$cluster))
-ggplot(ruspini_clustered_8, aes(x = x, y = y, color = cluster)) + geom_point()
+fviz_cluster(kmeans(ruspini_scaled, centers = 8), data = ruspini_scaled,
+  centroids = TRUE,  geom = "point", ellipse.type = "norm")
 
 #' ## Hierarchical Clustering
 #'
@@ -115,12 +117,14 @@ d <- dist(ruspini_scaled)
 #' We cluster using complete link
 hc <- hclust(d, method = "complete")
 
-#' Hierarchical clustering does not return cluster assignments but a dendrogram.
+#' Hierarchical clustering does not return cluster assignments but a dendrogram. The standard plot
+#' function plots the dendrogram.
 plot(hc)
 
-#' Use ggplot
-library("ggdendro")
-ggdendrogram(hc, labels = FALSE, theme_dendro = FALSE)
+
+
+#' Use `factoextra` (ggplot version). We can specify the number of clusters to visualize how the dendrogram will be cut into clusters.
+fviz_dend(hc, k = 4)
 #' More plotting options for dendrograms, including plotting
 #' parts of large dendrograms can be found [here.](https://rpubs.com/gaston/dendrograms)
 #'
@@ -133,19 +137,15 @@ cluster_complete
 ggplot(cluster_complete, aes(x, y, color = cluster)) +
   geom_point()
 
-#' Try 8 clusters
-ggplot(ruspini_scaled %>% add_column(cluster = factor(cutree(hc, k = 8))),
-  aes(x, y, color = cluster)) + geom_point()
+
+#' Try 8 clusters (Note: `fviz_cluster` needs a list with data and the cluster labels for hclust)
+fviz_cluster(list(data = ruspini_scaled, cluster = cutree(hc, k = 8)), geom = "point")
 
 #' Clustering with single link
 hc_single <- hclust(d, method = "single")
-plot(hc_single)
-rect.hclust(hc_single, k = 4)
+fviz_dend(hc_single, k = 4)
 
-cluster_single <- ruspini_scaled %>%
-  add_column(cluster = factor(cutree(hc_single, k = 4)))
-ggplot(cluster_single, aes(x, y, color = cluster)) + geom_point()
-
+fviz_cluster(list(data = ruspini_scaled, cluster = cutree(hc_single, k = 4)), geom = "point")
 
 #' ## Density-based clustering with DBSCAN
 
@@ -167,6 +167,10 @@ str(db)
 ggplot(ruspini_scaled %>% add_column(cluster = factor(db$cluster)),
   aes(x, y, color = cluster)) + geom_point()
 #' __Note:__ Cluster 0 represents outliers).
+
+# NOTE: Changing the class will not be necessary soon
+class(db) <- 'dbscan'
+fviz_cluster(db, ruspini_scaled, geom = "point")
 
 #'
 #' Play with eps (neighborhood size) and MinPts (minimum of points needed for core cluster)
@@ -193,6 +197,10 @@ medoids
 
 ggplot(ruspini_clustered, aes(x = x, y = y, color = cluster)) + geom_point() +
   geom_point(data = medoids, aes(x = x, y = y, color = cluster), shape = 3, size = 10)
+
+# __Note:__ `fviz_cluster` needs the original data.
+fviz_cluster(c(p, list(data = ruspini_scaled)), geom = "point", ellipse.type = "norm")
+
 
 #'
 #' ## Gaussian Mixture Models
@@ -269,6 +277,10 @@ plot(silhouette(km$cluster, d))
 #' You can find ggplot versions of the plot.
 #'
 
+#' ggplot visualization using `factoextra`
+fviz_silhouette(silhouette(km$cluster, d))
+
+
 #' ## Find Optimal Number of Clusters for k-means
 ggplot(ruspini_scaled, aes(x, y)) + geom_point()
 
@@ -318,7 +330,6 @@ k <- clusGap(ruspini_scaled, FUN = kmeans,  nstart = 10, K.max = 10)
 k
 plot(k)
 
-
 #' __Note:__ these methods can also be used for hierarchical clustering.
 #'
 #' There have been many other methods and indices proposed to determine
@@ -351,6 +362,9 @@ dissplot(d, labels = km$cluster, options=list(main="k-means with k=4"))
 #' The reordering by `dissplot` makes the misspecification of k visible as blocks.
 dissplot(d, labels = kmeans(ruspini_scaled, centers = 3)$cluster)
 dissplot(d, labels = kmeans(ruspini_scaled, centers = 9)$cluster)
+
+#' Using `factoextra`
+fviz_dist(d)
 
 
 #' # External Cluster Validation
@@ -385,6 +399,7 @@ WSS <- sapply(ks, FUN = function(k) {
 ggplot(as_tibble(ks, WSS), aes(ks, WSS)) + geom_line()
 #' Looks like it could be 7 clusters
 km <- kmeans(shapes, centers = 7, nstart = 10)
+
 ggplot(shapes %>% add_column(cluster = factor(km$cluster)), aes(x, y, color = cluster)) +
   geom_point()
 
@@ -400,6 +415,7 @@ ASW <- sapply(ks, FUN = function(k) {
 ggplot(as_tibble(ks, ASW), aes(ks, ASW)) + geom_line()
 #' The maximum is clearly at 4 clusters.
 hc_4 <- cutree(hc, 4)
+
 ggplot(shapes %>% add_column(cluster = factor(hc_4)), aes(x, y, color = cluster)) +
   geom_point()
 
@@ -566,6 +582,10 @@ VAT(d_shapes)
 #' instead of the direct distances to make the block structure better visible.
 iVAT(d_shapes)
 
+#' `factoextra` can also create a VAT plot and calculate the Hopkins statistic to assess clustering tendency. For the Hopkins statistic, a sample of size $n$ is drawn from the data and then compares the nearest neighbor distribution with a simulated dataset drawn from a random uniform distribution (see [detailed explanation](https://www.datanovia.com/en/lessons/assessing-clustering-tendency/#statistical-methods)). A values >.5 indicates usually a clustering tendency.
+get_clust_tendency(shapes, n = 10)
+
+
 #' Both plots show a strong cluster structure with 4 clusters.
 #'
 #' ### Data Without Clustering Tendency
@@ -577,6 +597,8 @@ ggplot(data_random, aes(x, y)) + geom_point()
 d_random <- dist(data_random)
 VAT(d_random)
 iVAT(d_random)
+get_clust_tendency(data_random, n = 10)
+
 #' There is very little clustering structure visible indicating low clustering tendency and clustering should not be performed on this data. However, k-means can be used to partition the data into $k$ regions of roughly equivalent size. This can be used as a data-driven discretization of the space.
 #'
 #' ### k-means on Data Without Clustering Tendency
