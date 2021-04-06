@@ -168,8 +168,6 @@ ggplot(ruspini_scaled %>% add_column(cluster = factor(db$cluster)),
   aes(x, y, color = cluster)) + geom_point()
 #' __Note:__ Cluster 0 represents outliers).
 
-# NOTE: Changing the class will not be necessary soon
-class(db) <- 'dbscan'
 fviz_cluster(db, ruspini_scaled, geom = "point")
 
 #'
