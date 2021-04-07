@@ -57,7 +57,7 @@ summary(ruspini_scaled)
 #'
 #' ## k-means Clustering
 #'
-#' k-means implicitly assumes Euclidean distances. We use $k = 10$ clusters and run the algorithm 10 times with random initialized centroids. The best result is returned.
+#' k-means implicitly assumes Euclidean distances. We use $k = 4$ clusters and run the algorithm 10 times with random initialized centroids. The best result is returned.
 km <- kmeans(ruspini_scaled, centers = 4, nstart = 10)
 km
 
@@ -172,7 +172,6 @@ fviz_cluster(db, ruspini_scaled, geom = "point")
 
 #'
 #' Play with eps (neighborhood size) and MinPts (minimum of points needed for core cluster)
-
 #'
 #' ## Partitioning Around Medoids (PAM)
 #'
