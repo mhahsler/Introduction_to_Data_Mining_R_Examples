@@ -90,7 +90,7 @@ fviz_cluster(km, data = ruspini_scaled, centroids = TRUE, repel = TRUE, ellipse.
 #'
 #' Inspect the centroids with horizontal bar charts organized by cluster. To group the plots by cluster, we have to change the data format to the "long"-format using a pivot operation.
 ggplot(pivot_longer(centroids, cols = c(x, y), names_to = "feature"),
-  aes(x = value, y = feature)) +
+  aes(x = value, y = feature, fill = cluster)) +
   geom_bar(stat = "identity") +
   facet_grid(rows = vars(cluster))
 
@@ -271,9 +271,7 @@ sapply(
 library(cluster)
 plot(silhouette(km$cluster, d))
 #' __Note:__ The silhouette plot does not show correctly in R Studio if you have too many objects (bars are missing). I will work when you open a new plotting device with `windows()`, `x11()` or `quartz()`.
-#' You can find ggplot versions of the plot.
 #'
-
 #' ggplot visualization using `factoextra`
 fviz_silhouette(silhouette(km$cluster, d))
 
@@ -345,20 +343,20 @@ as.matrix(d)[1:5, 1:5]
 #' A false-color image visualizes each value in the matrix as a pixel with the color representing the value.
 
 library(seriation)
-pimage(d)
+pimage(d, col = bluered(100))
 
 #' Rows and columns are the objects as they are ordered in the data set. The diagonal represents the distance between an object and itself and has by definition a distance of 0 (dark line).
 #' Visualizing the unordered distance matrix does not show much structure, but we can reorder
 #' the matrix (rows and columns) using the k-means cluster labels from cluster 1 to 4. A clear block structure representing the clusters becomes visible.
-pimage(d, order=order(km$cluster))
+pimage(d, order=order(km$cluster), col = bluered(100))
 
 #' Plot function `dissplot` in package __seriation__ rearranges the matrix and adds lines and cluster labels. In the lower half of the plot, it shows average dissimilarities between clusters. The function
 #' organizes the objects by cluster and then reorders clusters and objects within clusters so that more similar objects are closer together.
 dissplot(d, labels = km$cluster, options=list(main="k-means with k=4"))
 
 #' The reordering by `dissplot` makes the misspecification of k visible as blocks.
-dissplot(d, labels = kmeans(ruspini_scaled, centers = 3)$cluster)
-dissplot(d, labels = kmeans(ruspini_scaled, centers = 9)$cluster)
+dissplot(d, labels = kmeans(ruspini_scaled, centers = 3)$cluster, col = bluered(100))
+dissplot(d, labels = kmeans(ruspini_scaled, centers = 9)$cluster, col = bluered(100))
 
 #' Using `factoextra`
 fviz_dist(d)
@@ -573,15 +571,14 @@ library(seriation)
 #' objects to show potential clustering tendency as a block structure
 #' (dark blocks along the main diagonal). We scale the data before using Euclidean distance.
 d_shapes <- dist(scale(shapes))
-VAT(d_shapes)
+VAT(d_shapes, col = bluered(100))
 
 #' iVAT uses the largest distances for all possible paths between two objects
 #' instead of the direct distances to make the block structure better visible.
-iVAT(d_shapes)
+iVAT(d_shapes, col = bluered(100))
 
 #' `factoextra` can also create a VAT plot and calculate the Hopkins statistic to assess clustering tendency. For the Hopkins statistic, a sample of size $n$ is drawn from the data and then compares the nearest neighbor distribution with a simulated dataset drawn from a random uniform distribution (see [detailed explanation](https://www.datanovia.com/en/lessons/assessing-clustering-tendency/#statistical-methods)). A values >.5 indicates usually a clustering tendency.
 get_clust_tendency(shapes, n = 10)
-
 
 #' Both plots show a strong cluster structure with 4 clusters.
 #'
@@ -592,9 +589,9 @@ ggplot(data_random, aes(x, y)) + geom_point()
 #' No point clouds are visible, just noise.
 
 d_random <- dist(data_random)
-VAT(d_random)
-iVAT(d_random)
-get_clust_tendency(data_random, n = 10)
+VAT(d_random, col = bluered(100))
+iVAT(d_random, col = bluered(100))
+get_clust_tendency(data_random, n = 10, graph = FALSE)
 
 #' There is very little clustering structure visible indicating low clustering tendency and clustering should not be performed on this data. However, k-means can be used to partition the data into $k$ regions of roughly equivalent size. This can be used as a data-driven discretization of the space.
 #'
