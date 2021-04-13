@@ -1,5 +1,5 @@
 #' ---
-#' title: "R Code for Chapter 2 of Introduction to Data Mining: Data (Tidyverse)"
+#' title: "R Code for Chapter 2 of Introduction to Data Mining: Data (with Tidyverse)"
 #' author: "Michael Hahsler"
 #' output:
 #'  html_document:
@@ -32,7 +32,7 @@ library(GGally) # for ggpairs
 
 #' # Data Preparation: The Iris Dataset
 #'
-#' We will use a toy dataset that comes with R. Fisher's iris data set gives the measurements in centimeters of the variables sepal length and width and petal length and width, respectively, for 50 flowers from each of 3 species of iris. The species are Iris setosa, versicolor, and virginica.
+#' We will use a toy dataset that comes with R. [Fisher's iris data set](https://en.wikipedia.org/wiki/Iris_flower_data_set) gives the measurements in centimeters of the variables sepal length and width and petal length and width, respectively, for 50 flowers from each of 3 species of iris. The species are Iris setosa, versicolor, and virginica.
 #' For more details see: `? iris`
 #'
 #' Load the iris data set and convert the data.frame into a tibble. _Note:_ datasets that come with R or R packages can be loaded with `data()`.
@@ -79,6 +79,13 @@ ggpairs(s, aes(color = Species))
 
 #' ## Stratified sampling
 #'
+#' [Stratified sampling](https://en.wikipedia.org/wiki/Stratified_sampling)
+#'  is a method of sampling from a population which can be partitioned into subpopulations,
+#'  while controlling the proportions of the subpopulation in the resulting sample.
+#'
+#'  In the following, the subpopulations are the different types of species and we want
+#'  to make sure to sample the same number (5) flowers from each.
+#'
 #' You need to install the package sampling with:
 #' install.packages("sampling")
 
@@ -94,27 +101,36 @@ ggpairs(s2, aes(color = Species))
 #'
 #' ### Principal Components Analysis (PCA)
 #'
-#' PCA represents high-dimensional data in fewer dimensions. Points that are
-#' close together in the high-dimensional space, tend also be close together in the lower-dimensional space.
-#' We often use two dimensions for visualizing high-dimensional data as a scatter plot.
+#' [PCA](https://en.wikipedia.org/wiki/Principal_component_analysis) calculates principal components (a new orthonormal basis vectors in the data space) from data points such that the first principal component explains the most variability in the data, the second the next most and so on.
+#' In data analysis, PCA is used to project high-dimensional data points onto the first few (typically two) principal components for visualization as a scatter plot and as preprocessing for modeling (e.g., before k-means clustering).
+#' Points that are closer together in the high-dimensional space, tend also be closer together in the lower-dimensional space,
 #'
-#' Look at the 3d data using an interactive 3d plot (needs package plotly)
+#' Look at the 3d data using an interactive 3d plot (needs package plotly). However, 3d plots are hard to print out and the iris data is actually in 4 dimensions.
 #library(plotly) # I don't load the package because it's namespace clashes with select in dplyr.
 plotly::plot_ly(iris, x = ~Sepal.Length, y = ~Petal.Length, z = ~Sepal.Width,
-  size = ~Petal.Width, color = ~Species, type="scatter3d",
- mode="markers")
+  size = ~Petal.Width, color = ~Species, type="scatter3d")
 
-#' Calculate the principal components
+#' Calculate the principal components using `prcomp()`
 pc <- iris %>% select(-Species) %>% as.matrix() %>% prcomp()
+summary(pc)
 
-#' How important is each principal component?
-plot(pc)
-
+#' How important is each principal component can also be seen using a [scree plot](https://en.wikipedia.org/wiki/Scree_plot). The plot shows how much variability in the data is explained by each additional principal component.
+plot(pc, type = "line")
+#' __Note:__ For the iris data, the first principal component (PC1) explains most of the variability in the data.
+#'
 #' Inspect the raw object (display *str*ucture)
 str(pc)
+
+#' We can display the data points projected on the first two principal components.
 ggplot(as_tibble(pc$x), aes(x = PC1, y = PC2, color = iris$Species)) + geom_point()
 
-#' Plot the projected data and add the original dimensions as arrows.
+#' Since the first principal component represents most of the variability, we can
+#' also project the data only on PC1.
+ggplot(as_tibble(pc$x), aes(x = PC1, y = 0, color = iris$Species)) + geom_point()
+
+#' Plot the projected data and add the original axes as arrows. This is called a
+#' [biplot](https://en.wikipedia.org/wiki/Biplot). If old and new axes point roughly in the
+#' same direction, then they are correlated (linearly dependent).
 library(factoextra)
 fviz_pca(pc)
 fviz_pca_var(pc)
@@ -123,7 +139,7 @@ fviz_pca_var(pc)
 #'
 #' ### Multi-dimensional scaling (MDS)
 #'
-#' MDS is similar to PCA. Instead of data points, it takes pairwise distances (i.e., a distance matrix) and produces a space where points are placed to represent these distances as well as possible. The axis in this space are called components and are similar to the principal components in PCA. Let's calculate
+#' [MDS](https://en.wikipedia.org/wiki/Multidimensional_scaling) is similar to PCA. Instead of data points, it takes pairwise distances (i.e., a distance matrix) and produces a space where points are placed to represent these distances as well as possible. The axis in this space are called components and are similar to the principal components in PCA. Let's calculate
 #' distances in the 4-d space of iris.
 
 d <- iris %>% select(-Species) %>% dist()
@@ -136,15 +152,15 @@ fit <- as_tibble(fit)
 ggplot(fit, aes(x = comp1, y = comp2, color = iris$Species)) + geom_point()
 
 
-#' ### Non-parametric Scaling
+#' ### Non-parametric Multidimensional Scaling
 #'
-#' Non-parametric Scaling is available in package `MASS` as functions
+#' Non-parametric multidimensional scaling performs MDS while relaxing the need of linear relationships. Methods are available in package `MASS` as functions
 #' `isoMDS` and `sammon`.
 #'
 
 #' ## Feature selection
 #'
-#' We will talk about feature selection when we discuss classification models.
+#' We will talk about feature selection when we discuss [classification models](chap3.html#feature-selection-and-feature-preparation).
 #'
 #' ## Discretize features
 
@@ -199,7 +215,10 @@ summary(iris.scaled)
 #'
 #' __Note:__ R actually only uses dissimilarities/distances.
 #'
-#' ## Minkovsky distances
+#' ## Minkowsky distances
+#'
+#' The [Minkowsky distance](https://en.wikipedia.org/wiki/Minkowski_distance) is a family of
+#' metric distances including Euclidean and Manhattan distance.
 iris_sample <- iris.scaled %>% select(-Species) %>% slice(1:5)
 iris_sample
 
@@ -210,7 +229,7 @@ iris_sample %>% dist(method="maximum")
 
 #' __Note:__ Don't forget to scale the data if the ranges are very different!
 #'
-#' ## Distances for binary data (Jaccard and Hamming)
+#' ## Distances for Binary Data
 b <- rbind(
   c(0,0,0,1,1,1,1,0,0,1),
   c(0,0,1,1,1,0,0,1,0,0)
@@ -219,11 +238,11 @@ b
 
 #' ### Jaccard index
 #'
-#' Jaccard index is a similarity measure so R reports 1-Jaccard
+#' [Jaccard index](https://en.wikipedia.org/wiki/Jaccard_index) is a similarity measure so R reports 1-Jaccard
 b %>% dist(method = "binary")
 #' ### Hamming distance
 #'
-#' Hamming distance is the number of mis-matches (equivalent to
+#' [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) is the number of mis-matches (equivalent to
 #' Manhattan distance on 0-1 data and also the squared Euclidean distance).
 b %>% dist(method = "manhattan")
 
@@ -346,6 +365,8 @@ iris %>% group_by(Species) %>% summarize_at(vars(Sepal.Length), mean)
 iris %>% group_by(Species) %>% summarize_all(mean)
 
 #' # Density estimation
+#'
+#' [Density estimation](https://en.wikipedia.org/wiki/Density_estimation) constructions an estimate of an unobservable probability density function (a distribution) based on observed data.
 #'
 #' Just plotting the data is not very helpful
 ggplot(iris, aes(Petal.Length, 1:150)) + geom_point()
