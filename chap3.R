@@ -141,6 +141,10 @@ library(caret)
 library(doMC, quietly = TRUE)
 registerDoMC(cores = 4)
 getDoParWorkers()
+
+#' Set random number generator seed to make results reproducible
+set.seed(2000)
+
 #'
 #' ## Hold out Test Data
 #'
