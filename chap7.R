@@ -57,7 +57,7 @@ summary(ruspini_scaled)
 #'
 #' ## k-means Clustering
 #'
-#' k-means implicitly assumes Euclidean distances. We use $k = 4$ clusters and run the algorithm 10 times with random initialized centroids. The best result is returned.
+#' [k-means](https://en.wikipedia.org/wiki/K-means_clustering) implicitly assumes Euclidean distances. We use $k = 4$ clusters and run the algorithm 10 times with random initialized centroids. The best result is returned.
 km <- kmeans(ruspini_scaled, centers = 4, nstart = 10)
 km
 
@@ -88,7 +88,7 @@ fviz_cluster(km, data = ruspini_scaled, centroids = TRUE, repel = TRUE, ellipse.
 #'
 #' #### Cluster Profiles
 #'
-#' Inspect the centroids with horizontal bar charts organized by cluster. To group the plots by cluster, we have to change the data format to the "long"-format using a pivot operation.
+#' Inspect the centroids with horizontal bar charts organized by cluster. To group the plots by cluster, we have to change the data format to the "long"-format using a pivot operation. I use colors to match the clusters in the scatter plots.
 ggplot(pivot_longer(centroids, cols = c(x, y), names_to = "feature"),
   aes(x = value, y = feature, fill = cluster)) +
   geom_bar(stat = "identity") +
@@ -112,9 +112,10 @@ fviz_cluster(kmeans(ruspini_scaled, centers = 8), data = ruspini_scaled,
 
 #' ## Hierarchical Clustering
 #'
-#' dist defaults to method="Euclidean"
+#' Hierarchical clustering starts with a distance matrix. `dist()` defaults to method="Euclidean". __Note:__ Distance matrices become very large quickly (size and time complexity is $O(n^2)$ where $n$ is the number if data points). It is only possible to calculate and store the matrix for small data sets (maybe a few hundred thousand data points) in main memory. If your data is too large then you can use sampling.
 d <- dist(ruspini_scaled)
-#' We cluster using complete link
+
+#' `hclust()` implements [agglomerative hierarchical clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering).  We cluster using complete link.
 hc <- hclust(d, method = "complete")
 
 #' Hierarchical clustering does not return cluster assignments but a dendrogram. The standard plot
@@ -150,8 +151,10 @@ fviz_cluster(list(data = ruspini_scaled, cluster = cutree(hc_single, k = 4)), ge
 #' ## Density-based clustering with DBSCAN
 
 library(dbscan)
-
-#' Parameters: minPts defines how many points in the epsilon neighborhood are needed to make a point
+#'
+#' [DBSCAN](https://en.wikipedia.org/wiki/DBSCAN) stands for "Density-Based Spatial Clustering of Applications with Noise." It groups together points that are closely packed together and treats points in low-density regions as outliers.
+#'
+#' __Parameters:__ minPts defines how many points in the epsilon neighborhood are needed to make a point
 #' a core point. It is often chosen as a smoothing parameter. I use here minPts = 4.
 #'
 #' To decide on epsilon, the knee in the kNN distance plot is often used. Note that minPts contains the point itself, while the k-nearest neighbor does not. We therefore have to use k = minPts - 1!
@@ -175,9 +178,11 @@ fviz_cluster(db, ruspini_scaled, geom = "point")
 #'
 #' ## Partitioning Around Medoids (PAM)
 #'
-#' Also called $k$-medoids. Similar to $k$-means, but uses medoids instead of centroids to represent clusters and works on a precomputed distance matrix.
+#' [PAM](https://en.wikipedia.org/wiki/K-medoids) tries to solve the
+#' $k$-medoids problem.
+#' The problem is similar to $k$-means, but uses medoids instead of centroids to represent clusters. Like hierarchical clustering, it typically works with precomputed distance matrix.
 #' An advantage is that you can use any distance metric not just Euclidean distances.
-#'   _Note:_ The medoid is the most central data point in the middle of the cluster.
+#'   __Note:__ The medoid is the most central data point in the middle of the cluster.
 
 library(cluster)
 
@@ -203,7 +208,10 @@ fviz_cluster(c(p, list(data = ruspini_scaled)), geom = "point", ellipse.type = "
 #' ## Gaussian Mixture Models
 library(mclust)
 
-#' Mclust uses Bayesian Information Criterion (BIC) to find the
+#' [Gaussian mixture models](https://en.wikipedia.org/wiki/Mixture_model#Multivariate_Gaussian_mixture_model) assume that the data set is the
+#' result of drawing data from a set of
+#' Gaussian distributions where each distribution represents a cluster. Estimation algorithms try to identify the location parameters of the distributions and thus can be used to find clusters.
+#' `Mclust()` uses Bayesian Information Criterion (BIC) to find the
 #' number of clusters (model selection). BIC uses the likelihood and a
 #' penalty term to guard against overfitting.
 m <- Mclust(ruspini_scaled)
@@ -217,7 +225,7 @@ plot(m, what = "classification")
 
 #' ## Spectral clustering
 #'
-#' Spectral clustering works by embedding the data points of the partitioning problem into the subspace of the k largest eigenvectors of a normalized affinity/kernel matrix. Then uses a simple clustering method like k-means.
+#' [Spectral clustering](https://en.wikipedia.org/wiki/Spectral_clustering) works by embedding the data points of the partitioning problem into the subspace of the k largest eigenvectors of a normalized affinity/kernel matrix. Then uses a simple clustering method like k-means.
 library("kernlab")
 
 cluster_spec <- specc(as.matrix(ruspini_scaled), centers = 4)
@@ -228,7 +236,7 @@ ggplot(ruspini_scaled %>% add_column(cluster = factor(cluster_spec)),
 
 #' ## Fuzzy C-Means Clustering
 #'
-#' The fuzzy version of the known k-means clustering algorithm. Each data point
+#' The [fuzzy clustering](https://en.wikipedia.org/wiki/Fuzzy_clustering) version of the k-means clustering problem. Each data point
 #' has a degree of membership to for each cluster.
 library("e1071")
 
@@ -247,7 +255,10 @@ ggplot()  +
 #'
 #' ## Compare the Clustering Quality
 #'
-#' Look at the within.cluster.ss and the avg.silwidth
+#' The two most popular quality metrics are the within-cluster sum of squares (WCSS) used
+#' by [$k$-means](https://en.wikipedia.org/wiki/K-means_clustering) and
+#' the [average silhouette width](https://en.wikipedia.org/wiki/Silhouette_(clustering)).
+#' Look at `within.cluster.ss` and `avg.silwidth` below.
 
 #library(fpc)
 #' Notes:
@@ -283,17 +294,18 @@ ggplot(ruspini_scaled, aes(x, y)) + geom_point()
 set.seed(1234)
 ks <- 2:10
 
-#' ### Within Sum of Squares
-#' Use within sum of squares and look for the knee (`nstart = 5` repeats k-means 5 times and returns the best solution)
-WSS <- sapply(ks, FUN = function(k) {
+#' ### Elbow Method: Within-Cluster Sum of Squares
+#' Calculate the within-cluster sum of squares for different numbers of clusters and look for the [knee or elbow](https://en.wikipedia.org/wiki/Elbow_method_(clustering)) in the plot.
+#' (`nstart = 5` just repeats k-means 5 times and returns the best solution)
+WCSS <- sapply(ks, FUN = function(k) {
   kmeans(ruspini_scaled, centers = k, nstart = 5)$tot.withinss
   })
 
-ggplot(as_tibble(ks, WSS), aes(ks, WSS)) + geom_line() +
+ggplot(as_tibble(ks, WCSS), aes(ks, WCSS)) + geom_line() +
   geom_vline(xintercept = 4, color = "red", linetype = 2)
 
 #' ### Average Silhouette Width
-#' Use average silhouette width (look for the max)
+#' Plot the average silhouette width for different number of clusters and look for the maximum in the plot.
 ASW <- sapply(ks, FUN=function(k) {
   fpc::cluster.stats(d, kmeans(ruspini_scaled, centers=k, nstart = 5)$cluster)$avg.silwidth
   })
@@ -305,7 +317,7 @@ ggplot(as_tibble(ks, ASW), aes(ks, ASW)) + geom_line() +
   geom_vline(xintercept = best_k, color = "red", linetype = 2)
 
 #' ### Dunn Index
-#' Use Dunn index (another internal measure given by min. separation/ max. diameter)
+#' Use [Dunn index](https://en.wikipedia.org/wiki/Dunn_index) (another internal measure given by min. separation/ max. diameter)
 DI <- sapply(ks, FUN=function(k) {
   fpc::cluster.stats(d, kmeans(ruspini_scaled, centers=k, nstart=5)$cluster)$dunn
 })
@@ -387,11 +399,11 @@ ggplot(shapes, aes(x, y)) + geom_point()
 ks <- 2:20
 
 #' Use within sum of squares (look for the knee)
-WSS <- sapply(ks, FUN = function(k) {
+WCSS <- sapply(ks, FUN = function(k) {
   kmeans(shapes, centers = k, nstart = 10)$tot.withinss
 })
 
-ggplot(as_tibble(ks, WSS), aes(ks, WSS)) + geom_line()
+ggplot(as_tibble(ks, WCSS), aes(ks, WCSS)) + geom_line()
 #' Looks like it could be 7 clusters
 km <- kmeans(shapes, centers = 7, nstart = 10)
 
@@ -415,7 +427,7 @@ ggplot(shapes %>% add_column(cluster = factor(hc_4)), aes(x, y, color = cluster)
   geom_point()
 
 #' Compare with ground truth with the [corrected (=adjusted) Rand index (ARI)](https://en.wikipedia.org/wiki/Rand_index#Adjusted_Rand_index),
-#' the [variation of information (VI) index](https://en.wikipedia.org/wiki/Variation_of_information), entropy and purity.
+#' the [variation of information (VI) index](https://en.wikipedia.org/wiki/Variation_of_information), [entropy](https://en.wikipedia.org/wiki/Entropy_(information_theory)) and [purity](https://en.wikipedia.org/wiki/Cluster_analysis#External_evaluation).
 #'
 #' `cluster_stats` computes ARI and VI as comparative measures. I define functions for
 #' entropy and purity here:
@@ -485,7 +497,7 @@ r
 
 
 #'
-#' # Related Topics
+#' # Data Preparation
 #'
 #' ## Outlier Removal
 #'
@@ -497,13 +509,17 @@ r
 #' The larger the LOF value gets, the more likely the point is an outlier.
 library(dbscan)
 
-#' Add a clear outlier to the scaled Ruspini dataset
+#' Add a clear outlier to the scaled Ruspini dataset that is 10 standard deviations above the average for the x axis.
 
-ruspini_scaled_outlier <- ruspini_scaled %>% add_case(x=10,y=10)
+ruspini_scaled_outlier <- ruspini_scaled %>% add_case(x=10,y=0)
 
-#' Outliers can be identified using summary statistics, histograms, scatterplots (pairs plots), and boxplots, etc. We use here a pairs plot (the diagonal contains smoothed histograms). The outlier is visible as the single point at (10, 10) in the scatter plot and as the long tail of the smoothed histograms.
+#' ### Visual inspection of the data
+#'
+#' Outliers can be identified using summary statistics, histograms, scatterplots (pairs plots), and boxplots, etc. We use here a pairs plot (the diagonal contains smoothed histograms). The outlier is visible as the single separate point in the scatter plot and as the long tail of the smoothed histogram for `x` (we would expect most observations to fall in the range [-3,3] in normalized data).
 library("GGally")
 ggpairs(ruspini_scaled_outlier)
+
+
 
 #' The outlier is a problem for k-means
 km <- kmeans(ruspini_scaled_outlier, centers = 4, nstart = 10)
@@ -514,8 +530,10 @@ centroids <- as_tibble(km$centers, rownames = "cluster")
 ggplot(ruspini_scaled_outlier_km, aes(x = x, y = y, color = cluster)) + geom_point() +
   geom_point(data = centroids, aes(x = x, y = y, color = cluster), shape = 3, size = 10)
 
-#' This problem can be fixed by increasing the number of clusters and removing small clusters in a post-processing step or by identifying and removing outliers before clustering. We will use the
-#' Local Outlier Facto to identify and remove potential outliers.
+#' This problem can be fixed by increasing the number of clusters and removing small clusters in a post-processing step or by identifying and removing outliers before clustering.
+#'
+#' ### Local Outlier Factor (LOF)
+#' The [Local Outlier Factor](https://en.wikipedia.org/wiki/Local_outlier_factor) is related to concepts of DBSCAN can help to identify potential outliers.
 #' Calculate the LOF (I choose a neighborhood size of 10 for density estimation),
 lof <- lof(ruspini_scaled_outlier, k = 10)
 lof
@@ -523,17 +541,17 @@ lof
 ggplot(ruspini_scaled_outlier %>% add_column(lof = lof), aes(x, y, color = lof)) +
     geom_point() + scale_color_gradient(low = "gray", high = "red")
 
-#' Plot the points sorted by increasing LOF.
+#' Plot the points sorted by increasing LOF and look for a knee.
 ggplot(tibble(index = seq_len(length(lof)), lof = sort(lof)), aes(index, lof)) +
   geom_line() +
   geom_hline(yintercept = 1, color = "red", linetype = 2)
 
 #' Choose a threshold above 1.
-ggplot(ruspini_scaled_outlier %>% add_column(outlier = lof >= 1.5), aes(x, y, color = outlier)) +
+ggplot(ruspini_scaled_outlier %>% add_column(outlier = lof >= 2), aes(x, y, color = outlier)) +
   geom_point()
 
-# Remove outliers and cluster.
-ruspini_scaled_clean <- ruspini_scaled_outlier  %>% filter(lof < 1.5)
+# Analyze the found outliers (they might be interesting data points) and then cluster the data without them.
+ruspini_scaled_clean <- ruspini_scaled_outlier  %>% filter(lof < 2)
 
 km <- kmeans(ruspini_scaled_clean, centers = 4, nstart = 10)
 ruspini_scaled_clean_km <- ruspini_scaled_clean%>%
@@ -559,6 +577,7 @@ shapes <- mlbench.smiley(n = 500, sd1 = 0.1, sd2 = 0.05)$x
 colnames(shapes) <- c("x", "y")
 shapes <- as_tibble(shapes)
 
+#' ### Scatter plots
 #' The first step is visual inspection using scatter plots.
 ggplot(shapes, aes(x = x, y = y)) + geom_point()
 
@@ -566,10 +585,13 @@ ggplot(shapes, aes(x = x, y = y)) + geom_point()
 #'
 #' If the data has more than two features then you can use a pairs plot (scatterplot matrix) or look at a scatterplot of the first two principal components using PCA.
 
-library(seriation)
-#' Visual Analysis for Cluster Tendency Assessment (VAT) reorders the
+#' ### Visual Analysis for Cluster Tendency Assessment (VAT)
+#'
+#' VAT reorders the
 #' objects to show potential clustering tendency as a block structure
 #' (dark blocks along the main diagonal). We scale the data before using Euclidean distance.
+library(seriation)
+
 d_shapes <- dist(scale(shapes))
 VAT(d_shapes, col = bluered(100))
 
@@ -577,7 +599,8 @@ VAT(d_shapes, col = bluered(100))
 #' instead of the direct distances to make the block structure better visible.
 iVAT(d_shapes, col = bluered(100))
 
-#' `factoextra` can also create a VAT plot and calculate the Hopkins statistic to assess clustering tendency. For the Hopkins statistic, a sample of size $n$ is drawn from the data and then compares the nearest neighbor distribution with a simulated dataset drawn from a random uniform distribution (see [detailed explanation](https://www.datanovia.com/en/lessons/assessing-clustering-tendency/#statistical-methods)). A values >.5 indicates usually a clustering tendency.
+#' ### Hopkins statistic
+#' `factoextra` can also create a VAT plot and calculate the [Hopkins statistic](https://en.wikipedia.org/wiki/Hopkins_statistic) to assess clustering tendency. For the Hopkins statistic, a sample of size $n$ is drawn from the data and then compares the nearest neighbor distribution with a simulated dataset drawn from a random uniform distribution (see [detailed explanation](https://www.datanovia.com/en/lessons/assessing-clustering-tendency/#statistical-methods)). A values >.5 indicates usually a clustering tendency.
 get_clust_tendency(shapes, n = 10)
 
 #' Both plots show a strong cluster structure with 4 clusters.
