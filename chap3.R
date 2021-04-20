@@ -198,7 +198,7 @@ ggplot(imp)
 #' __Note:__ Not all models provide a variable importance function. In this case caret might calculate varImp by itself and ignore the model (see `? varImp`)!
 
 #'
-#' ## Testing: Confusion Matrix and Confidence Interval for Accuracy
+#' # Testing: Confusion Matrix and Confidence Interval for Accuracy
 #'
 #' Use the best model on the test data
 pred <- predict(fit, newdata = Zoo_test)
@@ -262,9 +262,6 @@ resamps <- resamples(list(
 		))
 summary(resamps)
 
-#' Plot the accuracy of the two models for each resampling (e.g., fold). If the
-#' models are the same then all points will fall on the diagonal.
-xyplot(resamps)
 #'
 #' Find out if one models is statistically better than the other (is
 #' the difference in accuracy is not zero).
@@ -387,31 +384,7 @@ fit
 
 rpart.plot(fit$finalModel, extra = 2)
 #' _Note:_ To use a fixed value for the tuning parameter `cp`, we have to
-#' create a tuning grid that only contains that value.
-#'
-#' # Using a Model on the Test Data
-#'
-#' The test data has not been seen by the model and therefore will give us an
-#' unbiased idea of how well the model will generalize.
-#'
-#' Build again a model on the training data.
-
-rpartFit <- Zoo_train %>% train(type ~ .,
-  data = .,
-  method = "rpart",
-  tuneLength = 10,
-  trControl = trainControl(method = "cv")
-)
-rpartFit
-
-#' To test the model, we create predictions and calculate a confusion matrix using the known
-#' test labels.
-
-pr <- predict(rpartFit, Zoo_test)
-pr
-
-confusionMatrix(data = pr, ref = Zoo_test$type)
-
+#' create a tuning grid that only icontains that value.
 #'
 #' # Class Imbalance
 #'
@@ -466,11 +439,10 @@ fit <- training_reptile %>% train(type ~ .,
 fit
 rpart.plot(fit$finalModel, extra = 2)
 #' the tree predicts everything as non-reptile. Have a look at the error on
-#' the training set.
-
+#' the test set.
 confusionMatrix(data = predict(fit, testing_reptile),
   ref = testing_reptile$type, positive = "reptile")
-#' The accuracy is exactly the same as the no-information rate
+#' Accuracy is high, but it is exactly the same as the no-information rate
 #' and kappa is zero. Sensitivity is also zero, meaning that we do not identify
 #' any positive (reptile). If the cost of missing a positive is much
 #' larger than the cost associated with misclassifying a negative, then accuracy
@@ -480,7 +452,7 @@ confusionMatrix(data = predict(fit, testing_reptile),
 #' sensitivity, i.e., the chance to identify positive examples.
 #'
 #' __Note:__ The positive class value (the one that
-#' you want to detect) is set manually to reptile.
+#' you want to detect) is set manually to reptile using `positive = "reptile"`.
 #' Otherwise sensitivity/specificity will not be correctly calculated.
 #'
 #' ## Option 2: Balance Data With Resampling
@@ -515,7 +487,7 @@ confusionMatrix(data = predict(fit, testing_reptile),
 #' There is a tradeoff between sensitivity and specificity (how many of the identified animals are really reptiles)
 #' The tradeoff can be controlled using the sample
 #' proportions. We can sample more reptiles to increase sensitivity at the cost of
-#' lower specificity.
+#' lower specificity (this effect cannot be seen in the data since the test set has only a few reptiles).
 
 id <- strata(training_reptile, stratanames = "type", size = c(50, 100), method = "srswr")
 training_reptile_balanced <- training_reptile %>% slice(id$ID_unit)
@@ -588,14 +560,13 @@ confusionMatrix(data = pred,
 #' a probability for an observation to be a reptile, we can also use a
 #' [receiver operating characteristic (ROC)](https://en.wikipedia.org/wiki/Receiver_operating_characteristic)
 #' curve. For the ROC curve all different cutoff thresholds for the probability
-#' are used and then connected with a line.
+#' are used and then connected with a line. The area under the curve represents
+#' a single number for how well the classifier works (the closer to one, the better).
 library("pROC")
 r <- roc(testing_reptile$type == "reptile", prob[,"reptile"])
 r
 
-plot(r)
-#' This also reports the area under the curve.
-#'
+ggroc(r) + geom_abline(intercept = 1, slope = 1, color = "darkgrey")
 
 #' ## Option 4: Use a Cost-Sensitive Classifier
 #'
