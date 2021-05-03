@@ -77,7 +77,8 @@ rpart.plot(tree_default, extra = 2)
 #' (see: `?rpart.control`).
 #' _Note:_ full trees overfit the training data!
 tree_full <- Zoo %>% rpart(type ~., data = ., control = rpart.control(minsplit = 2, cp = 0))
-rpart.plot(tree_full, extra = 2, roundint=FALSE)
+rpart.plot(tree_full, extra = 2, roundint=FALSE,
+  box.palette = list("Gy", "Gn", "Bu", "Bn", "Or", "Rd", "Pu")) # specify 7 colors
 tree_full
 
 #' Training error on tree with pre-pruning
@@ -182,7 +183,8 @@ ggplot(fit)
 #' A model using the best tuning parameters
 #' and using all the data supplied to `train()` is available as `fit$finalModel`.
 
-rpart.plot(fit$finalModel, extra = 2)
+rpart.plot(fit$finalModel, extra = 2,
+  box.palette = list("Gy", "Gn", "Bu", "Bn", "Or", "Rd", "Pu"))
 
 #' caret also computes variable importance. By default it uses competing splits
 #' (splits which would be runners up, but do not get chosen by the tree)
@@ -262,6 +264,12 @@ resamps <- resamples(list(
 		))
 summary(resamps)
 
+#' `caret` provides some visualizations using the package `lattice`. For example, a boxplot to
+#' compare the accuracy and kappa distribution (over the 10 folds).
+library(lattice)
+bwplot(resamps, layout = c(3, 1))
+#' We see that kNN is performing consistently better on the folds than CART (except for some outlier folds).
+#'
 #'
 #' Find out if one models is statistically better than the other (is
 #' the difference in accuracy is not zero).

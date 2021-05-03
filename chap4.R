@@ -179,6 +179,9 @@ resamps
 #' Calculate summary statistics
 summary(resamps)
 
+library(lattice)
+bwplot(resamps, layout = c(3, 1))
+
 #' Perform inference about differences between models. For each metric, all pair-wise differences are computed and tested to assess if the difference is equal to zero. By default Bonferroni correction for multiple comparison is used. Differences are shown in the upper triangle and p-values are in the lower triangle.
 difs <- diff(resamps)
 difs
