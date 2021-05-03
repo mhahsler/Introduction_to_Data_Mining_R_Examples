@@ -32,10 +32,9 @@ for corrections or to suggest improvements.
 The raw R code and the Powerpoint files can be found in the repository directories [code](tree/master/code) and [slides](tree/master/slides).
 
 ## License
-![CC](https://i.creativecommons.org/l/by/4.0/88x31.png) Michael Hahsler
+All code and documents in this repository are provided under [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) License](https://creativecommons.org/licenses/by-sa/4.0/)
 
- This work is licensed under the
- [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/). 
+![CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/3.0/88x31.png)
  
  For questions please contact
  [Michael Hahsler](http://michael.hahsler.net).
