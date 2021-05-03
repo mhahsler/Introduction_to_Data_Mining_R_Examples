@@ -73,10 +73,10 @@ model %>% compile(
 )
 
 #' _Note:_ Choices are the activation function, number of layers, number of units per layer and the optimizer.
-#' A dropout layer and L2 regularizer is used for the dense layer weights to reduce overfitting.
+#' A dropout layer (randomly sets input units to 0 with a frequency of rate at each step during training time) and L2 regularizer (penalty for the dense layer weights) are used to reduce overfitting.
 #' The output is a
 #' categorical class value, therefore the output layer uses the softmax activation function,
-#' the loss is categorical crossentropy, and the metric is accuracy.
+#' the loss is categorical cross-entropy, and the metric is accuracy.
 #'
 
 #' # Fit the model
