@@ -38,30 +38,49 @@ data(Zoo, package = "mlbench")
 Zoo <- as_tibble(Zoo)
 Zoo
 
-Zoo_predictors <- Zoo %>% select(-type)
-Zoo_class <- Zoo %>% pull(type)
+#' ## Split into features (X) and class variable (y)
+X <- Zoo %>% select(-type) %>% as.matrix
+y <- Zoo %>% pull(type)
 
-#' Create a matrix and normalize the data (using kera's `normalize()` function). If you have nominal variables
-#' (factor), then you need to use kera's `to_categorical()` function to create one-hot encoding.
-Zoo_predictors <- Zoo_predictors %>% as.matrix() %>% normalize()
-head(Zoo_predictors)
 
-#' One-hot encode the class variable
+#' ## Split data in training and test data
+ind <- sample(nrow(Zoo), floor(nrow(Zoo)*0.8))
+
+X_train <- X[ind,]
+X_test <- X[-ind,]
+y_train <- y[ind]
+y_test <- y[-ind]
+
+#' ## One-hot encode the class variable
 #'
 #' __Note:__ needs an integer with the first class being 0 and not 1
-Zoo_class <- to_categorical(as.integer(Zoo_class) - 1L)
-head(Zoo_class)
+y_train <- to_categorical(as.integer(y_train) - 1L)
+head(y_train)
+
+#' ## Scale features
+#'
+#' Scale X_train and then use the same scaling for X_test. These separate steps
+#' make sure that the test data does not influence the scaling of the training data.
+#' I use here R's scale to convert the data to z-scores. Another
+#' popular normalization for deep learning is min-max scaling to the range $[0,1]$. If
+#' you have nominal features (factor), then you need to use kera's `to_categorical()`
+#' function to create a one-hot encoding.
+
+X_train <- scale(X_train)
+X_test <-  scale(X_test, center = attr(X_train, "scaled:center") ,
+                         scale = attr(X_train, "scaled:scale"))
+
 
 #' # Construct the model structure
 model <- keras_model_sequential()
 
 model %>%
-  layer_dense(units = 16, activation = 'relu', input_shape = c(ncol(Zoo_predictors)),
+  layer_dense(units = 16, activation = 'relu', input_shape = c(ncol(X_train)),
     kernel_regularizer=regularizer_l2(l = 0.001)) %>%
   layer_dropout(.1) %>%
   layer_dense(units = 8, activation = 'relu',
     kernel_regularizer=regularizer_l2(l = 0.001)) %>%
-  layer_dense(units = ncol(Zoo_class), activation = 'softmax')
+  layer_dense(units = ncol(y_train), activation = 'softmax')
 model
 #' See `? layer_dense` to learn more about creating the model structure
 #'
@@ -79,35 +98,25 @@ model %>% compile(
 #' the loss is categorical cross-entropy, and the metric is accuracy.
 #'
 
-#' # Fit the model
+#' # Fit the model on the training data
 #'
-#' Uses 20% of the data for validation
-
-train <- sample(c(TRUE, FALSE), size = nrow(Zoo), prob = c(0.8, 0.2), replace = TRUE)
-
+#' __Note:__ the chart shows training loss and training accuracy.
 history <- model %>% fit(
-  Zoo_predictors[train,],
-  Zoo_class[train,],
-  validation_data = list(Zoo_predictors[!train, ], Zoo_class[!train, ]),
-  epochs = 200,
+  X_train, y_train,
+  epochs = 100,
   batch_size = 2^3
 )
 
 history
-
-#' `val_acc` is the accuracy on the test (validation) set.
-
 plot(history)
 #'
 #' # Make predictions on the test set
-#'
-#' __Note:__ classes starts with index 0 not 1
-#'
-classes <- model %>% predict_classes(Zoo_predictors[!train,], batch_size = 2^7)
+pred <- model %>% predict_classes(X_test, batch_size = 2^7)
+
+#' __Note:__ predictions from keras starts with index 0 not 1
 
 library(caret)
 confusionMatrix(
-  data = factor(classes+1L, levels = 1:length(levels(Zoo$type)), labels = levels(Zoo$type)),
-  ref = Zoo$type[!train]
-  )
-
+  data = factor(pred+1L, levels = 1:length(levels(Zoo$type)), labels = levels(Zoo$type)),
+  ref = y_test
+)
