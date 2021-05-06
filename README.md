@@ -29,7 +29,7 @@ for corrections or to suggest improvements.
 | 5. Association Analysis: Basic Concepts and Algorithms | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap5_basic_association_analysis.pdf) | R Code: [Association rule mining](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/code/chap5.html), [Interactive visualization](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/code/chap5_interactive.html) | [Read Chapter 5](https://www-users.cs.umn.edu/~kumar001/dmbook/ch5_association_analysis.pdf) |
 | 7. Cluster Analysis: Basic Concepts and Algorithms | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap7_basic_cluster_analysis.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/code/chap7.html) | [Read Chapter 7](https://www-users.cs.umn.edu/~kumar001/dmbook/ch7_clustering.pdf) |
 
-The raw R code and the Powerpoint files can be found in the repository directories [code](tree/master/code) and [slides](tree/master/slides).
+The raw R code and the Powerpoint files can be found in the repository directories [code](code) and [slides](slides).
 
 ## License
 All code and documents in this repository are provided under [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) License](https://creativecommons.org/licenses/by-sa/4.0/)
