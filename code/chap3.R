@@ -176,10 +176,8 @@ fit <- Zoo_train %>%
     trControl = trainControl(method = "cv", number = 10),
     tuneLength = 5)
 fit
-#' __Note:__ Train has built 10 trees and the reported values for accuracy and Kappa are the averages.
-
-ggplot(fit)
-
+#' __Note:__ Train has built 10 trees using the training folds for each value of `cp` and the reported values for accuracy and Kappa are the averages on the validation folds.
+#'
 #' A model using the best tuning parameters
 #' and using all the data supplied to `train()` is available as `fit$finalModel`.
 
