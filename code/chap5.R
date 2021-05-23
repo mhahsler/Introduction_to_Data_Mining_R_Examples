@@ -251,11 +251,11 @@ library(arulesViz)
 #' Default scatterplot
 plot(rules)
 
-#' Add some jitter (randomly move points) to show how many rules have the
-#' same confidence and support value.
-plot(rules, control=list(jitter = .5))
+#' Note that some jitter (randomly move points) was added to show how many rules have the
+#' same confidence and support value. Without jitter:
+plot(rules, control = list(jitter = 0))
 
-plot(rules, shading = "order", control = list(jitter = .5))
+plot(rules, shading = "order")
 #plot(rules, interactive = TRUE)
 
 #' Grouped plot
