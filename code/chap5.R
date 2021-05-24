@@ -25,7 +25,6 @@
 #'
 
 library(tidyverse)
-library(ggplot2)
 
 library(arules)
 library(arulesViz)
@@ -35,21 +34,24 @@ library(arulesViz)
 #' and
 #' `vignette("arules")` (also available at [CRAN](http://cran.r-project.org/web/packages/arules/vignettes/arules.pdf))
 #'
-#' ## S4 object system
+
+
+#' ## The S4 object system
 #'
 #' Standard R objects use the [S3 object system](http://adv-r.had.co.nz/S3.html)
 #' which do not use formal class definitions and are usually implemented
 #' as a list with a class attribute.
 #' `arules` and many other R packages use the
 #' [S4 object system](http://adv-r.had.co.nz/S4.html) which is based on
-#' formal class definitions (similar to object-oriented programming languages like
-#' Java and C++).
+#' formal class definitions with member variables and methods 
+#' (similar to object-oriented programming languages like Java and C++).
 #' Some important differences of using S4 objects compared to the usual S3
 #' objects are:
 #'
 #' * coercion (casting): `as(from, "class_name")`
-#' * help: `class? class_name`
+#' * help for classes: `class? class_name`
 #'
+
 
 #' # Used data
 data(Zoo, package = "mlbench")
@@ -60,13 +62,14 @@ head(Zoo)
 #' ## Create transactions
 #'
 #' The data in the data.frame need to be converted into a set of transactions where each row represents a transaction and each column is translated into items.
+#' This is done using the contructor `transactions()`.
 #' For the Zoo data set this means that we consider animals as transactions
 #' and the different traits (features) will become items that each animal has. For
 #' example the animal _antelope_ has the item _hair_ in its transaction.
-trans <- as(Zoo, "transactions")
+trans <- transactions(Zoo)
 #'
 #' The conversion gives a warning because only discrete features (`factor` and `logical`) can be
-#' directly translated into items. Continuous features need to be discretizes first.
+#' directly translated into items. Continuous features need to be discretized first.
 #'
 #' What is column 13?
 summary(Zoo[13])
@@ -92,7 +95,7 @@ Zoo_discretized_legs <- Zoo %>% mutate(
 table(Zoo_discretized_legs$legs)
 #'
 #'  Convert data into a set of transactions
-trans <- as(Zoo_has_legs, "transactions")
+trans <- transactions(Zoo_has_legs)
 trans
 
 #' ## Inspect Transactions
@@ -125,7 +128,7 @@ Zoo_factors <- Zoo_has_legs %>% mutate_if(is.logical, factor)
 sapply(Zoo_factors, class)
 summary(Zoo_factors)
 
-trans_factors <- as(Zoo_factors, "transactions")
+trans_factors <- transactions(Zoo_factors)
 trans_factors
 
 itemFrequencyPlot(trans_factors, topN = 20)
