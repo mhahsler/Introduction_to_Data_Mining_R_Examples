@@ -197,7 +197,7 @@ pr <- predict(randomForestFit, Zoo_test)
 pr
 
 #' Calculate the confusion matrix for the held-out test data.
-confusionMatrix(Zoo_test$type, pr)
+confusionMatrix(pr, reference = Zoo_test$type)
 
 
 #' # More Information
