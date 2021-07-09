@@ -1,0 +1,54 @@
+# Introduction
+
+
+```{r setup_01, include=FALSE}
+pkgs <- sort(c('tidyverse', 'ggplot2'))
+
+lapply(pkgs, function(pkg) {
+  if (system.file(package = pkg) == '') install.packages(pkg)
+})
+
+all_pkgs <- union(all_pkgs, pkgs)
+```
+
+**Packages used for this chapter:** `r format_pkgs(pkgs)`
+
+This companion book assumes that you have [R](https://cran.r-project.org/) and [RStudio Desktop](https://www.rstudio.com/products/rstudio/) installed and that you are familiar with how to run R code and install packages.
+
+The code in this book uses `tidyverse` to manipulate data and `ggplot2` for visualization.
+
+```{r}
+library(tidyverse)
+```
+
+## Data Manipulation with Tidyverse
+
+We use tidyverse tibbles to replace R's built-in data.frames, 
+the pipe operator `%>%` to chain
+functions and data transformation functions like `filter()`, `arrange()`, `select()`, and
+`mutate()` provided by the tidyverse package `dplyr`. A good overview is given in
+the [RStudio Data Transformation Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf) and an introduction can be found in the
+[Section on Data Wrangling](https://r4ds.had.co.nz/wrangle-intro.html) the book [R for Data Science](https://r4ds.had.co.nz) [@Wickham2017].
+
+## Visualization with ggplot2
+
+The gg in `ggplot2` stands for __The Grammar of Graphics__ introduced by 
+Leland Wilkinson [@Wilkinson2005].
+The main idea is that every graph is built from the same basic components:
+
+- the data,
+- a coordinate system, and
+- visual marks representing the data (geoms).
+
+In `ggplot2`, the components are combined using the `+` operator.
+
+> `ggplot(data, mapping = aes(x = ..., y = ..., color = ...)) +`
+> `geom_point() +`
+> `coord_cartesian()`
+
+Each `geom_` function uses a `stat_` function to calculate what is visualizes. For example,
+`geom_bar` uses `stat_count` to create a bar chart by counting how often each value appears in the data (see `? geom_bar`). `geom_point` just uses the stat `"identity"` to display the points using the coordinates as they are.
+
+RStudio's [Data Visualization Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf) offers a comprehensive overview of available components. A good introduction
+can be found in the [Chapter on Data Visualization](https://r4ds.had.co.nz/data-visualisation.html) of 
+the book [R for Data Science](https://r4ds.had.co.nz) [@Wickham2017].

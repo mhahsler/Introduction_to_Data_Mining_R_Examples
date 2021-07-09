@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="3.7 Class Imbalance | R Code Companion for the Textbook Introduction to Data Mining" />
+<meta property="og:type" content="book" />
+
+
+<meta property="og:description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition)." />
+
+
+<meta name="author" content="Michael Hahsler" />
+
+<meta name="date" content="2021-07-09" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<meta name="description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition).">
+
+<title>3.7 Class Imbalance | R Code Companion for the Textbook Introduction to Data Mining</title>
+
+<script src="libs/header-attrs/header-attrs.js"></script>
+<script src="libs/jquery/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap/css/united.min.css" rel="stylesheet" />
+<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="libs/navigation/tabsets.js"></script>
+<script src="libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="libs/plotly-binding/plotly.js"></script>
+<script src="libs/typedarray/typedarray.min.js"></script>
+<link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main/plotly-latest.min.js"></script>
+<link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding/datatables.js"></script>
+<link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core/js/jquery.dataTables.min.js"></script>
+<link href="libs/nouislider/jquery.nouislider.min.css" rel="stylesheet" />
+<script src="libs/nouislider/jquery.nouislider.min.js"></script>
+<link href="libs/selectize/selectize.bootstrap3.css" rel="stylesheet" />
+<script src="libs/selectize/selectize.min.js"></script>
+<link href="libs/vis/vis.css" rel="stylesheet" />
+<script src="libs/vis/vis.min.js"></script>
+<script src="libs/visNetwork-binding/visNetwork.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+/* show arrow before summary tag as in bootstrap
+TODO: remove if boostrap in updated in html_document (rmarkdown#1485) */
+details > summary {
+  display: list-item;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container-fluid main-container">
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li><a href="index.html#preface">Preface</a></li>
+<li><a href="1-introduction.html#introduction"><span class="toc-section-number">1</span> Introduction</a>
+<ul>
+<li><a href="1-1-data-manipulation-with-tidyverse.html#data-manipulation-with-tidyverse"><span class="toc-section-number">1.1</span> Data Manipulation with Tidyverse</a></li>
+<li><a href="1-2-visualization-with-ggplot2.html#visualization-with-ggplot2"><span class="toc-section-number">1.2</span> Visualization with ggplot2</a></li>
+</ul></li>
+<li><a href="2-data.html#data"><span class="toc-section-number">2</span> Data</a>
+<ul>
+<li><a href="2-1-the-iris-dataset.html#the-iris-dataset"><span class="toc-section-number">2.1</span> The Iris Dataset</a></li>
+<li><a href="2-2-data-quality.html#data-quality"><span class="toc-section-number">2.2</span> Data Quality</a></li>
+<li><a href="2-3-aggregation.html#aggregation"><span class="toc-section-number">2.3</span> Aggregation</a></li>
+<li><a href="2-4-sampling.html#sampling"><span class="toc-section-number">2.4</span> Sampling</a>
+<ul>
+<li><a href="2-4-sampling.html#random-sampling"><span class="toc-section-number">2.4.1</span> Random Sampling</a></li>
+<li><a href="2-4-sampling.html#stratified-sampling"><span class="toc-section-number">2.4.2</span> Stratified Sampling</a></li>
+</ul></li>
+<li><a href="2-5-features.html#features"><span class="toc-section-number">2.5</span> Features</a>
+<ul>
+<li><a href="2-5-features.html#dimensionality-reduction"><span class="toc-section-number">2.5.1</span> Dimensionality Reduction</a></li>
+<li><a href="2-5-features.html#feature-selection"><span class="toc-section-number">2.5.2</span> Feature Selection</a></li>
+<li><a href="2-5-features.html#discretize-features"><span class="toc-section-number">2.5.3</span> Discretize Features</a></li>
+<li><a href="2-5-features.html#standardize-data-z-scores"><span class="toc-section-number">2.5.4</span> Standardize Data (Z-Scores)</a></li>
+</ul></li>
+<li><a href="2-6-proximities-similarities-and-distances.html#proximities-similarities-and-distances"><span class="toc-section-number">2.6</span> Proximities: Similarities and Distances</a>
+<ul>
+<li><a href="2-6-proximities-similarities-and-distances.html#minkowsky-distances"><span class="toc-section-number">2.6.1</span> Minkowsky Distances</a></li>
+<li><a href="2-6-proximities-similarities-and-distances.html#distances-for-binary-data"><span class="toc-section-number">2.6.2</span> Distances for Binary Data</a></li>
+<li><a href="2-6-proximities-similarities-and-distances.html#distances-for-mixed-data"><span class="toc-section-number">2.6.3</span> Distances for Mixed Data</a></li>
+<li><a href="2-6-proximities-similarities-and-distances.html#additional-proximity-measures-available-in-package-proxy"><span class="toc-section-number">2.6.4</span> Additional proximity Measures Available in Package proxy</a></li>
+</ul></li>
+<li><a href="2-7-relationships-between-features.html#relationships-between-features"><span class="toc-section-number">2.7</span> Relationships Between Features</a>
+<ul>
+<li><a href="2-7-relationships-between-features.html#correlation"><span class="toc-section-number">2.7.1</span> Correlation</a></li>
+<li><a href="2-7-relationships-between-features.html#rank-correlation"><span class="toc-section-number">2.7.2</span> Rank Correlation</a></li>
+<li><a href="2-7-relationships-between-features.html#relationship-between-nominal-and-ordinal-features"><span class="toc-section-number">2.7.3</span> Relationship Between Nominal and Ordinal Features</a></li>
+</ul></li>
+<li><a href="2-8-density-estimation.html#density-estimation"><span class="toc-section-number">2.8</span> Density Estimation</a></li>
+<li><a href="2-9-exploring-data.html#exploring-data"><span class="toc-section-number">2.9</span> Exploring Data</a>
+<ul>
+<li><a href="2-9-exploring-data.html#basic-statistics"><span class="toc-section-number">2.9.1</span> Basic statistics</a></li>
+<li><a href="2-9-exploring-data.html#tabulate-data"><span class="toc-section-number">2.9.2</span> Tabulate data</a></li>
+<li><a href="2-9-exploring-data.html#percentiles-quantiles"><span class="toc-section-number">2.9.3</span> Percentiles (Quantiles)</a></li>
+</ul></li>
+<li><a href="2-10-visualization.html#visualization"><span class="toc-section-number">2.10</span> Visualization</a>
+<ul>
+<li><a href="2-10-visualization.html#histogram"><span class="toc-section-number">2.10.1</span> Histogram</a></li>
+<li><a href="2-10-visualization.html#boxplot"><span class="toc-section-number">2.10.2</span> Boxplot</a></li>
+<li><a href="2-10-visualization.html#scatter-plot"><span class="toc-section-number">2.10.3</span> Scatter plot</a></li>
+<li><a href="2-10-visualization.html#scatter-plot-matrix"><span class="toc-section-number">2.10.4</span> Scatter Plot Matrix</a></li>
+<li><a href="2-10-visualization.html#data-matrix-visualization"><span class="toc-section-number">2.10.5</span> Data Matrix Visualization</a></li>
+<li><a href="2-10-visualization.html#correlation-matrix"><span class="toc-section-number">2.10.6</span> Correlation Matrix</a></li>
+<li><a href="2-10-visualization.html#parallel-coordinates-plot"><span class="toc-section-number">2.10.7</span> Parallel Coordinates Plot</a></li>
+</ul></li>
+</ul></li>
+<li><a href="3-classification-basic-concepts-and-techniques.html#classification-basic-concepts-and-techniques"><span class="toc-section-number">3</span> Classification: Basic Concepts and Techniques</a>
+<ul>
+<li><a href="3-1-the-zoo-dataset.html#the-zoo-dataset"><span class="toc-section-number">3.1</span> The Zoo Dataset</a></li>
+<li><a href="3-2-decision-trees.html#decision-trees"><span class="toc-section-number">3.2</span> Decision Trees</a>
+<ul>
+<li><a href="3-2-decision-trees.html#create-tree-with-default-settings-uses-pre-pruning"><span class="toc-section-number">3.2.1</span> Create Tree With Default Settings (uses pre-pruning)</a></li>
+<li><a href="3-2-decision-trees.html#create-a-full-tree"><span class="toc-section-number">3.2.2</span> Create a Full Tree</a></li>
+<li><a href="3-2-decision-trees.html#make-predictions-for-new-data"><span class="toc-section-number">3.2.3</span> Make Predictions for New Data</a></li>
+</ul></li>
+<li><a href="3-3-model-evaluation-with-caret.html#model-evaluation-with-caret"><span class="toc-section-number">3.3</span> Model Evaluation with Caret</a>
+<ul>
+<li><a href="3-3-model-evaluation-with-caret.html#hold-out-test-data"><span class="toc-section-number">3.3.1</span> Hold out Test Data</a></li>
+<li><a href="3-3-model-evaluation-with-caret.html#learn-a-model-and-tune-hyperparameters-on-the-training-data"><span class="toc-section-number">3.3.2</span> Learn a Model and Tune Hyperparameters on the Training Data</a></li>
+</ul></li>
+<li><a href="3-4-testing-confusion-matrix-and-confidence-interval-for-accuracy.html#testing-confusion-matrix-and-confidence-interval-for-accuracy"><span class="toc-section-number">3.4</span> Testing: Confusion Matrix and Confidence Interval for Accuracy</a></li>
+<li><a href="3-5-model-comparison.html#model-comparison"><span class="toc-section-number">3.5</span> Model Comparison</a></li>
+<li><a href="3-6-feature-selection-and-feature-preparation.html#feature-selection-and-feature-preparation"><span class="toc-section-number">3.6</span> Feature Selection and Feature Preparation</a>
+<ul>
+<li><a href="3-6-feature-selection-and-feature-preparation.html#univariate-feature-importance-score"><span class="toc-section-number">3.6.1</span> Univariate Feature Importance Score</a></li>
+<li><a href="3-6-feature-selection-and-feature-preparation.html#feature-subset-selection"><span class="toc-section-number">3.6.2</span> Feature Subset Selection</a></li>
+<li><a href="3-6-feature-selection-and-feature-preparation.html#using-dummy-variables-for-factors"><span class="toc-section-number">3.6.3</span> Using Dummy Variables for Factors</a></li>
+</ul></li>
+<li><a href="3-7-class-imbalance.html#class-imbalance"><span class="toc-section-number">3.7</span> Class Imbalance</a>
+<ul>
+<li><a href="3-7-class-imbalance.html#option-1-use-the-data-as-is-and-hope-for-the-best"><span class="toc-section-number">3.7.1</span> Option 1: Use the Data As Is and Hope For The Best</a></li>
+<li><a href="3-7-class-imbalance.html#option-2-balance-data-with-resampling"><span class="toc-section-number">3.7.2</span> Option 2: Balance Data With Resampling</a></li>
+<li><a href="3-7-class-imbalance.html#option-3-build-a-larger-tree-and-use-predicted-probabilities"><span class="toc-section-number">3.7.3</span> Option 3: Build A Larger Tree and use Predicted Probabilities</a></li>
+<li><a href="3-7-class-imbalance.html#option-4-use-a-cost-sensitive-classifier"><span class="toc-section-number">3.7.4</span> Option 4: Use a Cost-Sensitive Classifier</a></li>
+</ul></li>
+</ul></li>
+<li><a href="4-classification-alternative-techniques.html#classification-alternative-techniques"><span class="toc-section-number">4</span> Classification: Alternative Techniques</a>
+<ul>
+<li><a href="4-1-training-and-test-data.html#training-and-test-data"><span class="toc-section-number">4.1</span> Training and Test Data</a></li>
+<li><a href="4-2-fitting-different-classification-models-to-the-training-data.html#fitting-different-classification-models-to-the-training-data"><span class="toc-section-number">4.2</span> Fitting Different Classification Models to the Training Data</a>
+<ul>
+<li><a href="4-2-fitting-different-classification-models-to-the-training-data.html#conditional-inference-tree-decision-tree"><span class="toc-section-number">4.2.1</span> Conditional Inference Tree (Decision Tree)</a></li>
+<li><a href="4-2-fitting-different-classification-models-to-the-training-data.html#c-4.5-decision-tree"><span class="toc-section-number">4.2.2</span> C 4.5 Decision Tree</a></li>
+<li><a href="4-2-fitting-different-classification-models-to-the-training-data.html#k-nearest-neighbors"><span class="toc-section-number">4.2.3</span> K-Nearest Neighbors</a></li>
+<li><a href="4-2-fitting-different-classification-models-to-the-training-data.html#part-rule-based-classifier"><span class="toc-section-number">4.2.4</span> PART (Rule-based classifier)</a></li>
+<li><a href="4-2-fitting-different-classification-models-to-the-training-data.html#linear-support-vector-machines"><span class="toc-section-number">4.2.5</span> Linear Support Vector Machines</a></li>
+<li><a href="4-2-fitting-different-classification-models-to-the-training-data.html#random-forest"><span class="toc-section-number">4.2.6</span> Random Forest</a></li>
+<li><a href="4-2-fitting-different-classification-models-to-the-training-data.html#gradient-boosted-decision-trees-xgboost"><span class="toc-section-number">4.2.7</span> Gradient Boosted Decision Trees (xgboost)</a></li>
+<li><a href="4-2-fitting-different-classification-models-to-the-training-data.html#artificial-neural-network"><span class="toc-section-number">4.2.8</span> Artificial Neural Network</a></li>
+</ul></li>
+<li><a href="4-3-comparing-models.html#comparing-models"><span class="toc-section-number">4.3</span> Comparing Models</a></li>
+<li><a href="4-4-applying-the-chosen-model-to-the-test-data.html#applying-the-chosen-model-to-the-test-data"><span class="toc-section-number">4.4</span> Applying the Chosen Model to the Test Data</a></li>
+<li><a href="4-5-decision-boundaries.html#decision-boundaries"><span class="toc-section-number">4.5</span> Decision Boundaries</a>
+<ul>
+<li><a href="4-5-decision-boundaries.html#iris-dataset"><span class="toc-section-number">4.5.1</span> Iris Dataset</a></li>
+<li><a href="4-5-decision-boundaries.html#circle-dataset"><span class="toc-section-number">4.5.2</span> Circle Dataset</a></li>
+</ul></li>
+<li><a href="4-6-more-information.html#more-information"><span class="toc-section-number">4.6</span> More Information</a></li>
+</ul></li>
+<li><a href="5-association-analysis-basic-concepts-and-algorithms.html#association-analysis-basic-concepts-and-algorithms"><span class="toc-section-number">5</span> Association Analysis: Basic Concepts and Algorithms</a>
+<ul>
+<li><a href="5-1-the-arules-package.html#the-arules-package"><span class="toc-section-number">5.1</span> The arules Package</a></li>
+<li><a href="5-2-transactions.html#transactions"><span class="toc-section-number">5.2</span> Transactions</a>
+<ul>
+<li><a href="5-2-transactions.html#create-transactions"><span class="toc-section-number">5.2.1</span> Create Transactions</a></li>
+<li><a href="5-2-transactions.html#inspect-transactions"><span class="toc-section-number">5.2.2</span> Inspect Transactions</a></li>
+<li><a href="5-2-transactions.html#vertical-layout-transaction-id-lists"><span class="toc-section-number">5.2.3</span> Vertical Layout (Transaction ID Lists)</a></li>
+</ul></li>
+<li><a href="5-3-frequent-itemsets.html#frequent-itemsets"><span class="toc-section-number">5.3</span> Frequent Itemsets</a>
+<ul>
+<li><a href="5-3-frequent-itemsets.html#mine-frequent-itemsets"><span class="toc-section-number">5.3.1</span> Mine Frequent Itemsets</a></li>
+<li><a href="5-3-frequent-itemsets.html#concise-representation-of-itemsets"><span class="toc-section-number">5.3.2</span> Concise Representation of Itemsets</a></li>
+</ul></li>
+<li><a href="5-4-association-rules.html#association-rules"><span class="toc-section-number">5.4</span> Association Rules</a>
+<ul>
+<li><a href="5-4-association-rules.html#mine-association-rules"><span class="toc-section-number">5.4.1</span> Mine Association Rules</a></li>
+<li><a href="5-4-association-rules.html#calculate-additional-interest-measures"><span class="toc-section-number">5.4.2</span> Calculate Additional Interest Measures</a></li>
+<li><a href="5-4-association-rules.html#mine-using-templates"><span class="toc-section-number">5.4.3</span> Mine Using Templates</a></li>
+</ul></li>
+<li><a href="5-5-association-rule-visualization.html#association-rule-visualization"><span class="toc-section-number">5.5</span> Association Rule Visualization</a></li>
+<li><a href="5-6-interactive-visualizations.html#interactive-visualizations"><span class="toc-section-number">5.6</span> Interactive Visualizations</a>
+<ul>
+<li><a href="5-6-interactive-visualizations.html#interactive-inspect-with-sorting-filtering-and-paging"><span class="toc-section-number">5.6.1</span> Interactive Inspect With Sorting, Filtering and Paging</a></li>
+<li><a href="5-6-interactive-visualizations.html#scatter-plot-1"><span class="toc-section-number">5.6.2</span> Scatter Plot</a></li>
+<li><a href="5-6-interactive-visualizations.html#matrix-visualization"><span class="toc-section-number">5.6.3</span> Matrix Visualization</a></li>
+<li><a href="5-6-interactive-visualizations.html#visualization-as-graph"><span class="toc-section-number">5.6.4</span> Visualization as Graph</a></li>
+<li><a href="5-6-interactive-visualizations.html#interactive-rule-explorer"><span class="toc-section-number">5.6.5</span> Interactive Rule Explorer</a></li>
+</ul></li>
+</ul></li>
+<li><a href="6-association-analysis-advanced-concepts.html#association-analysis-advanced-concepts"><span class="toc-section-number">6</span> Association Analysis: Advanced Concepts</a></li>
+<li><a href="7-clustering-analysis.html#clustering-analysis"><span class="toc-section-number">7</span> Clustering Analysis</a>
+<ul>
+<li><a href="7-1-data-preparation.html#data-preparation"><span class="toc-section-number">7.1</span> Data Preparation</a>
+<ul>
+<li><a href="7-1-data-preparation.html#data-cleaning"><span class="toc-section-number">7.1.1</span> Data cleaning</a></li>
+<li><a href="7-1-data-preparation.html#scale-data"><span class="toc-section-number">7.1.2</span> Scale data</a></li>
+</ul></li>
+<li><a href="7-2-clustering-methods.html#clustering-methods"><span class="toc-section-number">7.2</span> Clustering methods</a>
+<ul>
+<li><a href="7-2-clustering-methods.html#k-means-clustering"><span class="toc-section-number">7.2.1</span> k-means Clustering</a></li>
+<li><a href="7-2-clustering-methods.html#hierarchical-clustering"><span class="toc-section-number">7.2.2</span> Hierarchical Clustering</a></li>
+<li><a href="7-2-clustering-methods.html#density-based-clustering-with-dbscan"><span class="toc-section-number">7.2.3</span> Density-based clustering with DBSCAN</a></li>
+<li><a href="7-2-clustering-methods.html#partitioning-around-medoids-pam"><span class="toc-section-number">7.2.4</span> Partitioning Around Medoids (PAM)</a></li>
+<li><a href="7-2-clustering-methods.html#gaussian-mixture-models"><span class="toc-section-number">7.2.5</span> Gaussian Mixture Models</a></li>
+<li><a href="7-2-clustering-methods.html#spectral-clustering"><span class="toc-section-number">7.2.6</span> Spectral clustering</a></li>
+<li><a href="7-2-clustering-methods.html#fuzzy-c-means-clustering"><span class="toc-section-number">7.2.7</span> Fuzzy C-Means Clustering</a></li>
+</ul></li>
+<li><a href="7-3-internal-cluster-validation.html#internal-cluster-validation"><span class="toc-section-number">7.3</span> Internal Cluster Validation</a>
+<ul>
+<li><a href="7-3-internal-cluster-validation.html#compare-the-clustering-quality"><span class="toc-section-number">7.3.1</span> Compare the Clustering Quality</a></li>
+<li><a href="7-3-internal-cluster-validation.html#silhouette-plot"><span class="toc-section-number">7.3.2</span> Silhouette plot</a></li>
+<li><a href="7-3-internal-cluster-validation.html#find-optimal-number-of-clusters-for-k-means"><span class="toc-section-number">7.3.3</span> Find Optimal Number of Clusters for k-means</a></li>
+<li><a href="7-3-internal-cluster-validation.html#visualizing-the-distance-matrix"><span class="toc-section-number">7.3.4</span> Visualizing the Distance Matrix</a></li>
+</ul></li>
+<li><a href="7-4-external-cluster-validation.html#external-cluster-validation"><span class="toc-section-number">7.4</span> External Cluster Validation</a></li>
+<li><a href="7-5-advanced-data-preparation-for-clustering.html#advanced-data-preparation-for-clustering"><span class="toc-section-number">7.5</span> Advanced Data Preparation for Clustering</a>
+<ul>
+<li><a href="7-5-advanced-data-preparation-for-clustering.html#outlier-removal"><span class="toc-section-number">7.5.1</span> Outlier Removal</a></li>
+<li><a href="7-5-advanced-data-preparation-for-clustering.html#clustering-tendency"><span class="toc-section-number">7.5.2</span> Clustering Tendency</a></li>
+</ul></li>
+</ul></li>
+<li><a href="references.html#references">References</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="class-imbalance" class="section level2" number="3.7">
+<h2><span class="header-section-number">3.7</span> Class Imbalance</h2>
+<p>Classifiers have a hard time to learn from data where we have much more observations for one class (called the majority class). This is called the class imbalance problem.</p>
+<p>Here is a very good <a href="http://www.kdnuggets.com/2016/08/learning-from-imbalanced-classes.html">article about the problem and solutions.</a></p>
+<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb323-1"><a href="3-7-class-imbalance.html#cb323-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart)</span>
+<span id="cb323-2"><a href="3-7-class-imbalance.html#cb323-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart.plot)</span>
+<span id="cb323-3"><a href="3-7-class-imbalance.html#cb323-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Zoo, <span class="at">package=</span><span class="st">&quot;mlbench&quot;</span>)</span></code></pre></div>
+<p>Class distribution</p>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="3-7-class-imbalance.html#cb324-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Zoo, <span class="fu">aes</span>(<span class="at">y =</span> type)) <span class="sc">+</span> <span class="fu">geom_bar</span>()</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-127-1.png" width="672" /></p>
+<p>To create an imbalanced problem, we want to decide if an animal is an reptile.
+First, we change the class variable
+to make it into a binary reptile/no reptile classification problem.
+<strong>Note:</strong> We use here the training data for testing. You should use a
+separate testing data set!</p>
+<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb325-1"><a href="3-7-class-imbalance.html#cb325-1" aria-hidden="true" tabindex="-1"></a>Zoo_reptile <span class="ot">&lt;-</span> Zoo <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(</span>
+<span id="cb325-2"><a href="3-7-class-imbalance.html#cb325-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">factor</span>(Zoo<span class="sc">$</span>type <span class="sc">==</span> <span class="st">&quot;reptile&quot;</span>, <span class="at">levels =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>),</span>
+<span id="cb325-3"><a href="3-7-class-imbalance.html#cb325-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;nonreptile&quot;</span>, <span class="st">&quot;reptile&quot;</span>)))</span></code></pre></div>
+<p>Do not forget to make the class variable a factor (a nominal variable)
+or you will get a regression tree instead of a classification tree.</p>
+<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="3-7-class-imbalance.html#cb326-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Zoo_reptile)</span></code></pre></div>
+<pre><code>##     hair          feathers          eggs        
+##  Mode :logical   Mode :logical   Mode :logical  
+##  FALSE:58        FALSE:81        FALSE:42       
+##  TRUE :43        TRUE :20        TRUE :59       
+##                                                 
+##                                                 
+##                                                 
+##     milk          airborne        aquatic       
+##  Mode :logical   Mode :logical   Mode :logical  
+##  FALSE:60        FALSE:77        FALSE:65       
+##  TRUE :41        TRUE :24        TRUE :36       
+##                                                 
+##                                                 
+##                                                 
+##   predator        toothed         backbone      
+##  Mode :logical   Mode :logical   Mode :logical  
+##  FALSE:45        FALSE:40        FALSE:18       
+##  TRUE :56        TRUE :61        TRUE :83       
+##                                                 
+##                                                 
+##                                                 
+##   breathes        venomous          fins        
+##  Mode :logical   Mode :logical   Mode :logical  
+##  FALSE:21        FALSE:93        FALSE:84       
+##  TRUE :80        TRUE :8         TRUE :17       
+##                                                 
+##                                                 
+##                                                 
+##       legs         tail          domestic      
+##  Min.   :0.00   Mode :logical   Mode :logical  
+##  1st Qu.:2.00   FALSE:26        FALSE:88       
+##  Median :4.00   TRUE :75        TRUE :13       
+##  Mean   :2.84                                  
+##  3rd Qu.:4.00                                  
+##  Max.   :8.00                                  
+##   catsize                type   
+##  Mode :logical   nonreptile:96  
+##  FALSE:57        reptile   : 5  
+##  TRUE :44                       
+##                                 
+##                                 
+## </code></pre>
+<p>See if we have a class imbalance problem.</p>
+<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="3-7-class-imbalance.html#cb328-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Zoo_reptile, <span class="fu">aes</span>(<span class="at">y =</span> type)) <span class="sc">+</span> <span class="fu">geom_bar</span>()</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-130-1.png" width="672" /></p>
+<p>Create test and training data. I use here a 50/50 split to make sure that the test set has some samples of the rare reptile class.</p>
+<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb329-1"><a href="3-7-class-imbalance.html#cb329-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb329-2"><a href="3-7-class-imbalance.html#cb329-2" aria-hidden="true" tabindex="-1"></a>inTrain <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(<span class="at">y =</span> Zoo_reptile<span class="sc">$</span>type, <span class="at">p =</span> .<span class="dv">5</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb329-3"><a href="3-7-class-imbalance.html#cb329-3" aria-hidden="true" tabindex="-1"></a>training_reptile <span class="ot">&lt;-</span> Zoo_reptile <span class="sc">%&gt;%</span> <span class="fu">slice</span>(inTrain)</span>
+<span id="cb329-4"><a href="3-7-class-imbalance.html#cb329-4" aria-hidden="true" tabindex="-1"></a>testing_reptile <span class="ot">&lt;-</span> Zoo_reptile <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="sc">-</span>inTrain)</span></code></pre></div>
+<p>the new class variable is clearly not balanced. This is a problem
+for building a tree!</p>
+<div id="option-1-use-the-data-as-is-and-hope-for-the-best" class="section level3" number="3.7.1">
+<h3><span class="header-section-number">3.7.1</span> Option 1: Use the Data As Is and Hope For The Best</h3>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="3-7-class-imbalance.html#cb330-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> training_reptile <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb330-2"><a href="3-7-class-imbalance.html#cb330-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb330-3"><a href="3-7-class-imbalance.html#cb330-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;rpart&quot;</span>,</span>
+<span id="cb330-4"><a href="3-7-class-imbalance.html#cb330-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>))</span></code></pre></div>
+<pre><code>## Warning in nominalTrainWorkflow(x = x, y = y, wts =
+## weights, info = trainInfo, : There were missing values
+## in resampled performance measures.</code></pre>
+<p><strong>Warnings:</strong> “There were missing values in resampled performance measures.”
+means that some test folds did not contain examples of both classes.
+This is very likely with class imbalance and small datasets.</p>
+<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="3-7-class-imbalance.html#cb332-1" aria-hidden="true" tabindex="-1"></a>fit</span></code></pre></div>
+<pre><code>## CART 
+## 
+## 51 samples
+## 16 predictors
+##  2 classes: &#39;nonreptile&#39;, &#39;reptile&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 46, 47, 46, 46, 45, 46, ... 
+## Resampling results:
+## 
+##   Accuracy  Kappa
+##   0.9467    0    
+## 
+## Tuning parameter &#39;cp&#39; was held constant at a value of 0</code></pre>
+<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb334-1"><a href="3-7-class-imbalance.html#cb334-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(fit<span class="sc">$</span>finalModel, <span class="at">extra =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-133-1.png" width="672" /></p>
+<p>the tree predicts everything as non-reptile. Have a look at the error on
+the test set.</p>
+<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb335-1"><a href="3-7-class-imbalance.html#cb335-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="at">data =</span> <span class="fu">predict</span>(fit, testing_reptile),</span>
+<span id="cb335-2"><a href="3-7-class-imbalance.html#cb335-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">ref =</span> testing_reptile<span class="sc">$</span>type, <span class="at">positive =</span> <span class="st">&quot;reptile&quot;</span>)</span></code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##             Reference
+## Prediction   nonreptile reptile
+##   nonreptile         48       2
+##   reptile             0       0
+##                                         
+##                Accuracy : 0.96          
+##                  95% CI : (0.863, 0.995)
+##     No Information Rate : 0.96          
+##     P-Value [Acc &gt; NIR] : 0.677         
+##                                         
+##                   Kappa : 0             
+##                                         
+##  Mcnemar&#39;s Test P-Value : 0.480         
+##                                         
+##             Sensitivity : 0.00          
+##             Specificity : 1.00          
+##          Pos Pred Value :  NaN          
+##          Neg Pred Value : 0.96          
+##              Prevalence : 0.04          
+##          Detection Rate : 0.00          
+##    Detection Prevalence : 0.00          
+##       Balanced Accuracy : 0.50          
+##                                         
+##        &#39;Positive&#39; Class : reptile       
+## </code></pre>
+<p>Accuracy is high, but it is exactly the same as the no-information rate
+and kappa is zero. Sensitivity is also zero, meaning that we do not identify
+any positive (reptile). If the cost of missing a positive is much
+larger than the cost associated with misclassifying a negative, then accuracy
+is not a good measure!
+By dealing with imbalance, we are <strong>not</strong> concerned
+with accuracy, but we want to increase the
+sensitivity, i.e., the chance to identify positive examples.</p>
+<p><strong>Note:</strong> The positive class value (the one that
+you want to detect) is set manually to reptile using <code>positive = "reptile"</code>.
+Otherwise sensitivity/specificity will not be correctly calculated.</p>
+</div>
+<div id="option-2-balance-data-with-resampling" class="section level3" number="3.7.2">
+<h3><span class="header-section-number">3.7.2</span> Option 2: Balance Data With Resampling</h3>
+<p>We use stratified sampling with replacement (to oversample the
+minority/positive class).
+You could also use SMOTE (in package <strong>DMwR</strong>) or other sampling strategies (e.g., from package <strong>unbalanced</strong>). We
+use 50+50 observations here (<strong>Note:</strong> many samples will be chosen several times).</p>
+<div class="sourceCode" id="cb337"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb337-1"><a href="3-7-class-imbalance.html#cb337-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sampling)</span>
+<span id="cb337-2"><a href="3-7-class-imbalance.html#cb337-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1000</span>) <span class="co"># for repeatability</span></span>
+<span id="cb337-3"><a href="3-7-class-imbalance.html#cb337-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb337-4"><a href="3-7-class-imbalance.html#cb337-4" aria-hidden="true" tabindex="-1"></a>id <span class="ot">&lt;-</span> <span class="fu">strata</span>(training_reptile, <span class="at">stratanames =</span> <span class="st">&quot;type&quot;</span>, <span class="at">size =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">50</span>), <span class="at">method =</span> <span class="st">&quot;srswr&quot;</span>)</span>
+<span id="cb337-5"><a href="3-7-class-imbalance.html#cb337-5" aria-hidden="true" tabindex="-1"></a>training_reptile_balanced <span class="ot">&lt;-</span> training_reptile <span class="sc">%&gt;%</span> <span class="fu">slice</span>(id<span class="sc">$</span>ID_unit)</span>
+<span id="cb337-6"><a href="3-7-class-imbalance.html#cb337-6" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(training_reptile_balanced<span class="sc">$</span>type)</span></code></pre></div>
+<pre><code>## 
+## nonreptile    reptile 
+##         50         50</code></pre>
+<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb339-1"><a href="3-7-class-imbalance.html#cb339-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> training_reptile_balanced <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb339-2"><a href="3-7-class-imbalance.html#cb339-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb339-3"><a href="3-7-class-imbalance.html#cb339-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;rpart&quot;</span>,</span>
+<span id="cb339-4"><a href="3-7-class-imbalance.html#cb339-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>),</span>
+<span id="cb339-5"><a href="3-7-class-imbalance.html#cb339-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">minsplit =</span> <span class="dv">5</span>))</span>
+<span id="cb339-6"><a href="3-7-class-imbalance.html#cb339-6" aria-hidden="true" tabindex="-1"></a>fit</span></code></pre></div>
+<pre><code>## CART 
+## 
+## 100 samples
+##  16 predictor
+##   2 classes: &#39;nonreptile&#39;, &#39;reptile&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 90, 90, 90, 90, 90, 90, ... 
+## Resampling results across tuning parameters:
+## 
+##   cp    Accuracy  Kappa
+##   0.18  0.81      0.62 
+##   0.30  0.63      0.26 
+##   0.34  0.53      0.06 
+## 
+## Accuracy was used to select the optimal model
+##  using the largest value.
+## The final value used for the model was cp = 0.18.</code></pre>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb341-1"><a href="3-7-class-imbalance.html#cb341-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(fit<span class="sc">$</span>finalModel, <span class="at">extra =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-135-1.png" width="672" /></p>
+<p>Check on the unbalanced testing data.</p>
+<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb342-1"><a href="3-7-class-imbalance.html#cb342-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="at">data =</span> <span class="fu">predict</span>(fit, testing_reptile),</span>
+<span id="cb342-2"><a href="3-7-class-imbalance.html#cb342-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">ref =</span> testing_reptile<span class="sc">$</span>type, <span class="at">positive =</span> <span class="st">&quot;reptile&quot;</span>)</span></code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##             Reference
+## Prediction   nonreptile reptile
+##   nonreptile         19       0
+##   reptile            29       2
+##                                         
+##                Accuracy : 0.42          
+##                  95% CI : (0.282, 0.568)
+##     No Information Rate : 0.96          
+##     P-Value [Acc &gt; NIR] : 1             
+##                                         
+##                   Kappa : 0.05          
+##                                         
+##  Mcnemar&#39;s Test P-Value : 2e-07         
+##                                         
+##             Sensitivity : 1.0000        
+##             Specificity : 0.3958        
+##          Pos Pred Value : 0.0645        
+##          Neg Pred Value : 1.0000        
+##              Prevalence : 0.0400        
+##          Detection Rate : 0.0400        
+##    Detection Prevalence : 0.6200        
+##       Balanced Accuracy : 0.6979        
+##                                         
+##        &#39;Positive&#39; Class : reptile       
+## </code></pre>
+<p><strong>Note</strong> that the accuracy is below the no information rate!
+However, kappa (improvement of accuracy over randomness) and
+sensitivity (the ability to identify reptiles) have increased.</p>
+<p>There is a tradeoff between sensitivity and specificity (how many of the identified animals are really reptiles)
+The tradeoff can be controlled using the sample
+proportions. We can sample more reptiles to increase sensitivity at the cost of
+lower specificity (this effect cannot be seen in the data since the test set has only a few reptiles).</p>
+<div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb344-1"><a href="3-7-class-imbalance.html#cb344-1" aria-hidden="true" tabindex="-1"></a>id <span class="ot">&lt;-</span> <span class="fu">strata</span>(training_reptile, <span class="at">stratanames =</span> <span class="st">&quot;type&quot;</span>, <span class="at">size =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">100</span>), <span class="at">method =</span> <span class="st">&quot;srswr&quot;</span>)</span>
+<span id="cb344-2"><a href="3-7-class-imbalance.html#cb344-2" aria-hidden="true" tabindex="-1"></a>training_reptile_balanced <span class="ot">&lt;-</span> training_reptile <span class="sc">%&gt;%</span> <span class="fu">slice</span>(id<span class="sc">$</span>ID_unit)</span>
+<span id="cb344-3"><a href="3-7-class-imbalance.html#cb344-3" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(training_reptile_balanced<span class="sc">$</span>type)</span></code></pre></div>
+<pre><code>## 
+## nonreptile    reptile 
+##         50        100</code></pre>
+<div class="sourceCode" id="cb346"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb346-1"><a href="3-7-class-imbalance.html#cb346-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> training_reptile_balanced <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb346-2"><a href="3-7-class-imbalance.html#cb346-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb346-3"><a href="3-7-class-imbalance.html#cb346-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;rpart&quot;</span>,</span>
+<span id="cb346-4"><a href="3-7-class-imbalance.html#cb346-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>),</span>
+<span id="cb346-5"><a href="3-7-class-imbalance.html#cb346-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">minsplit =</span> <span class="dv">5</span>))</span>
+<span id="cb346-6"><a href="3-7-class-imbalance.html#cb346-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb346-7"><a href="3-7-class-imbalance.html#cb346-7" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="at">data =</span> <span class="fu">predict</span>(fit, testing_reptile),</span>
+<span id="cb346-8"><a href="3-7-class-imbalance.html#cb346-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">ref =</span> testing_reptile<span class="sc">$</span>type, <span class="at">positive =</span> <span class="st">&quot;reptile&quot;</span>)</span></code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##             Reference
+## Prediction   nonreptile reptile
+##   nonreptile         33       0
+##   reptile            15       2
+##                                         
+##                Accuracy : 0.7           
+##                  95% CI : (0.554, 0.821)
+##     No Information Rate : 0.96          
+##     P-Value [Acc &gt; NIR] : 1.000000      
+##                                         
+##                   Kappa : 0.15          
+##                                         
+##  Mcnemar&#39;s Test P-Value : 0.000301      
+##                                         
+##             Sensitivity : 1.000         
+##             Specificity : 0.688         
+##          Pos Pred Value : 0.118         
+##          Neg Pred Value : 1.000         
+##              Prevalence : 0.040         
+##          Detection Rate : 0.040         
+##    Detection Prevalence : 0.340         
+##       Balanced Accuracy : 0.844         
+##                                         
+##        &#39;Positive&#39; Class : reptile       
+## </code></pre>
+</div>
+<div id="option-3-build-a-larger-tree-and-use-predicted-probabilities" class="section level3" number="3.7.3">
+<h3><span class="header-section-number">3.7.3</span> Option 3: Build A Larger Tree and use Predicted Probabilities</h3>
+<p>Increase complexity and require less data for splitting a node.
+Here I also use AUC (area under the ROC) as the tuning metric.
+You need to specify the two class
+summary function. Note that the tree still trying to improve accuracy on the
+data and not AUC! I also enable class probabilities since I want to predict
+probabilities later.</p>
+<div class="sourceCode" id="cb348"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb348-1"><a href="3-7-class-imbalance.html#cb348-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> training_reptile <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb348-2"><a href="3-7-class-imbalance.html#cb348-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb348-3"><a href="3-7-class-imbalance.html#cb348-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;rpart&quot;</span>,</span>
+<span id="cb348-4"><a href="3-7-class-imbalance.html#cb348-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneLength =</span> <span class="dv">10</span>,</span>
+<span id="cb348-5"><a href="3-7-class-imbalance.html#cb348-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>,</span>
+<span id="cb348-6"><a href="3-7-class-imbalance.html#cb348-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">classProbs =</span> <span class="cn">TRUE</span>,                 <span class="do">## necessary for predict with type=&quot;prob&quot;</span></span>
+<span id="cb348-7"><a href="3-7-class-imbalance.html#cb348-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">summaryFunction=</span>twoClassSummary),  <span class="do">## necessary for ROC</span></span>
+<span id="cb348-8"><a href="3-7-class-imbalance.html#cb348-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">metric =</span> <span class="st">&quot;ROC&quot;</span>,</span>
+<span id="cb348-9"><a href="3-7-class-imbalance.html#cb348-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">minsplit =</span> <span class="dv">3</span>))</span></code></pre></div>
+<pre><code>## Warning in nominalTrainWorkflow(x = x, y = y, wts =
+## weights, info = trainInfo, : There were missing values
+## in resampled performance measures.</code></pre>
+<div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb350-1"><a href="3-7-class-imbalance.html#cb350-1" aria-hidden="true" tabindex="-1"></a>fit</span></code></pre></div>
+<pre><code>## CART 
+## 
+## 51 samples
+## 16 predictors
+##  2 classes: &#39;nonreptile&#39;, &#39;reptile&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 46, 47, 46, 46, 46, 45, ... 
+## Resampling results:
+## 
+##   ROC     Sens   Spec
+##   0.3583  0.975  0   
+## 
+## Tuning parameter &#39;cp&#39; was held constant at a value of 0</code></pre>
+<div class="sourceCode" id="cb352"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb352-1"><a href="3-7-class-imbalance.html#cb352-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(fit<span class="sc">$</span>finalModel, <span class="at">extra =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-138-1.png" width="672" /></p>
+<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="3-7-class-imbalance.html#cb353-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="at">data =</span> <span class="fu">predict</span>(fit, testing_reptile),</span>
+<span id="cb353-2"><a href="3-7-class-imbalance.html#cb353-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">ref =</span> testing_reptile<span class="sc">$</span>type, <span class="at">positive =</span> <span class="st">&quot;reptile&quot;</span>)</span></code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##             Reference
+## Prediction   nonreptile reptile
+##   nonreptile         48       2
+##   reptile             0       0
+##                                         
+##                Accuracy : 0.96          
+##                  95% CI : (0.863, 0.995)
+##     No Information Rate : 0.96          
+##     P-Value [Acc &gt; NIR] : 0.677         
+##                                         
+##                   Kappa : 0             
+##                                         
+##  Mcnemar&#39;s Test P-Value : 0.480         
+##                                         
+##             Sensitivity : 0.00          
+##             Specificity : 1.00          
+##          Pos Pred Value :  NaN          
+##          Neg Pred Value : 0.96          
+##              Prevalence : 0.04          
+##          Detection Rate : 0.00          
+##    Detection Prevalence : 0.00          
+##       Balanced Accuracy : 0.50          
+##                                         
+##        &#39;Positive&#39; Class : reptile       
+## </code></pre>
+<p><strong>Note:</strong> Accuracy is high, but it is close or below to the no-information rate!</p>
+<div id="create-a-biased-classifier" class="section level4" number="3.7.3.1">
+<h4><span class="header-section-number">3.7.3.1</span> Create A Biased Classifier</h4>
+<p>We can create a classifier which will detect more reptiles
+at the expense of misclassifying non-reptiles. This is equivalent
+to increasing the cost of misclassifying a reptile as a non-reptile.
+The usual rule is to predict in each node
+the majority class from the test data in the node.
+For a binary classification problem that means a probability of &gt;50%.
+In the following, we reduce this threshold to 1% or more.
+This means that if the new observation ends up in a leaf node with 1% or
+more reptiles from training then the observation
+will be classified as a reptile.
+The data set is small and this works better with more data.</p>
+<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="3-7-class-imbalance.html#cb355-1" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, testing_reptile, <span class="at">type =</span> <span class="st">&quot;prob&quot;</span>)</span>
+<span id="cb355-2"><a href="3-7-class-imbalance.html#cb355-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(prob)</span></code></pre></div>
+<pre><code>##      nonreptile reptile
+## tuna     1.0000 0.00000
+## vole     0.9615 0.03846
+## wasp     0.5000 0.50000
+## wolf     0.9615 0.03846
+## worm     1.0000 0.00000
+## wren     0.9615 0.03846</code></pre>
+<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb357-1"><a href="3-7-class-imbalance.html#cb357-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(<span class="fu">ifelse</span>(prob[,<span class="st">&quot;reptile&quot;</span>]<span class="sc">&gt;=</span><span class="fl">0.01</span>, <span class="st">&quot;reptile&quot;</span>, <span class="st">&quot;nonreptile&quot;</span>))</span>
+<span id="cb357-2"><a href="3-7-class-imbalance.html#cb357-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb357-3"><a href="3-7-class-imbalance.html#cb357-3" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="at">data =</span> pred,</span>
+<span id="cb357-4"><a href="3-7-class-imbalance.html#cb357-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">ref =</span> testing_reptile<span class="sc">$</span>type, <span class="at">positive =</span> <span class="st">&quot;reptile&quot;</span>)</span></code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##             Reference
+## Prediction   nonreptile reptile
+##   nonreptile         13       0
+##   reptile            35       2
+##                                         
+##                Accuracy : 0.3           
+##                  95% CI : (0.179, 0.446)
+##     No Information Rate : 0.96          
+##     P-Value [Acc &gt; NIR] : 1             
+##                                         
+##                   Kappa : 0.029         
+##                                         
+##  Mcnemar&#39;s Test P-Value : 9.08e-09      
+##                                         
+##             Sensitivity : 1.0000        
+##             Specificity : 0.2708        
+##          Pos Pred Value : 0.0541        
+##          Neg Pred Value : 1.0000        
+##              Prevalence : 0.0400        
+##          Detection Rate : 0.0400        
+##    Detection Prevalence : 0.7400        
+##       Balanced Accuracy : 0.6354        
+##                                         
+##        &#39;Positive&#39; Class : reptile       
+## </code></pre>
+<p><strong>Note</strong> that accuracy goes down and is below the no information rate.
+However, both measures are based on the idea that all errors have the same
+cost. What is important is that we are now able to find more
+reptiles.</p>
+</div>
+<div id="plot-the-roc-curve" class="section level4" number="3.7.3.2">
+<h4><span class="header-section-number">3.7.3.2</span> Plot the ROC Curve</h4>
+<p>Since we have a binary classification problem and a classifier that predicts
+a probability for an observation to be a reptile, we can also use a
+<a href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic">receiver operating characteristic (ROC)</a>
+curve. For the ROC curve all different cutoff thresholds for the probability
+are used and then connected with a line. The area under the curve represents
+a single number for how well the classifier works (the closer to one, the better).</p>
+<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="3-7-class-imbalance.html#cb359-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;pROC&quot;</span>)</span></code></pre></div>
+<pre><code>## Type &#39;citation(&quot;pROC&quot;)&#39; for a citation.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;pROC&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     cov, smooth, var</code></pre>
+<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="3-7-class-imbalance.html#cb363-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">roc</span>(testing_reptile<span class="sc">$</span>type <span class="sc">==</span> <span class="st">&quot;reptile&quot;</span>, prob[,<span class="st">&quot;reptile&quot;</span>])</span></code></pre></div>
+<pre><code>## Setting levels: control = FALSE, case = TRUE</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb366-1"><a href="3-7-class-imbalance.html#cb366-1" aria-hidden="true" tabindex="-1"></a>r</span></code></pre></div>
+<pre><code>## 
+## Call:
+## roc.default(response = testing_reptile$type == &quot;reptile&quot;, predictor = prob[,     &quot;reptile&quot;])
+## 
+## Data: prob[, &quot;reptile&quot;] in 48 controls (testing_reptile$type == &quot;reptile&quot; FALSE) &lt; 2 cases (testing_reptile$type == &quot;reptile&quot; TRUE).
+## Area under the curve: 0.766</code></pre>
+<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb368-1"><a href="3-7-class-imbalance.html#cb368-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggroc</span>(r) <span class="sc">+</span> <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">1</span>, <span class="at">slope =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">&quot;darkgrey&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-140-1.png" width="672" /></p>
+</div>
+</div>
+<div id="option-4-use-a-cost-sensitive-classifier" class="section level3" number="3.7.4">
+<h3><span class="header-section-number">3.7.4</span> Option 4: Use a Cost-Sensitive Classifier</h3>
+<p>The implementation of CART in <code>rpart</code> can use a cost matrix for making splitting
+decisions (as parameter <code>loss</code>). The matrix has the form</p>
+<p>TP FP
+FN TN</p>
+<p>TP and TN have to be 0. We make FN very expensive (100).</p>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="3-7-class-imbalance.html#cb369-1" aria-hidden="true" tabindex="-1"></a>cost <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
+<span id="cb369-2"><a href="3-7-class-imbalance.html#cb369-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>,   <span class="dv">1</span>,</span>
+<span id="cb369-3"><a href="3-7-class-imbalance.html#cb369-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">100</span>, <span class="dv">0</span></span>
+<span id="cb369-4"><a href="3-7-class-imbalance.html#cb369-4" aria-hidden="true" tabindex="-1"></a>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> <span class="dv">2</span>)</span>
+<span id="cb369-5"><a href="3-7-class-imbalance.html#cb369-5" aria-hidden="true" tabindex="-1"></a>cost</span></code></pre></div>
+<pre><code>##      [,1] [,2]
+## [1,]    0    1
+## [2,]  100    0</code></pre>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="3-7-class-imbalance.html#cb371-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> training_reptile <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb371-2"><a href="3-7-class-imbalance.html#cb371-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb371-3"><a href="3-7-class-imbalance.html#cb371-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;rpart&quot;</span>,</span>
+<span id="cb371-4"><a href="3-7-class-imbalance.html#cb371-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">parms =</span> <span class="fu">list</span>(<span class="at">loss =</span> cost),</span>
+<span id="cb371-5"><a href="3-7-class-imbalance.html#cb371-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>))</span></code></pre></div>
+<p>The warning “There were missing values in resampled performance measures”
+means that some folds did not contain any reptiles (because of the class imbalance)
+and thus the performance measures could not be calculates.</p>
+<div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb372-1"><a href="3-7-class-imbalance.html#cb372-1" aria-hidden="true" tabindex="-1"></a>fit</span></code></pre></div>
+<pre><code>## CART 
+## 
+## 51 samples
+## 16 predictors
+##  2 classes: &#39;nonreptile&#39;, &#39;reptile&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 46, 46, 46, 45, 46, 45, ... 
+## Resampling results:
+## 
+##   Accuracy  Kappa   
+##   0.4767    -0.03039
+## 
+## Tuning parameter &#39;cp&#39; was held constant at a value of 0</code></pre>
+<div class="sourceCode" id="cb374"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb374-1"><a href="3-7-class-imbalance.html#cb374-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(fit<span class="sc">$</span>finalModel, <span class="at">extra =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-142-1.png" width="672" /></p>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb375-1"><a href="3-7-class-imbalance.html#cb375-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="at">data =</span> <span class="fu">predict</span>(fit, testing_reptile),</span>
+<span id="cb375-2"><a href="3-7-class-imbalance.html#cb375-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">ref =</span> testing_reptile<span class="sc">$</span>type, <span class="at">positive =</span> <span class="st">&quot;reptile&quot;</span>)</span></code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##             Reference
+## Prediction   nonreptile reptile
+##   nonreptile         39       0
+##   reptile             9       2
+##                                         
+##                Accuracy : 0.82          
+##                  95% CI : (0.686, 0.914)
+##     No Information Rate : 0.96          
+##     P-Value [Acc &gt; NIR] : 0.99998       
+##                                         
+##                   Kappa : 0.257         
+##                                         
+##  Mcnemar&#39;s Test P-Value : 0.00766       
+##                                         
+##             Sensitivity : 1.000         
+##             Specificity : 0.812         
+##          Pos Pred Value : 0.182         
+##          Neg Pred Value : 1.000         
+##              Prevalence : 0.040         
+##          Detection Rate : 0.040         
+##    Detection Prevalence : 0.220         
+##       Balanced Accuracy : 0.906         
+##                                         
+##        &#39;Positive&#39; Class : reptile       
+## </code></pre>
+<p>The high cost for false negatives results in a classifier that does not miss any reptile.</p>
+<p><strong>Note:</strong> Using a cost-sensitive classifier is often the best option. Unfortunately, the most classification algorithms (or their implementation) do not have the ability to consider misclassification cost.</p>
+
+</div>
+</div>
+<!-- </div> -->
+<p style="text-align: center;">
+<a href="3-6-feature-selection-and-feature-preparation.html"><button class="btn btn-default">Previous</button></a>
+<a href="4-classification-alternative-techniques.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+--- 
+title: "R Code Companion for the Textbook Introduction to Data Mining"
+author: "Michael Hahsler"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+github-repo: mhahsler/Introduction_to_Data_Mining_R_Examples
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+nocite: '@*'
+description: "This book contains documented R examples to accompany several chapters of the popular data mining text book _Introduction to Data Mining_ by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition)."
+---
+
+```{r setup, include=FALSE}
+options(
+  htmltools.dir.version = FALSE, formatR.indent = 2,
+  width = 55, digits = 4, warnPartialMatchAttr = FALSE, warnPartialMatchDollar = FALSE
+)
+local({
+  r = getOption('repos')
+  if (!length(r) || identical(unname(r['CRAN']), '@CRAN@'))
+    r['CRAN'] = 'https://cran.rstudio.com' 
+  options(repos = r)
+})
+```
+
+```{r include=FALSE}
+all_pkgs <- character()
+
+format_pkgs <- function(pkgs)
+  paste(sapply(pkgs, FUN = function(p) sprintf('_%s_ [@R-%s]', p ,p)), collapse = ', ')
+```
+
+# Preface {-}
+
+This book contains documented R examples to accompany several chapters of the popular data mining textbook
+[_Introduction to Data Mining_](https://www-users.cs.umn.edu/~kumar001/dmbook/)
+by Pang-Ning Tan, Michael Steinbach, Anuj Karpatne and Vipin Kumar [@Tan2005].
+The code can be used with either edition (2006 or 2017).
+
+![Creative Commons License](images/book_small.jpg) 
+![Creative Commons License](images/book_small_e2.jpg) 
+
+The code examples collected in this book were developed for the course [CS 7331 Data Mining](http://michael.hahsler.net/SMU/EMIS7331) 
+held at [SMU](http://www.smu.edu) and will be regularly updated and improved. Please visit
+https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples to submit corrections or suggest 
+improvements.
+
+The online version of this book is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+
+![Creative Commons License](images/by-nc-sa.png)  
+
+<!--
+Remember each Rmd file contains one and only one chapter, and a chapter is defined by the first-level # heading `#`.
+-->

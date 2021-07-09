@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 R Code for Chapter 4 of Introduction to Data Mining: Classification: Alternative Techniques | R Code Companion for Introduction to Data Mining</title>
+  <meta name="description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition)." />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 R Code for Chapter 4 of Introduction to Data Mining: Classification: Alternative Techniques | R Code Companion for Introduction to Data Mining" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition)." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 R Code for Chapter 4 of Introduction to Data Mining: Classification: Alternative Techniques | R Code Companion for Introduction to Data Mining" />
+  
+  <meta name="twitter:description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition)." />
+  
+
+<meta name="author" content="Michael Hahsler" />
+
+
+<meta name="date" content="2021-07-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="classification-basic-concepts-and-techniques.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/header-attrs/header-attrs.js"></script>
+<script src="libs/jquery/jquery.min.js"></script>
+<link href="libs/gitbook/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections/anchor-sections.js"></script>
+<script src="libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="libs/plotly-binding/plotly.js"></script>
+<script src="libs/typedarray/typedarray.min.js"></script>
+<link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R Code Companion for Introduction to Data Mining</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>2</b> Data</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="data.html"><a href="data.html#tidyverse"><i class="fa fa-check"></i><b>2.1</b> Tidyverse</a></li>
+<li class="chapter" data-level="2.2" data-path="data.html"><a href="data.html#data-preparation-the-iris-dataset"><i class="fa fa-check"></i><b>2.2</b> Data Preparation: The Iris Dataset</a></li>
+<li class="chapter" data-level="2.3" data-path="data.html"><a href="data.html#data-quality"><i class="fa fa-check"></i><b>2.3</b> Data Quality</a></li>
+<li class="chapter" data-level="2.4" data-path="data.html"><a href="data.html#aggregation"><i class="fa fa-check"></i><b>2.4</b> Aggregation</a></li>
+<li class="chapter" data-level="2.5" data-path="data.html"><a href="data.html#sampling"><i class="fa fa-check"></i><b>2.5</b> Sampling</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="data.html"><a href="data.html#random-sampling"><i class="fa fa-check"></i><b>2.5.1</b> Random sampling</a></li>
+<li class="chapter" data-level="2.5.2" data-path="data.html"><a href="data.html#stratified-sampling"><i class="fa fa-check"></i><b>2.5.2</b> Stratified sampling</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="data.html"><a href="data.html#features"><i class="fa fa-check"></i><b>2.6</b> Features</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="data.html"><a href="data.html#dimensionality-reduction"><i class="fa fa-check"></i><b>2.6.1</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="2.6.2" data-path="data.html"><a href="data.html#feature-selection"><i class="fa fa-check"></i><b>2.6.2</b> Feature selection</a></li>
+<li class="chapter" data-level="2.6.3" data-path="data.html"><a href="data.html#discretize-features"><i class="fa fa-check"></i><b>2.6.3</b> Discretize features</a></li>
+<li class="chapter" data-level="2.6.4" data-path="data.html"><a href="data.html#standardize-data-z-score"><i class="fa fa-check"></i><b>2.6.4</b> Standardize data (Z-score)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="data.html"><a href="data.html#proximities-similarities-and-distances"><i class="fa fa-check"></i><b>2.7</b> Proximities: Similarities and distances</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="data.html"><a href="data.html#minkowsky-distances"><i class="fa fa-check"></i><b>2.7.1</b> Minkowsky distances</a></li>
+<li class="chapter" data-level="2.7.2" data-path="data.html"><a href="data.html#distances-for-binary-data"><i class="fa fa-check"></i><b>2.7.2</b> Distances for Binary Data</a></li>
+<li class="chapter" data-level="2.7.3" data-path="data.html"><a href="data.html#distances-for-mixed-data"><i class="fa fa-check"></i><b>2.7.3</b> Distances for mixed data</a></li>
+<li class="chapter" data-level="2.7.4" data-path="data.html"><a href="data.html#additional-proximity-measures-available-in-package-proxy"><i class="fa fa-check"></i><b>2.7.4</b> Additional proximity measures available in package proxy</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="data.html"><a href="data.html#relationship-between-features"><i class="fa fa-check"></i><b>2.8</b> Relationship between features</a>
+<ul>
+<li class="chapter" data-level="2.8.1" data-path="data.html"><a href="data.html#correlation-for-ratiointerval-scaled-features"><i class="fa fa-check"></i><b>2.8.1</b> Correlation (for ratio/interval scaled features)</a></li>
+<li class="chapter" data-level="2.8.2" data-path="data.html"><a href="data.html#rank-correlation-for-ordinal-features"><i class="fa fa-check"></i><b>2.8.2</b> Rank correlation (for ordinal features)</a></li>
+<li class="chapter" data-level="2.8.3" data-path="data.html"><a href="data.html#relationship-between-nominal-and-ordinal-features"><i class="fa fa-check"></i><b>2.8.3</b> Relationship between nominal and ordinal features</a></li>
+</ul></li>
+<li class="chapter" data-level="2.9" data-path="data.html"><a href="data.html#density-estimation"><i class="fa fa-check"></i><b>2.9</b> Density estimation</a></li>
+<li class="chapter" data-level="2.10" data-path="data.html"><a href="data.html#exploring-data"><i class="fa fa-check"></i><b>2.10</b> Exploring Data</a>
+<ul>
+<li class="chapter" data-level="2.10.1" data-path="data.html"><a href="data.html#basic-statistics"><i class="fa fa-check"></i><b>2.10.1</b> Basic statistics</a></li>
+<li class="chapter" data-level="2.10.2" data-path="data.html"><a href="data.html#tabulate-data"><i class="fa fa-check"></i><b>2.10.2</b> Tabulate data</a></li>
+<li class="chapter" data-level="2.10.3" data-path="data.html"><a href="data.html#percentiles-quantiles"><i class="fa fa-check"></i><b>2.10.3</b> Percentiles (Quantiles)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.11" data-path="data.html"><a href="data.html#visualization-with-ggplot2"><i class="fa fa-check"></i><b>2.11</b> Visualization (with ggplot2)</a>
+<ul>
+<li class="chapter" data-level="2.11.1" data-path="data.html"><a href="data.html#histogram"><i class="fa fa-check"></i><b>2.11.1</b> Histogram</a></li>
+<li class="chapter" data-level="2.11.2" data-path="data.html"><a href="data.html#boxplot"><i class="fa fa-check"></i><b>2.11.2</b> Boxplot</a></li>
+<li class="chapter" data-level="2.11.3" data-path="data.html"><a href="data.html#scatter-plot"><i class="fa fa-check"></i><b>2.11.3</b> Scatter plot</a></li>
+<li class="chapter" data-level="2.11.4" data-path="data.html"><a href="data.html#scatter-plot-matrix"><i class="fa fa-check"></i><b>2.11.4</b> Scatter plot matrix</a></li>
+<li class="chapter" data-level="2.11.5" data-path="data.html"><a href="data.html#data-matrix-visualization"><i class="fa fa-check"></i><b>2.11.5</b> Data matrix visualization</a></li>
+<li class="chapter" data-level="2.11.6" data-path="data.html"><a href="data.html#correlation-matrix"><i class="fa fa-check"></i><b>2.11.6</b> Correlation matrix</a></li>
+<li class="chapter" data-level="2.11.7" data-path="data.html"><a href="data.html#parallel-coordinates-plot"><i class="fa fa-check"></i><b>2.11.7</b> Parallel coordinates plot</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html"><i class="fa fa-check"></i><b>3</b> Classification: Basic Concepts and Techniques"</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#load-the-zoo-dataset"><i class="fa fa-check"></i><b>3.1</b> Load the Zoo Dataset</a></li>
+<li class="chapter" data-level="3.2" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#decision-trees"><i class="fa fa-check"></i><b>3.2</b> Decision Trees</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#create-tree-with-default-settings-uses-pre-pruning"><i class="fa fa-check"></i><b>3.2.1</b> Create Tree With Default Settings (uses pre-pruning)</a></li>
+<li class="chapter" data-level="3.2.2" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#create-a-full-tree"><i class="fa fa-check"></i><b>3.2.2</b> Create a Full Tree</a></li>
+<li class="chapter" data-level="3.2.3" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#make-predictions-for-new-data"><i class="fa fa-check"></i><b>3.2.3</b> Make Predictions for New Data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#model-evaluation-with-caret"><i class="fa fa-check"></i><b>3.3</b> Model Evaluation with Caret</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#hold-out-test-data"><i class="fa fa-check"></i><b>3.3.1</b> Hold out Test Data</a></li>
+<li class="chapter" data-level="3.3.2" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#learn-a-model-and-tune-hyperparameters-on-the-training-data"><i class="fa fa-check"></i><b>3.3.2</b> Learn a Model and Tune Hyperparameters on the Training Data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#testing-confusion-matrix-and-confidence-interval-for-accuracy"><i class="fa fa-check"></i><b>3.4</b> Testing: Confusion Matrix and Confidence Interval for Accuracy</a></li>
+<li class="chapter" data-level="3.5" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#model-comparison"><i class="fa fa-check"></i><b>3.5</b> Model Comparison</a></li>
+<li class="chapter" data-level="3.6" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#feature-selection-and-feature-preparation"><i class="fa fa-check"></i><b>3.6</b> Feature Selection and Feature Preparation</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#univariate-feature-importance-score"><i class="fa fa-check"></i><b>3.6.1</b> Univariate Feature Importance Score</a></li>
+<li class="chapter" data-level="3.6.2" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#feature-subset-selection"><i class="fa fa-check"></i><b>3.6.2</b> Feature Subset Selection</a></li>
+<li class="chapter" data-level="3.6.3" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#using-dummy-variables-for-factors"><i class="fa fa-check"></i><b>3.6.3</b> Using Dummy Variables for Factors</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#class-imbalance"><i class="fa fa-check"></i><b>3.7</b> Class Imbalance</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#option-1-use-the-data-as-is-and-hope-for-the-best"><i class="fa fa-check"></i><b>3.7.1</b> Option 1: Use the Data As Is and Hope For The Best</a></li>
+<li class="chapter" data-level="3.7.2" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#option-2-balance-data-with-resampling"><i class="fa fa-check"></i><b>3.7.2</b> Option 2: Balance Data With Resampling</a></li>
+<li class="chapter" data-level="3.7.3" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#option-3-build-a-larger-tree-and-use-predicted-probabilities"><i class="fa fa-check"></i><b>3.7.3</b> Option 3: Build A Larger Tree and use Predicted Probabilities</a></li>
+<li class="chapter" data-level="3.7.4" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#option-4-use-a-cost-sensitive-classifier"><i class="fa fa-check"></i><b>3.7.4</b> Option 4: Use a Cost-Sensitive Classifier</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html"><i class="fa fa-check"></i><b>4</b> R Code for Chapter 4 of Introduction to Data Mining: Classification: Alternative Techniques</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#load-the-zoo-dataset-and-create-a-training-set"><i class="fa fa-check"></i><b>4.1</b> Load the Zoo Dataset and Create a Training Set</a></li>
+<li class="chapter" data-level="4.2" data-path="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#fitting-different-classification-models-to-the-training-data"><i class="fa fa-check"></i><b>4.2</b> Fitting Different Classification Models to the Training Data</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#conditional-inference-tree-decision-tree"><i class="fa fa-check"></i><b>4.2.1</b> Conditional Inference Tree (Decision Tree)</a></li>
+<li class="chapter" data-level="4.2.2" data-path="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#c-4.5-decision-tree"><i class="fa fa-check"></i><b>4.2.2</b> C 4.5 Decision Tree</a></li>
+<li class="chapter" data-level="4.2.3" data-path="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#k-nearest-neighbors"><i class="fa fa-check"></i><b>4.2.3</b> K-Nearest Neighbors</a></li>
+<li class="chapter" data-level="4.2.4" data-path="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#part-rule-based-classifier"><i class="fa fa-check"></i><b>4.2.4</b> PART (Rule-based classifier)</a></li>
+<li class="chapter" data-level="4.2.5" data-path="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#linear-support-vector-machines"><i class="fa fa-check"></i><b>4.2.5</b> Linear Support Vector Machines</a></li>
+<li class="chapter" data-level="4.2.6" data-path="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#random-forest"><i class="fa fa-check"></i><b>4.2.6</b> Random Forest</a></li>
+<li class="chapter" data-level="4.2.7" data-path="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#gradient-boosted-decision-trees-xgboost"><i class="fa fa-check"></i><b>4.2.7</b> Gradient Boosted Decision Trees (xgboost)</a></li>
+<li class="chapter" data-level="4.2.8" data-path="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#artificial-neural-network"><i class="fa fa-check"></i><b>4.2.8</b> Artificial Neural Network</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#comparing-models"><i class="fa fa-check"></i><b>4.3</b> Comparing Models</a></li>
+<li class="chapter" data-level="4.4" data-path="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#using-the-chosen-model-on-the-test-data"><i class="fa fa-check"></i><b>4.4</b> Using the Chosen Model on the Test Data</a></li>
+<li class="chapter" data-level="4.5" data-path="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#decision-boundaries"><i class="fa fa-check"></i><b>4.5</b> Decision Boundaries</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#iris-dataset"><i class="fa fa-check"></i><b>4.5.1</b> Iris Dataset</a></li>
+<li class="chapter" data-level="4.5.2" data-path="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#circle-dataset"><i class="fa fa-check"></i><b>4.5.2</b> Circle Dataset</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#more-information"><i class="fa fa-check"></i><b>4.6</b> More Information</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R Code Companion for Introduction to Data Mining</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques" class="section level1" number="4">
+<h1><span class="header-section-number">Chapter 4</span> R Code for Chapter 4 of Introduction to Data Mining: Classification: Alternative Techniques</h1>
+<p><strong>Packages needed for this chapter:</strong> C50, caret, e1071, keras, lattice, MASS, mlbench, nnet, randomForest, rpart, RWeka, scales, tidyverse</p>
+<p>We will use tidyverse to prepare the data.</p>
+<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb377-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb377-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<p>Show fewer digits</p>
+<div class="sourceCode" id="cb378"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb378-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb378-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">digits=</span><span class="dv">3</span>)</span></code></pre></div>
+<div id="load-the-zoo-dataset-and-create-a-training-set" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Load the Zoo Dataset and Create a Training Set</h2>
+<p>We will use the Zoo dataset which is included in the R package <code>mlbench</code> (you may have to install it).
+The Zoo dataset containing 17 (mostly logical) variables on different 101 animals as a
+data frame with 17 columns (hair, feathers, eggs, milk, airborne, aquatic, predator, toothed, backbone, breathes, venomous, fins, legs, tail, domestic, catsize, type). We convert the data frame into a tidyverse tibble (optional).</p>
+<div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb379-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb379-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Zoo, <span class="at">package=</span><span class="st">&quot;mlbench&quot;</span>)</span>
+<span id="cb379-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb379-2" aria-hidden="true" tabindex="-1"></a>Zoo <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(Zoo)</span>
+<span id="cb379-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb379-3" aria-hidden="true" tabindex="-1"></a>Zoo</span></code></pre></div>
+<pre><code>## # A tibble: 101 x 17
+##    hair  feathers eggs  milk  airborne aquatic predator
+##    &lt;lgl&gt; &lt;lgl&gt;    &lt;lgl&gt; &lt;lgl&gt; &lt;lgl&gt;    &lt;lgl&gt;   &lt;lgl&gt;   
+##  1 TRUE  FALSE    FALSE TRUE  FALSE    FALSE   TRUE    
+##  2 TRUE  FALSE    FALSE TRUE  FALSE    FALSE   FALSE   
+##  3 FALSE FALSE    TRUE  FALSE FALSE    TRUE    TRUE    
+##  4 TRUE  FALSE    FALSE TRUE  FALSE    FALSE   TRUE    
+##  5 TRUE  FALSE    FALSE TRUE  FALSE    FALSE   TRUE    
+##  6 TRUE  FALSE    FALSE TRUE  FALSE    FALSE   FALSE   
+##  7 TRUE  FALSE    FALSE TRUE  FALSE    FALSE   FALSE   
+##  8 FALSE FALSE    TRUE  FALSE FALSE    TRUE    FALSE   
+##  9 FALSE FALSE    TRUE  FALSE FALSE    TRUE    TRUE    
+## 10 TRUE  FALSE    FALSE TRUE  FALSE    FALSE   FALSE   
+## # … with 91 more rows, and 10 more variables:
+## #   toothed &lt;lgl&gt;, backbone &lt;lgl&gt;, breathes &lt;lgl&gt;,
+## #   venomous &lt;lgl&gt;, fins &lt;lgl&gt;, legs &lt;int&gt;,
+## #   tail &lt;lgl&gt;, domestic &lt;lgl&gt;, catsize &lt;lgl&gt;,
+## #   type &lt;fct&gt;</code></pre>
+<p>We will use the package <a href="https://topepo.github.io/caret/"><strong>caret</strong></a> to make preparing training sets and building classification (and regression) models easier. A great cheat sheet can be found <a href="https://ugoproto.github.io/ugo_r_doc/pdf/caret.pdf">here</a>.</p>
+<div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb381-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb381-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span></code></pre></div>
+<p>Use multi-core support for cross-validation.
+<strong>Note:</strong> It is commented out because it does not work with rJava used in RWeka below.</p>
+<div class="sourceCode" id="cb382"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb382-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb382-1" aria-hidden="true" tabindex="-1"></a><span class="do">##library(doMC, quietly = TRUE)</span></span>
+<span id="cb382-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb382-2" aria-hidden="true" tabindex="-1"></a><span class="do">##registerDoMC(cores = 4)</span></span>
+<span id="cb382-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb382-3" aria-hidden="true" tabindex="-1"></a><span class="do">##getDoParWorkers()</span></span></code></pre></div>
+<p>Test data is not used in the model building process and needs to be set aside purely for testing the model after it is completely built. Here I use 80% for training.</p>
+<div class="sourceCode" id="cb383"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb383-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb383-1" aria-hidden="true" tabindex="-1"></a>inTrain <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(<span class="at">y =</span> Zoo<span class="sc">$</span>type, <span class="at">p =</span> .<span class="dv">8</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb383-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb383-2" aria-hidden="true" tabindex="-1"></a>Zoo_train <span class="ot">&lt;-</span> Zoo <span class="sc">%&gt;%</span> <span class="fu">slice</span>(inTrain)</span>
+<span id="cb383-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb383-3" aria-hidden="true" tabindex="-1"></a>Zoo_test <span class="ot">&lt;-</span> Zoo <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="sc">-</span>inTrain)</span></code></pre></div>
+</div>
+<div id="fitting-different-classification-models-to-the-training-data" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Fitting Different Classification Models to the Training Data</h2>
+<p>Create a fixed sampling scheme (10-folds) so we can compare the fitted models
+later.</p>
+<div class="sourceCode" id="cb384"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb384-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb384-1" aria-hidden="true" tabindex="-1"></a>train_index <span class="ot">&lt;-</span> <span class="fu">createFolds</span>(Zoo_train<span class="sc">$</span>type, <span class="at">k =</span> <span class="dv">10</span>)</span></code></pre></div>
+<p>The fixed folds are used in <code>train()</code> with the argument
+<code>trControl = trainControl(method = "cv", indexOut = train_index))</code>. If you
+don’t need fixed folds, then remove <code>indexOut = train_index</code> in the code below.</p>
+<p>For help with building models in caret see: <code>? train</code></p>
+<p><strong>Note:</strong> Be careful if you have many <code>NA</code> values in your data. <code>train()</code>
+and cross-validation many fail in some cases. If that is the case then you
+can remove features (columns) which have many <code>NA</code>s, omit <code>NA</code>s using
+<code>na.omit()</code> or use imputation to replace them with reasonable
+values (e.g., by the feature mean or via kNN). Highly imbalanced datasets are also problematic since there is a chance that a fold does
+not contain examples of each class leading to a hard to understand error message.</p>
+<div id="conditional-inference-tree-decision-tree" class="section level3" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Conditional Inference Tree (Decision Tree)</h3>
+<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb385-1" aria-hidden="true" tabindex="-1"></a>ctreeFit <span class="ot">&lt;-</span> Zoo_train <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb385-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb385-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;ctree&quot;</span>,</span>
+<span id="cb385-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb385-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb385-4"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb385-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">tuneLength =</span> <span class="dv">5</span>,</span>
+<span id="cb385-5"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb385-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">indexOut =</span> train_index))</span>
+<span id="cb385-6"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb385-6" aria-hidden="true" tabindex="-1"></a>ctreeFit</span></code></pre></div>
+<pre><code>## Conditional Inference Tree 
+## 
+## 83 samples
+## 16 predictors
+##  7 classes: &#39;mammal&#39;, &#39;bird&#39;, &#39;reptile&#39;, &#39;fish&#39;, &#39;amphibian&#39;, &#39;insect&#39;, &#39;mollusc.et.al&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 75, 76, 74, 74, 76, 74, ... 
+## Resampling results across tuning parameters:
+## 
+##   mincriterion  Accuracy  Kappa
+##   0.010         0.808     0.747
+##   0.255         0.808     0.747
+##   0.500         0.808     0.747
+##   0.745         0.808     0.747
+##   0.990         0.808     0.747
+## 
+## Accuracy was used to select the optimal model
+##  using the largest value.
+## The final value used for the model was mincriterion
+##  = 0.99.</code></pre>
+<div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb387-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb387-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ctreeFit<span class="sc">$</span>finalModel)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-149-1.png" width="672" /></p>
+<p>The final model can be directly used for predict()</p>
+<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb388-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb388-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(ctreeFit, <span class="fu">head</span>(Zoo_test))</span></code></pre></div>
+<pre><code>## [1] mammal        mollusc.et.al bird         
+## [4] mammal        mollusc.et.al bird         
+## 7 Levels: mammal bird reptile fish ... mollusc.et.al</code></pre>
+</div>
+<div id="c-4.5-decision-tree" class="section level3" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> C 4.5 Decision Tree</h3>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb390-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RWeka)</span>
+<span id="cb390-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb390-2" aria-hidden="true" tabindex="-1"></a>C45Fit <span class="ot">&lt;-</span> Zoo_train <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb390-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb390-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;J48&quot;</span>,</span>
+<span id="cb390-4"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb390-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb390-5"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb390-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">tuneLength =</span> <span class="dv">5</span>,</span>
+<span id="cb390-6"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb390-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">indexOut =</span> train_index))</span>
+<span id="cb390-7"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb390-7" aria-hidden="true" tabindex="-1"></a>C45Fit</span></code></pre></div>
+<pre><code>## C4.5-like Trees 
+## 
+## 83 samples
+## 16 predictors
+##  7 classes: &#39;mammal&#39;, &#39;bird&#39;, &#39;reptile&#39;, &#39;fish&#39;, &#39;amphibian&#39;, &#39;insect&#39;, &#39;mollusc.et.al&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 76, 73, 74, 74, 76, 76, ... 
+## Resampling results across tuning parameters:
+## 
+##   C      M  Accuracy  Kappa
+##   0.010  1  0.978     0.971
+##   0.010  2  0.978     0.971
+##   0.010  3  0.978     0.971
+##   0.010  4  0.907     0.879
+##   0.010  5  0.918     0.893
+##   0.133  1  0.978     0.971
+##   0.133  2  0.978     0.971
+##   0.133  3  0.978     0.971
+##   0.133  4  0.907     0.879
+##   0.133  5  0.918     0.893
+##   0.255  1  0.989     0.985
+##   0.255  2  0.989     0.985
+##   0.255  3  0.978     0.971
+##   0.255  4  0.907     0.879
+##   0.255  5  0.918     0.893
+##   0.378  1  0.989     0.985
+##   0.378  2  0.989     0.985
+##   0.378  3  0.978     0.971
+##   0.378  4  0.907     0.879
+##   0.378  5  0.918     0.893
+##   0.500  1  0.989     0.985
+##   0.500  2  0.989     0.985
+##   0.500  3  0.978     0.971
+##   0.500  4  0.907     0.879
+##   0.500  5  0.918     0.893
+## 
+## Accuracy was used to select the optimal model
+##  using the largest value.
+## The final values used for the model were C = 0.255
+##  and M = 1.</code></pre>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb392-1" aria-hidden="true" tabindex="-1"></a>C45Fit<span class="sc">$</span>finalModel</span></code></pre></div>
+<pre><code>## J48 pruned tree
+## ------------------
+## 
+## feathersTRUE &lt;= 0
+## |   milkTRUE &lt;= 0
+## |   |   toothedTRUE &lt;= 0
+## |   |   |   airborneTRUE &lt;= 0
+## |   |   |   |   predatorTRUE &lt;= 0
+## |   |   |   |   |   legs &lt;= 2: mollusc.et.al (2.0)
+## |   |   |   |   |   legs &gt; 2: insect (2.0)
+## |   |   |   |   predatorTRUE &gt; 0: mollusc.et.al (6.0)
+## |   |   |   airborneTRUE &gt; 0: insect (5.0)
+## |   |   toothedTRUE &gt; 0
+## |   |   |   finsTRUE &lt;= 0
+## |   |   |   |   aquaticTRUE &lt;= 0: reptile (3.0)
+## |   |   |   |   aquaticTRUE &gt; 0
+## |   |   |   |   |   eggsTRUE &lt;= 0: reptile (1.0)
+## |   |   |   |   |   eggsTRUE &gt; 0: amphibian (4.0)
+## |   |   |   finsTRUE &gt; 0: fish (11.0)
+## |   milkTRUE &gt; 0: mammal (33.0)
+## feathersTRUE &gt; 0: bird (16.0)
+## 
+## Number of Leaves  :  10
+## 
+## Size of the tree :   19</code></pre>
+</div>
+<div id="k-nearest-neighbors" class="section level3" number="4.2.3">
+<h3><span class="header-section-number">4.2.3</span> K-Nearest Neighbors</h3>
+<p><strong>Note:</strong> kNN uses Euclidean distance, so data should be standardized (scaled) first.
+Here legs are measured between 0 and 6 while all other variables are between
+0 and 1. Scaling can be directly performed as preprocessing in <code>train</code> using the parameter
+<code>preProcess = "scale"</code>.</p>
+<div class="sourceCode" id="cb394"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb394-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb394-1" aria-hidden="true" tabindex="-1"></a>knnFit <span class="ot">&lt;-</span> Zoo_train <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb394-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb394-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;knn&quot;</span>,</span>
+<span id="cb394-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb394-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb394-4"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb394-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">preProcess =</span> <span class="st">&quot;scale&quot;</span>,</span>
+<span id="cb394-5"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb394-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">tuneLength =</span> <span class="dv">5</span>,</span>
+<span id="cb394-6"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb394-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneGrid=</span><span class="fu">data.frame</span>(<span class="at">k =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>),</span>
+<span id="cb394-7"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb394-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">indexOut =</span> train_index))</span>
+<span id="cb394-8"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb394-8" aria-hidden="true" tabindex="-1"></a>knnFit</span></code></pre></div>
+<pre><code>## k-Nearest Neighbors 
+## 
+## 83 samples
+## 16 predictors
+##  7 classes: &#39;mammal&#39;, &#39;bird&#39;, &#39;reptile&#39;, &#39;fish&#39;, &#39;amphibian&#39;, &#39;insect&#39;, &#39;mollusc.et.al&#39; 
+## 
+## Pre-processing: scaled (16) 
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 74, 73, 76, 74, 74, 75, ... 
+## Resampling results across tuning parameters:
+## 
+##   k   Accuracy  Kappa
+##    1  1.000     1.000
+##    2  0.978     0.971
+##    3  0.967     0.957
+##    4  0.943     0.926
+##    5  0.965     0.954
+##    6  0.916     0.891
+##    7  0.883     0.850
+##    8  0.872     0.835
+##    9  0.883     0.848
+##   10  0.908     0.881
+## 
+## Accuracy was used to select the optimal model
+##  using the largest value.
+## The final value used for the model was k = 1.</code></pre>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb396-1" aria-hidden="true" tabindex="-1"></a>knnFit<span class="sc">$</span>finalModel</span></code></pre></div>
+<pre><code>## 1-nearest neighbor model
+## Training set outcome distribution:
+## 
+##        mammal          bird       reptile 
+##            33            16             4 
+##          fish     amphibian        insect 
+##            11             4             7 
+## mollusc.et.al 
+##             8</code></pre>
+</div>
+<div id="part-rule-based-classifier" class="section level3" number="4.2.4">
+<h3><span class="header-section-number">4.2.4</span> PART (Rule-based classifier)</h3>
+<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb398-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb398-1" aria-hidden="true" tabindex="-1"></a>rulesFit <span class="ot">&lt;-</span> Zoo_train <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb398-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb398-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;PART&quot;</span>,</span>
+<span id="cb398-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb398-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb398-4"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb398-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneLength =</span> <span class="dv">5</span>,</span>
+<span id="cb398-5"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb398-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">indexOut =</span> train_index))</span>
+<span id="cb398-6"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb398-6" aria-hidden="true" tabindex="-1"></a>rulesFit</span></code></pre></div>
+<pre><code>## Rule-Based Classifier 
+## 
+## 83 samples
+## 16 predictors
+##  7 classes: &#39;mammal&#39;, &#39;bird&#39;, &#39;reptile&#39;, &#39;fish&#39;, &#39;amphibian&#39;, &#39;insect&#39;, &#39;mollusc.et.al&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 77, 72, 77, 74, 74, 73, ... 
+## Resampling results across tuning parameters:
+## 
+##   threshold  pruned  Accuracy  Kappa
+##   0.010      yes     0.965     0.955
+##   0.010      no      0.988     0.984
+##   0.133      yes     0.965     0.955
+##   0.133      no      0.988     0.984
+##   0.255      yes     0.965     0.955
+##   0.255      no      0.988     0.984
+##   0.378      yes     0.965     0.955
+##   0.378      no      0.988     0.984
+##   0.500      yes     0.965     0.955
+##   0.500      no      0.988     0.984
+## 
+## Accuracy was used to select the optimal model
+##  using the largest value.
+## The final values used for the model were threshold
+##  = 0.5 and pruned = no.</code></pre>
+<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb400-1" aria-hidden="true" tabindex="-1"></a>rulesFit<span class="sc">$</span>finalModel</span></code></pre></div>
+<pre><code>## PART decision list
+## ------------------
+## 
+## feathersTRUE &lt;= 0 AND
+## milkTRUE &gt; 0: mammal (33.0)
+## 
+## feathersTRUE &gt; 0: bird (16.0)
+## 
+## toothedTRUE &lt;= 0 AND
+## airborneTRUE &lt;= 0 AND
+## predatorTRUE &gt; 0: mollusc.et.al (6.0)
+## 
+## toothedTRUE &lt;= 0 AND
+## legs &gt; 2: insect (7.0)
+## 
+## finsTRUE &gt; 0: fish (11.0)
+## 
+## toothedTRUE &gt; 0 AND
+## aquaticTRUE &lt;= 0: reptile (3.0)
+## 
+## aquaticTRUE &gt; 0 AND
+## venomousTRUE &lt;= 0: amphibian (3.0)
+## 
+## aquaticTRUE &lt;= 0: mollusc.et.al (2.0)
+## 
+## : reptile (2.0/1.0)
+## 
+## Number of Rules  :   9</code></pre>
+</div>
+<div id="linear-support-vector-machines" class="section level3" number="4.2.5">
+<h3><span class="header-section-number">4.2.5</span> Linear Support Vector Machines</h3>
+<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb402-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb402-1" aria-hidden="true" tabindex="-1"></a>svmFit <span class="ot">&lt;-</span> Zoo_train <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span>.,</span>
+<span id="cb402-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb402-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;svmLinear&quot;</span>,</span>
+<span id="cb402-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb402-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb402-4"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb402-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">tuneLength =</span> <span class="dv">5</span>,</span>
+<span id="cb402-5"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb402-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">indexOut =</span> train_index))</span>
+<span id="cb402-6"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb402-6" aria-hidden="true" tabindex="-1"></a>svmFit</span></code></pre></div>
+<pre><code>## Support Vector Machines with Linear Kernel 
+## 
+## 83 samples
+## 16 predictors
+##  7 classes: &#39;mammal&#39;, &#39;bird&#39;, &#39;reptile&#39;, &#39;fish&#39;, &#39;amphibian&#39;, &#39;insect&#39;, &#39;mollusc.et.al&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 73, 75, 75, 74, 74, 76, ... 
+## Resampling results:
+## 
+##   Accuracy  Kappa
+##   1         1    
+## 
+## Tuning parameter &#39;C&#39; was held constant at a value of 1</code></pre>
+<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb404-1" aria-hidden="true" tabindex="-1"></a>svmFit<span class="sc">$</span>finalModel</span></code></pre></div>
+<pre><code>## Support Vector Machine object of class &quot;ksvm&quot; 
+## 
+## SV type: C-svc  (classification) 
+##  parameter : cost C = 1 
+## 
+## Linear (vanilla) kernel function. 
+## 
+## Number of Support Vectors : 44 
+## 
+## Objective Function Value : -0.143 -0.198 -0.148 -0.175 -0.0945 -0.104 -0.19 -0.0814 -0.154 -0.0917 -0.115 -0.177 -0.568 -0.104 -0.15 -0.119 -0.0478 -0.083 -0.123 -0.148 -0.58 
+## Training error : 0</code></pre>
+</div>
+<div id="random-forest" class="section level3" number="4.2.6">
+<h3><span class="header-section-number">4.2.6</span> Random Forest</h3>
+<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb406-1" aria-hidden="true" tabindex="-1"></a>randomForestFit <span class="ot">&lt;-</span> Zoo_train <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb406-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb406-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;rf&quot;</span>,</span>
+<span id="cb406-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb406-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb406-4"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb406-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">tuneLength =</span> <span class="dv">5</span>,</span>
+<span id="cb406-5"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb406-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">indexOut =</span> train_index))</span>
+<span id="cb406-6"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb406-6" aria-hidden="true" tabindex="-1"></a>randomForestFit</span></code></pre></div>
+<pre><code>## Random Forest 
+## 
+## 83 samples
+## 16 predictors
+##  7 classes: &#39;mammal&#39;, &#39;bird&#39;, &#39;reptile&#39;, &#39;fish&#39;, &#39;amphibian&#39;, &#39;insect&#39;, &#39;mollusc.et.al&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 74, 76, 75, 74, 73, 76, ... 
+## Resampling results across tuning parameters:
+## 
+##   mtry  Accuracy  Kappa
+##    2    0.976     0.968
+##    5    0.976     0.968
+##    9    0.976     0.968
+##   12    0.965     0.954
+##   16    0.976     0.969
+## 
+## Accuracy was used to select the optimal model
+##  using the largest value.
+## The final value used for the model was mtry = 2.</code></pre>
+<div class="sourceCode" id="cb408"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb408-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb408-1" aria-hidden="true" tabindex="-1"></a>randomForestFit<span class="sc">$</span>finalModel</span></code></pre></div>
+<pre><code>## 
+## Call:
+##  randomForest(x = x, y = y, mtry = min(param$mtry, ncol(x))) 
+##                Type of random forest: classification
+##                      Number of trees: 500
+## No. of variables tried at each split: 2
+## 
+##         OOB estimate of  error rate: 3.61%
+## Confusion matrix:
+##               mammal bird reptile fish amphibian
+## mammal            33    0       0    0         0
+## bird               0   16       0    0         0
+## reptile            0    0       2    1         1
+## fish               0    0       0   11         0
+## amphibian          0    0       0    0         4
+## insect             0    0       0    0         0
+## mollusc.et.al      0    0       0    0         0
+##               insect mollusc.et.al class.error
+## mammal             0             0       0.000
+## bird               0             0       0.000
+## reptile            0             0       0.500
+## fish               0             0       0.000
+## amphibian          0             0       0.000
+## insect             7             0       0.000
+## mollusc.et.al      1             7       0.125</code></pre>
+</div>
+<div id="gradient-boosted-decision-trees-xgboost" class="section level3" number="4.2.7">
+<h3><span class="header-section-number">4.2.7</span> Gradient Boosted Decision Trees (xgboost)</h3>
+<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb410-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb410-1" aria-hidden="true" tabindex="-1"></a>xgboostFit <span class="ot">&lt;-</span> Zoo_train <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb410-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb410-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;xgbTree&quot;</span>,</span>
+<span id="cb410-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb410-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb410-4"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb410-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneLength =</span> <span class="dv">5</span>,</span>
+<span id="cb410-5"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb410-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">indexOut =</span> train_index),</span>
+<span id="cb410-6"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb410-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneGrid =</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb410-7"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb410-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">nrounds =</span> <span class="dv">20</span>,</span>
+<span id="cb410-8"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb410-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_depth =</span> <span class="dv">3</span>,</span>
+<span id="cb410-9"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb410-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">colsample_bytree =</span> .<span class="dv">6</span>,</span>
+<span id="cb410-10"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb410-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">eta =</span> <span class="fl">0.1</span>,</span>
+<span id="cb410-11"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb410-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">gamma=</span><span class="dv">0</span>,</span>
+<span id="cb410-12"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb410-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">min_child_weight =</span> <span class="dv">1</span>,</span>
+<span id="cb410-13"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb410-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">subsample =</span> .<span class="dv">5</span></span>
+<span id="cb410-14"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb410-14" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb410-15"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb410-15" aria-hidden="true" tabindex="-1"></a>xgboostFit</span></code></pre></div>
+<pre><code>## eXtreme Gradient Boosting 
+## 
+## 83 samples
+## 16 predictors
+##  7 classes: &#39;mammal&#39;, &#39;bird&#39;, &#39;reptile&#39;, &#39;fish&#39;, &#39;amphibian&#39;, &#39;insect&#39;, &#39;mollusc.et.al&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 76, 75, 75, 74, 76, 74, ... 
+## Resampling results:
+## 
+##   Accuracy  Kappa
+##   0.976     0.969
+## 
+## Tuning parameter &#39;nrounds&#39; was held constant at
+##  a value of 1
+## Tuning parameter &#39;subsample&#39; was
+##  held constant at a value of 0.5</code></pre>
+<div class="sourceCode" id="cb412"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb412-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb412-1" aria-hidden="true" tabindex="-1"></a>xgboostFit<span class="sc">$</span>finalModel</span></code></pre></div>
+<pre><code>## ##### xgb.Booster
+## raw: 83.5 Kb 
+## call:
+##   xgboost::xgb.train(params = list(eta = param$eta, max_depth = param$max_depth, 
+##     gamma = param$gamma, colsample_bytree = param$colsample_bytree, 
+##     min_child_weight = param$min_child_weight, subsample = param$subsample), 
+##     data = x, nrounds = param$nrounds, num_class = length(lev), 
+##     objective = &quot;multi:softprob&quot;)
+## params (as set within xgb.train):
+##   eta = &quot;0.1&quot;, max_depth = &quot;3&quot;, gamma = &quot;0&quot;, colsample_bytree = &quot;0.6&quot;, min_child_weight = &quot;1&quot;, subsample = &quot;0.5&quot;, num_class = &quot;7&quot;, objective = &quot;multi:softprob&quot;, validate_parameters = &quot;TRUE&quot;
+## xgb.attributes:
+##   niter
+## callbacks:
+##   cb.print.evaluation(period = print_every_n)
+## # of features: 16 
+## niter: 20
+## nfeatures : 16 
+## xNames : hairTRUE feathersTRUE eggsTRUE milkTRUE airborneTRUE aquaticTRUE predatorTRUE toothedTRUE backboneTRUE breathesTRUE venomousTRUE finsTRUE legs tailTRUE domesticTRUE catsizeTRUE 
+## problemType : Classification 
+## tuneValue :
+##    nrounds max_depth eta gamma colsample_bytree
+## 1      20         3 0.1     0              0.6
+##   min_child_weight subsample
+## 1                1       0.5
+## obsLevels : mammal bird reptile fish amphibian insect mollusc.et.al 
+## param :
+##  list()</code></pre>
+</div>
+<div id="artificial-neural-network" class="section level3" number="4.2.8">
+<h3><span class="header-section-number">4.2.8</span> Artificial Neural Network</h3>
+<div class="sourceCode" id="cb414"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb414-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb414-1" aria-hidden="true" tabindex="-1"></a>nnetFit <span class="ot">&lt;-</span> Zoo_train <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb414-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb414-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;nnet&quot;</span>,</span>
+<span id="cb414-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb414-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb414-4"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb414-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">tuneLength =</span> <span class="dv">5</span>,</span>
+<span id="cb414-5"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb414-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">indexOut =</span> train_index),</span>
+<span id="cb414-6"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb414-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb414-7"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb414-7" aria-hidden="true" tabindex="-1"></a>nnetFit</span></code></pre></div>
+<pre><code>## Neural Network 
+## 
+## 83 samples
+## 16 predictors
+##  7 classes: &#39;mammal&#39;, &#39;bird&#39;, &#39;reptile&#39;, &#39;fish&#39;, &#39;amphibian&#39;, &#39;insect&#39;, &#39;mollusc.et.al&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 75, 77, 72, 75, 75, 76, ... 
+## Resampling results across tuning parameters:
+## 
+##   size  decay  Accuracy  Kappa
+##   1     0e+00  0.694     0.558
+##   1     1e-04  0.807     0.728
+##   1     1e-03  0.892     0.852
+##   1     1e-02  0.825     0.766
+##   1     1e-01  0.727     0.633
+##   3     0e+00  0.954     0.939
+##   3     1e-04  0.989     0.986
+##   3     1e-03  0.989     0.986
+##   3     1e-02  0.989     0.986
+##   3     1e-01  0.989     0.986
+##   5     0e+00  0.939     0.917
+##   5     1e-04  0.965     0.954
+##   5     1e-03  0.989     0.986
+##   5     1e-02  0.989     0.986
+##   5     1e-01  0.989     0.986
+##   7     0e+00  0.989     0.986
+##   7     1e-04  0.989     0.986
+##   7     1e-03  0.989     0.986
+##   7     1e-02  1.000     1.000
+##   7     1e-01  0.989     0.986
+##   9     0e+00  0.989     0.986
+##   9     1e-04  0.989     0.986
+##   9     1e-03  0.989     0.986
+##   9     1e-02  0.989     0.986
+##   9     1e-01  1.000     1.000
+## 
+## Accuracy was used to select the optimal model
+##  using the largest value.
+## The final values used for the model were size = 7
+##  and decay = 0.01.</code></pre>
+<div class="sourceCode" id="cb416"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb416-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb416-1" aria-hidden="true" tabindex="-1"></a>nnetFit<span class="sc">$</span>finalModel</span></code></pre></div>
+<pre><code>## a 16-7-7 network with 175 weights
+## inputs: hairTRUE feathersTRUE eggsTRUE milkTRUE airborneTRUE aquaticTRUE predatorTRUE toothedTRUE backboneTRUE breathesTRUE venomousTRUE finsTRUE legs tailTRUE domesticTRUE catsizeTRUE 
+## output(s): .outcome 
+## options were - softmax modelling  decay=0.01</code></pre>
+</div>
+</div>
+<div id="comparing-models" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Comparing Models</h2>
+<p>Collect the performance metrics from the models trained on the same data.</p>
+<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb418-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb418-1" aria-hidden="true" tabindex="-1"></a>resamps <span class="ot">&lt;-</span> <span class="fu">resamples</span>(<span class="fu">list</span>(</span>
+<span id="cb418-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb418-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">ctree =</span> ctreeFit,</span>
+<span id="cb418-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb418-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">C45 =</span> C45Fit,</span>
+<span id="cb418-4"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb418-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">SVM =</span> svmFit,</span>
+<span id="cb418-5"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb418-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">KNN =</span> knnFit,</span>
+<span id="cb418-6"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb418-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">rules =</span> rulesFit,</span>
+<span id="cb418-7"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb418-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">randomForest =</span> randomForestFit,</span>
+<span id="cb418-8"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb418-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">xgboost =</span> xgboostFit,</span>
+<span id="cb418-9"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb418-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">NeuralNet =</span> nnetFit</span>
+<span id="cb418-10"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb418-10" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb418-11"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb418-11" aria-hidden="true" tabindex="-1"></a>resamps</span></code></pre></div>
+<pre><code>## 
+## Call:
+## resamples.default(x = list(ctree = ctreeFit, C45
+##  = rulesFit, randomForest = randomForestFit, xgboost
+##  = xgboostFit, NeuralNet = nnetFit))
+## 
+## Models: ctree, C45, SVM, KNN, rules, randomForest, xgboost, NeuralNet 
+## Number of resamples: 10 
+## Performance metrics: Accuracy, Kappa 
+## Time estimates for: everything, final model fit</code></pre>
+<p>Calculate summary statistics</p>
+<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb420-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(resamps)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## summary.resamples(object = resamps)
+## 
+## Models: ctree, C45, SVM, KNN, rules, randomForest, xgboost, NeuralNet 
+## Number of resamples: 10 
+## 
+## Accuracy 
+##               Min. 1st Qu. Median  Mean 3rd Qu.  Max.
+## ctree        0.750   0.778  0.778 0.808   0.851 0.889
+## C45          0.889   1.000  1.000 0.989   1.000 1.000
+## SVM          1.000   1.000  1.000 1.000   1.000 1.000
+## KNN          1.000   1.000  1.000 1.000   1.000 1.000
+## rules        0.875   1.000  1.000 0.988   1.000 1.000
+## randomForest 0.875   1.000  1.000 0.976   1.000 1.000
+## xgboost      0.875   1.000  1.000 0.976   1.000 1.000
+## NeuralNet    1.000   1.000  1.000 1.000   1.000 1.000
+##              NA&#39;s
+## ctree           0
+## C45             0
+## SVM             0
+## KNN             0
+## rules           0
+## randomForest    0
+## xgboost         0
+## NeuralNet       0
+## 
+## Kappa 
+##               Min. 1st Qu. Median  Mean 3rd Qu.  Max.
+## ctree        0.673   0.701  0.723 0.747   0.798 0.852
+## C45          0.850   1.000  1.000 0.985   1.000 1.000
+## SVM          1.000   1.000  1.000 1.000   1.000 1.000
+## KNN          1.000   1.000  1.000 1.000   1.000 1.000
+## rules        0.837   1.000  1.000 0.984   1.000 1.000
+## randomForest 0.833   1.000  1.000 0.968   1.000 1.000
+## xgboost      0.833   1.000  1.000 0.969   1.000 1.000
+## NeuralNet    1.000   1.000  1.000 1.000   1.000 1.000
+##              NA&#39;s
+## ctree           0
+## C45             0
+## SVM             0
+## KNN             0
+## rules           0
+## randomForest    0
+## xgboost         0
+## NeuralNet       0</code></pre>
+<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb422-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb422-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lattice)</span>
+<span id="cb422-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb422-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bwplot</span>(resamps, <span class="at">layout =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>))</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-159-1.png" width="672" /></p>
+<p>Perform inference about differences between models. For each metric, all pair-wise differences are computed and tested to assess if the difference is equal to zero. By default Bonferroni correction for multiple comparison is used. Differences are shown in the upper triangle and p-values are in the lower triangle.</p>
+<div class="sourceCode" id="cb423"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb423-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb423-1" aria-hidden="true" tabindex="-1"></a>difs <span class="ot">&lt;-</span> <span class="fu">diff</span>(resamps)</span>
+<span id="cb423-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb423-2" aria-hidden="true" tabindex="-1"></a>difs</span></code></pre></div>
+<pre><code>## 
+## Call:
+## diff.resamples(x = resamps)
+## 
+## Models: ctree, C45, SVM, KNN, rules, randomForest, xgboost, NeuralNet 
+## Metrics: Accuracy, Kappa 
+## Number of differences: 28 
+## p-value adjustment: bonferroni</code></pre>
+<div class="sourceCode" id="cb425"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb425-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb425-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(difs)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## summary.diff.resamples(object = difs)
+## 
+## p-value adjustment: bonferroni 
+## Upper diagonal: estimates of the difference
+## Lower diagonal: p-value for H0: difference = 0
+## 
+## Accuracy 
+##              ctree    C45      SVM      KNN     
+## ctree                 -0.18095 -0.19206 -0.19206
+## C45          0.000109          -0.01111 -0.01111
+## SVM          3.49e-05 1.000000           0.00000
+## KNN          3.49e-05 1.000000 NA               
+## rules        5.75e-05 1.000000 1.000000 1.000000
+## randomForest 0.000126 1.000000 1.000000 1.000000
+## xgboost      0.001617 1.000000 1.000000 1.000000
+## NeuralNet    3.49e-05 1.000000 NA       NA      
+##              rules    randomForest xgboost  NeuralNet
+## ctree        -0.17956 -0.16845     -0.16845 -0.19206 
+## C45           0.00139  0.01250      0.01250 -0.01111 
+## SVM           0.01250  0.02361      0.02361  0.00000 
+## KNN           0.01250  0.02361      0.02361  0.00000 
+## rules                  0.01111      0.01111 -0.01250 
+## randomForest 1.000000               0.00000 -0.02361 
+## xgboost      1.000000 1.000000              -0.02361 
+## NeuralNet    1.000000 1.000000     1.000000          
+## 
+## Kappa 
+##              ctree    C45       SVM       KNN      
+## ctree                 -0.238389 -0.253389 -0.253389
+## C45          6.36e-05           -0.015000 -0.015000
+## SVM          2.08e-05 1.00000              0.000000
+## KNN          2.08e-05 1.00000   NA                 
+## rules        3.70e-05 1.00000   1.00000   1.00000  
+## randomForest 7.76e-05 1.00000   1.00000   1.00000  
+## xgboost      0.00124  1.00000   1.00000   1.00000  
+## NeuralNet    2.08e-05 1.00000   NA        NA       
+##              rules     randomForest xgboost  
+## ctree        -0.237063 -0.221723    -0.222437
+## C45           0.001327  0.016667     0.015952
+## SVM           0.016327  0.031667     0.030952
+## KNN           0.016327  0.031667     0.030952
+## rules                   0.015340     0.014626
+## randomForest 1.00000                -0.000714
+## xgboost      1.00000   1.00000               
+## NeuralNet    1.00000   1.00000      1.00000  
+##              NeuralNet
+## ctree        -0.253389
+## C45          -0.015000
+## SVM           0.000000
+## KNN           0.000000
+## rules        -0.016327
+## randomForest -0.031667
+## xgboost      -0.030952
+## NeuralNet</code></pre>
+<p>All perform similarly well except ctree (differences in the first row are negative and the p-values in the first column are &lt;.05 indicating that the null-hypothesis of a difference of 0 can be rejected).</p>
+</div>
+<div id="using-the-chosen-model-on-the-test-data" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Using the Chosen Model on the Test Data</h2>
+<p>Most models do similarly well on the data. We choose here the random forest model.</p>
+<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb427-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb427-1" aria-hidden="true" tabindex="-1"></a>pr <span class="ot">&lt;-</span> <span class="fu">predict</span>(randomForestFit, Zoo_test)</span>
+<span id="cb427-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb427-2" aria-hidden="true" tabindex="-1"></a>pr</span></code></pre></div>
+<pre><code>##  [1] mammal        mollusc.et.al bird         
+##  [4] mammal        insect        bird         
+##  [7] mammal        mollusc.et.al mammal       
+## [10] mammal        bird          bird         
+## [13] fish          mammal        fish         
+## [16] mammal        bird          mammal       
+## 7 Levels: mammal bird reptile fish ... mollusc.et.al</code></pre>
+<p>Calculate the confusion matrix for the held-out test data.</p>
+<div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb429-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb429-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(pr, <span class="at">reference =</span> Zoo_test<span class="sc">$</span>type)</span></code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##                Reference
+## Prediction      mammal bird reptile fish amphibian
+##   mammal             8    0       0    0         0
+##   bird               0    4       1    0         0
+##   reptile            0    0       0    0         0
+##   fish               0    0       0    2         0
+##   amphibian          0    0       0    0         0
+##   insect             0    0       0    0         0
+##   mollusc.et.al      0    0       0    0         0
+##                Reference
+## Prediction      insect mollusc.et.al
+##   mammal             0             0
+##   bird               0             0
+##   reptile            0             0
+##   fish               0             0
+##   amphibian          0             0
+##   insect             1             0
+##   mollusc.et.al      0             2
+## 
+## Overall Statistics
+##                                         
+##                Accuracy : 0.944         
+##                  95% CI : (0.727, 0.999)
+##     No Information Rate : 0.444         
+##     P-Value [Acc &gt; NIR] : 1.08e-05      
+##                                         
+##                   Kappa : 0.922         
+##                                         
+##  Mcnemar&#39;s Test P-Value : NA            
+## 
+## Statistics by Class:
+## 
+##                      Class: mammal Class: bird
+## Sensitivity                  1.000       1.000
+## Specificity                  1.000       0.929
+## Pos Pred Value               1.000       0.800
+## Neg Pred Value               1.000       1.000
+## Prevalence                   0.444       0.222
+## Detection Rate               0.444       0.222
+## Detection Prevalence         0.444       0.278
+## Balanced Accuracy            1.000       0.964
+##                      Class: reptile Class: fish
+## Sensitivity                  0.0000       1.000
+## Specificity                  1.0000       1.000
+## Pos Pred Value                  NaN       1.000
+## Neg Pred Value               0.9444       1.000
+## Prevalence                   0.0556       0.111
+## Detection Rate               0.0000       0.111
+## Detection Prevalence         0.0000       0.111
+## Balanced Accuracy            0.5000       1.000
+##                      Class: amphibian Class: insect
+## Sensitivity                        NA        1.0000
+## Specificity                         1        1.0000
+## Pos Pred Value                     NA        1.0000
+## Neg Pred Value                     NA        1.0000
+## Prevalence                          0        0.0556
+## Detection Rate                      0        0.0556
+## Detection Prevalence                0        0.0556
+## Balanced Accuracy                  NA        1.0000
+##                      Class: mollusc.et.al
+## Sensitivity                         1.000
+## Specificity                         1.000
+## Pos Pred Value                      1.000
+## Neg Pred Value                      1.000
+## Prevalence                          0.111
+## Detection Rate                      0.111
+## Detection Prevalence                0.111
+## Balanced Accuracy                   1.000</code></pre>
+</div>
+<div id="decision-boundaries" class="section level2" number="4.5">
+<h2><span class="header-section-number">4.5</span> Decision Boundaries</h2>
+<p>Classifiers create decision boundaries to discriminate between classes.
+Different classifiers are able to create different shapes of decision
+boundaries (e.g., some are strictly linear) and thus some classifiers
+may perform better for certain datasets. This page visualizes the decision
+boundaries found by several popular classification methods.</p>
+<p>The following plot adds the decision boundary by evaluating the classifier
+at evenly spaced grid points. Note that low resolution
+(to make evaluation faster) will make
+the decision boundary look like it has small steps even if it is a
+(straight) line.</p>
+<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb431-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb431-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;scales&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     discard</code></pre>
+<pre><code>## The following object is masked from &#39;package:readr&#39;:
+## 
+##     col_factor</code></pre>
+<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb435-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb435-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb435-4"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb435-5"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-5" aria-hidden="true" tabindex="-1"></a>decisionplot <span class="ot">&lt;-</span> <span class="cf">function</span>(model, x, <span class="at">cl =</span> <span class="cn">NULL</span>, <span class="at">predict_type =</span> <span class="st">&quot;class&quot;</span>,</span>
+<span id="cb435-6"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">resolution =</span> <span class="dv">100</span>) {</span>
+<span id="cb435-7"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb435-8"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.null</span>(cl)) {</span>
+<span id="cb435-9"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-9" aria-hidden="true" tabindex="-1"></a>    x_data <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">all_of</span>(cl))</span>
+<span id="cb435-10"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-10" aria-hidden="true" tabindex="-1"></a>    cl <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">pull</span>(cl)</span>
+<span id="cb435-11"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-11" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> cl <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb435-12"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-12" aria-hidden="true" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(cl))</span>
+<span id="cb435-13"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb435-14"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># resubstitution accuracy</span></span>
+<span id="cb435-15"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-15" aria-hidden="true" tabindex="-1"></a>  prediction <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, x_data, <span class="at">type =</span> predict_type)</span>
+<span id="cb435-16"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.list</span>(prediction)) prediction <span class="ot">&lt;-</span> prediction<span class="sc">$</span>class</span>
+<span id="cb435-17"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.numeric</span>(prediction))</span>
+<span id="cb435-18"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-18" aria-hidden="true" tabindex="-1"></a>    prediction <span class="ot">&lt;-</span>  <span class="fu">factor</span>(prediction, <span class="at">labels =</span> <span class="fu">levels</span>(cl))</span>
+<span id="cb435-19"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
+<span id="cb435-20"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-20" aria-hidden="true" tabindex="-1"></a>    prediction <span class="ot">&lt;-</span> <span class="fu">factor</span>(prediction, <span class="at">levels =</span> <span class="fu">levels</span>(cl))</span>
+<span id="cb435-21"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb435-22"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-22" aria-hidden="true" tabindex="-1"></a>  cm <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(<span class="at">data =</span> prediction, <span class="at">reference =</span> cl)</span>
+<span id="cb435-23"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-23" aria-hidden="true" tabindex="-1"></a>  acc <span class="ot">&lt;-</span> cm<span class="sc">$</span>overall[<span class="st">&quot;Accuracy&quot;</span>]</span>
+<span id="cb435-24"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb435-25"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># evaluate model on a grid</span></span>
+<span id="cb435-26"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-26" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="fu">sapply</span>(x[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], range, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb435-27"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-27" aria-hidden="true" tabindex="-1"></a>  xs <span class="ot">&lt;-</span> <span class="fu">seq</span>(r[<span class="dv">1</span>,<span class="dv">1</span>], r[<span class="dv">2</span>,<span class="dv">1</span>], <span class="at">length.out =</span> resolution)</span>
+<span id="cb435-28"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-28" aria-hidden="true" tabindex="-1"></a>  ys <span class="ot">&lt;-</span> <span class="fu">seq</span>(r[<span class="dv">1</span>,<span class="dv">2</span>], r[<span class="dv">2</span>,<span class="dv">2</span>], <span class="at">length.out =</span> resolution)</span>
+<span id="cb435-29"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-29" aria-hidden="true" tabindex="-1"></a>  g <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">rep</span>(xs, <span class="at">each =</span> resolution), <span class="fu">rep</span>(ys, <span class="at">time =</span> resolution))</span>
+<span id="cb435-30"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(g) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(r)</span>
+<span id="cb435-31"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-31" aria-hidden="true" tabindex="-1"></a>  g <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(g)</span>
+<span id="cb435-32"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb435-33"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-33" aria-hidden="true" tabindex="-1"></a>  <span class="do">### guess how to get class labels from predict</span></span>
+<span id="cb435-34"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-34" aria-hidden="true" tabindex="-1"></a>  <span class="do">### (unfortunately not very consistent between models)</span></span>
+<span id="cb435-35"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-35" aria-hidden="true" tabindex="-1"></a>  prediction <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, g, <span class="at">type =</span> predict_type)</span>
+<span id="cb435-36"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.list</span>(prediction)) prediction <span class="ot">&lt;-</span> prediction<span class="sc">$</span>class</span>
+<span id="cb435-37"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.numeric</span>(prediction))</span>
+<span id="cb435-38"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-38" aria-hidden="true" tabindex="-1"></a>    prediction <span class="ot">&lt;-</span>  <span class="fu">factor</span>(prediction, <span class="at">labels =</span> <span class="fu">levels</span>(cl))</span>
+<span id="cb435-39"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-39" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
+<span id="cb435-40"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-40" aria-hidden="true" tabindex="-1"></a>    prediction <span class="ot">&lt;-</span> <span class="fu">factor</span>(prediction, <span class="at">levels =</span> <span class="fu">levels</span>(cl))</span>
+<span id="cb435-41"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb435-42"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-42" aria-hidden="true" tabindex="-1"></a>  g <span class="ot">&lt;-</span> g <span class="sc">%&gt;%</span> <span class="fu">add_column</span>(prediction)</span>
+<span id="cb435-43"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb435-44"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(g, <span class="at">mapping =</span> <span class="fu">aes_string</span>(</span>
+<span id="cb435-45"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">colnames</span>(g)[<span class="dv">1</span>],</span>
+<span id="cb435-46"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">colnames</span>(g)[<span class="dv">2</span>])) <span class="sc">+</span></span>
+<span id="cb435-47"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_tile</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">fill =</span> prediction)) <span class="sc">+</span></span>
+<span id="cb435-48"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">data =</span> x, <span class="at">mapping =</span>  <span class="fu">aes_string</span>(</span>
+<span id="cb435-49"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-49" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="fu">colnames</span>(x)[<span class="dv">1</span>],</span>
+<span id="cb435-50"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-50" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="fu">colnames</span>(x)[<span class="dv">2</span>],</span>
+<span id="cb435-51"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-51" aria-hidden="true" tabindex="-1"></a>      <span class="at">shape =</span> <span class="fu">colnames</span>(x)[<span class="dv">3</span>]), <span class="at">alpha =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb435-52"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="fu">paste</span>(<span class="st">&quot;Training accuracy:&quot;</span>, <span class="fu">round</span>(acc, <span class="dv">2</span>)))</span>
+<span id="cb435-53"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb435-53" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div id="iris-dataset" class="section level3" number="4.5.1">
+<h3><span class="header-section-number">4.5.1</span> Iris Dataset</h3>
+<p>For easier visualization, we use on two dimensions of the Iris dataset.</p>
+<div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb436-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb436-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1000</span>)</span>
+<span id="cb436-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb436-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(iris)</span>
+<span id="cb436-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb436-3" aria-hidden="true" tabindex="-1"></a>iris <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(iris)</span>
+<span id="cb436-4"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb436-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb436-5"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb436-5" aria-hidden="true" tabindex="-1"></a><span class="do">### Three classes (MASS also has a select function)</span></span>
+<span id="cb436-6"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb436-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> iris <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(Sepal.Length, Sepal.Width, Species)</span>
+<span id="cb436-7"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb436-7" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
+<pre><code>## # A tibble: 150 x 3
+##    Sepal.Length Sepal.Width Species
+##           &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+##  1          5.1         3.5 setosa 
+##  2          4.9         3   setosa 
+##  3          4.7         3.2 setosa 
+##  4          4.6         3.1 setosa 
+##  5          5           3.6 setosa 
+##  6          5.4         3.9 setosa 
+##  7          4.6         3.4 setosa 
+##  8          5           3.4 setosa 
+##  9          4.4         2.9 setosa 
+## 10          4.9         3.1 setosa 
+## # … with 140 more rows</code></pre>
+<div class="sourceCode" id="cb438"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb438-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb438-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(x, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Sepal.Width, <span class="at">color =</span> Species)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-164-1.png" width="672" /></p>
+<p><em>Note:</em> There is some overplotting and you could use <code>geom_jitter()</code> instead of <code>geom_point()</code>.</p>
+<div id="k-nearest-neighbors-classifier" class="section level4" number="4.5.1.1">
+<h4><span class="header-section-number">4.5.1.1</span> K-Nearest Neighbors Classifier</h4>
+<div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb439-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb439-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb439-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb439-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">knn3</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">k =</span> <span class="dv">1</span>)</span>
+<span id="cb439-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb439-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;kNN (1 neighbor)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-165-1.png" width="672" /></p>
+<div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb440-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb440-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">knn3</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">k =</span> <span class="dv">10</span>)</span>
+<span id="cb440-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb440-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;kNN (10 neighbor)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-165-2.png" width="672" /></p>
+</div>
+<div id="naive-bayes-classifier" class="section level4" number="4.5.1.2">
+<h4><span class="header-section-number">4.5.1.2</span> Naive Bayes Classifier</h4>
+<div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb441-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb441-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
+<span id="cb441-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb441-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">naiveBayes</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
+<span id="cb441-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb441-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Naive Bayes&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-166-1.png" width="672" /></p>
+</div>
+<div id="linear-discriminant-analysis" class="section level4" number="4.5.1.3">
+<h4><span class="header-section-number">4.5.1.3</span> Linear Discriminant Analysis</h4>
+<div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb442-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb442-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;MASS&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     select</code></pre>
+<div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb445-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb445-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">lda</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
+<span id="cb445-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb445-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;LDA&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-167-1.png" width="672" /></p>
+</div>
+<div id="multinomial-logistic-regression-implemented-in-nnet" class="section level4" number="4.5.1.4">
+<h4><span class="header-section-number">4.5.1.4</span> Multinomial Logistic Regression (implemented in nnet)</h4>
+<p>Multinomial logistic regression is an extension of logistic regression to problems with more than two classes.</p>
+<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb446-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb446-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet)</span>
+<span id="cb446-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb446-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">multinom</span>(Species <span class="sc">~</span>., <span class="at">data =</span> .)</span></code></pre></div>
+<pre><code>## # weights:  12 (6 variable)
+## initial  value 164.791843 
+## iter  10 value 62.715967
+## iter  20 value 59.808291
+## iter  30 value 55.445984
+## iter  40 value 55.375704
+## iter  50 value 55.346472
+## iter  60 value 55.301707
+## iter  70 value 55.253532
+## iter  80 value 55.243230
+## iter  90 value 55.230241
+## iter 100 value 55.212479
+## final  value 55.212479 
+## stopped after 100 iterations</code></pre>
+<div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb448-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb448-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">titel =</span> <span class="st">&quot;Multinomial Logistic Regression&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-168-1.png" width="672" /></p>
+</div>
+<div id="decision-trees-1" class="section level4" number="4.5.1.5">
+<h4><span class="header-section-number">4.5.1.5</span> Decision Trees</h4>
+<div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb449-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb449-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;rpart&quot;</span>)</span>
+<span id="cb449-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb449-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">rpart</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
+<span id="cb449-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb449-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;CART&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-169-1.png" width="672" /></p>
+<div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb450-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb450-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">rpart</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> .,</span>
+<span id="cb450-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb450-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">cp =</span> <span class="fl">0.001</span>, <span class="at">minsplit =</span> <span class="dv">1</span>))</span>
+<span id="cb450-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb450-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;CART (overfitting)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-169-2.png" width="672" /></p>
+<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb451-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb451-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(C50)</span>
+<span id="cb451-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb451-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">C5.0</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
+<span id="cb451-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb451-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;C5.0&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-169-3.png" width="672" /></p>
+<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb452-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb452-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomForest)</span></code></pre></div>
+<pre><code>## randomForest 4.6-14</code></pre>
+<pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;randomForest&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     combine</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     margin</code></pre>
+<div class="sourceCode" id="cb458"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb458-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb458-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">randomForest</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
+<span id="cb458-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb458-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Random Forest&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-169-4.png" width="672" /></p>
+</div>
+<div id="svm" class="section level4" number="4.5.1.6">
+<h4><span class="header-section-number">4.5.1.6</span> SVM</h4>
+<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb459-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb459-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
+<span id="cb459-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb459-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">svm</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">kernel =</span> <span class="st">&quot;linear&quot;</span>)</span>
+<span id="cb459-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb459-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;SVM (linear kernel)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-170-1.png" width="672" /></p>
+<div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb460-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb460-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">svm</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">kernel =</span> <span class="st">&quot;radial&quot;</span>)</span>
+<span id="cb460-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb460-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;SVM (radial kernel)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-170-2.png" width="672" /></p>
+<div class="sourceCode" id="cb461"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb461-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb461-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">svm</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">kernel =</span> <span class="st">&quot;polynomial&quot;</span>)</span>
+<span id="cb461-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb461-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;SVM (polynomial kernel)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-170-3.png" width="672" /></p>
+<div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb462-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb462-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">svm</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">kernel =</span> <span class="st">&quot;sigmoid&quot;</span>)</span>
+<span id="cb462-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb462-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;SVM (sigmoid kernel)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-170-4.png" width="672" /></p>
+</div>
+<div id="single-layer-feed-forward-neural-networks" class="section level4" number="4.5.1.7">
+<h4><span class="header-section-number">4.5.1.7</span> Single Layer Feed-forward Neural Networks</h4>
+<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb463-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet)</span>
+<span id="cb463-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb463-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span>x <span class="sc">%&gt;%</span> <span class="fu">nnet</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">size =</span> <span class="dv">1</span>, <span class="at">maxit =</span> <span class="dv">1000</span>, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb463-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb463-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;NN (1 neuron)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-171-1.png" width="672" /></p>
+<div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb464-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb464-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span>x <span class="sc">%&gt;%</span> <span class="fu">nnet</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">size =</span> <span class="dv">2</span>, <span class="at">maxit =</span> <span class="dv">1000</span>, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb464-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb464-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;NN (2 neurons)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-171-2.png" width="672" /></p>
+<div class="sourceCode" id="cb465"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb465-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb465-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span>x <span class="sc">%&gt;%</span> <span class="fu">nnet</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">size =</span> <span class="dv">4</span>, <span class="at">maxit =</span> <span class="dv">1000</span>, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb465-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb465-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;NN (4 neurons)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-171-3.png" width="672" /></p>
+<div class="sourceCode" id="cb466"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb466-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb466-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span>x <span class="sc">%&gt;%</span> <span class="fu">nnet</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">size =</span> <span class="dv">10</span>, <span class="at">maxit =</span> <span class="dv">1000</span>, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb466-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb466-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;NN (10 neurons)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-171-4.png" width="672" /></p>
+</div>
+<div id="deep-learning-with-keras" class="section level4" number="4.5.1.8">
+<h4><span class="header-section-number">4.5.1.8</span> Deep Learning with keras</h4>
+<div class="sourceCode" id="cb467"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb467-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb467-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)</span></code></pre></div>
+<p>define predict so it works with decision plot</p>
+<div class="sourceCode" id="cb468"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb468-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb468-1" aria-hidden="true" tabindex="-1"></a>predict.keras.engine.training.Model <span class="ot">&lt;-</span> <span class="cf">function</span>(object, newdata, ...)</span>
+<span id="cb468-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb468-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict_classes</span>(object, <span class="fu">as.matrix</span>(newdata))</span></code></pre></div>
+<p>Choices are the activation function, number of layers, number of units per layer and the optimizer.
+A L2 regularizer is used for the dense layer weights to reduce overfitting. The output is a
+categorical class value, therefore the output layer uses the softmax activation function,
+the loss is categorical crossentropy, and the metric is accuracy.</p>
+<div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb469-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb469-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">keras_model_sequential</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb469-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb469-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">10</span>, <span class="at">activation =</span> <span class="st">&#39;relu&#39;</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">2</span>),</span>
+<span id="cb469-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb469-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">kernel_regularizer=</span><span class="fu">regularizer_l2</span>(<span class="at">l=</span><span class="fl">0.01</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb469-4"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb469-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">4</span>, <span class="at">activation =</span> <span class="st">&#39;softmax&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb469-5"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb469-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">compile</span>(<span class="at">loss =</span> <span class="st">&#39;categorical_crossentropy&#39;</span>, <span class="at">optimizer =</span> <span class="st">&#39;adam&#39;</span>, <span class="at">metrics =</span> <span class="st">&#39;accuracy&#39;</span>)</span>
+<span id="cb469-6"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb469-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb469-7"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb469-7" aria-hidden="true" tabindex="-1"></a>history <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> <span class="fu">fit</span>(</span>
+<span id="cb469-8"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb469-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>(x[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]),</span>
+<span id="cb469-9"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb469-9" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%&gt;%</span> <span class="fu">pull</span>(<span class="dv">3</span>) <span class="sc">%&gt;%</span> as.integer <span class="sc">%&gt;%</span> <span class="fu">to_categorical</span>(),</span>
+<span id="cb469-10"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb469-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">epochs =</span> <span class="dv">100</span>,</span>
+<span id="cb469-11"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb469-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">batch_size =</span> <span class="dv">10</span></span>
+<span id="cb469-12"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb469-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb469-13"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb469-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb469-14"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb469-14" aria-hidden="true" tabindex="-1"></a>history</span></code></pre></div>
+<pre><code>## 
+## Final epoch (plot to see history):
+##     loss: 0.6051
+## accuracy: 0.7</code></pre>
+<div class="sourceCode" id="cb471"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb471-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb471-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;keras (relu activation)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-174-1.png" width="672" /></p>
+<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb472-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb472-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">keras_model_sequential</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb472-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb472-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">10</span>, <span class="at">activation =</span> <span class="st">&#39;tanh&#39;</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">2</span>),</span>
+<span id="cb472-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb472-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">kernel_regularizer =</span> <span class="fu">regularizer_l2</span>(<span class="at">l =</span> <span class="fl">0.01</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb472-4"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb472-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">4</span>, <span class="at">activation =</span> <span class="st">&#39;softmax&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb472-5"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb472-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">compile</span>(<span class="at">loss =</span> <span class="st">&#39;categorical_crossentropy&#39;</span>, <span class="at">optimizer =</span> <span class="st">&#39;adam&#39;</span>, <span class="at">metrics =</span> <span class="st">&#39;accuracy&#39;</span>)</span>
+<span id="cb472-6"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb472-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb472-7"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb472-7" aria-hidden="true" tabindex="-1"></a>history <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> <span class="fu">fit</span>(</span>
+<span id="cb472-8"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb472-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>(x[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]),</span>
+<span id="cb472-9"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb472-9" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%&gt;%</span> <span class="fu">pull</span>(<span class="dv">3</span>) <span class="sc">%&gt;%</span> as.integer <span class="sc">%&gt;%</span> <span class="fu">to_categorical</span>(),</span>
+<span id="cb472-10"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb472-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">epochs =</span> <span class="dv">100</span>,</span>
+<span id="cb472-11"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb472-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">batch_size =</span> <span class="dv">10</span></span>
+<span id="cb472-12"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb472-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb472-13"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb472-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb472-14"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb472-14" aria-hidden="true" tabindex="-1"></a>history</span></code></pre></div>
+<pre><code>## 
+## Final epoch (plot to see history):
+##     loss: 0.6214
+## accuracy: 0.7</code></pre>
+<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb474-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb474-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;keras (tanh activation)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-174-2.png" width="672" /></p>
+</div>
+</div>
+<div id="circle-dataset" class="section level3" number="4.5.2">
+<h3><span class="header-section-number">4.5.2</span> Circle Dataset</h3>
+<p>This set is not linearly separable!</p>
+<div class="sourceCode" id="cb475"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb475-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb475-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1000</span>)</span>
+<span id="cb475-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb475-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb475-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb475-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mlbench)</span>
+<span id="cb475-4"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb475-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">mlbench.circle</span>(<span class="dv">500</span>)</span>
+<span id="cb475-5"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb475-5" aria-hidden="true" tabindex="-1"></a><span class="do">###x &lt;- mlbench.cassini(500)</span></span>
+<span id="cb475-6"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb475-6" aria-hidden="true" tabindex="-1"></a><span class="do">###x &lt;- mlbench.spirals(500, sd = .1)</span></span>
+<span id="cb475-7"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb475-7" aria-hidden="true" tabindex="-1"></a><span class="do">###x &lt;- mlbench.smiley(500)</span></span>
+<span id="cb475-8"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb475-8" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">as.data.frame</span>(x<span class="sc">$</span>x), <span class="fu">factor</span>(x<span class="sc">$</span>classes))</span>
+<span id="cb475-9"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb475-9" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(x) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>, <span class="st">&quot;class&quot;</span>)</span>
+<span id="cb475-10"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb475-10" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(x)</span>
+<span id="cb475-11"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb475-11" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
+<pre><code>## # A tibble: 500 x 3
+##          x       y class
+##      &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt;
+##  1 -0.344   0.448  1    
+##  2  0.518   0.915  2    
+##  3 -0.772  -0.0913 1    
+##  4  0.382   0.412  1    
+##  5  0.0328  0.438  1    
+##  6 -0.865  -0.354  2    
+##  7  0.477   0.640  2    
+##  8  0.167  -0.809  2    
+##  9 -0.568  -0.281  1    
+## 10 -0.488   0.638  2    
+## # … with 490 more rows</code></pre>
+<div class="sourceCode" id="cb477"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb477-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb477-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(x, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> class)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-175-1.png" width="672" /></p>
+<div id="k-nearest-neighbors-classifier-1" class="section level4" number="4.5.2.1">
+<h4><span class="header-section-number">4.5.2.1</span> K-Nearest Neighbors Classifier</h4>
+<div class="sourceCode" id="cb478"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb478-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb478-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb478-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb478-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">knn3</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">k =</span> <span class="dv">1</span>)</span>
+<span id="cb478-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb478-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;kNN (1 neighbor)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-176-1.png" width="672" /></p>
+<div class="sourceCode" id="cb479"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb479-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb479-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">knn3</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">k =</span> <span class="dv">10</span>)</span>
+<span id="cb479-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb479-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;kNN (10 neighbor)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-176-2.png" width="672" /></p>
+</div>
+<div id="naive-bayes-classifier-1" class="section level4" number="4.5.2.2">
+<h4><span class="header-section-number">4.5.2.2</span> Naive Bayes Classifier</h4>
+<div class="sourceCode" id="cb480"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb480-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb480-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
+<span id="cb480-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb480-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">naiveBayes</span>(class <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
+<span id="cb480-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb480-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;naive Bayes&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-177-1.png" width="672" /></p>
+</div>
+<div id="linear-discriminant-analysis-1" class="section level4" number="4.5.2.3">
+<h4><span class="header-section-number">4.5.2.3</span> Linear Discriminant Analysis</h4>
+<div class="sourceCode" id="cb481"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb481-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb481-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb481-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb481-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">lda</span>(class <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
+<span id="cb481-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb481-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;LDA&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-178-1.png" width="672" /></p>
+</div>
+<div id="multinomial-logistic-regression-implemented-in-nnet-1" class="section level4" number="4.5.2.4">
+<h4><span class="header-section-number">4.5.2.4</span> Multinomial Logistic Regression (implemented in nnet)</h4>
+<p>Multinomial logistic regression is an extension of logistic regression to problems with more than two classes.</p>
+<div class="sourceCode" id="cb482"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb482-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb482-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet)</span>
+<span id="cb482-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb482-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">multinom</span>(class <span class="sc">~</span>., <span class="at">data =</span> .)</span></code></pre></div>
+<pre><code>## # weights:  4 (3 variable)
+## initial  value 346.573590 
+## final  value 346.308371 
+## converged</code></pre>
+<div class="sourceCode" id="cb484"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb484-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb484-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">titel =</span> <span class="st">&quot;Multinomial Logistic Regression&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-179-1.png" width="672" /></p>
+</div>
+<div id="decision-trees-2" class="section level4" number="4.5.2.5">
+<h4><span class="header-section-number">4.5.2.5</span> Decision Trees</h4>
+<div class="sourceCode" id="cb485"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb485-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb485-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;rpart&quot;</span>)</span>
+<span id="cb485-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb485-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">rpart</span>(class <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
+<span id="cb485-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb485-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;CART&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-180-1.png" width="672" /></p>
+<div class="sourceCode" id="cb486"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb486-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb486-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">rpart</span>(class <span class="sc">~</span> ., <span class="at">data =</span> .,</span>
+<span id="cb486-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb486-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">cp =</span> <span class="fl">0.001</span>, <span class="at">minsplit =</span> <span class="dv">1</span>))</span>
+<span id="cb486-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb486-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;CART (overfitting)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-180-2.png" width="672" /></p>
+<div class="sourceCode" id="cb487"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb487-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb487-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(C50)</span>
+<span id="cb487-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb487-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">C5.0</span>(class <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
+<span id="cb487-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb487-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;C5.0&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-180-3.png" width="672" /></p>
+<div class="sourceCode" id="cb488"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb488-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb488-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomForest)</span>
+<span id="cb488-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb488-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">randomForest</span>(class <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
+<span id="cb488-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb488-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Random Forest&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-180-4.png" width="672" /></p>
+</div>
+<div id="svm-1" class="section level4" number="4.5.2.6">
+<h4><span class="header-section-number">4.5.2.6</span> SVM</h4>
+<div class="sourceCode" id="cb489"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb489-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb489-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
+<span id="cb489-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb489-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">svm</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">kernel =</span> <span class="st">&quot;linear&quot;</span>)</span>
+<span id="cb489-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb489-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;SVM (linear kernel)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-181-1.png" width="672" /></p>
+<div class="sourceCode" id="cb490"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb490-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb490-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">svm</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">kernel =</span> <span class="st">&quot;radial&quot;</span>)</span>
+<span id="cb490-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb490-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;SVM (radial kernel)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-181-2.png" width="672" /></p>
+<div class="sourceCode" id="cb491"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb491-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb491-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">svm</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">kernel =</span> <span class="st">&quot;polynomial&quot;</span>)</span>
+<span id="cb491-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb491-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;SVM (polynomial kernel)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-181-3.png" width="672" /></p>
+<div class="sourceCode" id="cb492"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb492-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb492-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">svm</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">kernel =</span> <span class="st">&quot;sigmoid&quot;</span>)</span>
+<span id="cb492-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb492-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;SVM (sigmoid kernel)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-181-4.png" width="672" /></p>
+</div>
+<div id="single-layer-feed-forward-neural-networks-1" class="section level4" number="4.5.2.7">
+<h4><span class="header-section-number">4.5.2.7</span> Single Layer Feed-forward Neural Networks</h4>
+<div class="sourceCode" id="cb493"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb493-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb493-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet)</span>
+<span id="cb493-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb493-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span>x <span class="sc">%&gt;%</span> <span class="fu">nnet</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">size =</span> <span class="dv">1</span>, <span class="at">maxit =</span> <span class="dv">1000</span>, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb493-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb493-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;NN (1 neuron)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-182-1.png" width="672" /></p>
+<div class="sourceCode" id="cb494"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb494-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb494-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span>x <span class="sc">%&gt;%</span> <span class="fu">nnet</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">size =</span> <span class="dv">2</span>, <span class="at">maxit =</span> <span class="dv">1000</span>, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb494-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb494-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;NN (2 neurons)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-182-2.png" width="672" /></p>
+<div class="sourceCode" id="cb495"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb495-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb495-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span>x <span class="sc">%&gt;%</span> <span class="fu">nnet</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">size =</span> <span class="dv">4</span>, <span class="at">maxit =</span> <span class="dv">1000</span>, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb495-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb495-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;NN (4 neurons)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-182-3.png" width="672" /></p>
+<div class="sourceCode" id="cb496"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb496-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb496-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span>x <span class="sc">%&gt;%</span> <span class="fu">nnet</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">size =</span> <span class="dv">10</span>, <span class="at">maxit =</span> <span class="dv">1000</span>, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb496-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb496-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;NN (10 neurons)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-182-4.png" width="672" /></p>
+</div>
+<div id="deep-learning-with-keras-1" class="section level4" number="4.5.2.8">
+<h4><span class="header-section-number">4.5.2.8</span> Deep Learning with keras</h4>
+<div class="sourceCode" id="cb497"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb497-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb497-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)</span></code></pre></div>
+<p>redefine predict so it works with decision plot</p>
+<div class="sourceCode" id="cb498"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb498-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb498-1" aria-hidden="true" tabindex="-1"></a>predict.keras.engine.training.Model <span class="ot">&lt;-</span> <span class="cf">function</span>(object, newdata, ...)</span>
+<span id="cb498-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb498-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict_classes</span>(object, <span class="fu">as.matrix</span>(newdata))</span></code></pre></div>
+<p>Choices are the activation function, number of layers, number of units per layer and the optimizer.
+A L2 regularizer is used for the dense layer weights to reduce overfitting. The output is a
+categorical class value, therefore the output layer uses the softmax activation function,
+the loss is categorical crossentropy, and the metric is accuracy.</p>
+<div class="sourceCode" id="cb499"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb499-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb499-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">keras_model_sequential</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb499-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb499-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">10</span>, <span class="at">activation =</span> <span class="st">&#39;relu&#39;</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">2</span>),</span>
+<span id="cb499-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb499-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">kernel_regularizer=</span><span class="fu">regularizer_l2</span>(<span class="at">l =</span> <span class="fl">0.0001</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb499-4"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb499-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">3</span>, <span class="at">activation =</span> <span class="st">&#39;softmax&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb499-5"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb499-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">compile</span>(<span class="at">loss =</span> <span class="st">&#39;categorical_crossentropy&#39;</span>, <span class="at">optimizer =</span> <span class="st">&#39;adam&#39;</span>, <span class="at">metrics =</span> <span class="st">&#39;accuracy&#39;</span>)</span>
+<span id="cb499-6"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb499-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb499-7"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb499-7" aria-hidden="true" tabindex="-1"></a>history <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> <span class="fu">fit</span>(</span>
+<span id="cb499-8"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb499-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>(x[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]),</span>
+<span id="cb499-9"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb499-9" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%&gt;%</span> <span class="fu">pull</span>(<span class="dv">3</span>) <span class="sc">%&gt;%</span> as.integer <span class="sc">%&gt;%</span> <span class="fu">to_categorical</span>(),</span>
+<span id="cb499-10"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb499-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">epochs =</span> <span class="dv">100</span>,</span>
+<span id="cb499-11"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb499-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">batch_size =</span> <span class="dv">10</span></span>
+<span id="cb499-12"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb499-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb499-13"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb499-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb499-14"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb499-14" aria-hidden="true" tabindex="-1"></a>history</span></code></pre></div>
+<pre><code>## 
+## Final epoch (plot to see history):
+##     loss: 0.2032
+## accuracy: 0.968</code></pre>
+<div class="sourceCode" id="cb501"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb501-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb501-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;keras (relu activation)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-185-1.png" width="672" /></p>
+<div class="sourceCode" id="cb502"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb502-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb502-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">keras_model_sequential</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb502-2"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb502-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">10</span>, <span class="at">activation =</span> <span class="st">&#39;tanh&#39;</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">2</span>),</span>
+<span id="cb502-3"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb502-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">kernel_regularizer =</span> <span class="fu">regularizer_l2</span>(<span class="at">l =</span> <span class="fl">0.0001</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb502-4"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb502-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">3</span>, <span class="at">activation =</span> <span class="st">&#39;softmax&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb502-5"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb502-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">compile</span>(<span class="at">loss =</span> <span class="st">&#39;categorical_crossentropy&#39;</span>, <span class="at">optimizer =</span> <span class="st">&#39;adam&#39;</span>, <span class="at">metrics =</span> <span class="st">&#39;accuracy&#39;</span>)</span>
+<span id="cb502-6"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb502-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb502-7"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb502-7" aria-hidden="true" tabindex="-1"></a>history <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> <span class="fu">fit</span>(</span>
+<span id="cb502-8"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb502-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>(x[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]),</span>
+<span id="cb502-9"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb502-9" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">%&gt;%</span> <span class="fu">pull</span>(<span class="dv">3</span>) <span class="sc">%&gt;%</span> as.integer <span class="sc">%&gt;%</span> <span class="fu">to_categorical</span>(),</span>
+<span id="cb502-10"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb502-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">epochs =</span> <span class="dv">100</span>,</span>
+<span id="cb502-11"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb502-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">batch_size =</span> <span class="dv">10</span></span>
+<span id="cb502-12"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb502-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb502-13"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb502-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb502-14"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb502-14" aria-hidden="true" tabindex="-1"></a>history</span></code></pre></div>
+<pre><code>## 
+## Final epoch (plot to see history):
+##     loss: 0.3041
+## accuracy: 0.946</code></pre>
+<div class="sourceCode" id="cb504"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb504-1"><a href="r-code-for-chapter-4-of-introduction-to-data-mining-classification-alternative-techniques.html#cb504-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;keras (tanh activation)&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-185-2.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="more-information" class="section level2" number="4.6">
+<h2><span class="header-section-number">4.6</span> More Information</h2>
+<ul>
+<li><a href="chap4_keras.html">Example using deep learning with keras.</a></li>
+<li>Package caret: <a href="http://topepo.github.io/caret/index.html" class="uri">http://topepo.github.io/caret/index.html</a></li>
+<li>Tidymodels (machine learning with tidyverse): <a href="https://www.tidymodels.org/" class="uri">https://www.tidymodels.org/</a></li>
+<li>R taskview on machine learning: <a href="http://cran.r-project.org/web/views/MachineLearning.html" class="uri">http://cran.r-project.org/web/views/MachineLearning.html</a></li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="classification-basic-concepts-and-techniques.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook/js/app.min.js"></script>
+<script src="libs/gitbook/js/lunr.js"></script>
+<script src="libs/gitbook/js/clipboard.min.js"></script>
+<script src="libs/gitbook/js/plugin-search.js"></script>
+<script src="libs/gitbook/js/plugin-sharing.js"></script>
+<script src="libs/gitbook/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook/js/jquery.highlight.js"></script>
+<script src="libs/gitbook/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection",
+"toc_depth": 1
+}
+});
+});
+</script>
+
+</body>
+
+</html>

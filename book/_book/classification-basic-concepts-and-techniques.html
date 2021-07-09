@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Classification: Basic Concepts and Techniques | R Code Companion for the Textbook Introduction to Data Mining</title>
+  <meta name="description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition)." />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Classification: Basic Concepts and Techniques | R Code Companion for the Textbook Introduction to Data Mining" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition)." />
+  <meta name="github-repo" content="mhahsler/Introduction_to_Data_Mining_R_Examples" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Classification: Basic Concepts and Techniques | R Code Companion for the Textbook Introduction to Data Mining" />
+  
+  <meta name="twitter:description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition)." />
+  
+
+<meta name="author" content="Michael Hahsler" />
+
+
+<meta name="date" content="2021-07-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="data.html"/>
+<link rel="next" href="classification-alternative-techniques.html"/>
+<script src="libs/header-attrs/header-attrs.js"></script>
+<script src="libs/jquery/jquery.min.js"></script>
+<link href="libs/gitbook/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections/anchor-sections.js"></script>
+<script src="libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="libs/plotly-binding/plotly.js"></script>
+<script src="libs/typedarray/typedarray.min.js"></script>
+<link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main/plotly-latest.min.js"></script>
+<link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding/datatables.js"></script>
+<link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core/js/jquery.dataTables.min.js"></script>
+<link href="libs/nouislider/jquery.nouislider.min.css" rel="stylesheet" />
+<script src="libs/nouislider/jquery.nouislider.min.js"></script>
+<link href="libs/selectize/selectize.bootstrap3.css" rel="stylesheet" />
+<script src="libs/selectize/selectize.min.js"></script>
+<link href="libs/vis/vis.css" rel="stylesheet" />
+<script src="libs/vis/vis.min.js"></script>
+<script src="libs/visNetwork-binding/visNetwork.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R Code Companion for Intro to Data Mining</a></li>
+<li><a href="http://michael.hahsler.net">by Michael Hahsler</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#data-manipulation-with-tidyverse"><i class="fa fa-check"></i><b>1.1</b> Data Manipulation with Tidyverse</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#visualization-with-ggplot2"><i class="fa fa-check"></i><b>1.2</b> Visualization with ggplot2</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>2</b> Data</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="data.html"><a href="data.html#the-iris-dataset"><i class="fa fa-check"></i><b>2.1</b> The Iris Dataset</a></li>
+<li class="chapter" data-level="2.2" data-path="data.html"><a href="data.html#data-quality"><i class="fa fa-check"></i><b>2.2</b> Data Quality</a></li>
+<li class="chapter" data-level="2.3" data-path="data.html"><a href="data.html#aggregation"><i class="fa fa-check"></i><b>2.3</b> Aggregation</a></li>
+<li class="chapter" data-level="2.4" data-path="data.html"><a href="data.html#sampling"><i class="fa fa-check"></i><b>2.4</b> Sampling</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="data.html"><a href="data.html#random-sampling"><i class="fa fa-check"></i><b>2.4.1</b> Random Sampling</a></li>
+<li class="chapter" data-level="2.4.2" data-path="data.html"><a href="data.html#stratified-sampling"><i class="fa fa-check"></i><b>2.4.2</b> Stratified Sampling</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="data.html"><a href="data.html#features"><i class="fa fa-check"></i><b>2.5</b> Features</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="data.html"><a href="data.html#dimensionality-reduction"><i class="fa fa-check"></i><b>2.5.1</b> Dimensionality Reduction</a></li>
+<li class="chapter" data-level="2.5.2" data-path="data.html"><a href="data.html#feature-selection"><i class="fa fa-check"></i><b>2.5.2</b> Feature Selection</a></li>
+<li class="chapter" data-level="2.5.3" data-path="data.html"><a href="data.html#discretize-features"><i class="fa fa-check"></i><b>2.5.3</b> Discretize Features</a></li>
+<li class="chapter" data-level="2.5.4" data-path="data.html"><a href="data.html#standardize-data-z-scores"><i class="fa fa-check"></i><b>2.5.4</b> Standardize Data (Z-Scores)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="data.html"><a href="data.html#proximities-similarities-and-distances"><i class="fa fa-check"></i><b>2.6</b> Proximities: Similarities and Distances</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="data.html"><a href="data.html#minkowsky-distances"><i class="fa fa-check"></i><b>2.6.1</b> Minkowsky Distances</a></li>
+<li class="chapter" data-level="2.6.2" data-path="data.html"><a href="data.html#distances-for-binary-data"><i class="fa fa-check"></i><b>2.6.2</b> Distances for Binary Data</a></li>
+<li class="chapter" data-level="2.6.3" data-path="data.html"><a href="data.html#distances-for-mixed-data"><i class="fa fa-check"></i><b>2.6.3</b> Distances for Mixed Data</a></li>
+<li class="chapter" data-level="2.6.4" data-path="data.html"><a href="data.html#additional-proximity-measures-available-in-package-proxy"><i class="fa fa-check"></i><b>2.6.4</b> Additional proximity Measures Available in Package proxy</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="data.html"><a href="data.html#relationships-between-features"><i class="fa fa-check"></i><b>2.7</b> Relationships Between Features</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="data.html"><a href="data.html#correlation"><i class="fa fa-check"></i><b>2.7.1</b> Correlation</a></li>
+<li class="chapter" data-level="2.7.2" data-path="data.html"><a href="data.html#rank-correlation"><i class="fa fa-check"></i><b>2.7.2</b> Rank Correlation</a></li>
+<li class="chapter" data-level="2.7.3" data-path="data.html"><a href="data.html#relationship-between-nominal-and-ordinal-features"><i class="fa fa-check"></i><b>2.7.3</b> Relationship Between Nominal and Ordinal Features</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="data.html"><a href="data.html#density-estimation"><i class="fa fa-check"></i><b>2.8</b> Density Estimation</a></li>
+<li class="chapter" data-level="2.9" data-path="data.html"><a href="data.html#exploring-data"><i class="fa fa-check"></i><b>2.9</b> Exploring Data</a>
+<ul>
+<li class="chapter" data-level="2.9.1" data-path="data.html"><a href="data.html#basic-statistics"><i class="fa fa-check"></i><b>2.9.1</b> Basic statistics</a></li>
+<li class="chapter" data-level="2.9.2" data-path="data.html"><a href="data.html#tabulate-data"><i class="fa fa-check"></i><b>2.9.2</b> Tabulate data</a></li>
+<li class="chapter" data-level="2.9.3" data-path="data.html"><a href="data.html#percentiles-quantiles"><i class="fa fa-check"></i><b>2.9.3</b> Percentiles (Quantiles)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.10" data-path="data.html"><a href="data.html#visualization"><i class="fa fa-check"></i><b>2.10</b> Visualization</a>
+<ul>
+<li class="chapter" data-level="2.10.1" data-path="data.html"><a href="data.html#histogram"><i class="fa fa-check"></i><b>2.10.1</b> Histogram</a></li>
+<li class="chapter" data-level="2.10.2" data-path="data.html"><a href="data.html#boxplot"><i class="fa fa-check"></i><b>2.10.2</b> Boxplot</a></li>
+<li class="chapter" data-level="2.10.3" data-path="data.html"><a href="data.html#scatter-plot"><i class="fa fa-check"></i><b>2.10.3</b> Scatter plot</a></li>
+<li class="chapter" data-level="2.10.4" data-path="data.html"><a href="data.html#scatter-plot-matrix"><i class="fa fa-check"></i><b>2.10.4</b> Scatter Plot Matrix</a></li>
+<li class="chapter" data-level="2.10.5" data-path="data.html"><a href="data.html#data-matrix-visualization"><i class="fa fa-check"></i><b>2.10.5</b> Data Matrix Visualization</a></li>
+<li class="chapter" data-level="2.10.6" data-path="data.html"><a href="data.html#correlation-matrix"><i class="fa fa-check"></i><b>2.10.6</b> Correlation Matrix</a></li>
+<li class="chapter" data-level="2.10.7" data-path="data.html"><a href="data.html#parallel-coordinates-plot"><i class="fa fa-check"></i><b>2.10.7</b> Parallel Coordinates Plot</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html"><i class="fa fa-check"></i><b>3</b> Classification: Basic Concepts and Techniques</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#the-zoo-dataset"><i class="fa fa-check"></i><b>3.1</b> The Zoo Dataset</a></li>
+<li class="chapter" data-level="3.2" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#decision-trees"><i class="fa fa-check"></i><b>3.2</b> Decision Trees</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#create-tree-with-default-settings-uses-pre-pruning"><i class="fa fa-check"></i><b>3.2.1</b> Create Tree With Default Settings (uses pre-pruning)</a></li>
+<li class="chapter" data-level="3.2.2" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#create-a-full-tree"><i class="fa fa-check"></i><b>3.2.2</b> Create a Full Tree</a></li>
+<li class="chapter" data-level="3.2.3" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#make-predictions-for-new-data"><i class="fa fa-check"></i><b>3.2.3</b> Make Predictions for New Data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#model-evaluation-with-caret"><i class="fa fa-check"></i><b>3.3</b> Model Evaluation with Caret</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#hold-out-test-data"><i class="fa fa-check"></i><b>3.3.1</b> Hold out Test Data</a></li>
+<li class="chapter" data-level="3.3.2" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#learn-a-model-and-tune-hyperparameters-on-the-training-data"><i class="fa fa-check"></i><b>3.3.2</b> Learn a Model and Tune Hyperparameters on the Training Data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#testing-confusion-matrix-and-confidence-interval-for-accuracy"><i class="fa fa-check"></i><b>3.4</b> Testing: Confusion Matrix and Confidence Interval for Accuracy</a></li>
+<li class="chapter" data-level="3.5" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#model-comparison"><i class="fa fa-check"></i><b>3.5</b> Model Comparison</a></li>
+<li class="chapter" data-level="3.6" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#feature-selection-and-feature-preparation"><i class="fa fa-check"></i><b>3.6</b> Feature Selection and Feature Preparation</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#univariate-feature-importance-score"><i class="fa fa-check"></i><b>3.6.1</b> Univariate Feature Importance Score</a></li>
+<li class="chapter" data-level="3.6.2" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#feature-subset-selection"><i class="fa fa-check"></i><b>3.6.2</b> Feature Subset Selection</a></li>
+<li class="chapter" data-level="3.6.3" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#using-dummy-variables-for-factors"><i class="fa fa-check"></i><b>3.6.3</b> Using Dummy Variables for Factors</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#class-imbalance"><i class="fa fa-check"></i><b>3.7</b> Class Imbalance</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#option-1-use-the-data-as-is-and-hope-for-the-best"><i class="fa fa-check"></i><b>3.7.1</b> Option 1: Use the Data As Is and Hope For The Best</a></li>
+<li class="chapter" data-level="3.7.2" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#option-2-balance-data-with-resampling"><i class="fa fa-check"></i><b>3.7.2</b> Option 2: Balance Data With Resampling</a></li>
+<li class="chapter" data-level="3.7.3" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#option-3-build-a-larger-tree-and-use-predicted-probabilities"><i class="fa fa-check"></i><b>3.7.3</b> Option 3: Build A Larger Tree and use Predicted Probabilities</a></li>
+<li class="chapter" data-level="3.7.4" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#option-4-use-a-cost-sensitive-classifier"><i class="fa fa-check"></i><b>3.7.4</b> Option 4: Use a Cost-Sensitive Classifier</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html"><i class="fa fa-check"></i><b>4</b> Classification: Alternative Techniques</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#training-and-test-data"><i class="fa fa-check"></i><b>4.1</b> Training and Test Data</a></li>
+<li class="chapter" data-level="4.2" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#fitting-different-classification-models-to-the-training-data"><i class="fa fa-check"></i><b>4.2</b> Fitting Different Classification Models to the Training Data</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#conditional-inference-tree-decision-tree"><i class="fa fa-check"></i><b>4.2.1</b> Conditional Inference Tree (Decision Tree)</a></li>
+<li class="chapter" data-level="4.2.2" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#c-4.5-decision-tree"><i class="fa fa-check"></i><b>4.2.2</b> C 4.5 Decision Tree</a></li>
+<li class="chapter" data-level="4.2.3" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#k-nearest-neighbors"><i class="fa fa-check"></i><b>4.2.3</b> K-Nearest Neighbors</a></li>
+<li class="chapter" data-level="4.2.4" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#part-rule-based-classifier"><i class="fa fa-check"></i><b>4.2.4</b> PART (Rule-based classifier)</a></li>
+<li class="chapter" data-level="4.2.5" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#linear-support-vector-machines"><i class="fa fa-check"></i><b>4.2.5</b> Linear Support Vector Machines</a></li>
+<li class="chapter" data-level="4.2.6" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#random-forest"><i class="fa fa-check"></i><b>4.2.6</b> Random Forest</a></li>
+<li class="chapter" data-level="4.2.7" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#gradient-boosted-decision-trees-xgboost"><i class="fa fa-check"></i><b>4.2.7</b> Gradient Boosted Decision Trees (xgboost)</a></li>
+<li class="chapter" data-level="4.2.8" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#artificial-neural-network"><i class="fa fa-check"></i><b>4.2.8</b> Artificial Neural Network</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#comparing-models"><i class="fa fa-check"></i><b>4.3</b> Comparing Models</a></li>
+<li class="chapter" data-level="4.4" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#applying-the-chosen-model-to-the-test-data"><i class="fa fa-check"></i><b>4.4</b> Applying the Chosen Model to the Test Data</a></li>
+<li class="chapter" data-level="4.5" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#decision-boundaries"><i class="fa fa-check"></i><b>4.5</b> Decision Boundaries</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#iris-dataset"><i class="fa fa-check"></i><b>4.5.1</b> Iris Dataset</a></li>
+<li class="chapter" data-level="4.5.2" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#circle-dataset"><i class="fa fa-check"></i><b>4.5.2</b> Circle Dataset</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#more-information"><i class="fa fa-check"></i><b>4.6</b> More Information</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html"><i class="fa fa-check"></i><b>5</b> Association Analysis: Basic Concepts and Algorithms</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#the-arules-package"><i class="fa fa-check"></i><b>5.1</b> The arules Package</a></li>
+<li class="chapter" data-level="5.2" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#transactions"><i class="fa fa-check"></i><b>5.2</b> Transactions</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#create-transactions"><i class="fa fa-check"></i><b>5.2.1</b> Create Transactions</a></li>
+<li class="chapter" data-level="5.2.2" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#inspect-transactions"><i class="fa fa-check"></i><b>5.2.2</b> Inspect Transactions</a></li>
+<li class="chapter" data-level="5.2.3" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#vertical-layout-transaction-id-lists"><i class="fa fa-check"></i><b>5.2.3</b> Vertical Layout (Transaction ID Lists)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#frequent-itemsets"><i class="fa fa-check"></i><b>5.3</b> Frequent Itemsets</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#mine-frequent-itemsets"><i class="fa fa-check"></i><b>5.3.1</b> Mine Frequent Itemsets</a></li>
+<li class="chapter" data-level="5.3.2" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#concise-representation-of-itemsets"><i class="fa fa-check"></i><b>5.3.2</b> Concise Representation of Itemsets</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#association-rules"><i class="fa fa-check"></i><b>5.4</b> Association Rules</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#mine-association-rules"><i class="fa fa-check"></i><b>5.4.1</b> Mine Association Rules</a></li>
+<li class="chapter" data-level="5.4.2" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#calculate-additional-interest-measures"><i class="fa fa-check"></i><b>5.4.2</b> Calculate Additional Interest Measures</a></li>
+<li class="chapter" data-level="5.4.3" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#mine-using-templates"><i class="fa fa-check"></i><b>5.4.3</b> Mine Using Templates</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#association-rule-visualization"><i class="fa fa-check"></i><b>5.5</b> Association Rule Visualization</a></li>
+<li class="chapter" data-level="5.6" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#interactive-visualizations"><i class="fa fa-check"></i><b>5.6</b> Interactive Visualizations</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#interactive-inspect-with-sorting-filtering-and-paging"><i class="fa fa-check"></i><b>5.6.1</b> Interactive Inspect With Sorting, Filtering and Paging</a></li>
+<li class="chapter" data-level="5.6.2" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#scatter-plot-1"><i class="fa fa-check"></i><b>5.6.2</b> Scatter Plot</a></li>
+<li class="chapter" data-level="5.6.3" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#matrix-visualization"><i class="fa fa-check"></i><b>5.6.3</b> Matrix Visualization</a></li>
+<li class="chapter" data-level="5.6.4" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#visualization-as-graph"><i class="fa fa-check"></i><b>5.6.4</b> Visualization as Graph</a></li>
+<li class="chapter" data-level="5.6.5" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#interactive-rule-explorer"><i class="fa fa-check"></i><b>5.6.5</b> Interactive Rule Explorer</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="association-analysis-advanced-concepts.html"><a href="association-analysis-advanced-concepts.html"><i class="fa fa-check"></i><b>6</b> Association Analysis: Advanced Concepts</a></li>
+<li class="chapter" data-level="7" data-path="clustering-analysis.html"><a href="clustering-analysis.html"><i class="fa fa-check"></i><b>7</b> Clustering Analysis</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#data-preparation"><i class="fa fa-check"></i><b>7.1</b> Data Preparation</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#data-cleaning"><i class="fa fa-check"></i><b>7.1.1</b> Data cleaning</a></li>
+<li class="chapter" data-level="7.1.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#scale-data"><i class="fa fa-check"></i><b>7.1.2</b> Scale data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#clustering-methods"><i class="fa fa-check"></i><b>7.2</b> Clustering methods</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#k-means-clustering"><i class="fa fa-check"></i><b>7.2.1</b> k-means Clustering</a></li>
+<li class="chapter" data-level="7.2.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#hierarchical-clustering"><i class="fa fa-check"></i><b>7.2.2</b> Hierarchical Clustering</a></li>
+<li class="chapter" data-level="7.2.3" data-path="clustering-analysis.html"><a href="clustering-analysis.html#density-based-clustering-with-dbscan"><i class="fa fa-check"></i><b>7.2.3</b> Density-based clustering with DBSCAN</a></li>
+<li class="chapter" data-level="7.2.4" data-path="clustering-analysis.html"><a href="clustering-analysis.html#partitioning-around-medoids-pam"><i class="fa fa-check"></i><b>7.2.4</b> Partitioning Around Medoids (PAM)</a></li>
+<li class="chapter" data-level="7.2.5" data-path="clustering-analysis.html"><a href="clustering-analysis.html#gaussian-mixture-models"><i class="fa fa-check"></i><b>7.2.5</b> Gaussian Mixture Models</a></li>
+<li class="chapter" data-level="7.2.6" data-path="clustering-analysis.html"><a href="clustering-analysis.html#spectral-clustering"><i class="fa fa-check"></i><b>7.2.6</b> Spectral clustering</a></li>
+<li class="chapter" data-level="7.2.7" data-path="clustering-analysis.html"><a href="clustering-analysis.html#fuzzy-c-means-clustering"><i class="fa fa-check"></i><b>7.2.7</b> Fuzzy C-Means Clustering</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="clustering-analysis.html"><a href="clustering-analysis.html#internal-cluster-validation"><i class="fa fa-check"></i><b>7.3</b> Internal Cluster Validation</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#compare-the-clustering-quality"><i class="fa fa-check"></i><b>7.3.1</b> Compare the Clustering Quality</a></li>
+<li class="chapter" data-level="7.3.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#silhouette-plot"><i class="fa fa-check"></i><b>7.3.2</b> Silhouette plot</a></li>
+<li class="chapter" data-level="7.3.3" data-path="clustering-analysis.html"><a href="clustering-analysis.html#find-optimal-number-of-clusters-for-k-means"><i class="fa fa-check"></i><b>7.3.3</b> Find Optimal Number of Clusters for k-means</a></li>
+<li class="chapter" data-level="7.3.4" data-path="clustering-analysis.html"><a href="clustering-analysis.html#visualizing-the-distance-matrix"><i class="fa fa-check"></i><b>7.3.4</b> Visualizing the Distance Matrix</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="clustering-analysis.html"><a href="clustering-analysis.html#external-cluster-validation"><i class="fa fa-check"></i><b>7.4</b> External Cluster Validation</a></li>
+<li class="chapter" data-level="7.5" data-path="clustering-analysis.html"><a href="clustering-analysis.html#advanced-data-preparation-for-clustering"><i class="fa fa-check"></i><b>7.5</b> Advanced Data Preparation for Clustering</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#outlier-removal"><i class="fa fa-check"></i><b>7.5.1</b> Outlier Removal</a></li>
+<li class="chapter" data-level="7.5.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#clustering-tendency"><i class="fa fa-check"></i><b>7.5.2</b> Clustering Tendency</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R Code Companion for the Textbook Introduction to Data Mining</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="classification-basic-concepts-and-techniques" class="section level1" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Classification: Basic Concepts and Techniques</h1>
+<p><strong>Packages used for this chapter:</strong> <em>caret</em> <span class="citation">(<a href="#ref-R-caret" role="doc-biblioref">Kuhn 2021</a>)</span>, <em>FSelector</em> <span class="citation">(<a href="#ref-R-FSelector" role="doc-biblioref">Romanski, Kotthoff, and Schratz 2021</a>)</span>, <em>lattice</em> <span class="citation">(<a href="#ref-R-lattice" role="doc-biblioref">Sarkar 2021</a>)</span>, <em>mlbench</em> <span class="citation">(<a href="#ref-R-mlbench" role="doc-biblioref">Leisch and Dimitriadou. 2021</a>)</span>, <em>pROC</em> <span class="citation">(<a href="#ref-R-pROC" role="doc-biblioref">Robin et al. 2021</a>)</span>, <em>rpart</em> <span class="citation">(<a href="#ref-R-rpart" role="doc-biblioref">Therneau and Atkinson 2019</a>)</span>, <em>rpart.plot</em> <span class="citation">(<a href="#ref-R-rpart.plot" role="doc-biblioref">Milborrow 2020</a>)</span>, <em>sampling</em> <span class="citation">(<a href="#ref-R-sampling" role="doc-biblioref">Tillé and Matei 2021</a>)</span>, <em>tidyverse</em> <span class="citation">(<a href="#ref-R-tidyverse" role="doc-biblioref">Wickham 2021c</a>)</span></p>
+<p>You can read the free sample chapter from the textbook <span class="citation">(<a href="#ref-Tan2005" role="doc-biblioref">Tan, Steinbach, and Kumar 2005</a>)</span>:
+<a href="https://www-users.cs.umn.edu/~kumar001/dmbook/ch3_classification.pdf">Chapter 3. Classification: Basic Concepts and Techniques</a></p>
+<div id="the-zoo-dataset" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> The Zoo Dataset</h2>
+<p>We will use the Zoo dataset which is included in the R package <strong>mlbench</strong> (you may have to install it).
+The Zoo dataset containing 17 (mostly logical) variables on different 101 animals as a
+data frame with 17 columns (hair, feathers, eggs, milk, airborne, aquatic, predator, toothed, backbone, breathes, venomous, fins, legs, tail, domestic, catsize, type). We convert the data frame into a tidyverse tibble (optional).</p>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="classification-basic-concepts-and-techniques.html#cb237-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Zoo, <span class="at">package=</span><span class="st">&quot;mlbench&quot;</span>)</span>
+<span id="cb237-2"><a href="classification-basic-concepts-and-techniques.html#cb237-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Zoo)</span></code></pre></div>
+<pre><code>##           hair feathers  eggs  milk airborne aquatic
+## aardvark  TRUE    FALSE FALSE  TRUE    FALSE   FALSE
+## antelope  TRUE    FALSE FALSE  TRUE    FALSE   FALSE
+## bass     FALSE    FALSE  TRUE FALSE    FALSE    TRUE
+## bear      TRUE    FALSE FALSE  TRUE    FALSE   FALSE
+## boar      TRUE    FALSE FALSE  TRUE    FALSE   FALSE
+## buffalo   TRUE    FALSE FALSE  TRUE    FALSE   FALSE
+##          predator toothed backbone breathes venomous
+## aardvark     TRUE    TRUE     TRUE     TRUE    FALSE
+## antelope    FALSE    TRUE     TRUE     TRUE    FALSE
+## bass         TRUE    TRUE     TRUE    FALSE    FALSE
+## bear         TRUE    TRUE     TRUE     TRUE    FALSE
+## boar         TRUE    TRUE     TRUE     TRUE    FALSE
+## buffalo     FALSE    TRUE     TRUE     TRUE    FALSE
+##           fins legs  tail domestic catsize   type
+## aardvark FALSE    4 FALSE    FALSE    TRUE mammal
+## antelope FALSE    4  TRUE    FALSE    TRUE mammal
+## bass      TRUE    0  TRUE    FALSE   FALSE   fish
+## bear     FALSE    4 FALSE    FALSE    TRUE mammal
+## boar     FALSE    4  TRUE    FALSE    TRUE mammal
+## buffalo  FALSE    4  TRUE    FALSE    TRUE mammal</code></pre>
+<p><em>Note:</em> data.frames in R can have row names. The Zoo data set uses the animal name as the row names. tibbles from <code>tidyverse</code> do not support row names. To keep the animal name you can add a column with the animal name.</p>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="classification-basic-concepts-and-techniques.html#cb239-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb239-2"><a href="classification-basic-concepts-and-techniques.html#cb239-2" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(Zoo, <span class="at">rownames =</span> <span class="st">&quot;animal&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 101 x 18
+##    animal   hair  feathers eggs  milk  airborne aquatic
+##    &lt;chr&gt;    &lt;lgl&gt; &lt;lgl&gt;    &lt;lgl&gt; &lt;lgl&gt; &lt;lgl&gt;    &lt;lgl&gt;  
+##  1 aardvark TRUE  FALSE    FALSE TRUE  FALSE    FALSE  
+##  2 antelope TRUE  FALSE    FALSE TRUE  FALSE    FALSE  
+##  3 bass     FALSE FALSE    TRUE  FALSE FALSE    TRUE   
+##  4 bear     TRUE  FALSE    FALSE TRUE  FALSE    FALSE  
+##  5 boar     TRUE  FALSE    FALSE TRUE  FALSE    FALSE  
+##  6 buffalo  TRUE  FALSE    FALSE TRUE  FALSE    FALSE  
+##  7 calf     TRUE  FALSE    FALSE TRUE  FALSE    FALSE  
+##  8 carp     FALSE FALSE    TRUE  FALSE FALSE    TRUE   
+##  9 catfish  FALSE FALSE    TRUE  FALSE FALSE    TRUE   
+## 10 cavy     TRUE  FALSE    FALSE TRUE  FALSE    FALSE  
+## # … with 91 more rows, and 11 more variables:
+## #   predator &lt;lgl&gt;, toothed &lt;lgl&gt;, backbone &lt;lgl&gt;,
+## #   breathes &lt;lgl&gt;, venomous &lt;lgl&gt;, fins &lt;lgl&gt;,
+## #   legs &lt;int&gt;, tail &lt;lgl&gt;, domestic &lt;lgl&gt;,
+## #   catsize &lt;lgl&gt;, type &lt;fct&gt;</code></pre>
+<p>You will have to remove the animal column before learning a model! In the following I use the data.frame.</p>
+<p>I translate all the TRUE/FALSE values into factors (nominal). This is often needed for building models. Always check <code>summary()</code> to make sure the data is ready for model learning.</p>
+<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="classification-basic-concepts-and-techniques.html#cb241-1" aria-hidden="true" tabindex="-1"></a>Zoo <span class="ot">&lt;-</span> Zoo <span class="sc">%&gt;%</span></span>
+<span id="cb241-2"><a href="classification-basic-concepts-and-techniques.html#cb241-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_if</span>(is.logical, factor, <span class="at">levels =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb241-3"><a href="classification-basic-concepts-and-techniques.html#cb241-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_if</span>(is.character, factor)</span>
+<span id="cb241-4"><a href="classification-basic-concepts-and-techniques.html#cb241-4" aria-hidden="true" tabindex="-1"></a>Zoo <span class="sc">%&gt;%</span> <span class="fu">summary</span>()</span></code></pre></div>
+<pre><code>##     hair     feathers     eggs       milk   
+##  TRUE :43   TRUE :20   TRUE :59   TRUE :41  
+##  FALSE:58   FALSE:81   FALSE:42   FALSE:60  
+##                                             
+##                                             
+##                                             
+##                                             
+##                                             
+##   airborne   aquatic    predator   toothed  
+##  TRUE :24   TRUE :36   TRUE :56   TRUE :61  
+##  FALSE:77   FALSE:65   FALSE:45   FALSE:40  
+##                                             
+##                                             
+##                                             
+##                                             
+##                                             
+##   backbone   breathes   venomous     fins   
+##  TRUE :83   TRUE :80   TRUE : 8   TRUE :17  
+##  FALSE:18   FALSE:21   FALSE:93   FALSE:84  
+##                                             
+##                                             
+##                                             
+##                                             
+##                                             
+##       legs         tail     domestic   catsize  
+##  Min.   :0.00   TRUE :75   TRUE :13   TRUE :44  
+##  1st Qu.:2.00   FALSE:26   FALSE:88   FALSE:57  
+##  Median :4.00                                   
+##  Mean   :2.84                                   
+##  3rd Qu.:4.00                                   
+##  Max.   :8.00                                   
+##                                                 
+##             type   
+##  mammal       :41  
+##  bird         :20  
+##  reptile      : 5  
+##  fish         :13  
+##  amphibian    : 4  
+##  insect       : 8  
+##  mollusc.et.al:10</code></pre>
+</div>
+<div id="decision-trees" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Decision Trees</h2>
+<p>Recursive Partitioning (similar to CART) uses the Gini index to make
+splitting decisions and early stopping (pre-pruning).</p>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="classification-basic-concepts-and-techniques.html#cb243-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart)</span></code></pre></div>
+<div id="create-tree-with-default-settings-uses-pre-pruning" class="section level3" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Create Tree With Default Settings (uses pre-pruning)</h3>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="classification-basic-concepts-and-techniques.html#cb244-1" aria-hidden="true" tabindex="-1"></a>tree_default <span class="ot">&lt;-</span> Zoo <span class="sc">%&gt;%</span> <span class="fu">rpart</span>(type <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
+<span id="cb244-2"><a href="classification-basic-concepts-and-techniques.html#cb244-2" aria-hidden="true" tabindex="-1"></a>tree_default</span></code></pre></div>
+<pre><code>## n= 101 
+## 
+## node), split, n, loss, yval, (yprob)
+##       * denotes terminal node
+## 
+##  1) root 101 60 mammal (0.41 0.2 0.05 0.13 0.04 0.079 0.099)  
+##    2) milk=TRUE 41  0 mammal (1 0 0 0 0 0 0) *
+##    3) milk=FALSE 60 40 bird (0 0.33 0.083 0.22 0.067 0.13 0.17)  
+##      6) feathers=TRUE 20  0 bird (0 1 0 0 0 0 0) *
+##      7) feathers=FALSE 40 27 fish (0 0 0.12 0.33 0.1 0.2 0.25)  
+##       14) fins=TRUE 13  0 fish (0 0 0 1 0 0 0) *
+##       15) fins=FALSE 27 17 mollusc.et.al (0 0 0.19 0 0.15 0.3 0.37)  
+##         30) backbone=TRUE 9  4 reptile (0 0 0.56 0 0.44 0 0) *
+##         31) backbone=FALSE 18  8 mollusc.et.al (0 0 0 0 0 0.44 0.56) *</code></pre>
+<p><strong>Notes:</strong>
+- <code>%&gt;%</code> supplies the data for <code>rpart</code>. Since <code>data</code> is not the first argument of <code>rpart</code>, the syntax <code>data = .</code> is used to specify where the data in <code>Zoo</code> goes. The call is equivalent to <code>tree_default &lt;- rpart(type ~ ., data = Zoo)</code>.
+- The formula models the <code>type</code> variable by all other features represented by <code>.</code>. <code>data = .</code>
+means that the data provided by the pipe (<code>%&gt;%</code>) will be passed to rpart as the
+argument <code>data</code>.</p>
+<ul>
+<li>the class variable needs a factor (nominal) or rpart
+will create a regression tree instead of a decision tree. Use <code>as.factor()</code>
+if necessary.</li>
+</ul>
+<p>Plotting</p>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="classification-basic-concepts-and-techniques.html#cb246-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart.plot)</span>
+<span id="cb246-2"><a href="classification-basic-concepts-and-techniques.html#cb246-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(tree_default, <span class="at">extra =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## Warning: Cannot retrieve the data used to build the model (so cannot determine roundint and is.binary for the variables).
+## To silence this warning:
+##     Call rpart.plot with roundint=FALSE,
+##     or rebuild the rpart model with model=TRUE.</code></pre>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-88-1.png" width="672" /></p>
+<p><em>Note:</em> <code>extra=2</code> prints for each leaf node the number of correctly
+classified objects from data and the total number of objects
+from the training data falling into that node (correct/total).</p>
+</div>
+<div id="create-a-full-tree" class="section level3" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> Create a Full Tree</h3>
+<p>To create a full tree, we set the complexity parameter cp to 0 (split even
+if it does not improve the tree) and we set the minimum number of
+observations in a node needed to split to the smallest value of 2
+(see: <code>?rpart.control</code>).
+<em>Note:</em> full trees overfit the training data!</p>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="classification-basic-concepts-and-techniques.html#cb248-1" aria-hidden="true" tabindex="-1"></a>tree_full <span class="ot">&lt;-</span> Zoo <span class="sc">%&gt;%</span> <span class="fu">rpart</span>(type <span class="sc">~</span>., <span class="at">data =</span> ., <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">minsplit =</span> <span class="dv">2</span>, <span class="at">cp =</span> <span class="dv">0</span>))</span>
+<span id="cb248-2"><a href="classification-basic-concepts-and-techniques.html#cb248-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(tree_full, <span class="at">extra =</span> <span class="dv">2</span>, <span class="at">roundint=</span><span class="cn">FALSE</span>,</span>
+<span id="cb248-3"><a href="classification-basic-concepts-and-techniques.html#cb248-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">box.palette =</span> <span class="fu">list</span>(<span class="st">&quot;Gy&quot;</span>, <span class="st">&quot;Gn&quot;</span>, <span class="st">&quot;Bu&quot;</span>, <span class="st">&quot;Bn&quot;</span>, <span class="st">&quot;Or&quot;</span>, <span class="st">&quot;Rd&quot;</span>, <span class="st">&quot;Pu&quot;</span>)) <span class="co"># specify 7 colors</span></span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-89-1.png" width="672" /></p>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="classification-basic-concepts-and-techniques.html#cb249-1" aria-hidden="true" tabindex="-1"></a>tree_full</span></code></pre></div>
+<pre><code>## n= 101 
+## 
+## node), split, n, loss, yval, (yprob)
+##       * denotes terminal node
+## 
+##   1) root 101 60 mammal (0.41 0.2 0.05 0.13 0.04 0.079 0.099)  
+##     2) milk=TRUE 41  0 mammal (1 0 0 0 0 0 0) *
+##     3) milk=FALSE 60 40 bird (0 0.33 0.083 0.22 0.067 0.13 0.17)  
+##       6) feathers=TRUE 20  0 bird (0 1 0 0 0 0 0) *
+##       7) feathers=FALSE 40 27 fish (0 0 0.12 0.33 0.1 0.2 0.25)  
+##        14) fins=TRUE 13  0 fish (0 0 0 1 0 0 0) *
+##        15) fins=FALSE 27 17 mollusc.et.al (0 0 0.19 0 0.15 0.3 0.37)  
+##          30) backbone=TRUE 9  4 reptile (0 0 0.56 0 0.44 0 0)  
+##            60) aquatic=FALSE 4  0 reptile (0 0 1 0 0 0 0) *
+##            61) aquatic=TRUE 5  1 amphibian (0 0 0.2 0 0.8 0 0)  
+##             122) eggs=FALSE 1  0 reptile (0 0 1 0 0 0 0) *
+##             123) eggs=TRUE 4  0 amphibian (0 0 0 0 1 0 0) *
+##          31) backbone=FALSE 18  8 mollusc.et.al (0 0 0 0 0 0.44 0.56)  
+##            62) airborne=TRUE 6  0 insect (0 0 0 0 0 1 0) *
+##            63) airborne=FALSE 12  2 mollusc.et.al (0 0 0 0 0 0.17 0.83)  
+##             126) predator=FALSE 4  2 insect (0 0 0 0 0 0.5 0.5)  
+##               252) legs&gt;=3 2  0 insect (0 0 0 0 0 1 0) *
+##               253) legs&lt; 3 2  0 mollusc.et.al (0 0 0 0 0 0 1) *
+##             127) predator=TRUE 8  0 mollusc.et.al (0 0 0 0 0 0 1) *</code></pre>
+<p>Training error on tree with pre-pruning</p>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="classification-basic-concepts-and-techniques.html#cb251-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(tree_default, Zoo) <span class="sc">%&gt;%</span> <span class="fu">head</span> ()</span></code></pre></div>
+<pre><code>##          mammal bird reptile fish amphibian insect
+## aardvark      1    0       0    0         0      0
+## antelope      1    0       0    0         0      0
+## bass          0    0       0    1         0      0
+## bear          1    0       0    0         0      0
+## boar          1    0       0    0         0      0
+## buffalo       1    0       0    0         0      0
+##          mollusc.et.al
+## aardvark             0
+## antelope             0
+## bass                 0
+## bear                 0
+## boar                 0
+## buffalo              0</code></pre>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="classification-basic-concepts-and-techniques.html#cb253-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(tree_default, Zoo, <span class="at">type=</span><span class="st">&quot;class&quot;</span>)</span>
+<span id="cb253-2"><a href="classification-basic-concepts-and-techniques.html#cb253-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pred)</span></code></pre></div>
+<pre><code>## aardvark antelope     bass     bear     boar  buffalo 
+##   mammal   mammal     fish   mammal   mammal   mammal 
+## 7 Levels: mammal bird reptile fish ... mollusc.et.al</code></pre>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="classification-basic-concepts-and-techniques.html#cb255-1" aria-hidden="true" tabindex="-1"></a>confusion_table <span class="ot">&lt;-</span> <span class="fu">with</span>(Zoo, <span class="fu">table</span>(type, pred))</span>
+<span id="cb255-2"><a href="classification-basic-concepts-and-techniques.html#cb255-2" aria-hidden="true" tabindex="-1"></a>confusion_table</span></code></pre></div>
+<pre><code>##                pred
+## type            mammal bird reptile fish amphibian
+##   mammal            41    0       0    0         0
+##   bird               0   20       0    0         0
+##   reptile            0    0       5    0         0
+##   fish               0    0       0   13         0
+##   amphibian          0    0       4    0         0
+##   insect             0    0       0    0         0
+##   mollusc.et.al      0    0       0    0         0
+##                pred
+## type            insect mollusc.et.al
+##   mammal             0             0
+##   bird               0             0
+##   reptile            0             0
+##   fish               0             0
+##   amphibian          0             0
+##   insect             0             8
+##   mollusc.et.al      0            10</code></pre>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="classification-basic-concepts-and-techniques.html#cb257-1" aria-hidden="true" tabindex="-1"></a>correct <span class="ot">&lt;-</span> confusion_table <span class="sc">%&gt;%</span> <span class="fu">diag</span>() <span class="sc">%&gt;%</span> <span class="fu">sum</span>()</span>
+<span id="cb257-2"><a href="classification-basic-concepts-and-techniques.html#cb257-2" aria-hidden="true" tabindex="-1"></a>correct</span></code></pre></div>
+<pre><code>## [1] 89</code></pre>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="classification-basic-concepts-and-techniques.html#cb259-1" aria-hidden="true" tabindex="-1"></a>error <span class="ot">&lt;-</span> confusion_table <span class="sc">%&gt;%</span> <span class="fu">sum</span>() <span class="sc">-</span> correct</span>
+<span id="cb259-2"><a href="classification-basic-concepts-and-techniques.html#cb259-2" aria-hidden="true" tabindex="-1"></a>error</span></code></pre></div>
+<pre><code>## [1] 12</code></pre>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="classification-basic-concepts-and-techniques.html#cb261-1" aria-hidden="true" tabindex="-1"></a>accuracy <span class="ot">&lt;-</span> correct <span class="sc">/</span> (correct <span class="sc">+</span> error)</span>
+<span id="cb261-2"><a href="classification-basic-concepts-and-techniques.html#cb261-2" aria-hidden="true" tabindex="-1"></a>accuracy</span></code></pre></div>
+<pre><code>## [1] 0.8812</code></pre>
+<p>Use a function for accuracy</p>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="classification-basic-concepts-and-techniques.html#cb263-1" aria-hidden="true" tabindex="-1"></a>accuracy <span class="ot">&lt;-</span> <span class="cf">function</span>(truth, prediction) {</span>
+<span id="cb263-2"><a href="classification-basic-concepts-and-techniques.html#cb263-2" aria-hidden="true" tabindex="-1"></a>    tbl <span class="ot">&lt;-</span> <span class="fu">table</span>(truth, prediction)</span>
+<span id="cb263-3"><a href="classification-basic-concepts-and-techniques.html#cb263-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(<span class="fu">diag</span>(tbl))<span class="sc">/</span><span class="fu">sum</span>(tbl)</span>
+<span id="cb263-4"><a href="classification-basic-concepts-and-techniques.html#cb263-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb263-5"><a href="classification-basic-concepts-and-techniques.html#cb263-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb263-6"><a href="classification-basic-concepts-and-techniques.html#cb263-6" aria-hidden="true" tabindex="-1"></a><span class="fu">accuracy</span>(Zoo <span class="sc">%&gt;%</span> <span class="fu">pull</span>(type), pred)</span></code></pre></div>
+<pre><code>## [1] 0.8812</code></pre>
+<p>Training error of the full tree</p>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="classification-basic-concepts-and-techniques.html#cb265-1" aria-hidden="true" tabindex="-1"></a><span class="fu">accuracy</span>(Zoo <span class="sc">%&gt;%</span> <span class="fu">pull</span>(type), <span class="fu">predict</span>(tree_full, Zoo, <span class="at">type=</span><span class="st">&quot;class&quot;</span>))</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<p>Get a confusion table with more statistics (using caret)</p>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="classification-basic-concepts-and-techniques.html#cb267-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb267-2"><a href="classification-basic-concepts-and-techniques.html#cb267-2" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="at">data =</span> pred, <span class="at">reference =</span> Zoo <span class="sc">%&gt;%</span> <span class="fu">pull</span>(type))</span></code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##                Reference
+## Prediction      mammal bird reptile fish amphibian
+##   mammal            41    0       0    0         0
+##   bird               0   20       0    0         0
+##   reptile            0    0       5    0         4
+##   fish               0    0       0   13         0
+##   amphibian          0    0       0    0         0
+##   insect             0    0       0    0         0
+##   mollusc.et.al      0    0       0    0         0
+##                Reference
+## Prediction      insect mollusc.et.al
+##   mammal             0             0
+##   bird               0             0
+##   reptile            0             0
+##   fish               0             0
+##   amphibian          0             0
+##   insect             0             0
+##   mollusc.et.al      8            10
+## 
+## Overall Statistics
+##                                         
+##                Accuracy : 0.881         
+##                  95% CI : (0.802, 0.937)
+##     No Information Rate : 0.406         
+##     P-Value [Acc &gt; NIR] : &lt;2e-16        
+##                                         
+##                   Kappa : 0.843         
+##                                         
+##  Mcnemar&#39;s Test P-Value : NA            
+## 
+## Statistics by Class:
+## 
+##                      Class: mammal Class: bird
+## Sensitivity                  1.000       1.000
+## Specificity                  1.000       1.000
+## Pos Pred Value               1.000       1.000
+## Neg Pred Value               1.000       1.000
+## Prevalence                   0.406       0.198
+## Detection Rate               0.406       0.198
+## Detection Prevalence         0.406       0.198
+## Balanced Accuracy            1.000       1.000
+##                      Class: reptile Class: fish
+## Sensitivity                  1.0000       1.000
+## Specificity                  0.9583       1.000
+## Pos Pred Value               0.5556       1.000
+## Neg Pred Value               1.0000       1.000
+## Prevalence                   0.0495       0.129
+## Detection Rate               0.0495       0.129
+## Detection Prevalence         0.0891       0.129
+## Balanced Accuracy            0.9792       1.000
+##                      Class: amphibian Class: insect
+## Sensitivity                    0.0000        0.0000
+## Specificity                    1.0000        1.0000
+## Pos Pred Value                    NaN           NaN
+## Neg Pred Value                 0.9604        0.9208
+## Prevalence                     0.0396        0.0792
+## Detection Rate                 0.0000        0.0000
+## Detection Prevalence           0.0000        0.0000
+## Balanced Accuracy              0.5000        0.5000
+##                      Class: mollusc.et.al
+## Sensitivity                         1.000
+## Specificity                         0.912
+## Pos Pred Value                      0.556
+## Neg Pred Value                      1.000
+## Prevalence                          0.099
+## Detection Rate                      0.099
+## Detection Prevalence                0.178
+## Balanced Accuracy                   0.956</code></pre>
+</div>
+<div id="make-predictions-for-new-data" class="section level3" number="3.2.3">
+<h3><span class="header-section-number">3.2.3</span> Make Predictions for New Data</h3>
+<p>Make up my own animal: A lion with feathered wings</p>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="classification-basic-concepts-and-techniques.html#cb269-1" aria-hidden="true" tabindex="-1"></a>my_animal <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">hair =</span> <span class="cn">TRUE</span>, <span class="at">feathers =</span> <span class="cn">TRUE</span>, <span class="at">eggs =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb269-2"><a href="classification-basic-concepts-and-techniques.html#cb269-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">milk =</span> <span class="cn">TRUE</span>, <span class="at">airborne =</span> <span class="cn">TRUE</span>, <span class="at">aquatic =</span> <span class="cn">FALSE</span>, <span class="at">predator =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb269-3"><a href="classification-basic-concepts-and-techniques.html#cb269-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">toothed =</span> <span class="cn">TRUE</span>, <span class="at">backbone =</span> <span class="cn">TRUE</span>, <span class="at">breathes =</span> <span class="cn">TRUE</span>, <span class="at">venomous =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb269-4"><a href="classification-basic-concepts-and-techniques.html#cb269-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">fins =</span> <span class="cn">FALSE</span>, <span class="at">legs =</span> <span class="dv">4</span>, <span class="at">tail =</span> <span class="cn">TRUE</span>, <span class="at">domestic =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb269-5"><a href="classification-basic-concepts-and-techniques.html#cb269-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">catsize =</span> <span class="cn">FALSE</span>, <span class="at">type =</span> <span class="cn">NA</span>)</span></code></pre></div>
+<p>Fix columns to be factors like in the training set.</p>
+<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="classification-basic-concepts-and-techniques.html#cb270-1" aria-hidden="true" tabindex="-1"></a>my_animal <span class="ot">&lt;-</span> my_animal <span class="sc">%&gt;%</span> <span class="fu">modify_if</span>(is.logical, factor, <span class="at">levels =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>))</span>
+<span id="cb270-2"><a href="classification-basic-concepts-and-techniques.html#cb270-2" aria-hidden="true" tabindex="-1"></a>my_animal</span></code></pre></div>
+<pre><code>## # A tibble: 1 x 17
+##   hair  feathers eggs  milk  airborne aquatic predator
+##   &lt;fct&gt; &lt;fct&gt;    &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;    &lt;fct&gt;   &lt;fct&gt;   
+## 1 TRUE  TRUE     FALSE TRUE  TRUE     FALSE   TRUE    
+## # … with 10 more variables: toothed &lt;fct&gt;,
+## #   backbone &lt;fct&gt;, breathes &lt;fct&gt;, venomous &lt;fct&gt;,
+## #   fins &lt;fct&gt;, legs &lt;dbl&gt;, tail &lt;fct&gt;,
+## #   domestic &lt;fct&gt;, catsize &lt;fct&gt;, type &lt;fct&gt;</code></pre>
+<p>Make a prediction using the default tree</p>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="classification-basic-concepts-and-techniques.html#cb272-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(tree_default , my_animal, <span class="at">type =</span> <span class="st">&quot;class&quot;</span>)</span></code></pre></div>
+<pre><code>##      1 
+## mammal 
+## 7 Levels: mammal bird reptile fish ... mollusc.et.al</code></pre>
+</div>
+</div>
+<div id="model-evaluation-with-caret" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Model Evaluation with Caret</h2>
+<p>The package <a href="https://topepo.github.io/caret/"><code>caret</code></a> makes preparing training sets, building
+classification (and regression) models and evaluation easier. A great cheat sheet can be found <a href="https://ugoproto.github.io/ugo_r_doc/pdf/caret.pdf">here</a>.</p>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="classification-basic-concepts-and-techniques.html#cb274-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span></code></pre></div>
+<p>Cross-validation runs are independent and can be done faster in parallel.
+To enable multi-core support, <code>caret</code> uses the package <code>foreach</code> and
+you need to load a <code>do</code> backend. For Linux, you can use <code>doMC</code> with 4 cores. Windows needs different backend like <code>doParallel</code> (see <code>caret</code> cheat sheet above).</p>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="classification-basic-concepts-and-techniques.html#cb275-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Linux backend</span></span>
+<span id="cb275-2"><a href="classification-basic-concepts-and-techniques.html#cb275-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library(doMC)</span></span>
+<span id="cb275-3"><a href="classification-basic-concepts-and-techniques.html#cb275-3" aria-hidden="true" tabindex="-1"></a><span class="co"># registerDoMC(cores = 4)</span></span>
+<span id="cb275-4"><a href="classification-basic-concepts-and-techniques.html#cb275-4" aria-hidden="true" tabindex="-1"></a><span class="co"># getDoParWorkers()</span></span>
+<span id="cb275-5"><a href="classification-basic-concepts-and-techniques.html#cb275-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb275-6"><a href="classification-basic-concepts-and-techniques.html#cb275-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Windows backend</span></span>
+<span id="cb275-7"><a href="classification-basic-concepts-and-techniques.html#cb275-7" aria-hidden="true" tabindex="-1"></a><span class="co"># library(doParallel)</span></span>
+<span id="cb275-8"><a href="classification-basic-concepts-and-techniques.html#cb275-8" aria-hidden="true" tabindex="-1"></a><span class="co"># cl &lt;- makeCluster(4, type=&quot;SOCK&quot;)</span></span>
+<span id="cb275-9"><a href="classification-basic-concepts-and-techniques.html#cb275-9" aria-hidden="true" tabindex="-1"></a><span class="co"># registerDoParallel(cl)</span></span></code></pre></div>
+<p>Set random number generator seed to make results reproducible</p>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="classification-basic-concepts-and-techniques.html#cb276-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2000</span>)</span></code></pre></div>
+<div id="hold-out-test-data" class="section level3" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Hold out Test Data</h3>
+<p>Test data is not used in the model building process and set aside purely for testing the model.
+Here, we partition data the 80% training and 20% testing.</p>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="classification-basic-concepts-and-techniques.html#cb277-1" aria-hidden="true" tabindex="-1"></a>inTrain <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(<span class="at">y =</span> Zoo<span class="sc">$</span>type, <span class="at">p =</span> .<span class="dv">8</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb277-2"><a href="classification-basic-concepts-and-techniques.html#cb277-2" aria-hidden="true" tabindex="-1"></a>Zoo_train <span class="ot">&lt;-</span> Zoo <span class="sc">%&gt;%</span> <span class="fu">slice</span>(inTrain)</span>
+<span id="cb277-3"><a href="classification-basic-concepts-and-techniques.html#cb277-3" aria-hidden="true" tabindex="-1"></a>Zoo_test <span class="ot">&lt;-</span> Zoo <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="sc">-</span>inTrain)</span></code></pre></div>
+</div>
+<div id="learn-a-model-and-tune-hyperparameters-on-the-training-data" class="section level3" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Learn a Model and Tune Hyperparameters on the Training Data</h3>
+<p>The package <code>caret</code> combines training and validation for hyperparameter tuning into a single function called <code>train()</code>.
+It internally splits the data into training and validation sets and thus will
+provide you with error estimates for different hyperparameter settings. <code>trainControl</code> is used
+to choose how testing is performed.</p>
+<p>For rpart, train tries to tune the cp parameter (tree complexity)
+using accuracy to chose the best model. I set minsplit to 2 since we have
+not much data.
+<strong>Note:</strong> Parameters used for tuning (in this case <code>cp</code>) need to be set using
+a data.frame in the argument <code>tuneGrid</code>! Setting it in control will be ignored.</p>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="classification-basic-concepts-and-techniques.html#cb278-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> Zoo_train <span class="sc">%&gt;%</span></span>
+<span id="cb278-2"><a href="classification-basic-concepts-and-techniques.html#cb278-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb278-3"><a href="classification-basic-concepts-and-techniques.html#cb278-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> . ,</span>
+<span id="cb278-4"><a href="classification-basic-concepts-and-techniques.html#cb278-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;rpart&quot;</span>,</span>
+<span id="cb278-5"><a href="classification-basic-concepts-and-techniques.html#cb278-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">minsplit =</span> <span class="dv">2</span>),</span>
+<span id="cb278-6"><a href="classification-basic-concepts-and-techniques.html#cb278-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>),</span>
+<span id="cb278-7"><a href="classification-basic-concepts-and-techniques.html#cb278-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">tuneLength =</span> <span class="dv">5</span>)</span>
+<span id="cb278-8"><a href="classification-basic-concepts-and-techniques.html#cb278-8" aria-hidden="true" tabindex="-1"></a>fit</span></code></pre></div>
+<pre><code>## CART 
+## 
+## 83 samples
+## 16 predictors
+##  7 classes: &#39;mammal&#39;, &#39;bird&#39;, &#39;reptile&#39;, &#39;fish&#39;, &#39;amphibian&#39;, &#39;insect&#39;, &#39;mollusc.et.al&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 77, 74, 75, 73, 74, 76, ... 
+## Resampling results across tuning parameters:
+## 
+##   cp    Accuracy  Kappa 
+##   0.00  0.9385    0.9189
+##   0.08  0.8974    0.8682
+##   0.16  0.7448    0.6637
+##   0.22  0.6663    0.5540
+##   0.32  0.4735    0.1900
+## 
+## Accuracy was used to select the optimal model
+##  using the largest value.
+## The final value used for the model was cp = 0.</code></pre>
+<p><strong>Note:</strong> Train has built 10 trees using the training folds for each value of <code>cp</code> and the reported values for accuracy and Kappa are the averages on the validation folds.</p>
+<p>A model using the best tuning parameters
+and using all the data supplied to <code>train()</code> is available as <code>fit$finalModel</code>.</p>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="classification-basic-concepts-and-techniques.html#cb280-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(fit<span class="sc">$</span>finalModel, <span class="at">extra =</span> <span class="dv">2</span>,</span>
+<span id="cb280-2"><a href="classification-basic-concepts-and-techniques.html#cb280-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">box.palette =</span> <span class="fu">list</span>(<span class="st">&quot;Gy&quot;</span>, <span class="st">&quot;Gn&quot;</span>, <span class="st">&quot;Bu&quot;</span>, <span class="st">&quot;Bn&quot;</span>, <span class="st">&quot;Or&quot;</span>, <span class="st">&quot;Rd&quot;</span>, <span class="st">&quot;Pu&quot;</span>))</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-102-1.png" width="672" /></p>
+<p>caret also computes variable importance. By default it uses competing splits
+(splits which would be runners up, but do not get chosen by the tree)
+for rpart models (see <code>? varImp</code>). Toothed is the
+runner up for many splits, but it never gets chosen!</p>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="classification-basic-concepts-and-techniques.html#cb281-1" aria-hidden="true" tabindex="-1"></a><span class="fu">varImp</span>(fit)</span></code></pre></div>
+<pre><code>## rpart variable importance
+## 
+##               Overall
+## toothedFALSE   100.00
+## feathersFALSE   69.81
+## backboneFALSE   63.08
+## milkFALSE       55.56
+## eggsFALSE       53.61
+## hairFALSE       50.52
+## finsFALSE       46.98
+## tailFALSE       28.45
+## breathesFALSE   28.13
+## airborneFALSE   26.27
+## legs            25.86
+## aquaticFALSE     5.96
+## predatorFALSE    2.35
+## venomousFALSE    1.39
+## catsizeFALSE     0.00
+## domesticFALSE    0.00</code></pre>
+<p>Here is the variable importance without competing splits.</p>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="classification-basic-concepts-and-techniques.html#cb283-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">varImp</span>(fit, <span class="at">compete =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb283-2"><a href="classification-basic-concepts-and-techniques.html#cb283-2" aria-hidden="true" tabindex="-1"></a>imp</span></code></pre></div>
+<pre><code>## rpart variable importance
+## 
+##               Overall
+## milkFALSE      100.00
+## feathersFALSE   55.69
+## finsFALSE       39.45
+## toothedFALSE    22.96
+## airborneFALSE   22.48
+## aquaticFALSE     9.99
+## eggsFALSE        6.66
+## legs             5.55
+## predatorFALSE    1.85
+## domesticFALSE    0.00
+## breathesFALSE    0.00
+## catsizeFALSE     0.00
+## tailFALSE        0.00
+## hairFALSE        0.00
+## backboneFALSE    0.00
+## venomousFALSE    0.00</code></pre>
+<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="classification-basic-concepts-and-techniques.html#cb285-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(imp)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-104-1.png" width="672" /></p>
+<p><strong>Note:</strong> Not all models provide a variable importance function. In this case caret might calculate varImp by itself and ignore the model (see <code>? varImp</code>)!</p>
+</div>
+</div>
+<div id="testing-confusion-matrix-and-confidence-interval-for-accuracy" class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> Testing: Confusion Matrix and Confidence Interval for Accuracy</h2>
+<p>Use the best model on the test data</p>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="classification-basic-concepts-and-techniques.html#cb286-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">newdata =</span> Zoo_test)</span>
+<span id="cb286-2"><a href="classification-basic-concepts-and-techniques.html#cb286-2" aria-hidden="true" tabindex="-1"></a>pred</span></code></pre></div>
+<pre><code>##  [1] mammal        mammal        mollusc.et.al
+##  [4] insect        mammal        mammal       
+##  [7] mammal        bird          mammal       
+## [10] mammal        bird          fish         
+## [13] fish          mammal        mollusc.et.al
+## [16] bird          insect        bird         
+## 7 Levels: mammal bird reptile fish ... mollusc.et.al</code></pre>
+<p>Caret’s <code>confusionMatrix()</code> function calculates accuracy, confidence intervals, kappa and many more evaluation metrics. You need to use separate test data to create a confusion matrix based on the generalization error.</p>
+<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="classification-basic-concepts-and-techniques.html#cb288-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="at">data =</span> pred, <span class="at">ref =</span> Zoo_test<span class="sc">$</span>type)</span></code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##                Reference
+## Prediction      mammal bird reptile fish amphibian
+##   mammal             8    0       0    0         0
+##   bird               0    4       0    0         0
+##   reptile            0    0       0    0         0
+##   fish               0    0       0    2         0
+##   amphibian          0    0       0    0         0
+##   insect             0    0       1    0         0
+##   mollusc.et.al      0    0       0    0         0
+##                Reference
+## Prediction      insect mollusc.et.al
+##   mammal             0             0
+##   bird               0             0
+##   reptile            0             0
+##   fish               0             0
+##   amphibian          0             0
+##   insect             1             0
+##   mollusc.et.al      0             2
+## 
+## Overall Statistics
+##                                         
+##                Accuracy : 0.944         
+##                  95% CI : (0.727, 0.999)
+##     No Information Rate : 0.444         
+##     P-Value [Acc &gt; NIR] : 1.08e-05      
+##                                         
+##                   Kappa : 0.923         
+##                                         
+##  Mcnemar&#39;s Test P-Value : NA            
+## 
+## Statistics by Class:
+## 
+##                      Class: mammal Class: bird
+## Sensitivity                  1.000       1.000
+## Specificity                  1.000       1.000
+## Pos Pred Value               1.000       1.000
+## Neg Pred Value               1.000       1.000
+## Prevalence                   0.444       0.222
+## Detection Rate               0.444       0.222
+## Detection Prevalence         0.444       0.222
+## Balanced Accuracy            1.000       1.000
+##                      Class: reptile Class: fish
+## Sensitivity                  0.0000       1.000
+## Specificity                  1.0000       1.000
+## Pos Pred Value                  NaN       1.000
+## Neg Pred Value               0.9444       1.000
+## Prevalence                   0.0556       0.111
+## Detection Rate               0.0000       0.111
+## Detection Prevalence         0.0000       0.111
+## Balanced Accuracy            0.5000       1.000
+##                      Class: amphibian Class: insect
+## Sensitivity                        NA        1.0000
+## Specificity                         1        0.9412
+## Pos Pred Value                     NA        0.5000
+## Neg Pred Value                     NA        1.0000
+## Prevalence                          0        0.0556
+## Detection Rate                      0        0.0556
+## Detection Prevalence                0        0.1111
+## Balanced Accuracy                  NA        0.9706
+##                      Class: mollusc.et.al
+## Sensitivity                         1.000
+## Specificity                         1.000
+## Pos Pred Value                      1.000
+## Neg Pred Value                      1.000
+## Prevalence                          0.111
+## Detection Rate                      0.111
+## Detection Prevalence                0.111
+## Balanced Accuracy                   1.000</code></pre>
+<p><strong>Some notes</strong></p>
+<ul>
+<li>Many classification algorithms and <code>train</code> in caret do not deal well
+with missing values.
+If your classification model can deal with missing values (e.g., <code>rpart</code>) then use <code>na.action = na.pass</code> when you call <code>train</code> and <code>predict</code>.
+Otherwise, you need to remove observations with missing values with
+<code>na.omit</code> or use imputation to replace the missing values before you train the model. Make sure that
+you still have enough observations left.</li>
+<li>Make sure that nominal variables (this includes logical variables)
+are coded as factors.</li>
+<li>The class variable for train in caret cannot have level names that are
+keywords in R (e.g., <code>TRUE</code> and <code>FALSE</code>). Rename them to, for example,
+“yes” and “no.”</li>
+<li>Make sure that nominal variables (factors) have examples for all possible
+values. Some methods might have problems with variable values
+without examples. You can drop empty levels using <code>droplevels</code> or <code>factor</code>.</li>
+<li>Sampling in train might create a sample that does not
+contain examples for all values in a nominal (factor) variable. You will get
+an error message. This most
+likely happens for variables which have one very rare value. You may have to
+remove the variable.</li>
+</ul>
+</div>
+<div id="model-comparison" class="section level2" number="3.5">
+<h2><span class="header-section-number">3.5</span> Model Comparison</h2>
+<p>We will compare decision trees with a k-nearest neighbors (kNN) classifier.
+We will create fixed sampling scheme (10-folds) so we compare the different models
+using exactly the same folds. It is specified as <code>trControl</code> during training.</p>
+<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb290-1"><a href="classification-basic-concepts-and-techniques.html#cb290-1" aria-hidden="true" tabindex="-1"></a>train_index <span class="ot">&lt;-</span> <span class="fu">createFolds</span>(Zoo_train<span class="sc">$</span>type, <span class="at">k =</span> <span class="dv">10</span>)</span></code></pre></div>
+<p>Build models</p>
+<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="classification-basic-concepts-and-techniques.html#cb291-1" aria-hidden="true" tabindex="-1"></a>rpartFit <span class="ot">&lt;-</span> Zoo_train <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb291-2"><a href="classification-basic-concepts-and-techniques.html#cb291-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb291-3"><a href="classification-basic-concepts-and-techniques.html#cb291-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;rpart&quot;</span>,</span>
+<span id="cb291-4"><a href="classification-basic-concepts-and-techniques.html#cb291-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneLength =</span> <span class="dv">10</span>,</span>
+<span id="cb291-5"><a href="classification-basic-concepts-and-techniques.html#cb291-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">indexOut =</span> train_index)</span>
+<span id="cb291-6"><a href="classification-basic-concepts-and-techniques.html#cb291-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p><strong>Note:</strong> for kNN we ask <code>train</code> to scale the data using <code>preProcess = "scale"</code>. Logicals will
+be used as 0-1 variables in Euclidean distance calculation.</p>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="classification-basic-concepts-and-techniques.html#cb292-1" aria-hidden="true" tabindex="-1"></a>knnFit <span class="ot">&lt;-</span> Zoo_train <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb292-2"><a href="classification-basic-concepts-and-techniques.html#cb292-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb292-3"><a href="classification-basic-concepts-and-techniques.html#cb292-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;knn&quot;</span>,</span>
+<span id="cb292-4"><a href="classification-basic-concepts-and-techniques.html#cb292-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">preProcess =</span> <span class="st">&quot;scale&quot;</span>,</span>
+<span id="cb292-5"><a href="classification-basic-concepts-and-techniques.html#cb292-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">tuneLength =</span> <span class="dv">10</span>,</span>
+<span id="cb292-6"><a href="classification-basic-concepts-and-techniques.html#cb292-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">indexOut =</span> train_index)</span>
+<span id="cb292-7"><a href="classification-basic-concepts-and-techniques.html#cb292-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p>Compare accuracy over all folds.</p>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="classification-basic-concepts-and-techniques.html#cb293-1" aria-hidden="true" tabindex="-1"></a>resamps <span class="ot">&lt;-</span> <span class="fu">resamples</span>(<span class="fu">list</span>(</span>
+<span id="cb293-2"><a href="classification-basic-concepts-and-techniques.html#cb293-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">CART =</span> rpartFit,</span>
+<span id="cb293-3"><a href="classification-basic-concepts-and-techniques.html#cb293-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">kNearestNeighbors =</span> knnFit</span>
+<span id="cb293-4"><a href="classification-basic-concepts-and-techniques.html#cb293-4" aria-hidden="true" tabindex="-1"></a>        ))</span>
+<span id="cb293-5"><a href="classification-basic-concepts-and-techniques.html#cb293-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(resamps)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## summary.resamples(object = resamps)
+## 
+## Models: CART, kNearestNeighbors 
+## Number of resamples: 10 
+## 
+## Accuracy 
+##                     Min. 1st Qu. Median   Mean 3rd Qu.
+## CART              0.6667  0.8750 0.8889 0.8722  0.8889
+## kNearestNeighbors 0.8750  0.9167 1.0000 0.9653  1.0000
+##                   Max. NA&#39;s
+## CART                 1    0
+## kNearestNeighbors    1    0
+## 
+## Kappa 
+##                     Min. 1st Qu. Median   Mean 3rd Qu.
+## CART              0.5909  0.8333 0.8475 0.8342   0.857
+## kNearestNeighbors 0.8333  0.8977 1.0000 0.9547   1.000
+##                   Max. NA&#39;s
+## CART                 1    0
+## kNearestNeighbors    1    0</code></pre>
+<p><code>caret</code> provides some visualizations using the package <code>lattice</code>. For example, a boxplot to
+compare the accuracy and kappa distribution (over the 10 folds).</p>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="classification-basic-concepts-and-techniques.html#cb295-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lattice)</span>
+<span id="cb295-2"><a href="classification-basic-concepts-and-techniques.html#cb295-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bwplot</span>(resamps, <span class="at">layout =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>))</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-111-1.png" width="672" /></p>
+<p>We see that kNN is performing consistently better on the folds than CART (except for some outlier folds).</p>
+<p>Find out if one models is statistically better than the other (is
+the difference in accuracy is not zero).</p>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="classification-basic-concepts-and-techniques.html#cb296-1" aria-hidden="true" tabindex="-1"></a>difs <span class="ot">&lt;-</span> <span class="fu">diff</span>(resamps)</span>
+<span id="cb296-2"><a href="classification-basic-concepts-and-techniques.html#cb296-2" aria-hidden="true" tabindex="-1"></a>difs</span></code></pre></div>
+<pre><code>## 
+## Call:
+## diff.resamples(x = resamps)
+## 
+## Models: CART, kNearestNeighbors 
+## Metrics: Accuracy, Kappa 
+## Number of differences: 1 
+## p-value adjustment: bonferroni</code></pre>
+<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="classification-basic-concepts-and-techniques.html#cb298-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(difs)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## summary.diff.resamples(object = difs)
+## 
+## p-value adjustment: bonferroni 
+## Upper diagonal: estimates of the difference
+## Lower diagonal: p-value for H0: difference = 0
+## 
+## Accuracy 
+##                   CART   kNearestNeighbors
+## CART                     -0.0931          
+## kNearestNeighbors 0.0115                  
+## 
+## Kappa 
+##                   CART   kNearestNeighbors
+## CART                     -0.121           
+## kNearestNeighbors 0.0104</code></pre>
+<p>p-values tells you the probability of seeing an even more extreme value (difference between accuracy) given that the null hypothesis (difference = 0) is true. For a better classifier, the p-value should be less than .05 or 0.01. <code>diff</code> automatically applies Bonferroni correction for multiple comparisons. In this case, kNN seems better but the classifiers do not perform statistically differently.</p>
+</div>
+<div id="feature-selection-and-feature-preparation" class="section level2" number="3.6">
+<h2><span class="header-section-number">3.6</span> Feature Selection and Feature Preparation</h2>
+<p>Decision trees implicitly select features for splitting, but we can also
+select features manually.</p>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="classification-basic-concepts-and-techniques.html#cb300-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FSelector)</span></code></pre></div>
+<p>see: <a href="http://en.wikibooks.org/wiki/Data_Mining_Algorithms_In_R/Dimensionality_Reduction/Feature_Selection#The_Feature_Ranking_Approach" class="uri">http://en.wikibooks.org/wiki/Data_Mining_Algorithms_In_R/Dimensionality_Reduction/Feature_Selection#The_Feature_Ranking_Approach</a></p>
+<div id="univariate-feature-importance-score" class="section level3" number="3.6.1">
+<h3><span class="header-section-number">3.6.1</span> Univariate Feature Importance Score</h3>
+<p>These scores measure how related
+each feature is to the class variable.
+For discrete features (as in our case), the chi-square statistic can be used
+to derive a score.</p>
+<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="classification-basic-concepts-and-techniques.html#cb301-1" aria-hidden="true" tabindex="-1"></a>weights <span class="ot">&lt;-</span> Zoo_train <span class="sc">%&gt;%</span> <span class="fu">chi.squared</span>(type <span class="sc">~</span> ., <span class="at">data =</span> .) <span class="sc">%&gt;%</span></span>
+<span id="cb301-2"><a href="classification-basic-concepts-and-techniques.html#cb301-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">&quot;feature&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb301-3"><a href="classification-basic-concepts-and-techniques.html#cb301-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(attr_importance))</span>
+<span id="cb301-4"><a href="classification-basic-concepts-and-techniques.html#cb301-4" aria-hidden="true" tabindex="-1"></a>weights</span></code></pre></div>
+<pre><code>## # A tibble: 16 x 2
+##    feature  attr_importance
+##    &lt;chr&gt;              &lt;dbl&gt;
+##  1 feathers           1    
+##  2 milk               1    
+##  3 backbone           1    
+##  4 toothed            0.975
+##  5 eggs               0.933
+##  6 hair               0.907
+##  7 breathes           0.898
+##  8 airborne           0.848
+##  9 fins               0.845
+## 10 legs               0.828
+## 11 tail               0.779
+## 12 catsize            0.664
+## 13 aquatic            0.655
+## 14 venomous           0.475
+## 15 predator           0.385
+## 16 domestic           0.231</code></pre>
+<p>plot importance in descending order (using <code>reorder</code> to order factor levels used by <code>ggplot</code>).</p>
+<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb303-1"><a href="classification-basic-concepts-and-techniques.html#cb303-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(weights,</span>
+<span id="cb303-2"><a href="classification-basic-concepts-and-techniques.html#cb303-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> attr_importance, <span class="at">y =</span> <span class="fu">reorder</span>(feature, attr_importance))) <span class="sc">+</span></span>
+<span id="cb303-3"><a href="classification-basic-concepts-and-techniques.html#cb303-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb303-4"><a href="classification-basic-concepts-and-techniques.html#cb303-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Importance score&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Feature&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-115-1.png" width="672" /></p>
+<p>Get the 5 best features</p>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="classification-basic-concepts-and-techniques.html#cb304-1" aria-hidden="true" tabindex="-1"></a>subset <span class="ot">&lt;-</span> <span class="fu">cutoff.k</span>(weights <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="st">&quot;feature&quot;</span>), <span class="dv">5</span>)</span>
+<span id="cb304-2"><a href="classification-basic-concepts-and-techniques.html#cb304-2" aria-hidden="true" tabindex="-1"></a>subset</span></code></pre></div>
+<pre><code>## [1] &quot;feathers&quot; &quot;milk&quot;     &quot;backbone&quot; &quot;toothed&quot; 
+## [5] &quot;eggs&quot;</code></pre>
+<p>Use only the best 5 features to build a model (<code>Fselector</code> provides <code>as.simple.formula</code>)</p>
+<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="classification-basic-concepts-and-techniques.html#cb306-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">as.simple.formula</span>(subset, <span class="st">&quot;type&quot;</span>)</span>
+<span id="cb306-2"><a href="classification-basic-concepts-and-techniques.html#cb306-2" aria-hidden="true" tabindex="-1"></a>f</span></code></pre></div>
+<pre><code>## type ~ feathers + milk + backbone + toothed + eggs
+## &lt;environment: 0x55d79aecaf60&gt;</code></pre>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="classification-basic-concepts-and-techniques.html#cb308-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> Zoo_train <span class="sc">%&gt;%</span> <span class="fu">rpart</span>(f, <span class="at">data =</span> .)</span>
+<span id="cb308-2"><a href="classification-basic-concepts-and-techniques.html#cb308-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(m, <span class="at">extra =</span> <span class="dv">2</span>, <span class="at">roundint =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-117-1.png" width="672" /></p>
+<p>There are many alternative ways to calculate univariate importance
+scores (see package FSelector). Some of them (also) work for continuous
+features. One example is the information gain ratio based on entropy as used in decision tree induction.</p>
+<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="classification-basic-concepts-and-techniques.html#cb309-1" aria-hidden="true" tabindex="-1"></a>Zoo_train <span class="sc">%&gt;%</span> <span class="fu">gain.ratio</span>(type <span class="sc">~</span> ., <span class="at">data =</span> .) <span class="sc">%&gt;%</span></span>
+<span id="cb309-2"><a href="classification-basic-concepts-and-techniques.html#cb309-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">&quot;feature&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb309-3"><a href="classification-basic-concepts-and-techniques.html#cb309-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(attr_importance))</span></code></pre></div>
+<pre><code>## # A tibble: 16 x 2
+##    feature  attr_importance
+##    &lt;chr&gt;              &lt;dbl&gt;
+##  1 milk              1     
+##  2 backbone          1     
+##  3 feathers          1     
+##  4 toothed           0.919 
+##  5 eggs              0.827 
+##  6 breathes          0.821 
+##  7 hair              0.782 
+##  8 fins              0.689 
+##  9 legs              0.682 
+## 10 airborne          0.671 
+## 11 tail              0.573 
+## 12 aquatic           0.391 
+## 13 catsize           0.383 
+## 14 venomous          0.351 
+## 15 predator          0.125 
+## 16 domestic          0.0975</code></pre>
+</div>
+<div id="feature-subset-selection" class="section level3" number="3.6.2">
+<h3><span class="header-section-number">3.6.2</span> Feature Subset Selection</h3>
+<p>Often features are related and calculating importance for each feature
+independently is not optimal. We can use greedy search heuristics. For
+example <code>cfs</code> uses correlation/entropy with best first search.</p>
+<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="classification-basic-concepts-and-techniques.html#cb311-1" aria-hidden="true" tabindex="-1"></a>Zoo_train <span class="sc">%&gt;%</span> <span class="fu">cfs</span>(type <span class="sc">~</span> ., <span class="at">data =</span> .)</span></code></pre></div>
+<pre><code>##  [1] &quot;hair&quot;     &quot;feathers&quot; &quot;eggs&quot;     &quot;milk&quot;    
+##  [5] &quot;toothed&quot;  &quot;backbone&quot; &quot;breathes&quot; &quot;fins&quot;    
+##  [9] &quot;legs&quot;     &quot;tail&quot;</code></pre>
+<p>Black-box feature selection uses an evaluator function (the black box)
+to calculate a score to be maximized.
+First, we define an evaluation function that builds a model given a subset
+of features and calculates a quality score. We use here the
+average for 5 bootstrap samples (<code>method = "cv"</code> can also be used instead), no tuning (to be faster), and the
+average accuracy as the score.</p>
+<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb313-1"><a href="classification-basic-concepts-and-techniques.html#cb313-1" aria-hidden="true" tabindex="-1"></a>evaluator <span class="ot">&lt;-</span> <span class="cf">function</span>(subset) {</span>
+<span id="cb313-2"><a href="classification-basic-concepts-and-techniques.html#cb313-2" aria-hidden="true" tabindex="-1"></a>  model <span class="ot">&lt;-</span> Zoo_train <span class="sc">%&gt;%</span> <span class="fu">train</span>(<span class="fu">as.simple.formula</span>(subset, <span class="st">&quot;type&quot;</span>),</span>
+<span id="cb313-3"><a href="classification-basic-concepts-and-techniques.html#cb313-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> .,</span>
+<span id="cb313-4"><a href="classification-basic-concepts-and-techniques.html#cb313-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;rpart&quot;</span>,</span>
+<span id="cb313-5"><a href="classification-basic-concepts-and-techniques.html#cb313-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;boot&quot;</span>, <span class="at">number =</span> <span class="dv">5</span>),</span>
+<span id="cb313-6"><a href="classification-basic-concepts-and-techniques.html#cb313-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">tuneLength =</span> <span class="dv">0</span>)</span>
+<span id="cb313-7"><a href="classification-basic-concepts-and-techniques.html#cb313-7" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> model<span class="sc">$</span>resample<span class="sc">$</span>Accuracy</span>
+<span id="cb313-8"><a href="classification-basic-concepts-and-techniques.html#cb313-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Trying features:&quot;</span>, <span class="fu">paste</span>(subset, <span class="at">collapse =</span> <span class="st">&quot; + &quot;</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb313-9"><a href="classification-basic-concepts-and-techniques.html#cb313-9" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">mean</span>(results)</span>
+<span id="cb313-10"><a href="classification-basic-concepts-and-techniques.html#cb313-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Accuracy:&quot;</span>, <span class="fu">round</span>(m, <span class="dv">2</span>), <span class="st">&quot;</span><span class="sc">\n\n</span><span class="st">&quot;</span>)</span>
+<span id="cb313-11"><a href="classification-basic-concepts-and-techniques.html#cb313-11" aria-hidden="true" tabindex="-1"></a>  m</span>
+<span id="cb313-12"><a href="classification-basic-concepts-and-techniques.html#cb313-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Start with all features (but not the class variable <code>type</code>)</p>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="classification-basic-concepts-and-techniques.html#cb314-1" aria-hidden="true" tabindex="-1"></a>features <span class="ot">&lt;-</span> Zoo_train <span class="sc">%&gt;%</span> <span class="fu">colnames</span>() <span class="sc">%&gt;%</span> <span class="fu">setdiff</span>(<span class="st">&quot;type&quot;</span>)</span></code></pre></div>
+<p>There are several (greedy) search strategies available. These run
+for a while!</p>
+<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb315-1"><a href="classification-basic-concepts-and-techniques.html#cb315-1" aria-hidden="true" tabindex="-1"></a><span class="do">##subset &lt;- backward.search(features, evaluator)</span></span>
+<span id="cb315-2"><a href="classification-basic-concepts-and-techniques.html#cb315-2" aria-hidden="true" tabindex="-1"></a><span class="do">##subset &lt;- forward.search(features, evaluator)</span></span>
+<span id="cb315-3"><a href="classification-basic-concepts-and-techniques.html#cb315-3" aria-hidden="true" tabindex="-1"></a><span class="do">##subset &lt;- best.first.search(features, evaluator)</span></span>
+<span id="cb315-4"><a href="classification-basic-concepts-and-techniques.html#cb315-4" aria-hidden="true" tabindex="-1"></a><span class="do">##subset &lt;- hill.climbing.search(features, evaluator)</span></span>
+<span id="cb315-5"><a href="classification-basic-concepts-and-techniques.html#cb315-5" aria-hidden="true" tabindex="-1"></a><span class="do">##subset</span></span></code></pre></div>
+</div>
+<div id="using-dummy-variables-for-factors" class="section level3" number="3.6.3">
+<h3><span class="header-section-number">3.6.3</span> Using Dummy Variables for Factors</h3>
+<p>Nominal features (factors) are often encoded as a series of 0-1 dummy variables.
+For example, let us try to predict if an animal is a predator given the type.
+First we use the original encoding of type as a factor with several values.</p>
+<div class="sourceCode" id="cb316"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb316-1"><a href="classification-basic-concepts-and-techniques.html#cb316-1" aria-hidden="true" tabindex="-1"></a>tree_predator <span class="ot">&lt;-</span> Zoo_train <span class="sc">%&gt;%</span> <span class="fu">rpart</span>(predator <span class="sc">~</span> type, <span class="at">data =</span> .)</span>
+<span id="cb316-2"><a href="classification-basic-concepts-and-techniques.html#cb316-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(tree_predator, <span class="at">extra =</span> <span class="dv">2</span>, <span class="at">roundint =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-123-1.png" width="672" /></p>
+<p><strong>Note:</strong> Some splits use multiple values. Building the tree will become
+extremely slow if a factor has many levels (different values) since the tree has to check all possible splits into two subsets. This situation should be avoided.</p>
+<p>Recode type as a set of 0-1 dummy variables using <code>class2ind</code>. See also
+<code>? dummyVars</code> in package <code>caret</code>.</p>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="classification-basic-concepts-and-techniques.html#cb317-1" aria-hidden="true" tabindex="-1"></a>Zoo_train_dummy <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(<span class="fu">class2ind</span>(Zoo_train<span class="sc">$</span>type)) <span class="sc">%&gt;%</span> <span class="fu">mutate_all</span>(as.factor) <span class="sc">%&gt;%</span></span>
+<span id="cb317-2"><a href="classification-basic-concepts-and-techniques.html#cb317-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_column</span>(<span class="at">predator =</span> Zoo_train<span class="sc">$</span>predator)</span>
+<span id="cb317-3"><a href="classification-basic-concepts-and-techniques.html#cb317-3" aria-hidden="true" tabindex="-1"></a>Zoo_train_dummy</span></code></pre></div>
+<pre><code>## # A tibble: 83 x 8
+##    mammal bird  reptile fish  amphibian insect
+##    &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt; &lt;fct&gt;     &lt;fct&gt; 
+##  1 1      0     0       0     0         0     
+##  2 1      0     0       0     0         0     
+##  3 0      0     0       1     0         0     
+##  4 1      0     0       0     0         0     
+##  5 1      0     0       0     0         0     
+##  6 1      0     0       0     0         0     
+##  7 0      0     0       1     0         0     
+##  8 0      0     0       1     0         0     
+##  9 1      0     0       0     0         0     
+## 10 0      1     0       0     0         0     
+## # … with 73 more rows, and 2 more variables:
+## #   mollusc.et.al &lt;fct&gt;, predator &lt;fct&gt;</code></pre>
+<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb319-1"><a href="classification-basic-concepts-and-techniques.html#cb319-1" aria-hidden="true" tabindex="-1"></a>tree_predator <span class="ot">&lt;-</span> Zoo_train_dummy <span class="sc">%&gt;%</span> <span class="fu">rpart</span>(predator <span class="sc">~</span> ., <span class="at">data =</span> .,</span>
+<span id="cb319-2"><a href="classification-basic-concepts-and-techniques.html#cb319-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">minsplit =</span> <span class="dv">2</span>, <span class="at">cp =</span> <span class="fl">0.01</span>))</span>
+<span id="cb319-3"><a href="classification-basic-concepts-and-techniques.html#cb319-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(tree_predator, <span class="at">roundint =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-124-1.png" width="672" /></p>
+<p>Using <code>caret</code> on the original factor encoding automatically translates factors
+(here type) into 0-1 dummy variables (e.g., <code>typeinsect = 0</code>).
+The reason is that some models cannot
+directly use factors and <code>caret</code> tries to consistently work with
+all of them.</p>
+<div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb320-1"><a href="classification-basic-concepts-and-techniques.html#cb320-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> Zoo_train <span class="sc">%&gt;%</span> <span class="fu">train</span>(predator <span class="sc">~</span> type, <span class="at">data =</span> ., <span class="at">method =</span> <span class="st">&quot;rpart&quot;</span>,</span>
+<span id="cb320-2"><a href="classification-basic-concepts-and-techniques.html#cb320-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">minsplit =</span> <span class="dv">2</span>),</span>
+<span id="cb320-3"><a href="classification-basic-concepts-and-techniques.html#cb320-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneGrid =</span> <span class="fu">data.frame</span>(<span class="at">cp =</span> <span class="fl">0.01</span>))</span>
+<span id="cb320-4"><a href="classification-basic-concepts-and-techniques.html#cb320-4" aria-hidden="true" tabindex="-1"></a>fit</span></code></pre></div>
+<pre><code>## CART 
+## 
+## 83 samples
+##  1 predictor
+##  2 classes: &#39;TRUE&#39;, &#39;FALSE&#39; 
+## 
+## No pre-processing
+## Resampling: Bootstrapped (25 reps) 
+## Summary of sample sizes: 83, 83, 83, 83, 83, 83, ... 
+## Resampling results:
+## 
+##   Accuracy  Kappa 
+##   0.606     0.2034
+## 
+## Tuning parameter &#39;cp&#39; was held constant at a value
+##  of 0.01</code></pre>
+<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="classification-basic-concepts-and-techniques.html#cb322-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(fit<span class="sc">$</span>finalModel, <span class="at">extra =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-125-1.png" width="672" /></p>
+<p><em>Note:</em> To use a fixed value for the tuning parameter <code>cp</code>, we have to
+create a tuning grid that only icontains that value.</p>
+</div>
+</div>
+<div id="class-imbalance" class="section level2" number="3.7">
+<h2><span class="header-section-number">3.7</span> Class Imbalance</h2>
+<p>Classifiers have a hard time to learn from data where we have much more observations for one class (called the majority class). This is called the class imbalance problem.</p>
+<p>Here is a very good <a href="http://www.kdnuggets.com/2016/08/learning-from-imbalanced-classes.html">article about the problem and solutions.</a></p>
+<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb323-1"><a href="classification-basic-concepts-and-techniques.html#cb323-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart)</span>
+<span id="cb323-2"><a href="classification-basic-concepts-and-techniques.html#cb323-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart.plot)</span>
+<span id="cb323-3"><a href="classification-basic-concepts-and-techniques.html#cb323-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Zoo, <span class="at">package=</span><span class="st">&quot;mlbench&quot;</span>)</span></code></pre></div>
+<p>Class distribution</p>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="classification-basic-concepts-and-techniques.html#cb324-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Zoo, <span class="fu">aes</span>(<span class="at">y =</span> type)) <span class="sc">+</span> <span class="fu">geom_bar</span>()</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-127-1.png" width="672" /></p>
+<p>To create an imbalanced problem, we want to decide if an animal is an reptile.
+First, we change the class variable
+to make it into a binary reptile/no reptile classification problem.
+<strong>Note:</strong> We use here the training data for testing. You should use a
+separate testing data set!</p>
+<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb325-1"><a href="classification-basic-concepts-and-techniques.html#cb325-1" aria-hidden="true" tabindex="-1"></a>Zoo_reptile <span class="ot">&lt;-</span> Zoo <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(</span>
+<span id="cb325-2"><a href="classification-basic-concepts-and-techniques.html#cb325-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">factor</span>(Zoo<span class="sc">$</span>type <span class="sc">==</span> <span class="st">&quot;reptile&quot;</span>, <span class="at">levels =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>),</span>
+<span id="cb325-3"><a href="classification-basic-concepts-and-techniques.html#cb325-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;nonreptile&quot;</span>, <span class="st">&quot;reptile&quot;</span>)))</span></code></pre></div>
+<p>Do not forget to make the class variable a factor (a nominal variable)
+or you will get a regression tree instead of a classification tree.</p>
+<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="classification-basic-concepts-and-techniques.html#cb326-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Zoo_reptile)</span></code></pre></div>
+<pre><code>##     hair          feathers          eggs        
+##  Mode :logical   Mode :logical   Mode :logical  
+##  FALSE:58        FALSE:81        FALSE:42       
+##  TRUE :43        TRUE :20        TRUE :59       
+##                                                 
+##                                                 
+##                                                 
+##     milk          airborne        aquatic       
+##  Mode :logical   Mode :logical   Mode :logical  
+##  FALSE:60        FALSE:77        FALSE:65       
+##  TRUE :41        TRUE :24        TRUE :36       
+##                                                 
+##                                                 
+##                                                 
+##   predator        toothed         backbone      
+##  Mode :logical   Mode :logical   Mode :logical  
+##  FALSE:45        FALSE:40        FALSE:18       
+##  TRUE :56        TRUE :61        TRUE :83       
+##                                                 
+##                                                 
+##                                                 
+##   breathes        venomous          fins        
+##  Mode :logical   Mode :logical   Mode :logical  
+##  FALSE:21        FALSE:93        FALSE:84       
+##  TRUE :80        TRUE :8         TRUE :17       
+##                                                 
+##                                                 
+##                                                 
+##       legs         tail          domestic      
+##  Min.   :0.00   Mode :logical   Mode :logical  
+##  1st Qu.:2.00   FALSE:26        FALSE:88       
+##  Median :4.00   TRUE :75        TRUE :13       
+##  Mean   :2.84                                  
+##  3rd Qu.:4.00                                  
+##  Max.   :8.00                                  
+##   catsize                type   
+##  Mode :logical   nonreptile:96  
+##  FALSE:57        reptile   : 5  
+##  TRUE :44                       
+##                                 
+##                                 
+## </code></pre>
+<p>See if we have a class imbalance problem.</p>
+<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="classification-basic-concepts-and-techniques.html#cb328-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Zoo_reptile, <span class="fu">aes</span>(<span class="at">y =</span> type)) <span class="sc">+</span> <span class="fu">geom_bar</span>()</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-130-1.png" width="672" /></p>
+<p>Create test and training data. I use here a 50/50 split to make sure that the test set has some samples of the rare reptile class.</p>
+<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb329-1"><a href="classification-basic-concepts-and-techniques.html#cb329-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb329-2"><a href="classification-basic-concepts-and-techniques.html#cb329-2" aria-hidden="true" tabindex="-1"></a>inTrain <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(<span class="at">y =</span> Zoo_reptile<span class="sc">$</span>type, <span class="at">p =</span> .<span class="dv">5</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb329-3"><a href="classification-basic-concepts-and-techniques.html#cb329-3" aria-hidden="true" tabindex="-1"></a>training_reptile <span class="ot">&lt;-</span> Zoo_reptile <span class="sc">%&gt;%</span> <span class="fu">slice</span>(inTrain)</span>
+<span id="cb329-4"><a href="classification-basic-concepts-and-techniques.html#cb329-4" aria-hidden="true" tabindex="-1"></a>testing_reptile <span class="ot">&lt;-</span> Zoo_reptile <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="sc">-</span>inTrain)</span></code></pre></div>
+<p>the new class variable is clearly not balanced. This is a problem
+for building a tree!</p>
+<div id="option-1-use-the-data-as-is-and-hope-for-the-best" class="section level3" number="3.7.1">
+<h3><span class="header-section-number">3.7.1</span> Option 1: Use the Data As Is and Hope For The Best</h3>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="classification-basic-concepts-and-techniques.html#cb330-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> training_reptile <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb330-2"><a href="classification-basic-concepts-and-techniques.html#cb330-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb330-3"><a href="classification-basic-concepts-and-techniques.html#cb330-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;rpart&quot;</span>,</span>
+<span id="cb330-4"><a href="classification-basic-concepts-and-techniques.html#cb330-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>))</span></code></pre></div>
+<pre><code>## Warning in nominalTrainWorkflow(x = x, y = y, wts =
+## weights, info = trainInfo, : There were missing values
+## in resampled performance measures.</code></pre>
+<p><strong>Warnings:</strong> “There were missing values in resampled performance measures.”
+means that some test folds did not contain examples of both classes.
+This is very likely with class imbalance and small datasets.</p>
+<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="classification-basic-concepts-and-techniques.html#cb332-1" aria-hidden="true" tabindex="-1"></a>fit</span></code></pre></div>
+<pre><code>## CART 
+## 
+## 51 samples
+## 16 predictors
+##  2 classes: &#39;nonreptile&#39;, &#39;reptile&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 46, 47, 46, 46, 45, 46, ... 
+## Resampling results:
+## 
+##   Accuracy  Kappa
+##   0.9467    0    
+## 
+## Tuning parameter &#39;cp&#39; was held constant at a value of 0</code></pre>
+<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb334-1"><a href="classification-basic-concepts-and-techniques.html#cb334-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(fit<span class="sc">$</span>finalModel, <span class="at">extra =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-133-1.png" width="672" /></p>
+<p>the tree predicts everything as non-reptile. Have a look at the error on
+the test set.</p>
+<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb335-1"><a href="classification-basic-concepts-and-techniques.html#cb335-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="at">data =</span> <span class="fu">predict</span>(fit, testing_reptile),</span>
+<span id="cb335-2"><a href="classification-basic-concepts-and-techniques.html#cb335-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">ref =</span> testing_reptile<span class="sc">$</span>type, <span class="at">positive =</span> <span class="st">&quot;reptile&quot;</span>)</span></code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##             Reference
+## Prediction   nonreptile reptile
+##   nonreptile         48       2
+##   reptile             0       0
+##                                         
+##                Accuracy : 0.96          
+##                  95% CI : (0.863, 0.995)
+##     No Information Rate : 0.96          
+##     P-Value [Acc &gt; NIR] : 0.677         
+##                                         
+##                   Kappa : 0             
+##                                         
+##  Mcnemar&#39;s Test P-Value : 0.480         
+##                                         
+##             Sensitivity : 0.00          
+##             Specificity : 1.00          
+##          Pos Pred Value :  NaN          
+##          Neg Pred Value : 0.96          
+##              Prevalence : 0.04          
+##          Detection Rate : 0.00          
+##    Detection Prevalence : 0.00          
+##       Balanced Accuracy : 0.50          
+##                                         
+##        &#39;Positive&#39; Class : reptile       
+## </code></pre>
+<p>Accuracy is high, but it is exactly the same as the no-information rate
+and kappa is zero. Sensitivity is also zero, meaning that we do not identify
+any positive (reptile). If the cost of missing a positive is much
+larger than the cost associated with misclassifying a negative, then accuracy
+is not a good measure!
+By dealing with imbalance, we are <strong>not</strong> concerned
+with accuracy, but we want to increase the
+sensitivity, i.e., the chance to identify positive examples.</p>
+<p><strong>Note:</strong> The positive class value (the one that
+you want to detect) is set manually to reptile using <code>positive = "reptile"</code>.
+Otherwise sensitivity/specificity will not be correctly calculated.</p>
+</div>
+<div id="option-2-balance-data-with-resampling" class="section level3" number="3.7.2">
+<h3><span class="header-section-number">3.7.2</span> Option 2: Balance Data With Resampling</h3>
+<p>We use stratified sampling with replacement (to oversample the
+minority/positive class).
+You could also use SMOTE (in package <strong>DMwR</strong>) or other sampling strategies (e.g., from package <strong>unbalanced</strong>). We
+use 50+50 observations here (<strong>Note:</strong> many samples will be chosen several times).</p>
+<div class="sourceCode" id="cb337"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb337-1"><a href="classification-basic-concepts-and-techniques.html#cb337-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sampling)</span>
+<span id="cb337-2"><a href="classification-basic-concepts-and-techniques.html#cb337-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1000</span>) <span class="co"># for repeatability</span></span>
+<span id="cb337-3"><a href="classification-basic-concepts-and-techniques.html#cb337-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb337-4"><a href="classification-basic-concepts-and-techniques.html#cb337-4" aria-hidden="true" tabindex="-1"></a>id <span class="ot">&lt;-</span> <span class="fu">strata</span>(training_reptile, <span class="at">stratanames =</span> <span class="st">&quot;type&quot;</span>, <span class="at">size =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">50</span>), <span class="at">method =</span> <span class="st">&quot;srswr&quot;</span>)</span>
+<span id="cb337-5"><a href="classification-basic-concepts-and-techniques.html#cb337-5" aria-hidden="true" tabindex="-1"></a>training_reptile_balanced <span class="ot">&lt;-</span> training_reptile <span class="sc">%&gt;%</span> <span class="fu">slice</span>(id<span class="sc">$</span>ID_unit)</span>
+<span id="cb337-6"><a href="classification-basic-concepts-and-techniques.html#cb337-6" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(training_reptile_balanced<span class="sc">$</span>type)</span></code></pre></div>
+<pre><code>## 
+## nonreptile    reptile 
+##         50         50</code></pre>
+<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb339-1"><a href="classification-basic-concepts-and-techniques.html#cb339-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> training_reptile_balanced <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb339-2"><a href="classification-basic-concepts-and-techniques.html#cb339-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb339-3"><a href="classification-basic-concepts-and-techniques.html#cb339-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;rpart&quot;</span>,</span>
+<span id="cb339-4"><a href="classification-basic-concepts-and-techniques.html#cb339-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>),</span>
+<span id="cb339-5"><a href="classification-basic-concepts-and-techniques.html#cb339-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">minsplit =</span> <span class="dv">5</span>))</span>
+<span id="cb339-6"><a href="classification-basic-concepts-and-techniques.html#cb339-6" aria-hidden="true" tabindex="-1"></a>fit</span></code></pre></div>
+<pre><code>## CART 
+## 
+## 100 samples
+##  16 predictor
+##   2 classes: &#39;nonreptile&#39;, &#39;reptile&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 90, 90, 90, 90, 90, 90, ... 
+## Resampling results across tuning parameters:
+## 
+##   cp    Accuracy  Kappa
+##   0.18  0.81      0.62 
+##   0.30  0.63      0.26 
+##   0.34  0.53      0.06 
+## 
+## Accuracy was used to select the optimal model
+##  using the largest value.
+## The final value used for the model was cp = 0.18.</code></pre>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb341-1"><a href="classification-basic-concepts-and-techniques.html#cb341-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(fit<span class="sc">$</span>finalModel, <span class="at">extra =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-135-1.png" width="672" /></p>
+<p>Check on the unbalanced testing data.</p>
+<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb342-1"><a href="classification-basic-concepts-and-techniques.html#cb342-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="at">data =</span> <span class="fu">predict</span>(fit, testing_reptile),</span>
+<span id="cb342-2"><a href="classification-basic-concepts-and-techniques.html#cb342-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">ref =</span> testing_reptile<span class="sc">$</span>type, <span class="at">positive =</span> <span class="st">&quot;reptile&quot;</span>)</span></code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##             Reference
+## Prediction   nonreptile reptile
+##   nonreptile         19       0
+##   reptile            29       2
+##                                         
+##                Accuracy : 0.42          
+##                  95% CI : (0.282, 0.568)
+##     No Information Rate : 0.96          
+##     P-Value [Acc &gt; NIR] : 1             
+##                                         
+##                   Kappa : 0.05          
+##                                         
+##  Mcnemar&#39;s Test P-Value : 2e-07         
+##                                         
+##             Sensitivity : 1.0000        
+##             Specificity : 0.3958        
+##          Pos Pred Value : 0.0645        
+##          Neg Pred Value : 1.0000        
+##              Prevalence : 0.0400        
+##          Detection Rate : 0.0400        
+##    Detection Prevalence : 0.6200        
+##       Balanced Accuracy : 0.6979        
+##                                         
+##        &#39;Positive&#39; Class : reptile       
+## </code></pre>
+<p><strong>Note</strong> that the accuracy is below the no information rate!
+However, kappa (improvement of accuracy over randomness) and
+sensitivity (the ability to identify reptiles) have increased.</p>
+<p>There is a tradeoff between sensitivity and specificity (how many of the identified animals are really reptiles)
+The tradeoff can be controlled using the sample
+proportions. We can sample more reptiles to increase sensitivity at the cost of
+lower specificity (this effect cannot be seen in the data since the test set has only a few reptiles).</p>
+<div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb344-1"><a href="classification-basic-concepts-and-techniques.html#cb344-1" aria-hidden="true" tabindex="-1"></a>id <span class="ot">&lt;-</span> <span class="fu">strata</span>(training_reptile, <span class="at">stratanames =</span> <span class="st">&quot;type&quot;</span>, <span class="at">size =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">100</span>), <span class="at">method =</span> <span class="st">&quot;srswr&quot;</span>)</span>
+<span id="cb344-2"><a href="classification-basic-concepts-and-techniques.html#cb344-2" aria-hidden="true" tabindex="-1"></a>training_reptile_balanced <span class="ot">&lt;-</span> training_reptile <span class="sc">%&gt;%</span> <span class="fu">slice</span>(id<span class="sc">$</span>ID_unit)</span>
+<span id="cb344-3"><a href="classification-basic-concepts-and-techniques.html#cb344-3" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(training_reptile_balanced<span class="sc">$</span>type)</span></code></pre></div>
+<pre><code>## 
+## nonreptile    reptile 
+##         50        100</code></pre>
+<div class="sourceCode" id="cb346"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb346-1"><a href="classification-basic-concepts-and-techniques.html#cb346-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> training_reptile_balanced <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb346-2"><a href="classification-basic-concepts-and-techniques.html#cb346-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb346-3"><a href="classification-basic-concepts-and-techniques.html#cb346-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;rpart&quot;</span>,</span>
+<span id="cb346-4"><a href="classification-basic-concepts-and-techniques.html#cb346-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>),</span>
+<span id="cb346-5"><a href="classification-basic-concepts-and-techniques.html#cb346-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">minsplit =</span> <span class="dv">5</span>))</span>
+<span id="cb346-6"><a href="classification-basic-concepts-and-techniques.html#cb346-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb346-7"><a href="classification-basic-concepts-and-techniques.html#cb346-7" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="at">data =</span> <span class="fu">predict</span>(fit, testing_reptile),</span>
+<span id="cb346-8"><a href="classification-basic-concepts-and-techniques.html#cb346-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">ref =</span> testing_reptile<span class="sc">$</span>type, <span class="at">positive =</span> <span class="st">&quot;reptile&quot;</span>)</span></code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##             Reference
+## Prediction   nonreptile reptile
+##   nonreptile         33       0
+##   reptile            15       2
+##                                         
+##                Accuracy : 0.7           
+##                  95% CI : (0.554, 0.821)
+##     No Information Rate : 0.96          
+##     P-Value [Acc &gt; NIR] : 1.000000      
+##                                         
+##                   Kappa : 0.15          
+##                                         
+##  Mcnemar&#39;s Test P-Value : 0.000301      
+##                                         
+##             Sensitivity : 1.000         
+##             Specificity : 0.688         
+##          Pos Pred Value : 0.118         
+##          Neg Pred Value : 1.000         
+##              Prevalence : 0.040         
+##          Detection Rate : 0.040         
+##    Detection Prevalence : 0.340         
+##       Balanced Accuracy : 0.844         
+##                                         
+##        &#39;Positive&#39; Class : reptile       
+## </code></pre>
+</div>
+<div id="option-3-build-a-larger-tree-and-use-predicted-probabilities" class="section level3" number="3.7.3">
+<h3><span class="header-section-number">3.7.3</span> Option 3: Build A Larger Tree and use Predicted Probabilities</h3>
+<p>Increase complexity and require less data for splitting a node.
+Here I also use AUC (area under the ROC) as the tuning metric.
+You need to specify the two class
+summary function. Note that the tree still trying to improve accuracy on the
+data and not AUC! I also enable class probabilities since I want to predict
+probabilities later.</p>
+<div class="sourceCode" id="cb348"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb348-1"><a href="classification-basic-concepts-and-techniques.html#cb348-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> training_reptile <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb348-2"><a href="classification-basic-concepts-and-techniques.html#cb348-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb348-3"><a href="classification-basic-concepts-and-techniques.html#cb348-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;rpart&quot;</span>,</span>
+<span id="cb348-4"><a href="classification-basic-concepts-and-techniques.html#cb348-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneLength =</span> <span class="dv">10</span>,</span>
+<span id="cb348-5"><a href="classification-basic-concepts-and-techniques.html#cb348-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>,</span>
+<span id="cb348-6"><a href="classification-basic-concepts-and-techniques.html#cb348-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">classProbs =</span> <span class="cn">TRUE</span>,                 <span class="do">## necessary for predict with type=&quot;prob&quot;</span></span>
+<span id="cb348-7"><a href="classification-basic-concepts-and-techniques.html#cb348-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">summaryFunction=</span>twoClassSummary),  <span class="do">## necessary for ROC</span></span>
+<span id="cb348-8"><a href="classification-basic-concepts-and-techniques.html#cb348-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">metric =</span> <span class="st">&quot;ROC&quot;</span>,</span>
+<span id="cb348-9"><a href="classification-basic-concepts-and-techniques.html#cb348-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">minsplit =</span> <span class="dv">3</span>))</span></code></pre></div>
+<pre><code>## Warning in nominalTrainWorkflow(x = x, y = y, wts =
+## weights, info = trainInfo, : There were missing values
+## in resampled performance measures.</code></pre>
+<div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb350-1"><a href="classification-basic-concepts-and-techniques.html#cb350-1" aria-hidden="true" tabindex="-1"></a>fit</span></code></pre></div>
+<pre><code>## CART 
+## 
+## 51 samples
+## 16 predictors
+##  2 classes: &#39;nonreptile&#39;, &#39;reptile&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 46, 47, 46, 46, 46, 45, ... 
+## Resampling results:
+## 
+##   ROC     Sens   Spec
+##   0.3583  0.975  0   
+## 
+## Tuning parameter &#39;cp&#39; was held constant at a value of 0</code></pre>
+<div class="sourceCode" id="cb352"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb352-1"><a href="classification-basic-concepts-and-techniques.html#cb352-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(fit<span class="sc">$</span>finalModel, <span class="at">extra =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-138-1.png" width="672" /></p>
+<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="classification-basic-concepts-and-techniques.html#cb353-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="at">data =</span> <span class="fu">predict</span>(fit, testing_reptile),</span>
+<span id="cb353-2"><a href="classification-basic-concepts-and-techniques.html#cb353-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">ref =</span> testing_reptile<span class="sc">$</span>type, <span class="at">positive =</span> <span class="st">&quot;reptile&quot;</span>)</span></code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##             Reference
+## Prediction   nonreptile reptile
+##   nonreptile         48       2
+##   reptile             0       0
+##                                         
+##                Accuracy : 0.96          
+##                  95% CI : (0.863, 0.995)
+##     No Information Rate : 0.96          
+##     P-Value [Acc &gt; NIR] : 0.677         
+##                                         
+##                   Kappa : 0             
+##                                         
+##  Mcnemar&#39;s Test P-Value : 0.480         
+##                                         
+##             Sensitivity : 0.00          
+##             Specificity : 1.00          
+##          Pos Pred Value :  NaN          
+##          Neg Pred Value : 0.96          
+##              Prevalence : 0.04          
+##          Detection Rate : 0.00          
+##    Detection Prevalence : 0.00          
+##       Balanced Accuracy : 0.50          
+##                                         
+##        &#39;Positive&#39; Class : reptile       
+## </code></pre>
+<p><strong>Note:</strong> Accuracy is high, but it is close or below to the no-information rate!</p>
+<div id="create-a-biased-classifier" class="section level4" number="3.7.3.1">
+<h4><span class="header-section-number">3.7.3.1</span> Create A Biased Classifier</h4>
+<p>We can create a classifier which will detect more reptiles
+at the expense of misclassifying non-reptiles. This is equivalent
+to increasing the cost of misclassifying a reptile as a non-reptile.
+The usual rule is to predict in each node
+the majority class from the test data in the node.
+For a binary classification problem that means a probability of &gt;50%.
+In the following, we reduce this threshold to 1% or more.
+This means that if the new observation ends up in a leaf node with 1% or
+more reptiles from training then the observation
+will be classified as a reptile.
+The data set is small and this works better with more data.</p>
+<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="classification-basic-concepts-and-techniques.html#cb355-1" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, testing_reptile, <span class="at">type =</span> <span class="st">&quot;prob&quot;</span>)</span>
+<span id="cb355-2"><a href="classification-basic-concepts-and-techniques.html#cb355-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(prob)</span></code></pre></div>
+<pre><code>##      nonreptile reptile
+## tuna     1.0000 0.00000
+## vole     0.9615 0.03846
+## wasp     0.5000 0.50000
+## wolf     0.9615 0.03846
+## worm     1.0000 0.00000
+## wren     0.9615 0.03846</code></pre>
+<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb357-1"><a href="classification-basic-concepts-and-techniques.html#cb357-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(<span class="fu">ifelse</span>(prob[,<span class="st">&quot;reptile&quot;</span>]<span class="sc">&gt;=</span><span class="fl">0.01</span>, <span class="st">&quot;reptile&quot;</span>, <span class="st">&quot;nonreptile&quot;</span>))</span>
+<span id="cb357-2"><a href="classification-basic-concepts-and-techniques.html#cb357-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb357-3"><a href="classification-basic-concepts-and-techniques.html#cb357-3" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="at">data =</span> pred,</span>
+<span id="cb357-4"><a href="classification-basic-concepts-and-techniques.html#cb357-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">ref =</span> testing_reptile<span class="sc">$</span>type, <span class="at">positive =</span> <span class="st">&quot;reptile&quot;</span>)</span></code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##             Reference
+## Prediction   nonreptile reptile
+##   nonreptile         13       0
+##   reptile            35       2
+##                                         
+##                Accuracy : 0.3           
+##                  95% CI : (0.179, 0.446)
+##     No Information Rate : 0.96          
+##     P-Value [Acc &gt; NIR] : 1             
+##                                         
+##                   Kappa : 0.029         
+##                                         
+##  Mcnemar&#39;s Test P-Value : 9.08e-09      
+##                                         
+##             Sensitivity : 1.0000        
+##             Specificity : 0.2708        
+##          Pos Pred Value : 0.0541        
+##          Neg Pred Value : 1.0000        
+##              Prevalence : 0.0400        
+##          Detection Rate : 0.0400        
+##    Detection Prevalence : 0.7400        
+##       Balanced Accuracy : 0.6354        
+##                                         
+##        &#39;Positive&#39; Class : reptile       
+## </code></pre>
+<p><strong>Note</strong> that accuracy goes down and is below the no information rate.
+However, both measures are based on the idea that all errors have the same
+cost. What is important is that we are now able to find more
+reptiles.</p>
+</div>
+<div id="plot-the-roc-curve" class="section level4" number="3.7.3.2">
+<h4><span class="header-section-number">3.7.3.2</span> Plot the ROC Curve</h4>
+<p>Since we have a binary classification problem and a classifier that predicts
+a probability for an observation to be a reptile, we can also use a
+<a href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic">receiver operating characteristic (ROC)</a>
+curve. For the ROC curve all different cutoff thresholds for the probability
+are used and then connected with a line. The area under the curve represents
+a single number for how well the classifier works (the closer to one, the better).</p>
+<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="classification-basic-concepts-and-techniques.html#cb359-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;pROC&quot;</span>)</span></code></pre></div>
+<pre><code>## Type &#39;citation(&quot;pROC&quot;)&#39; for a citation.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;pROC&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     cov, smooth, var</code></pre>
+<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="classification-basic-concepts-and-techniques.html#cb363-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">roc</span>(testing_reptile<span class="sc">$</span>type <span class="sc">==</span> <span class="st">&quot;reptile&quot;</span>, prob[,<span class="st">&quot;reptile&quot;</span>])</span></code></pre></div>
+<pre><code>## Setting levels: control = FALSE, case = TRUE</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb366-1"><a href="classification-basic-concepts-and-techniques.html#cb366-1" aria-hidden="true" tabindex="-1"></a>r</span></code></pre></div>
+<pre><code>## 
+## Call:
+## roc.default(response = testing_reptile$type == &quot;reptile&quot;, predictor = prob[,     &quot;reptile&quot;])
+## 
+## Data: prob[, &quot;reptile&quot;] in 48 controls (testing_reptile$type == &quot;reptile&quot; FALSE) &lt; 2 cases (testing_reptile$type == &quot;reptile&quot; TRUE).
+## Area under the curve: 0.766</code></pre>
+<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb368-1"><a href="classification-basic-concepts-and-techniques.html#cb368-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggroc</span>(r) <span class="sc">+</span> <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">1</span>, <span class="at">slope =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">&quot;darkgrey&quot;</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-140-1.png" width="672" /></p>
+</div>
+</div>
+<div id="option-4-use-a-cost-sensitive-classifier" class="section level3" number="3.7.4">
+<h3><span class="header-section-number">3.7.4</span> Option 4: Use a Cost-Sensitive Classifier</h3>
+<p>The implementation of CART in <code>rpart</code> can use a cost matrix for making splitting
+decisions (as parameter <code>loss</code>). The matrix has the form</p>
+<p>TP FP
+FN TN</p>
+<p>TP and TN have to be 0. We make FN very expensive (100).</p>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="classification-basic-concepts-and-techniques.html#cb369-1" aria-hidden="true" tabindex="-1"></a>cost <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
+<span id="cb369-2"><a href="classification-basic-concepts-and-techniques.html#cb369-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>,   <span class="dv">1</span>,</span>
+<span id="cb369-3"><a href="classification-basic-concepts-and-techniques.html#cb369-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">100</span>, <span class="dv">0</span></span>
+<span id="cb369-4"><a href="classification-basic-concepts-and-techniques.html#cb369-4" aria-hidden="true" tabindex="-1"></a>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> <span class="dv">2</span>)</span>
+<span id="cb369-5"><a href="classification-basic-concepts-and-techniques.html#cb369-5" aria-hidden="true" tabindex="-1"></a>cost</span></code></pre></div>
+<pre><code>##      [,1] [,2]
+## [1,]    0    1
+## [2,]  100    0</code></pre>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="classification-basic-concepts-and-techniques.html#cb371-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> training_reptile <span class="sc">%&gt;%</span> <span class="fu">train</span>(type <span class="sc">~</span> .,</span>
+<span id="cb371-2"><a href="classification-basic-concepts-and-techniques.html#cb371-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> .,</span>
+<span id="cb371-3"><a href="classification-basic-concepts-and-techniques.html#cb371-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;rpart&quot;</span>,</span>
+<span id="cb371-4"><a href="classification-basic-concepts-and-techniques.html#cb371-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">parms =</span> <span class="fu">list</span>(<span class="at">loss =</span> cost),</span>
+<span id="cb371-5"><a href="classification-basic-concepts-and-techniques.html#cb371-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>))</span></code></pre></div>
+<p>The warning “There were missing values in resampled performance measures”
+means that some folds did not contain any reptiles (because of the class imbalance)
+and thus the performance measures could not be calculates.</p>
+<div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb372-1"><a href="classification-basic-concepts-and-techniques.html#cb372-1" aria-hidden="true" tabindex="-1"></a>fit</span></code></pre></div>
+<pre><code>## CART 
+## 
+## 51 samples
+## 16 predictors
+##  2 classes: &#39;nonreptile&#39;, &#39;reptile&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 46, 46, 46, 45, 46, 45, ... 
+## Resampling results:
+## 
+##   Accuracy  Kappa   
+##   0.4767    -0.03039
+## 
+## Tuning parameter &#39;cp&#39; was held constant at a value of 0</code></pre>
+<div class="sourceCode" id="cb374"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb374-1"><a href="classification-basic-concepts-and-techniques.html#cb374-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(fit<span class="sc">$</span>finalModel, <span class="at">extra =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="R-Code-Companion-for-Introduction-to-Data-Mining_files/figure-html/unnamed-chunk-142-1.png" width="672" /></p>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb375-1"><a href="classification-basic-concepts-and-techniques.html#cb375-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="at">data =</span> <span class="fu">predict</span>(fit, testing_reptile),</span>
+<span id="cb375-2"><a href="classification-basic-concepts-and-techniques.html#cb375-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">ref =</span> testing_reptile<span class="sc">$</span>type, <span class="at">positive =</span> <span class="st">&quot;reptile&quot;</span>)</span></code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##             Reference
+## Prediction   nonreptile reptile
+##   nonreptile         39       0
+##   reptile             9       2
+##                                         
+##                Accuracy : 0.82          
+##                  95% CI : (0.686, 0.914)
+##     No Information Rate : 0.96          
+##     P-Value [Acc &gt; NIR] : 0.99998       
+##                                         
+##                   Kappa : 0.257         
+##                                         
+##  Mcnemar&#39;s Test P-Value : 0.00766       
+##                                         
+##             Sensitivity : 1.000         
+##             Specificity : 0.812         
+##          Pos Pred Value : 0.182         
+##          Neg Pred Value : 1.000         
+##              Prevalence : 0.040         
+##          Detection Rate : 0.040         
+##    Detection Prevalence : 0.220         
+##       Balanced Accuracy : 0.906         
+##                                         
+##        &#39;Positive&#39; Class : reptile       
+## </code></pre>
+<p>The high cost for false negatives results in a classifier that does not miss any reptile.</p>
+<p><strong>Note:</strong> Using a cost-sensitive classifier is often the best option. Unfortunately, the most classification algorithms (or their implementation) do not have the ability to consider misclassification cost.</p>
+
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-R-caret" class="csl-entry">
+Kuhn, Max. 2021. <em>Caret: Classification and Regression Training</em>. <a href="https://github.com/topepo/caret/">https://github.com/topepo/caret/</a>.
+</div>
+<div id="ref-R-mlbench" class="csl-entry">
+Leisch, Friedrich, and Evgenia Dimitriadou. 2021. <em>Mlbench: Machine Learning Benchmark Problems</em>. <a href="https://CRAN.R-project.org/package=mlbench">https://CRAN.R-project.org/package=mlbench</a>.
+</div>
+<div id="ref-R-rpart.plot" class="csl-entry">
+Milborrow, Stephen. 2020. <em>Rpart.plot: Plot Rpart Models: An Enhanced Version of Plot.rpart</em>. <a href="http://www.milbo.org/rpart-plot/index.html">http://www.milbo.org/rpart-plot/index.html</a>.
+</div>
+<div id="ref-R-pROC" class="csl-entry">
+———. 2021. <em>pROC: Display and Analyze ROC Curves</em>. <a href="http://expasy.org/tools/pROC/">http://expasy.org/tools/pROC/</a>.
+</div>
+<div id="ref-R-FSelector" class="csl-entry">
+Romanski, Piotr, Lars Kotthoff, and Patrick Schratz. 2021. <em>FSelector: Selecting Attributes</em>. <a href="https://github.com/larskotthoff/fselector">https://github.com/larskotthoff/fselector</a>.
+</div>
+<div id="ref-R-lattice" class="csl-entry">
+———. 2021. <em>Lattice: Trellis Graphics for r</em>. <a href="http://lattice.r-forge.r-project.org/">http://lattice.r-forge.r-project.org/</a>.
+</div>
+<div id="ref-Tan2005" class="csl-entry">
+Tan, Pang-Ning, Michael S. Steinbach, and Vipin Kumar. 2005. <em>Introduction to Data Mining</em>. Addison-Wesley. <a href="http://www-users.cs.umn.edu/\%7Ekumar/dmbook/">http://www-users.cs.umn.edu/\%7Ekumar/dmbook/</a>.
+</div>
+<div id="ref-R-rpart" class="csl-entry">
+Therneau, Terry, and Beth Atkinson. 2019. <em>Rpart: Recursive Partitioning and Regression Trees</em>. <a href="https://CRAN.R-project.org/package=rpart">https://CRAN.R-project.org/package=rpart</a>.
+</div>
+<div id="ref-R-sampling" class="csl-entry">
+Tillé, Yves, and Alina Matei. 2021. <em>Sampling: Survey Sampling</em>. <a href="https://CRAN.R-project.org/package=sampling">https://CRAN.R-project.org/package=sampling</a>.
+</div>
+<div id="ref-R-tidyverse" class="csl-entry">
+———. 2021c. <em>Tidyverse: Easily Install and Load the Tidyverse</em>. <a href="https://CRAN.R-project.org/package=tidyverse">https://CRAN.R-project.org/package=tidyverse</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="classification-alternative-techniques.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook/js/app.min.js"></script>
+<script src="libs/gitbook/js/lunr.js"></script>
+<script src="libs/gitbook/js/clipboard.min.js"></script>
+<script src="libs/gitbook/js/plugin-search.js"></script>
+<script src="libs/gitbook/js/plugin-sharing.js"></script>
+<script src="libs/gitbook/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook/js/jquery.highlight.js"></script>
+<script src="libs/gitbook/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

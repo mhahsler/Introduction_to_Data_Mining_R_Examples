@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>References | R Code Companion for the Textbook Introduction to Data Mining</title>
+  <meta name="description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition)." />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="References | R Code Companion for the Textbook Introduction to Data Mining" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition)." />
+  <meta name="github-repo" content="mhahsler/Introduction_to_Data_Mining_R_Examples" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="References | R Code Companion for the Textbook Introduction to Data Mining" />
+  
+  <meta name="twitter:description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition)." />
+  
+
+<meta name="author" content="Michael Hahsler" />
+
+
+<meta name="date" content="2021-07-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="clustering-analysis.html"/>
+
+<script src="libs/header-attrs/header-attrs.js"></script>
+<script src="libs/jquery/jquery.min.js"></script>
+<link href="libs/gitbook/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections/anchor-sections.js"></script>
+<script src="libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="libs/plotly-binding/plotly.js"></script>
+<script src="libs/typedarray/typedarray.min.js"></script>
+<link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main/plotly-latest.min.js"></script>
+<link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding/datatables.js"></script>
+<link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core/js/jquery.dataTables.min.js"></script>
+<link href="libs/nouislider/jquery.nouislider.min.css" rel="stylesheet" />
+<script src="libs/nouislider/jquery.nouislider.min.js"></script>
+<link href="libs/selectize/selectize.bootstrap3.css" rel="stylesheet" />
+<script src="libs/selectize/selectize.min.js"></script>
+<link href="libs/vis/vis.css" rel="stylesheet" />
+<script src="libs/vis/vis.min.js"></script>
+<script src="libs/visNetwork-binding/visNetwork.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R Code Companion for Intro to Data Mining</a></li>
+<li><a href="http://michael.hahsler.net">by Michael Hahsler</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#data-manipulation-with-tidyverse"><i class="fa fa-check"></i><b>1.1</b> Data Manipulation with Tidyverse</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#visualization-with-ggplot2"><i class="fa fa-check"></i><b>1.2</b> Visualization with ggplot2</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>2</b> Data</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="data.html"><a href="data.html#the-iris-dataset"><i class="fa fa-check"></i><b>2.1</b> The Iris Dataset</a></li>
+<li class="chapter" data-level="2.2" data-path="data.html"><a href="data.html#data-quality"><i class="fa fa-check"></i><b>2.2</b> Data Quality</a></li>
+<li class="chapter" data-level="2.3" data-path="data.html"><a href="data.html#aggregation"><i class="fa fa-check"></i><b>2.3</b> Aggregation</a></li>
+<li class="chapter" data-level="2.4" data-path="data.html"><a href="data.html#sampling"><i class="fa fa-check"></i><b>2.4</b> Sampling</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="data.html"><a href="data.html#random-sampling"><i class="fa fa-check"></i><b>2.4.1</b> Random Sampling</a></li>
+<li class="chapter" data-level="2.4.2" data-path="data.html"><a href="data.html#stratified-sampling"><i class="fa fa-check"></i><b>2.4.2</b> Stratified Sampling</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="data.html"><a href="data.html#features"><i class="fa fa-check"></i><b>2.5</b> Features</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="data.html"><a href="data.html#dimensionality-reduction"><i class="fa fa-check"></i><b>2.5.1</b> Dimensionality Reduction</a></li>
+<li class="chapter" data-level="2.5.2" data-path="data.html"><a href="data.html#feature-selection"><i class="fa fa-check"></i><b>2.5.2</b> Feature Selection</a></li>
+<li class="chapter" data-level="2.5.3" data-path="data.html"><a href="data.html#discretize-features"><i class="fa fa-check"></i><b>2.5.3</b> Discretize Features</a></li>
+<li class="chapter" data-level="2.5.4" data-path="data.html"><a href="data.html#standardize-data-z-scores"><i class="fa fa-check"></i><b>2.5.4</b> Standardize Data (Z-Scores)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="data.html"><a href="data.html#proximities-similarities-and-distances"><i class="fa fa-check"></i><b>2.6</b> Proximities: Similarities and Distances</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="data.html"><a href="data.html#minkowsky-distances"><i class="fa fa-check"></i><b>2.6.1</b> Minkowsky Distances</a></li>
+<li class="chapter" data-level="2.6.2" data-path="data.html"><a href="data.html#distances-for-binary-data"><i class="fa fa-check"></i><b>2.6.2</b> Distances for Binary Data</a></li>
+<li class="chapter" data-level="2.6.3" data-path="data.html"><a href="data.html#distances-for-mixed-data"><i class="fa fa-check"></i><b>2.6.3</b> Distances for Mixed Data</a></li>
+<li class="chapter" data-level="2.6.4" data-path="data.html"><a href="data.html#additional-proximity-measures-available-in-package-proxy"><i class="fa fa-check"></i><b>2.6.4</b> Additional proximity Measures Available in Package proxy</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="data.html"><a href="data.html#relationships-between-features"><i class="fa fa-check"></i><b>2.7</b> Relationships Between Features</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="data.html"><a href="data.html#correlation"><i class="fa fa-check"></i><b>2.7.1</b> Correlation</a></li>
+<li class="chapter" data-level="2.7.2" data-path="data.html"><a href="data.html#rank-correlation"><i class="fa fa-check"></i><b>2.7.2</b> Rank Correlation</a></li>
+<li class="chapter" data-level="2.7.3" data-path="data.html"><a href="data.html#relationship-between-nominal-and-ordinal-features"><i class="fa fa-check"></i><b>2.7.3</b> Relationship Between Nominal and Ordinal Features</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="data.html"><a href="data.html#density-estimation"><i class="fa fa-check"></i><b>2.8</b> Density Estimation</a></li>
+<li class="chapter" data-level="2.9" data-path="data.html"><a href="data.html#exploring-data"><i class="fa fa-check"></i><b>2.9</b> Exploring Data</a>
+<ul>
+<li class="chapter" data-level="2.9.1" data-path="data.html"><a href="data.html#basic-statistics"><i class="fa fa-check"></i><b>2.9.1</b> Basic statistics</a></li>
+<li class="chapter" data-level="2.9.2" data-path="data.html"><a href="data.html#tabulate-data"><i class="fa fa-check"></i><b>2.9.2</b> Tabulate data</a></li>
+<li class="chapter" data-level="2.9.3" data-path="data.html"><a href="data.html#percentiles-quantiles"><i class="fa fa-check"></i><b>2.9.3</b> Percentiles (Quantiles)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.10" data-path="data.html"><a href="data.html#visualization"><i class="fa fa-check"></i><b>2.10</b> Visualization</a>
+<ul>
+<li class="chapter" data-level="2.10.1" data-path="data.html"><a href="data.html#histogram"><i class="fa fa-check"></i><b>2.10.1</b> Histogram</a></li>
+<li class="chapter" data-level="2.10.2" data-path="data.html"><a href="data.html#boxplot"><i class="fa fa-check"></i><b>2.10.2</b> Boxplot</a></li>
+<li class="chapter" data-level="2.10.3" data-path="data.html"><a href="data.html#scatter-plot"><i class="fa fa-check"></i><b>2.10.3</b> Scatter plot</a></li>
+<li class="chapter" data-level="2.10.4" data-path="data.html"><a href="data.html#scatter-plot-matrix"><i class="fa fa-check"></i><b>2.10.4</b> Scatter Plot Matrix</a></li>
+<li class="chapter" data-level="2.10.5" data-path="data.html"><a href="data.html#data-matrix-visualization"><i class="fa fa-check"></i><b>2.10.5</b> Data Matrix Visualization</a></li>
+<li class="chapter" data-level="2.10.6" data-path="data.html"><a href="data.html#correlation-matrix"><i class="fa fa-check"></i><b>2.10.6</b> Correlation Matrix</a></li>
+<li class="chapter" data-level="2.10.7" data-path="data.html"><a href="data.html#parallel-coordinates-plot"><i class="fa fa-check"></i><b>2.10.7</b> Parallel Coordinates Plot</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html"><i class="fa fa-check"></i><b>3</b> Classification: Basic Concepts and Techniques</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#the-zoo-dataset"><i class="fa fa-check"></i><b>3.1</b> The Zoo Dataset</a></li>
+<li class="chapter" data-level="3.2" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#decision-trees"><i class="fa fa-check"></i><b>3.2</b> Decision Trees</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#create-tree-with-default-settings-uses-pre-pruning"><i class="fa fa-check"></i><b>3.2.1</b> Create Tree With Default Settings (uses pre-pruning)</a></li>
+<li class="chapter" data-level="3.2.2" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#create-a-full-tree"><i class="fa fa-check"></i><b>3.2.2</b> Create a Full Tree</a></li>
+<li class="chapter" data-level="3.2.3" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#make-predictions-for-new-data"><i class="fa fa-check"></i><b>3.2.3</b> Make Predictions for New Data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#model-evaluation-with-caret"><i class="fa fa-check"></i><b>3.3</b> Model Evaluation with Caret</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#hold-out-test-data"><i class="fa fa-check"></i><b>3.3.1</b> Hold out Test Data</a></li>
+<li class="chapter" data-level="3.3.2" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#learn-a-model-and-tune-hyperparameters-on-the-training-data"><i class="fa fa-check"></i><b>3.3.2</b> Learn a Model and Tune Hyperparameters on the Training Data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#testing-confusion-matrix-and-confidence-interval-for-accuracy"><i class="fa fa-check"></i><b>3.4</b> Testing: Confusion Matrix and Confidence Interval for Accuracy</a></li>
+<li class="chapter" data-level="3.5" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#model-comparison"><i class="fa fa-check"></i><b>3.5</b> Model Comparison</a></li>
+<li class="chapter" data-level="3.6" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#feature-selection-and-feature-preparation"><i class="fa fa-check"></i><b>3.6</b> Feature Selection and Feature Preparation</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#univariate-feature-importance-score"><i class="fa fa-check"></i><b>3.6.1</b> Univariate Feature Importance Score</a></li>
+<li class="chapter" data-level="3.6.2" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#feature-subset-selection"><i class="fa fa-check"></i><b>3.6.2</b> Feature Subset Selection</a></li>
+<li class="chapter" data-level="3.6.3" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#using-dummy-variables-for-factors"><i class="fa fa-check"></i><b>3.6.3</b> Using Dummy Variables for Factors</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#class-imbalance"><i class="fa fa-check"></i><b>3.7</b> Class Imbalance</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#option-1-use-the-data-as-is-and-hope-for-the-best"><i class="fa fa-check"></i><b>3.7.1</b> Option 1: Use the Data As Is and Hope For The Best</a></li>
+<li class="chapter" data-level="3.7.2" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#option-2-balance-data-with-resampling"><i class="fa fa-check"></i><b>3.7.2</b> Option 2: Balance Data With Resampling</a></li>
+<li class="chapter" data-level="3.7.3" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#option-3-build-a-larger-tree-and-use-predicted-probabilities"><i class="fa fa-check"></i><b>3.7.3</b> Option 3: Build A Larger Tree and use Predicted Probabilities</a></li>
+<li class="chapter" data-level="3.7.4" data-path="classification-basic-concepts-and-techniques.html"><a href="classification-basic-concepts-and-techniques.html#option-4-use-a-cost-sensitive-classifier"><i class="fa fa-check"></i><b>3.7.4</b> Option 4: Use a Cost-Sensitive Classifier</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html"><i class="fa fa-check"></i><b>4</b> Classification: Alternative Techniques</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#training-and-test-data"><i class="fa fa-check"></i><b>4.1</b> Training and Test Data</a></li>
+<li class="chapter" data-level="4.2" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#fitting-different-classification-models-to-the-training-data"><i class="fa fa-check"></i><b>4.2</b> Fitting Different Classification Models to the Training Data</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#conditional-inference-tree-decision-tree"><i class="fa fa-check"></i><b>4.2.1</b> Conditional Inference Tree (Decision Tree)</a></li>
+<li class="chapter" data-level="4.2.2" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#c-4.5-decision-tree"><i class="fa fa-check"></i><b>4.2.2</b> C 4.5 Decision Tree</a></li>
+<li class="chapter" data-level="4.2.3" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#k-nearest-neighbors"><i class="fa fa-check"></i><b>4.2.3</b> K-Nearest Neighbors</a></li>
+<li class="chapter" data-level="4.2.4" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#part-rule-based-classifier"><i class="fa fa-check"></i><b>4.2.4</b> PART (Rule-based classifier)</a></li>
+<li class="chapter" data-level="4.2.5" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#linear-support-vector-machines"><i class="fa fa-check"></i><b>4.2.5</b> Linear Support Vector Machines</a></li>
+<li class="chapter" data-level="4.2.6" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#random-forest"><i class="fa fa-check"></i><b>4.2.6</b> Random Forest</a></li>
+<li class="chapter" data-level="4.2.7" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#gradient-boosted-decision-trees-xgboost"><i class="fa fa-check"></i><b>4.2.7</b> Gradient Boosted Decision Trees (xgboost)</a></li>
+<li class="chapter" data-level="4.2.8" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#artificial-neural-network"><i class="fa fa-check"></i><b>4.2.8</b> Artificial Neural Network</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#comparing-models"><i class="fa fa-check"></i><b>4.3</b> Comparing Models</a></li>
+<li class="chapter" data-level="4.4" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#applying-the-chosen-model-to-the-test-data"><i class="fa fa-check"></i><b>4.4</b> Applying the Chosen Model to the Test Data</a></li>
+<li class="chapter" data-level="4.5" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#decision-boundaries"><i class="fa fa-check"></i><b>4.5</b> Decision Boundaries</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#iris-dataset"><i class="fa fa-check"></i><b>4.5.1</b> Iris Dataset</a></li>
+<li class="chapter" data-level="4.5.2" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#circle-dataset"><i class="fa fa-check"></i><b>4.5.2</b> Circle Dataset</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="classification-alternative-techniques.html"><a href="classification-alternative-techniques.html#more-information"><i class="fa fa-check"></i><b>4.6</b> More Information</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html"><i class="fa fa-check"></i><b>5</b> Association Analysis: Basic Concepts and Algorithms</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#the-arules-package"><i class="fa fa-check"></i><b>5.1</b> The arules Package</a></li>
+<li class="chapter" data-level="5.2" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#transactions"><i class="fa fa-check"></i><b>5.2</b> Transactions</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#create-transactions"><i class="fa fa-check"></i><b>5.2.1</b> Create Transactions</a></li>
+<li class="chapter" data-level="5.2.2" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#inspect-transactions"><i class="fa fa-check"></i><b>5.2.2</b> Inspect Transactions</a></li>
+<li class="chapter" data-level="5.2.3" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#vertical-layout-transaction-id-lists"><i class="fa fa-check"></i><b>5.2.3</b> Vertical Layout (Transaction ID Lists)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#frequent-itemsets"><i class="fa fa-check"></i><b>5.3</b> Frequent Itemsets</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#mine-frequent-itemsets"><i class="fa fa-check"></i><b>5.3.1</b> Mine Frequent Itemsets</a></li>
+<li class="chapter" data-level="5.3.2" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#concise-representation-of-itemsets"><i class="fa fa-check"></i><b>5.3.2</b> Concise Representation of Itemsets</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#association-rules"><i class="fa fa-check"></i><b>5.4</b> Association Rules</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#mine-association-rules"><i class="fa fa-check"></i><b>5.4.1</b> Mine Association Rules</a></li>
+<li class="chapter" data-level="5.4.2" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#calculate-additional-interest-measures"><i class="fa fa-check"></i><b>5.4.2</b> Calculate Additional Interest Measures</a></li>
+<li class="chapter" data-level="5.4.3" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#mine-using-templates"><i class="fa fa-check"></i><b>5.4.3</b> Mine Using Templates</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#association-rule-visualization"><i class="fa fa-check"></i><b>5.5</b> Association Rule Visualization</a></li>
+<li class="chapter" data-level="5.6" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#interactive-visualizations"><i class="fa fa-check"></i><b>5.6</b> Interactive Visualizations</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#interactive-inspect-with-sorting-filtering-and-paging"><i class="fa fa-check"></i><b>5.6.1</b> Interactive Inspect With Sorting, Filtering and Paging</a></li>
+<li class="chapter" data-level="5.6.2" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#scatter-plot-1"><i class="fa fa-check"></i><b>5.6.2</b> Scatter Plot</a></li>
+<li class="chapter" data-level="5.6.3" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#matrix-visualization"><i class="fa fa-check"></i><b>5.6.3</b> Matrix Visualization</a></li>
+<li class="chapter" data-level="5.6.4" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#visualization-as-graph"><i class="fa fa-check"></i><b>5.6.4</b> Visualization as Graph</a></li>
+<li class="chapter" data-level="5.6.5" data-path="association-analysis-basic-concepts-and-algorithms.html"><a href="association-analysis-basic-concepts-and-algorithms.html#interactive-rule-explorer"><i class="fa fa-check"></i><b>5.6.5</b> Interactive Rule Explorer</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="association-analysis-advanced-concepts.html"><a href="association-analysis-advanced-concepts.html"><i class="fa fa-check"></i><b>6</b> Association Analysis: Advanced Concepts</a></li>
+<li class="chapter" data-level="7" data-path="clustering-analysis.html"><a href="clustering-analysis.html"><i class="fa fa-check"></i><b>7</b> Clustering Analysis</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#data-preparation"><i class="fa fa-check"></i><b>7.1</b> Data Preparation</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#data-cleaning"><i class="fa fa-check"></i><b>7.1.1</b> Data cleaning</a></li>
+<li class="chapter" data-level="7.1.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#scale-data"><i class="fa fa-check"></i><b>7.1.2</b> Scale data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#clustering-methods"><i class="fa fa-check"></i><b>7.2</b> Clustering methods</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#k-means-clustering"><i class="fa fa-check"></i><b>7.2.1</b> k-means Clustering</a></li>
+<li class="chapter" data-level="7.2.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#hierarchical-clustering"><i class="fa fa-check"></i><b>7.2.2</b> Hierarchical Clustering</a></li>
+<li class="chapter" data-level="7.2.3" data-path="clustering-analysis.html"><a href="clustering-analysis.html#density-based-clustering-with-dbscan"><i class="fa fa-check"></i><b>7.2.3</b> Density-based clustering with DBSCAN</a></li>
+<li class="chapter" data-level="7.2.4" data-path="clustering-analysis.html"><a href="clustering-analysis.html#partitioning-around-medoids-pam"><i class="fa fa-check"></i><b>7.2.4</b> Partitioning Around Medoids (PAM)</a></li>
+<li class="chapter" data-level="7.2.5" data-path="clustering-analysis.html"><a href="clustering-analysis.html#gaussian-mixture-models"><i class="fa fa-check"></i><b>7.2.5</b> Gaussian Mixture Models</a></li>
+<li class="chapter" data-level="7.2.6" data-path="clustering-analysis.html"><a href="clustering-analysis.html#spectral-clustering"><i class="fa fa-check"></i><b>7.2.6</b> Spectral clustering</a></li>
+<li class="chapter" data-level="7.2.7" data-path="clustering-analysis.html"><a href="clustering-analysis.html#fuzzy-c-means-clustering"><i class="fa fa-check"></i><b>7.2.7</b> Fuzzy C-Means Clustering</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="clustering-analysis.html"><a href="clustering-analysis.html#internal-cluster-validation"><i class="fa fa-check"></i><b>7.3</b> Internal Cluster Validation</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#compare-the-clustering-quality"><i class="fa fa-check"></i><b>7.3.1</b> Compare the Clustering Quality</a></li>
+<li class="chapter" data-level="7.3.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#silhouette-plot"><i class="fa fa-check"></i><b>7.3.2</b> Silhouette plot</a></li>
+<li class="chapter" data-level="7.3.3" data-path="clustering-analysis.html"><a href="clustering-analysis.html#find-optimal-number-of-clusters-for-k-means"><i class="fa fa-check"></i><b>7.3.3</b> Find Optimal Number of Clusters for k-means</a></li>
+<li class="chapter" data-level="7.3.4" data-path="clustering-analysis.html"><a href="clustering-analysis.html#visualizing-the-distance-matrix"><i class="fa fa-check"></i><b>7.3.4</b> Visualizing the Distance Matrix</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="clustering-analysis.html"><a href="clustering-analysis.html#external-cluster-validation"><i class="fa fa-check"></i><b>7.4</b> External Cluster Validation</a></li>
+<li class="chapter" data-level="7.5" data-path="clustering-analysis.html"><a href="clustering-analysis.html#advanced-data-preparation-for-clustering"><i class="fa fa-check"></i><b>7.5</b> Advanced Data Preparation for Clustering</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#outlier-removal"><i class="fa fa-check"></i><b>7.5.1</b> Outlier Removal</a></li>
+<li class="chapter" data-level="7.5.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#clustering-tendency"><i class="fa fa-check"></i><b>7.5.2</b> Clustering Tendency</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R Code Companion for the Textbook Introduction to Data Mining</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div class="csl-entry">
+Allaire, JJ, and François Chollet. 2021. <em>Keras: R Interface to Keras</em>. <a href="https://keras.rstudio.com">https://keras.rstudio.com</a>.
+</div>
+<div class="csl-entry">
+Bates, Douglas, and Martin Maechler. 2021. <em>Matrix: Sparse and Dense Matrix Classes and Methods</em>. <a href="http://Matrix.R-forge.R-project.org/">http://Matrix.R-forge.R-project.org/</a>.
+</div>
+<div class="csl-entry">
+Breiman, Leo, Adele Cutler, Andy Liaw, and Matthew Wiener. 2018. <em>randomForest: Breiman and Cutler’s Random Forests for Classification and Regression</em>. <a href="https://www.stat.berkeley.edu/~breiman/RandomForests/">https://www.stat.berkeley.edu/~breiman/RandomForests/</a>.
+</div>
+<div class="csl-entry">
+Fraley, Chris, Adrian E. Raftery, and Luca Scrucca. 2020. <em>Mclust: Gaussian Mixture Modelling for Model-Based Clustering, Classification, and Density Estimation</em>. <a href="https://mclust-org.github.io/mclust/">https://mclust-org.github.io/mclust/</a>.
+</div>
+<div class="csl-entry">
+Hahsler, Michael. 2017. <span>“Arules<span>V</span>iz: <span>I</span>nteractive Visualization of Association Rules with <span>R</span>.”</span> <em>R Journal</em> 9 (2): 163–75. <a href="https://doi.org/10.32614/RJ-2017-047">https://doi.org/10.32614/RJ-2017-047</a>.
+</div>
+<div class="csl-entry">
+———. 2021. <em>arulesViz: Visualizing Association Rules and Frequent Itemsets</em>. <a href="https://github.com/mhahsler/arulesViz">https://github.com/mhahsler/arulesViz</a>.
+</div>
+<div class="csl-entry">
+Hahsler, Michael, Christian Buchta, Bettina Gruen, and Kurt Hornik. 2021. <em>Arules: Mining Association Rules and Frequent Itemsets</em>. <a href="https://github.com/mhahsler/arules">https://github.com/mhahsler/arules</a>.
+</div>
+<div class="csl-entry">
+Hahsler, Michael, Christian Buchta, and Kurt Hornik. 2021. <em>Seriation: Infrastructure for Ordering Objects Using Seriation</em>. <a href="https://github.com/mhahsler/seriation">https://github.com/mhahsler/seriation</a>.
+</div>
+<div class="csl-entry">
+Hahsler, Michael, Sudheer Chelluboina, Kurt Hornik, and Christian Buchta. 2011. <span>“The Arules r-Package Ecosystem: Analyzing Interesting Patterns from Large Transaction Datasets.”</span> <em>Journal of Machine Learning Research</em> 12: 1977–81. <a href="https://jmlr.csail.mit.edu/papers/v12/hahsler11a.html">https://jmlr.csail.mit.edu/papers/v12/hahsler11a.html</a>.
+</div>
+<div class="csl-entry">
+Hahsler, Michael, Bettina Gruen, and Kurt Hornik. 2005. <span>“Arules – <span>A</span> Computational Environment for Mining Association Rules and Frequent Item Sets.”</span> <em>Journal of Statistical Software</em> 14 (15): 1–25. <a href="https://doi.org/10.18637/jss.v014.i15">https://doi.org/10.18637/jss.v014.i15</a>.
+</div>
+<div class="csl-entry">
+Hahsler, Michael, Kurt Hornik, and Christian Buchta. 2008. <span>“Getting Things in Order: An Introduction to the r Package Seriation.”</span> <em>Journal of Statistical Software</em> 25 (3): 1–34. <a href="https://doi.org/10.18637/jss.v025.i03">https://doi.org/10.18637/jss.v025.i03</a>.
+</div>
+<div class="csl-entry">
+Hahsler, Michael, and Matthew Piekenbrock. 2021. <em>Dbscan: Density Based Clustering of Applications with Noise (DBSCAN) and Related Algorithms</em>. <a href="https://github.com/mhahsler/dbscan">https://github.com/mhahsler/dbscan</a>.
+</div>
+<div class="csl-entry">
+Hahsler, Michael, Matthew Piekenbrock, and Derek Doran. 2019. <span>“<span class="nocase">dbscan</span>: Fast Density-Based Clustering with <span>R</span>.”</span> <em>Journal of Statistical Software</em> 91 (1): 1–30. <a href="https://doi.org/10.18637/jss.v091.i01">https://doi.org/10.18637/jss.v091.i01</a>.
+</div>
+<div class="csl-entry">
+Hennig, Christian. 2020. <em>Fpc: Flexible Procedures for Clustering</em>. <a href="https://www.unibo.it/sitoweb/christian.hennig/en/">https://www.unibo.it/sitoweb/christian.hennig/en/</a>.
+</div>
+<div class="csl-entry">
+Henry, Lionel, and Hadley Wickham. 2020. <em>Purrr: Functional Programming Tools</em>. <a href="https://CRAN.R-project.org/package=purrr">https://CRAN.R-project.org/package=purrr</a>.
+</div>
+<div class="csl-entry">
+Hornik, Kurt. 2020. <em>RWeka: R/Weka Interface</em>. <a href="https://CRAN.R-project.org/package=RWeka">https://CRAN.R-project.org/package=RWeka</a>.
+</div>
+<div class="csl-entry">
+Hornik, Kurt, Christian Buchta, and Achim Zeileis. 2009. <span>“Open-Source Machine Learning: <span>R</span> Meets <span>Weka</span>.”</span> <em>Computational Statistics</em> 24 (2): 225–32. <a href="https://doi.org/10.1007/s00180-008-0119-7">https://doi.org/10.1007/s00180-008-0119-7</a>.
+</div>
+<div class="csl-entry">
+Karatzoglou, Alexandros, Alex Smola, and Kurt Hornik. 2019. <em>Kernlab: Kernel-Based Machine Learning Lab</em>. <a href="https://CRAN.R-project.org/package=kernlab">https://CRAN.R-project.org/package=kernlab</a>.
+</div>
+<div class="csl-entry">
+Karatzoglou, Alexandros, Alex Smola, Kurt Hornik, and Achim Zeileis. 2004. <span>“Kernlab – an <span>S4</span> Package for Kernel Methods in <span>R</span>.”</span> <em>Journal of Statistical Software</em> 11 (9): 1–20. <a href="http://www.jstatsoft.org/v11/i09/">http://www.jstatsoft.org/v11/i09/</a>.
+</div>
+<div class="csl-entry">
+Kassambara, Alboukadel. 2019. <em>Ggcorrplot: Visualization of a Correlation Matrix Using Ggplot2</em>. <a href="http://www.sthda.com/english/wiki/ggcorrplot">http://www.sthda.com/english/wiki/ggcorrplot</a>.
+</div>
+<div class="csl-entry">
+Kassambara, Alboukadel, and Fabian Mundt. 2020. <em>Factoextra: Extract and Visualize the Results of Multivariate Data Analyses</em>. <a href="http://www.sthda.com/english/rpkgs/factoextra">http://www.sthda.com/english/rpkgs/factoextra</a>.
+</div>
+<div class="csl-entry">
+Kuhn, Max. 2021. <em>Caret: Classification and Regression Training</em>. <a href="https://github.com/topepo/caret/">https://github.com/topepo/caret/</a>.
+</div>
+<div class="csl-entry">
+Kuhn, Max, and Ross Quinlan. 2021. <em>C50: C5.0 Decision Trees and Rule-Based Models</em>. <a href="https://topepo.github.io/C5.0/">https://topepo.github.io/C5.0/</a>.
+</div>
+<div class="csl-entry">
+Leisch, Friedrich, and Evgenia Dimitriadou. 2021. <em>Mlbench: Machine Learning Benchmark Problems</em>. <a href="https://CRAN.R-project.org/package=mlbench">https://CRAN.R-project.org/package=mlbench</a>.
+</div>
+<div class="csl-entry">
+Liaw, Andy, and Matthew Wiener. 2002. <span>“Classification and Regression by randomForest.”</span> <em>R News</em> 2 (3): 18–22. <a href="https://CRAN.R-project.org/doc/Rnews/">https://CRAN.R-project.org/doc/Rnews/</a>.
+</div>
+<div class="csl-entry">
+Maechler, Martin, Peter Rousseeuw, Anja Struyf, and Mia Hubert. 2021. <em>Cluster: "Finding Groups in Data": Cluster Analysis Extended Rousseeuw Et Al.</em> <a href="https://svn.r-project.org/R-packages/trunk/cluster/">https://svn.r-project.org/R-packages/trunk/cluster/</a>.
+</div>
+<div class="csl-entry">
+Meyer, David, and Christian Buchta. 2021. <em>Proxy: Distance and Similarity Measures</em>. <a href="https://CRAN.R-project.org/package=proxy">https://CRAN.R-project.org/package=proxy</a>.
+</div>
+<div class="csl-entry">
+Meyer, David, Evgenia Dimitriadou, Kurt Hornik, Andreas Weingessel, and Friedrich Leisch. 2021. <em>E1071: Misc Functions of the Department of Statistics, Probability Theory Group (Formerly: E1071), TU Wien</em>. <a href="https://CRAN.R-project.org/package=e1071">https://CRAN.R-project.org/package=e1071</a>.
+</div>
+<div class="csl-entry">
+Milborrow, Stephen. 2020. <em>Rpart.plot: Plot Rpart Models: An Enhanced Version of Plot.rpart</em>. <a href="http://www.milbo.org/rpart-plot/index.html">http://www.milbo.org/rpart-plot/index.html</a>.
+</div>
+<div class="csl-entry">
+Müller, Kirill, and Hadley Wickham. 2021. <em>Tibble: Simple Data Frames</em>. <a href="https://CRAN.R-project.org/package=tibble">https://CRAN.R-project.org/package=tibble</a>.
+</div>
+<div class="csl-entry">
+Newman, D. J., S. Hettich, C. L. Blake, and C. J. Merz. 1998. <span>“UCI Repository of Machine Learning Databases.”</span> University of California, Irvine, Dept. of Information; Computer Sciences. <a href="http://www.ics.uci.edu/~mlearn/MLRepository.html">http://www.ics.uci.edu/~mlearn/MLRepository.html</a>.
+</div>
+<div class="csl-entry">
+R Core Team. 2021. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.
+</div>
+<div class="csl-entry">
+Ripley, Brian. 2021a. <em>MASS: Support Functions and Datasets for Venables and Ripley’s MASS</em>. <a href="http://www.stats.ox.ac.uk/pub/MASS4/">http://www.stats.ox.ac.uk/pub/MASS4/</a>.
+</div>
+<div class="csl-entry">
+———. 2021b. <em>Nnet: Feed-Forward Neural Networks and Multinomial Log-Linear Models</em>. <a href="http://www.stats.ox.ac.uk/pub/MASS4/">http://www.stats.ox.ac.uk/pub/MASS4/</a>.
+</div>
+<div class="csl-entry">
+Robin, Xavier, Natacha Turck, Alexandre Hainard, Natalia Tiberti, Frédérique Lisacek, Jean-Charles Sanchez, and Markus Müller. 2011. <span>“pROC: An Open-Source Package for r and s+ to Analyze and Compare ROC Curves.”</span> <em>BMC Bioinformatics</em> 12: 77.
+</div>
+<div class="csl-entry">
+———. 2021. <em>pROC: Display and Analyze ROC Curves</em>. <a href="http://expasy.org/tools/pROC/">http://expasy.org/tools/pROC/</a>.
+</div>
+<div class="csl-entry">
+Romanski, Piotr, Lars Kotthoff, and Patrick Schratz. 2021. <em>FSelector: Selecting Attributes</em>. <a href="https://github.com/larskotthoff/fselector">https://github.com/larskotthoff/fselector</a>.
+</div>
+<div class="csl-entry">
+Sarkar, Deepayan. 2008. <em>Lattice: Multivariate Data Visualization with r</em>. New York: Springer. <a href="http://lmdvr.r-forge.r-project.org">http://lmdvr.r-forge.r-project.org</a>.
+</div>
+<div class="csl-entry">
+———. 2021. <em>Lattice: Trellis Graphics for r</em>. <a href="http://lattice.r-forge.r-project.org/">http://lattice.r-forge.r-project.org/</a>.
+</div>
+<div class="csl-entry">
+Schloerke, Barret, Di Cook, Joseph Larmarange, Francois Briatte, Moritz Marbach, Edwin Thoen, Amos Elberg, and Jason Crowley. 2021. <em>GGally: Extension to Ggplot2</em>. <a href="https://CRAN.R-project.org/package=GGally">https://CRAN.R-project.org/package=GGally</a>.
+</div>
+<div class="csl-entry">
+Scrucca, Luca, Michael Fop, T. Brendan Murphy, and Adrian E. Raftery. 2016. <span>“<span class="nocase">mclust</span> 5: Clustering, Classification and Density Estimation Using <span>G</span>aussian Finite Mixture Models.”</span> <em>The <span>R</span> Journal</em> 8 (1): 289–317. <a href="https://doi.org/10.32614/RJ-2016-021">https://doi.org/10.32614/RJ-2016-021</a>.
+</div>
+<div class="csl-entry">
+Sievert, Carson. 2020. <em>Interactive Web-Based Data Visualization with r, Plotly, and Shiny</em>. Chapman; Hall/CRC. <a href="https://plotly-r.com">https://plotly-r.com</a>.
+</div>
+<div class="csl-entry">
+Sievert, Carson, Chris Parmer, Toby Hocking, Scott Chamberlain, Karthik Ram, Marianne Corvellec, and Pedro Despouy. 2021. <em>Plotly: Create Interactive Web Graphics via Plotly.js</em>. <a href="https://CRAN.R-project.org/package=plotly">https://CRAN.R-project.org/package=plotly</a>.
+</div>
+<div class="csl-entry">
+Tan, Pang-Ning, Michael S. Steinbach, and Vipin Kumar. 2005. <em>Introduction to Data Mining</em>. Addison-Wesley. <a href="http://www-users.cs.umn.edu/\%7Ekumar/dmbook/">http://www-users.cs.umn.edu/\%7Ekumar/dmbook/</a>.
+</div>
+<div class="csl-entry">
+Therneau, Terry, and Beth Atkinson. 2019. <em>Rpart: Recursive Partitioning and Regression Trees</em>. <a href="https://CRAN.R-project.org/package=rpart">https://CRAN.R-project.org/package=rpart</a>.
+</div>
+<div class="csl-entry">
+Tillé, Yves, and Alina Matei. 2021. <em>Sampling: Survey Sampling</em>. <a href="https://CRAN.R-project.org/package=sampling">https://CRAN.R-project.org/package=sampling</a>.
+</div>
+<div class="csl-entry">
+Venables, W. N., and B. D. Ripley. 2002a. <em>Modern Applied Statistics with s</em>. Fourth. New York: Springer. <a href="https://www.stats.ox.ac.uk/pub/MASS4/">https://www.stats.ox.ac.uk/pub/MASS4/</a>.
+</div>
+<div class="csl-entry">
+———. 2002b. <em>Modern Applied Statistics with s</em>. Fourth. New York: Springer. <a href="https://www.stats.ox.ac.uk/pub/MASS4/">https://www.stats.ox.ac.uk/pub/MASS4/</a>.
+</div>
+<div class="csl-entry">
+Wickham, Hadley. 2016. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>.
+</div>
+<div class="csl-entry">
+———. 2019. <em>Stringr: Simple, Consistent Wrappers for Common String Operations</em>. <a href="https://CRAN.R-project.org/package=stringr">https://CRAN.R-project.org/package=stringr</a>.
+</div>
+<div class="csl-entry">
+———. 2021a. <em>Forcats: Tools for Working with Categorical Variables (Factors)</em>. <a href="https://CRAN.R-project.org/package=forcats">https://CRAN.R-project.org/package=forcats</a>.
+</div>
+<div class="csl-entry">
+———. 2021b. <em>Tidyr: Tidy Messy Data</em>. <a href="https://CRAN.R-project.org/package=tidyr">https://CRAN.R-project.org/package=tidyr</a>.
+</div>
+<div class="csl-entry">
+———. 2021c. <em>Tidyverse: Easily Install and Load the Tidyverse</em>. <a href="https://CRAN.R-project.org/package=tidyverse">https://CRAN.R-project.org/package=tidyverse</a>.
+</div>
+<div class="csl-entry">
+Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019. <span>“Welcome to the <span class="nocase">tidyverse</span>.”</span> <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
+</div>
+<div class="csl-entry">
+Wickham, Hadley, Winston Chang, Lionel Henry, Thomas Lin Pedersen, Kohske Takahashi, Claus Wilke, Kara Woo, Hiroaki Yutani, and Dewey Dunnington. 2021. <em>Ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics</em>. <a href="https://CRAN.R-project.org/package=ggplot2">https://CRAN.R-project.org/package=ggplot2</a>.
+</div>
+<div class="csl-entry">
+Wickham, Hadley, Romain François, Lionel Henry, and Kirill Müller. 2021. <em>Dplyr: A Grammar of Data Manipulation</em>. <a href="https://CRAN.R-project.org/package=dplyr">https://CRAN.R-project.org/package=dplyr</a>.
+</div>
+<div class="csl-entry">
+Wickham, Hadley, and Garrett Grolemund. 2017. <em>R for Data Science: Import, Tidy, Transform, Visualize, and Model Data</em>. 1st ed. O’Reilly Media, Inc.
+</div>
+<div class="csl-entry">
+Wickham, Hadley, and Jim Hester. 2020. <em>Readr: Read Rectangular Text Data</em>. <a href="https://CRAN.R-project.org/package=readr">https://CRAN.R-project.org/package=readr</a>.
+</div>
+<div class="csl-entry">
+Wickham, Hadley, and Dana Seidel. 2020. <em>Scales: Scale Functions for Visualization</em>. <a href="https://CRAN.R-project.org/package=scales">https://CRAN.R-project.org/package=scales</a>.
+</div>
+<div class="csl-entry">
+Wilkinson, Leland. 2005. <em>The Grammar of Graphics (Statistics and Computing)</em>. Berlin, Heidelberg: Springer-Verlag.
+</div>
+<div class="csl-entry">
+Witten, Ian H., and Eibe Frank. 2005. <em>Data Mining: Practical Machine Learning Tools and Techniques</em>. 2nd ed. San Francisco: Morgan Kaufmann.
+</div>
+<div class="csl-entry">
+Yu, Guangchuang. 2021. <em>Scatterpie: Scatter Pie Plot</em>. <a href="https://CRAN.R-project.org/package=scatterpie">https://CRAN.R-project.org/package=scatterpie</a>.
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="clustering-analysis.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook/js/app.min.js"></script>
+<script src="libs/gitbook/js/lunr.js"></script>
+<script src="libs/gitbook/js/clipboard.min.js"></script>
+<script src="libs/gitbook/js/plugin-search.js"></script>
+<script src="libs/gitbook/js/plugin-sharing.js"></script>
+<script src="libs/gitbook/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook/js/jquery.highlight.js"></script>
+<script src="libs/gitbook/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

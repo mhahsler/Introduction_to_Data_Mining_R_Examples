@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="3.4 Testing: Confusion Matrix and Confidence Interval for Accuracy | R Code Companion for the Textbook Introduction to Data Mining" />
+<meta property="og:type" content="book" />
+
+
+<meta property="og:description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition)." />
+
+
+<meta name="author" content="Michael Hahsler" />
+
+<meta name="date" content="2021-07-09" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<meta name="description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition).">
+
+<title>3.4 Testing: Confusion Matrix and Confidence Interval for Accuracy | R Code Companion for the Textbook Introduction to Data Mining</title>
+
+<script src="libs/header-attrs/header-attrs.js"></script>
+<script src="libs/jquery/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap/css/united.min.css" rel="stylesheet" />
+<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="libs/navigation/tabsets.js"></script>
+<script src="libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="libs/plotly-binding/plotly.js"></script>
+<script src="libs/typedarray/typedarray.min.js"></script>
+<link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main/plotly-latest.min.js"></script>
+<link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding/datatables.js"></script>
+<link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core/js/jquery.dataTables.min.js"></script>
+<link href="libs/nouislider/jquery.nouislider.min.css" rel="stylesheet" />
+<script src="libs/nouislider/jquery.nouislider.min.js"></script>
+<link href="libs/selectize/selectize.bootstrap3.css" rel="stylesheet" />
+<script src="libs/selectize/selectize.min.js"></script>
+<link href="libs/vis/vis.css" rel="stylesheet" />
+<script src="libs/vis/vis.min.js"></script>
+<script src="libs/visNetwork-binding/visNetwork.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+/* show arrow before summary tag as in bootstrap
+TODO: remove if boostrap in updated in html_document (rmarkdown#1485) */
+details > summary {
+  display: list-item;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container-fluid main-container">
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li><a href="index.html#preface">Preface</a></li>
+<li><a href="1-introduction.html#introduction"><span class="toc-section-number">1</span> Introduction</a>
+<ul>
+<li><a href="1-1-data-manipulation-with-tidyverse.html#data-manipulation-with-tidyverse"><span class="toc-section-number">1.1</span> Data Manipulation with Tidyverse</a></li>
+<li><a href="1-2-visualization-with-ggplot2.html#visualization-with-ggplot2"><span class="toc-section-number">1.2</span> Visualization with ggplot2</a></li>
+</ul></li>
+<li><a href="2-data.html#data"><span class="toc-section-number">2</span> Data</a>
+<ul>
+<li><a href="2-1-the-iris-dataset.html#the-iris-dataset"><span class="toc-section-number">2.1</span> The Iris Dataset</a></li>
+<li><a href="2-2-data-quality.html#data-quality"><span class="toc-section-number">2.2</span> Data Quality</a></li>
+<li><a href="2-3-aggregation.html#aggregation"><span class="toc-section-number">2.3</span> Aggregation</a></li>
+<li><a href="2-4-sampling.html#sampling"><span class="toc-section-number">2.4</span> Sampling</a>
+<ul>
+<li><a href="2-4-sampling.html#random-sampling"><span class="toc-section-number">2.4.1</span> Random Sampling</a></li>
+<li><a href="2-4-sampling.html#stratified-sampling"><span class="toc-section-number">2.4.2</span> Stratified Sampling</a></li>
+</ul></li>
+<li><a href="2-5-features.html#features"><span class="toc-section-number">2.5</span> Features</a>
+<ul>
+<li><a href="2-5-features.html#dimensionality-reduction"><span class="toc-section-number">2.5.1</span> Dimensionality Reduction</a></li>
+<li><a href="2-5-features.html#feature-selection"><span class="toc-section-number">2.5.2</span> Feature Selection</a></li>
+<li><a href="2-5-features.html#discretize-features"><span class="toc-section-number">2.5.3</span> Discretize Features</a></li>
+<li><a href="2-5-features.html#standardize-data-z-scores"><span class="toc-section-number">2.5.4</span> Standardize Data (Z-Scores)</a></li>
+</ul></li>
+<li><a href="2-6-proximities-similarities-and-distances.html#proximities-similarities-and-distances"><span class="toc-section-number">2.6</span> Proximities: Similarities and Distances</a>
+<ul>
+<li><a href="2-6-proximities-similarities-and-distances.html#minkowsky-distances"><span class="toc-section-number">2.6.1</span> Minkowsky Distances</a></li>
+<li><a href="2-6-proximities-similarities-and-distances.html#distances-for-binary-data"><span class="toc-section-number">2.6.2</span> Distances for Binary Data</a></li>
+<li><a href="2-6-proximities-similarities-and-distances.html#distances-for-mixed-data"><span class="toc-section-number">2.6.3</span> Distances for Mixed Data</a></li>
+<li><a href="2-6-proximities-similarities-and-distances.html#additional-proximity-measures-available-in-package-proxy"><span class="toc-section-number">2.6.4</span> Additional proximity Measures Available in Package proxy</a></li>
+</ul></li>
+<li><a href="2-7-relationships-between-features.html#relationships-between-features"><span class="toc-section-number">2.7</span> Relationships Between Features</a>
+<ul>
+<li><a href="2-7-relationships-between-features.html#correlation"><span class="toc-section-number">2.7.1</span> Correlation</a></li>
+<li><a href="2-7-relationships-between-features.html#rank-correlation"><span class="toc-section-number">2.7.2</span> Rank Correlation</a></li>
+<li><a href="2-7-relationships-between-features.html#relationship-between-nominal-and-ordinal-features"><span class="toc-section-number">2.7.3</span> Relationship Between Nominal and Ordinal Features</a></li>
+</ul></li>
+<li><a href="2-8-density-estimation.html#density-estimation"><span class="toc-section-number">2.8</span> Density Estimation</a></li>
+<li><a href="2-9-exploring-data.html#exploring-data"><span class="toc-section-number">2.9</span> Exploring Data</a>
+<ul>
+<li><a href="2-9-exploring-data.html#basic-statistics"><span class="toc-section-number">2.9.1</span> Basic statistics</a></li>
+<li><a href="2-9-exploring-data.html#tabulate-data"><span class="toc-section-number">2.9.2</span> Tabulate data</a></li>
+<li><a href="2-9-exploring-data.html#percentiles-quantiles"><span class="toc-section-number">2.9.3</span> Percentiles (Quantiles)</a></li>
+</ul></li>
+<li><a href="2-10-visualization.html#visualization"><span class="toc-section-number">2.10</span> Visualization</a>
+<ul>
+<li><a href="2-10-visualization.html#histogram"><span class="toc-section-number">2.10.1</span> Histogram</a></li>
+<li><a href="2-10-visualization.html#boxplot"><span class="toc-section-number">2.10.2</span> Boxplot</a></li>
+<li><a href="2-10-visualization.html#scatter-plot"><span class="toc-section-number">2.10.3</span> Scatter plot</a></li>
+<li><a href="2-10-visualization.html#scatter-plot-matrix"><span class="toc-section-number">2.10.4</span> Scatter Plot Matrix</a></li>
+<li><a href="2-10-visualization.html#data-matrix-visualization"><span class="toc-section-number">2.10.5</span> Data Matrix Visualization</a></li>
+<li><a href="2-10-visualization.html#correlation-matrix"><span class="toc-section-number">2.10.6</span> Correlation Matrix</a></li>
+<li><a href="2-10-visualization.html#parallel-coordinates-plot"><span class="toc-section-number">2.10.7</span> Parallel Coordinates Plot</a></li>
+</ul></li>
+</ul></li>
+<li><a href="3-classification-basic-concepts-and-techniques.html#classification-basic-concepts-and-techniques"><span class="toc-section-number">3</span> Classification: Basic Concepts and Techniques</a>
+<ul>
+<li><a href="3-1-the-zoo-dataset.html#the-zoo-dataset"><span class="toc-section-number">3.1</span> The Zoo Dataset</a></li>
+<li><a href="3-2-decision-trees.html#decision-trees"><span class="toc-section-number">3.2</span> Decision Trees</a>
+<ul>
+<li><a href="3-2-decision-trees.html#create-tree-with-default-settings-uses-pre-pruning"><span class="toc-section-number">3.2.1</span> Create Tree With Default Settings (uses pre-pruning)</a></li>
+<li><a href="3-2-decision-trees.html#create-a-full-tree"><span class="toc-section-number">3.2.2</span> Create a Full Tree</a></li>
+<li><a href="3-2-decision-trees.html#make-predictions-for-new-data"><span class="toc-section-number">3.2.3</span> Make Predictions for New Data</a></li>
+</ul></li>
+<li><a href="3-3-model-evaluation-with-caret.html#model-evaluation-with-caret"><span class="toc-section-number">3.3</span> Model Evaluation with Caret</a>
+<ul>
+<li><a href="3-3-model-evaluation-with-caret.html#hold-out-test-data"><span class="toc-section-number">3.3.1</span> Hold out Test Data</a></li>
+<li><a href="3-3-model-evaluation-with-caret.html#learn-a-model-and-tune-hyperparameters-on-the-training-data"><span class="toc-section-number">3.3.2</span> Learn a Model and Tune Hyperparameters on the Training Data</a></li>
+</ul></li>
+<li><a href="3-4-testing-confusion-matrix-and-confidence-interval-for-accuracy.html#testing-confusion-matrix-and-confidence-interval-for-accuracy"><span class="toc-section-number">3.4</span> Testing: Confusion Matrix and Confidence Interval for Accuracy</a></li>
+<li><a href="3-5-model-comparison.html#model-comparison"><span class="toc-section-number">3.5</span> Model Comparison</a></li>
+<li><a href="3-6-feature-selection-and-feature-preparation.html#feature-selection-and-feature-preparation"><span class="toc-section-number">3.6</span> Feature Selection and Feature Preparation</a>
+<ul>
+<li><a href="3-6-feature-selection-and-feature-preparation.html#univariate-feature-importance-score"><span class="toc-section-number">3.6.1</span> Univariate Feature Importance Score</a></li>
+<li><a href="3-6-feature-selection-and-feature-preparation.html#feature-subset-selection"><span class="toc-section-number">3.6.2</span> Feature Subset Selection</a></li>
+<li><a href="3-6-feature-selection-and-feature-preparation.html#using-dummy-variables-for-factors"><span class="toc-section-number">3.6.3</span> Using Dummy Variables for Factors</a></li>
+</ul></li>
+<li><a href="3-7-class-imbalance.html#class-imbalance"><span class="toc-section-number">3.7</span> Class Imbalance</a>
+<ul>
+<li><a href="3-7-class-imbalance.html#option-1-use-the-data-as-is-and-hope-for-the-best"><span class="toc-section-number">3.7.1</span> Option 1: Use the Data As Is and Hope For The Best</a></li>
+<li><a href="3-7-class-imbalance.html#option-2-balance-data-with-resampling"><span class="toc-section-number">3.7.2</span> Option 2: Balance Data With Resampling</a></li>
+<li><a href="3-7-class-imbalance.html#option-3-build-a-larger-tree-and-use-predicted-probabilities"><span class="toc-section-number">3.7.3</span> Option 3: Build A Larger Tree and use Predicted Probabilities</a></li>
+<li><a href="3-7-class-imbalance.html#option-4-use-a-cost-sensitive-classifier"><span class="toc-section-number">3.7.4</span> Option 4: Use a Cost-Sensitive Classifier</a></li>
+</ul></li>
+</ul></li>
+<li><a href="4-classification-alternative-techniques.html#classification-alternative-techniques"><span class="toc-section-number">4</span> Classification: Alternative Techniques</a>
+<ul>
+<li><a href="4-1-training-and-test-data.html#training-and-test-data"><span class="toc-section-number">4.1</span> Training and Test Data</a></li>
+<li><a href="4-2-fitting-different-classification-models-to-the-training-data.html#fitting-different-classification-models-to-the-training-data"><span class="toc-section-number">4.2</span> Fitting Different Classification Models to the Training Data</a>
+<ul>
+<li><a href="4-2-fitting-different-classification-models-to-the-training-data.html#conditional-inference-tree-decision-tree"><span class="toc-section-number">4.2.1</span> Conditional Inference Tree (Decision Tree)</a></li>
+<li><a href="4-2-fitting-different-classification-models-to-the-training-data.html#c-4.5-decision-tree"><span class="toc-section-number">4.2.2</span> C 4.5 Decision Tree</a></li>
+<li><a href="4-2-fitting-different-classification-models-to-the-training-data.html#k-nearest-neighbors"><span class="toc-section-number">4.2.3</span> K-Nearest Neighbors</a></li>
+<li><a href="4-2-fitting-different-classification-models-to-the-training-data.html#part-rule-based-classifier"><span class="toc-section-number">4.2.4</span> PART (Rule-based classifier)</a></li>
+<li><a href="4-2-fitting-different-classification-models-to-the-training-data.html#linear-support-vector-machines"><span class="toc-section-number">4.2.5</span> Linear Support Vector Machines</a></li>
+<li><a href="4-2-fitting-different-classification-models-to-the-training-data.html#random-forest"><span class="toc-section-number">4.2.6</span> Random Forest</a></li>
+<li><a href="4-2-fitting-different-classification-models-to-the-training-data.html#gradient-boosted-decision-trees-xgboost"><span class="toc-section-number">4.2.7</span> Gradient Boosted Decision Trees (xgboost)</a></li>
+<li><a href="4-2-fitting-different-classification-models-to-the-training-data.html#artificial-neural-network"><span class="toc-section-number">4.2.8</span> Artificial Neural Network</a></li>
+</ul></li>
+<li><a href="4-3-comparing-models.html#comparing-models"><span class="toc-section-number">4.3</span> Comparing Models</a></li>
+<li><a href="4-4-applying-the-chosen-model-to-the-test-data.html#applying-the-chosen-model-to-the-test-data"><span class="toc-section-number">4.4</span> Applying the Chosen Model to the Test Data</a></li>
+<li><a href="4-5-decision-boundaries.html#decision-boundaries"><span class="toc-section-number">4.5</span> Decision Boundaries</a>
+<ul>
+<li><a href="4-5-decision-boundaries.html#iris-dataset"><span class="toc-section-number">4.5.1</span> Iris Dataset</a></li>
+<li><a href="4-5-decision-boundaries.html#circle-dataset"><span class="toc-section-number">4.5.2</span> Circle Dataset</a></li>
+</ul></li>
+<li><a href="4-6-more-information.html#more-information"><span class="toc-section-number">4.6</span> More Information</a></li>
+</ul></li>
+<li><a href="5-association-analysis-basic-concepts-and-algorithms.html#association-analysis-basic-concepts-and-algorithms"><span class="toc-section-number">5</span> Association Analysis: Basic Concepts and Algorithms</a>
+<ul>
+<li><a href="5-1-the-arules-package.html#the-arules-package"><span class="toc-section-number">5.1</span> The arules Package</a></li>
+<li><a href="5-2-transactions.html#transactions"><span class="toc-section-number">5.2</span> Transactions</a>
+<ul>
+<li><a href="5-2-transactions.html#create-transactions"><span class="toc-section-number">5.2.1</span> Create Transactions</a></li>
+<li><a href="5-2-transactions.html#inspect-transactions"><span class="toc-section-number">5.2.2</span> Inspect Transactions</a></li>
+<li><a href="5-2-transactions.html#vertical-layout-transaction-id-lists"><span class="toc-section-number">5.2.3</span> Vertical Layout (Transaction ID Lists)</a></li>
+</ul></li>
+<li><a href="5-3-frequent-itemsets.html#frequent-itemsets"><span class="toc-section-number">5.3</span> Frequent Itemsets</a>
+<ul>
+<li><a href="5-3-frequent-itemsets.html#mine-frequent-itemsets"><span class="toc-section-number">5.3.1</span> Mine Frequent Itemsets</a></li>
+<li><a href="5-3-frequent-itemsets.html#concise-representation-of-itemsets"><span class="toc-section-number">5.3.2</span> Concise Representation of Itemsets</a></li>
+</ul></li>
+<li><a href="5-4-association-rules.html#association-rules"><span class="toc-section-number">5.4</span> Association Rules</a>
+<ul>
+<li><a href="5-4-association-rules.html#mine-association-rules"><span class="toc-section-number">5.4.1</span> Mine Association Rules</a></li>
+<li><a href="5-4-association-rules.html#calculate-additional-interest-measures"><span class="toc-section-number">5.4.2</span> Calculate Additional Interest Measures</a></li>
+<li><a href="5-4-association-rules.html#mine-using-templates"><span class="toc-section-number">5.4.3</span> Mine Using Templates</a></li>
+</ul></li>
+<li><a href="5-5-association-rule-visualization.html#association-rule-visualization"><span class="toc-section-number">5.5</span> Association Rule Visualization</a></li>
+<li><a href="5-6-interactive-visualizations.html#interactive-visualizations"><span class="toc-section-number">5.6</span> Interactive Visualizations</a>
+<ul>
+<li><a href="5-6-interactive-visualizations.html#interactive-inspect-with-sorting-filtering-and-paging"><span class="toc-section-number">5.6.1</span> Interactive Inspect With Sorting, Filtering and Paging</a></li>
+<li><a href="5-6-interactive-visualizations.html#scatter-plot-1"><span class="toc-section-number">5.6.2</span> Scatter Plot</a></li>
+<li><a href="5-6-interactive-visualizations.html#matrix-visualization"><span class="toc-section-number">5.6.3</span> Matrix Visualization</a></li>
+<li><a href="5-6-interactive-visualizations.html#visualization-as-graph"><span class="toc-section-number">5.6.4</span> Visualization as Graph</a></li>
+<li><a href="5-6-interactive-visualizations.html#interactive-rule-explorer"><span class="toc-section-number">5.6.5</span> Interactive Rule Explorer</a></li>
+</ul></li>
+</ul></li>
+<li><a href="6-association-analysis-advanced-concepts.html#association-analysis-advanced-concepts"><span class="toc-section-number">6</span> Association Analysis: Advanced Concepts</a></li>
+<li><a href="7-clustering-analysis.html#clustering-analysis"><span class="toc-section-number">7</span> Clustering Analysis</a>
+<ul>
+<li><a href="7-1-data-preparation.html#data-preparation"><span class="toc-section-number">7.1</span> Data Preparation</a>
+<ul>
+<li><a href="7-1-data-preparation.html#data-cleaning"><span class="toc-section-number">7.1.1</span> Data cleaning</a></li>
+<li><a href="7-1-data-preparation.html#scale-data"><span class="toc-section-number">7.1.2</span> Scale data</a></li>
+</ul></li>
+<li><a href="7-2-clustering-methods.html#clustering-methods"><span class="toc-section-number">7.2</span> Clustering methods</a>
+<ul>
+<li><a href="7-2-clustering-methods.html#k-means-clustering"><span class="toc-section-number">7.2.1</span> k-means Clustering</a></li>
+<li><a href="7-2-clustering-methods.html#hierarchical-clustering"><span class="toc-section-number">7.2.2</span> Hierarchical Clustering</a></li>
+<li><a href="7-2-clustering-methods.html#density-based-clustering-with-dbscan"><span class="toc-section-number">7.2.3</span> Density-based clustering with DBSCAN</a></li>
+<li><a href="7-2-clustering-methods.html#partitioning-around-medoids-pam"><span class="toc-section-number">7.2.4</span> Partitioning Around Medoids (PAM)</a></li>
+<li><a href="7-2-clustering-methods.html#gaussian-mixture-models"><span class="toc-section-number">7.2.5</span> Gaussian Mixture Models</a></li>
+<li><a href="7-2-clustering-methods.html#spectral-clustering"><span class="toc-section-number">7.2.6</span> Spectral clustering</a></li>
+<li><a href="7-2-clustering-methods.html#fuzzy-c-means-clustering"><span class="toc-section-number">7.2.7</span> Fuzzy C-Means Clustering</a></li>
+</ul></li>
+<li><a href="7-3-internal-cluster-validation.html#internal-cluster-validation"><span class="toc-section-number">7.3</span> Internal Cluster Validation</a>
+<ul>
+<li><a href="7-3-internal-cluster-validation.html#compare-the-clustering-quality"><span class="toc-section-number">7.3.1</span> Compare the Clustering Quality</a></li>
+<li><a href="7-3-internal-cluster-validation.html#silhouette-plot"><span class="toc-section-number">7.3.2</span> Silhouette plot</a></li>
+<li><a href="7-3-internal-cluster-validation.html#find-optimal-number-of-clusters-for-k-means"><span class="toc-section-number">7.3.3</span> Find Optimal Number of Clusters for k-means</a></li>
+<li><a href="7-3-internal-cluster-validation.html#visualizing-the-distance-matrix"><span class="toc-section-number">7.3.4</span> Visualizing the Distance Matrix</a></li>
+</ul></li>
+<li><a href="7-4-external-cluster-validation.html#external-cluster-validation"><span class="toc-section-number">7.4</span> External Cluster Validation</a></li>
+<li><a href="7-5-advanced-data-preparation-for-clustering.html#advanced-data-preparation-for-clustering"><span class="toc-section-number">7.5</span> Advanced Data Preparation for Clustering</a>
+<ul>
+<li><a href="7-5-advanced-data-preparation-for-clustering.html#outlier-removal"><span class="toc-section-number">7.5.1</span> Outlier Removal</a></li>
+<li><a href="7-5-advanced-data-preparation-for-clustering.html#clustering-tendency"><span class="toc-section-number">7.5.2</span> Clustering Tendency</a></li>
+</ul></li>
+</ul></li>
+<li><a href="references.html#references">References</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="testing-confusion-matrix-and-confidence-interval-for-accuracy" class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> Testing: Confusion Matrix and Confidence Interval for Accuracy</h2>
+<p>Use the best model on the test data</p>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="3-4-testing-confusion-matrix-and-confidence-interval-for-accuracy.html#cb286-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">newdata =</span> Zoo_test)</span>
+<span id="cb286-2"><a href="3-4-testing-confusion-matrix-and-confidence-interval-for-accuracy.html#cb286-2" aria-hidden="true" tabindex="-1"></a>pred</span></code></pre></div>
+<pre><code>##  [1] mammal        mammal        mollusc.et.al
+##  [4] insect        mammal        mammal       
+##  [7] mammal        bird          mammal       
+## [10] mammal        bird          fish         
+## [13] fish          mammal        mollusc.et.al
+## [16] bird          insect        bird         
+## 7 Levels: mammal bird reptile fish ... mollusc.et.al</code></pre>
+<p>Caret’s <code>confusionMatrix()</code> function calculates accuracy, confidence intervals, kappa and many more evaluation metrics. You need to use separate test data to create a confusion matrix based on the generalization error.</p>
+<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="3-4-testing-confusion-matrix-and-confidence-interval-for-accuracy.html#cb288-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="at">data =</span> pred, <span class="at">ref =</span> Zoo_test<span class="sc">$</span>type)</span></code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##                Reference
+## Prediction      mammal bird reptile fish amphibian
+##   mammal             8    0       0    0         0
+##   bird               0    4       0    0         0
+##   reptile            0    0       0    0         0
+##   fish               0    0       0    2         0
+##   amphibian          0    0       0    0         0
+##   insect             0    0       1    0         0
+##   mollusc.et.al      0    0       0    0         0
+##                Reference
+## Prediction      insect mollusc.et.al
+##   mammal             0             0
+##   bird               0             0
+##   reptile            0             0
+##   fish               0             0
+##   amphibian          0             0
+##   insect             1             0
+##   mollusc.et.al      0             2
+## 
+## Overall Statistics
+##                                         
+##                Accuracy : 0.944         
+##                  95% CI : (0.727, 0.999)
+##     No Information Rate : 0.444         
+##     P-Value [Acc &gt; NIR] : 1.08e-05      
+##                                         
+##                   Kappa : 0.923         
+##                                         
+##  Mcnemar&#39;s Test P-Value : NA            
+## 
+## Statistics by Class:
+## 
+##                      Class: mammal Class: bird
+## Sensitivity                  1.000       1.000
+## Specificity                  1.000       1.000
+## Pos Pred Value               1.000       1.000
+## Neg Pred Value               1.000       1.000
+## Prevalence                   0.444       0.222
+## Detection Rate               0.444       0.222
+## Detection Prevalence         0.444       0.222
+## Balanced Accuracy            1.000       1.000
+##                      Class: reptile Class: fish
+## Sensitivity                  0.0000       1.000
+## Specificity                  1.0000       1.000
+## Pos Pred Value                  NaN       1.000
+## Neg Pred Value               0.9444       1.000
+## Prevalence                   0.0556       0.111
+## Detection Rate               0.0000       0.111
+## Detection Prevalence         0.0000       0.111
+## Balanced Accuracy            0.5000       1.000
+##                      Class: amphibian Class: insect
+## Sensitivity                        NA        1.0000
+## Specificity                         1        0.9412
+## Pos Pred Value                     NA        0.5000
+## Neg Pred Value                     NA        1.0000
+## Prevalence                          0        0.0556
+## Detection Rate                      0        0.0556
+## Detection Prevalence                0        0.1111
+## Balanced Accuracy                  NA        0.9706
+##                      Class: mollusc.et.al
+## Sensitivity                         1.000
+## Specificity                         1.000
+## Pos Pred Value                      1.000
+## Neg Pred Value                      1.000
+## Prevalence                          0.111
+## Detection Rate                      0.111
+## Detection Prevalence                0.111
+## Balanced Accuracy                   1.000</code></pre>
+<p><strong>Some notes</strong></p>
+<ul>
+<li>Many classification algorithms and <code>train</code> in caret do not deal well
+with missing values.
+If your classification model can deal with missing values (e.g., <code>rpart</code>) then use <code>na.action = na.pass</code> when you call <code>train</code> and <code>predict</code>.
+Otherwise, you need to remove observations with missing values with
+<code>na.omit</code> or use imputation to replace the missing values before you train the model. Make sure that
+you still have enough observations left.</li>
+<li>Make sure that nominal variables (this includes logical variables)
+are coded as factors.</li>
+<li>The class variable for train in caret cannot have level names that are
+keywords in R (e.g., <code>TRUE</code> and <code>FALSE</code>). Rename them to, for example,
+“yes” and “no.”</li>
+<li>Make sure that nominal variables (factors) have examples for all possible
+values. Some methods might have problems with variable values
+without examples. You can drop empty levels using <code>droplevels</code> or <code>factor</code>.</li>
+<li>Sampling in train might create a sample that does not
+contain examples for all values in a nominal (factor) variable. You will get
+an error message. This most
+likely happens for variables which have one very rare value. You may have to
+remove the variable.</li>
+</ul>
+</div>
+<p style="text-align: center;">
+<a href="3-3-model-evaluation-with-caret.html"><button class="btn btn-default">Previous</button></a>
+<a href="3-5-model-comparison.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+</body>
+</html>
