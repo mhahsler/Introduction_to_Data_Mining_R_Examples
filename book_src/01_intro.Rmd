@@ -13,27 +13,34 @@ all_pkgs <- union(all_pkgs, pkgs)
 
 **Packages used for this chapter:** `r format_pkgs(pkgs)`
 
-This companion book assumes that you have [R](https://cran.r-project.org/) and [RStudio Desktop](https://www.rstudio.com/products/rstudio/) installed and that you are familiar with how to run R code and install packages.
+This companion book assumes that you have [R](https://cran.r-project.org/) and [RStudio Desktop](https://www.rstudio.com/products/rstudio/) installed and that you are familiar with the basics of R, how to run R code and install packages.
+
+If you are new to R, then working through [An Introduction to R](https://cran.r-project.org/doc/manuals/r-release/R-intro.html) will get you started.
+There are many introduction videos for RStudio and a basic video that shows you how to run code and how to install packages will suffice.
 
 The code in this book uses `tidyverse` to manipulate data and `ggplot2` for visualization.
+A great introduction to these very useful tools can be found in the book [R for Data Science](https://r4ds.had.co.nz) [@Wickham2017]. 
 
 ```{r}
 library(tidyverse)
 ```
 
-## Data Manipulation with Tidyverse
+`tidyverse` is a collection of many very useful packages that work well together by 
+sharing design principles and data structures. `tidyverse` also includes `ggplot2`.
 
-We use tidyverse tibbles to replace R's built-in data.frames, 
+In this book, we will 
+use tidyverse tibbles to replace R's built-in data.frames, 
 the pipe operator `%>%` to chain
 functions and data transformation functions like `filter()`, `arrange()`, `select()`, and
-`mutate()` provided by the tidyverse package `dplyr`. A good overview is given in
-the [RStudio Data Transformation Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf) and an introduction can be found in the
-[Section on Data Wrangling](https://r4ds.had.co.nz/wrangle-intro.html) the book [R for Data Science](https://r4ds.had.co.nz) [@Wickham2017].
+`mutate()` provided by the tidyverse package `dplyr`. 
+A good introduction can be found in the
+[Section on Data Wrangling](https://r4ds.had.co.nz/wrangle-intro.html) of [@Wickham2017],
+and
+a very useful resource is the [RStudio Data Transformation Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf). 
 
-## Visualization with ggplot2
-
-The gg in `ggplot2` stands for __The Grammar of Graphics__ introduced by 
-Leland Wilkinson [@Wilkinson2005].
+For visualization, we will use mainly `ggplot2`.
+The _gg_ in `ggplot2` stands for __The Grammar of Graphics__ introduced in 
+@Wilkinson2005.
 The main idea is that every graph is built from the same basic components:
 
 - the data,
@@ -48,7 +55,6 @@ In `ggplot2`, the components are combined using the `+` operator.
 
 Each `geom_` function uses a `stat_` function to calculate what is visualizes. For example,
 `geom_bar` uses `stat_count` to create a bar chart by counting how often each value appears in the data (see `? geom_bar`). `geom_point` just uses the stat `"identity"` to display the points using the coordinates as they are.
-
-RStudio's [Data Visualization Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf) offers a comprehensive overview of available components. A good introduction
-can be found in the [Chapter on Data Visualization](https://r4ds.had.co.nz/data-visualisation.html) of 
-the book [R for Data Science](https://r4ds.had.co.nz) [@Wickham2017].
+A great introduction can be found in the [Chapter on Data Visualization](https://r4ds.had.co.nz/data-visualisation.html) [@Wickham2017],
+and very useful is
+[RStudio's Data Visualization Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf).

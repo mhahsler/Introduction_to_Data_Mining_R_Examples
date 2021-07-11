@@ -1,5 +1,7 @@
-book_filename: "R-Code-Companion-for-Introduction-to-Data-Mining"
 delete_merged_file: true
+view: https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples/blob/master/book_src/%s
+edit: https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples/blob/master/book_src/%s
+output_dir: "../book"
 language:
   ui:
     chapter_name: "Chapter "

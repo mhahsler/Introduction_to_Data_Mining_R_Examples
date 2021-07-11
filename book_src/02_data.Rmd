@@ -16,7 +16,7 @@ all_pkgs <- union(all_pkgs, pkgs)
 
 ## The Iris Dataset
 
-We will use a toy dataset that comes with R. [Fisher's iris data set](https://en.wikipedia.org/wiki/Iris_flower_data_set) gives the measurements in centimeters of the variables sepal length and width and petal length and width, respectively, for 50 flowers from each of 3 species of iris. The species are Iris setosa, versicolor, and virginica.
+We will use a toy dataset that comes with R. [Fisher's iris data set](https://en.wikipedia.org/wiki/Iris_flower_data_set) gives the measurements in centimeters of the variables sepal length and width and petal length and width, respectively, for 150 50 flowers from each of 3 species of iris. The species are Iris Setosa, Iris Versicolor, and Iris Virginica.
 For more details see: `? iris`
 
 Load the iris data set and convert the data.frame into a tibble. _Note:_ datasets that come with R or R packages can be loaded with `data()`.
@@ -28,29 +28,35 @@ iris <- as_tibble(iris)
 iris
 ```
 
+We see that the data contains 150 rows (flowers) and 5 features. tibbles only show the first few rows and do not show all features, if they do not fit the screen width. We can force print to show all features by changing the width.
+
+```{r }
+print(iris, width = Inf)
+```
+
+
+
 ## Data Quality
-Inspect data (produce a scatterplot matrix using `ggpairs` from package `GGally`). Possibly
-you can see noise and ouliers.
+Get summary statistics for each column to identify outliers and missing values.
+
+```{r }
+summary(iris)
+```
+
+You can also summarize specific columns using a statistic.
+
+```{r }
+iris %>% summarize_if(is.numeric, mean)
+```
+
+Another way to inspect your data is to  use a scatterplot matrix (using `ggpairs` from package `GGally`). You can visually identify noise data points and ouliers.
 
 ```{r }
 library(GGally)
 ggpairs(iris, aes(color = Species))
 ```
 
-Get summary statistics for each column (outliers, missing values)
-
-```{r }
-summary(iris)
-```
-
-just the mean
-
-```{r }
-iris %>% summarize_if(is.numeric, mean)
-```
-
-Often you will do something
-like:
+To remove NAs and remove duplicates, we often do this:
 
 ```{r }
 clean.data <- iris %>% drop_na() %>% unique()
@@ -58,16 +64,17 @@ summary(clean.data)
 ```
 
 Note that one case (non-unique) is gone. All cases with missing
-values will also have been dropped.
+values will also be dropped. Typically, you will spend more time on data cleaning.
 
 ## Aggregation
-Aggregate by species. First group the data and then summarize each group.
+
+We group the data by species and then calculate a summary statistic for each group.
 
 ```{r }
 iris %>% group_by(Species) %>% summarize_all(mean)
 iris %>% group_by(Species) %>% summarize_all(median)
 ```
-
+We see what features are different between groups.
 
 ## Sampling
 ### Random Sampling
@@ -78,7 +85,7 @@ Sample from a vector with replacement.
 sample(c("A", "B", "C"), size = 10, replace = TRUE)
 ```
 
-Sampling rows from a tibble (I set the random number generator seed to make the results reproducible).
+Sampling 15 rows (flowers) from the tibble. I set the random number generator seed to make the results reproducible.
 
 ```{r }
 set.seed(1000)
@@ -86,6 +93,8 @@ set.seed(1000)
 s <- iris %>% sample_n(15)
 ggpairs(s, aes(color = Species))
 ```
+
+We often use sampling to reduce the size of the data.
 
 ### Stratified Sampling
 

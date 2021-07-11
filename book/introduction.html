@@ -4,27 +4,27 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 1 Introduction | R Code Companion for the Textbook Introduction to Data Mining</title>
-  <meta name="description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition)." />
+  <title>Chapter 1 Introduction | R Companion for the Textbook Introduction to Data Mining</title>
+  <meta name="description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (1st or 2nd edition)." />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 1 Introduction | R Code Companion for the Textbook Introduction to Data Mining" />
+  <meta property="og:title" content="Chapter 1 Introduction | R Companion for the Textbook Introduction to Data Mining" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition)." />
+  <meta property="og:description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (1st or 2nd edition)." />
   <meta name="github-repo" content="mhahsler/Introduction_to_Data_Mining_R_Examples" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 1 Introduction | R Code Companion for the Textbook Introduction to Data Mining" />
+  <meta name="twitter:title" content="Chapter 1 Introduction | R Companion for the Textbook Introduction to Data Mining" />
   
-  <meta name="twitter:description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition)." />
+  <meta name="twitter:description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (1st or 2nd edition)." />
   
 
 <meta name="author" content="Michael Hahsler" />
 
 
-<meta name="date" content="2021-07-09" />
+<meta name="date" content="2021-07-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -162,7 +162,6 @@ div.csl-indent {
 }
 </style>
 
-<link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
 <body>
@@ -175,16 +174,12 @@ div.csl-indent {
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">R Code Companion for Intro to Data Mining</a></li>
+<li><a href="./">R Companion for Data Mining</a></li>
 <li><a href="http://michael.hahsler.net">by Michael Hahsler</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
-<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#data-manipulation-with-tidyverse"><i class="fa fa-check"></i><b>1.1</b> Data Manipulation with Tidyverse</a></li>
-<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#visualization-with-ggplot2"><i class="fa fa-check"></i><b>1.2</b> Visualization with ggplot2</a></li>
-</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
 <li class="chapter" data-level="2" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>2</b> Data</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="data.html"><a href="data.html#the-iris-dataset"><i class="fa fa-check"></i><b>2.1</b> The Iris Dataset</a></li>
@@ -351,7 +346,6 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-
 </ul>
 
       </nav>
@@ -361,7 +355,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R Code Companion for the Textbook Introduction to Data Mining</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R Companion for the Textbook Introduction to Data Mining</a>
           </h1>
         </div>
 
@@ -371,9 +365,12 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="introduction" class="section level1" number="1">
 <h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
-<p><strong>Packages used for this chapter:</strong> <em>ggplot2</em> <span class="citation">(<a href="#ref-R-ggplot2" role="doc-biblioref">Wickham, Chang, et al. 2021</a>)</span>, <em>tidyverse</em> <span class="citation">(<a href="#ref-R-tidyverse" role="doc-biblioref">Wickham 2021c</a>)</span></p>
-<p>This companion book assumes that you have <a href="https://cran.r-project.org/">R</a> and <a href="https://www.rstudio.com/products/rstudio/">RStudio Desktop</a> installed and that you are familiar with how to run R code and install packages.</p>
-<p>The code in this book uses <code>tidyverse</code> to manipulate data and <code>ggplot2</code> for visualization.</p>
+<p><strong>Packages used for this chapter:</strong> <em>ggplot2</em> <span class="citation">(<a href="#ref-R-ggplot2" role="doc-biblioref">Wickham, Chang, et al., 2021</a>)</span>, <em>tidyverse</em> <span class="citation">(<a href="#ref-R-tidyverse" role="doc-biblioref">Wickham, 2021c</a>)</span></p>
+<p>This companion book assumes that you have <a href="https://cran.r-project.org/">R</a> and <a href="https://www.rstudio.com/products/rstudio/">RStudio Desktop</a> installed and that you are familiar with the basics of R, how to run R code and install packages.</p>
+<p>If you are new to R, then working through <a href="https://cran.r-project.org/doc/manuals/r-release/R-intro.html">An Introduction to R</a> will get you started.
+There are many introduction videos for RStudio and a basic video that shows you how to run code and how to install packages will suffice.</p>
+<p>The code in this book uses <code>tidyverse</code> to manipulate data and <code>ggplot2</code> for visualization.
+A great introduction to these very useful tools can be found in the book <a href="https://r4ds.had.co.nz">R for Data Science</a> <span class="citation">(<a href="#ref-Wickham2017" role="doc-biblioref">Wickham &amp; Grolemund, 2017</a>)</span>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="introduction.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
 <pre><code>## ── Attaching packages ────────────── tidyverse 1.3.1 ──</code></pre>
 <pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
@@ -383,19 +380,20 @@ div.csl-indent {
 <pre><code>## ── Conflicts ───────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
-<div id="data-manipulation-with-tidyverse" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Data Manipulation with Tidyverse</h2>
-<p>We use tidyverse tibbles to replace R’s built-in data.frames,
+<p><code>tidyverse</code> is a collection of many very useful packages that work well together by
+sharing design principles and data structures. <code>tidyverse</code> also includes <code>ggplot2</code>.</p>
+<p>In this book, we will
+use tidyverse tibbles to replace R’s built-in data.frames,
 the pipe operator <code>%&gt;%</code> to chain
 functions and data transformation functions like <code>filter()</code>, <code>arrange()</code>, <code>select()</code>, and
-<code>mutate()</code> provided by the tidyverse package <code>dplyr</code>. A good overview is given in
-the <a href="https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf">RStudio Data Transformation Cheat Sheet</a> and an introduction can be found in the
-<a href="https://r4ds.had.co.nz/wrangle-intro.html">Section on Data Wrangling</a> the book <a href="https://r4ds.had.co.nz">R for Data Science</a> <span class="citation">(<a href="#ref-Wickham2017" role="doc-biblioref">Wickham and Grolemund 2017</a>)</span>.</p>
-</div>
-<div id="visualization-with-ggplot2" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> Visualization with ggplot2</h2>
-<p>The gg in <code>ggplot2</code> stands for <strong>The Grammar of Graphics</strong> introduced by
-Leland Wilkinson <span class="citation">(<a href="#ref-Wilkinson2005" role="doc-biblioref">Wilkinson 2005</a>)</span>.
+<code>mutate()</code> provided by the tidyverse package <code>dplyr</code>.
+A good introduction can be found in the
+<a href="https://r4ds.had.co.nz/wrangle-intro.html">Section on Data Wrangling</a> of <span class="citation">(<a href="#ref-Wickham2017" role="doc-biblioref">Wickham &amp; Grolemund, 2017</a>)</span>,
+and
+a very useful resource is the <a href="https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf">RStudio Data Transformation Cheat Sheet</a>.</p>
+<p>For visualization, we will use mainly <code>ggplot2</code>.
+The <em>gg</em> in <code>ggplot2</code> stands for <strong>The Grammar of Graphics</strong> introduced in
+<span class="citation"><a href="#ref-Wilkinson2005" role="doc-biblioref">Wilkinson</a> (<a href="#ref-Wilkinson2005" role="doc-biblioref">2005</a>)</span>.
 The main idea is that every graph is built from the same basic components:</p>
 <ul>
 <li>the data,</li>
@@ -409,26 +407,25 @@ The main idea is that every graph is built from the same basic components:</p>
 <code>coord_cartesian()</code></p>
 </blockquote>
 <p>Each <code>geom_</code> function uses a <code>stat_</code> function to calculate what is visualizes. For example,
-<code>geom_bar</code> uses <code>stat_count</code> to create a bar chart by counting how often each value appears in the data (see <code>? geom_bar</code>). <code>geom_point</code> just uses the stat <code>"identity"</code> to display the points using the coordinates as they are.</p>
-<p>RStudio’s <a href="https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf">Data Visualization Cheat Sheet</a> offers a comprehensive overview of available components. A good introduction
-can be found in the <a href="https://r4ds.had.co.nz/data-visualisation.html">Chapter on Data Visualization</a> of
-the book <a href="https://r4ds.had.co.nz">R for Data Science</a> <span class="citation">(<a href="#ref-Wickham2017" role="doc-biblioref">Wickham and Grolemund 2017</a>)</span>.</p>
+<code>geom_bar</code> uses <code>stat_count</code> to create a bar chart by counting how often each value appears in the data (see <code>? geom_bar</code>). <code>geom_point</code> just uses the stat <code>"identity"</code> to display the points using the coordinates as they are.
+A great introduction can be found in the <a href="https://r4ds.had.co.nz/data-visualisation.html">Chapter on Data Visualization</a> <span class="citation">(<a href="#ref-Wickham2017" role="doc-biblioref">Wickham &amp; Grolemund, 2017</a>)</span>,
+and very useful is
+<a href="https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf">RStudio’s Data Visualization Cheat Sheet</a>.</p>
 
 </div>
-</div>
 <h3>References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-R-tidyverse" class="csl-entry">
-———. 2021c. <em>Tidyverse: Easily Install and Load the Tidyverse</em>. <a href="https://CRAN.R-project.org/package=tidyverse">https://CRAN.R-project.org/package=tidyverse</a>.
+Wickham, H. (2021c). <em>Tidyverse: Easily install and load the tidyverse</em>. <a href="https://CRAN.R-project.org/package=tidyverse">https://CRAN.R-project.org/package=tidyverse</a>
 </div>
 <div id="ref-R-ggplot2" class="csl-entry">
-Wickham, Hadley, Winston Chang, Lionel Henry, Thomas Lin Pedersen, Kohske Takahashi, Claus Wilke, Kara Woo, Hiroaki Yutani, and Dewey Dunnington. 2021. <em>Ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics</em>. <a href="https://CRAN.R-project.org/package=ggplot2">https://CRAN.R-project.org/package=ggplot2</a>.
+Wickham, H., Chang, W., Henry, L., Pedersen, T. L., Takahashi, K., Wilke, C., Woo, K., Yutani, H., &amp; Dunnington, D. (2021). <em>ggplot2: Create elegant data visualisations using the grammar of graphics</em>. <a href="https://CRAN.R-project.org/package=ggplot2">https://CRAN.R-project.org/package=ggplot2</a>
 </div>
 <div id="ref-Wickham2017" class="csl-entry">
-Wickham, Hadley, and Garrett Grolemund. 2017. <em>R for Data Science: Import, Tidy, Transform, Visualize, and Model Data</em>. 1st ed. O’Reilly Media, Inc.
+Wickham, H., &amp; Grolemund, G. (2017). <em>R for data science: Import, tidy, transform, visualize, and model data</em> (1st ed.). O’Reilly Media, Inc. <a href="https://r4ds.had.co.nz/">https://r4ds.had.co.nz/</a>
 </div>
 <div id="ref-Wilkinson2005" class="csl-entry">
-Wilkinson, Leland. 2005. <em>The Grammar of Graphics (Statistics and Computing)</em>. Berlin, Heidelberg: Springer-Verlag.
+Wilkinson, L. (2005). <em>The grammar of graphics (statistics and computing)</em>. Springer-Verlag. <a href="https://doi.org/10.1007/0-387-28695-0">https://doi.org/10.1007/0-387-28695-0</a>
 </div>
 </div>
             </section>
@@ -469,15 +466,15 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": null,
-"text": null
+"link": "https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples/blob/master/book_src/01_intro.Rmd",
+"text": "Edit"
 },
 "history": {
 "link": null,
 "text": null
 },
 "view": {
-"link": null,
+"link": "https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples/blob/master/book_src/01_intro.Rmd",
 "text": null
 },
 "download": null,

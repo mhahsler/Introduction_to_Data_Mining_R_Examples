@@ -4,27 +4,27 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>R Code Companion for the Textbook Introduction to Data Mining</title>
-  <meta name="description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition)." />
+  <title>R Companion for the Textbook Introduction to Data Mining</title>
+  <meta name="description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (1st or 2nd edition)." />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="R Code Companion for the Textbook Introduction to Data Mining" />
+  <meta property="og:title" content="R Companion for the Textbook Introduction to Data Mining" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition)." />
+  <meta property="og:description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (1st or 2nd edition)." />
   <meta name="github-repo" content="mhahsler/Introduction_to_Data_Mining_R_Examples" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="R Code Companion for the Textbook Introduction to Data Mining" />
+  <meta name="twitter:title" content="R Companion for the Textbook Introduction to Data Mining" />
   
-  <meta name="twitter:description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (2006 or 2017 edition)." />
+  <meta name="twitter:description" content="This book contains documented R examples to accompany several chapters of the popular data mining text book Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (1st or 2nd edition)." />
   
 
 <meta name="author" content="Michael Hahsler" />
 
 
-<meta name="date" content="2021-07-09" />
+<meta name="date" content="2021-07-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -162,7 +162,6 @@ div.csl-indent {
 }
 </style>
 
-<link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
 <body>
@@ -175,16 +174,12 @@ div.csl-indent {
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">R Code Companion for Intro to Data Mining</a></li>
+<li><a href="./">R Companion for Data Mining</a></li>
 <li><a href="http://michael.hahsler.net">by Michael Hahsler</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
-<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
-<ul>
-<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#data-manipulation-with-tidyverse"><i class="fa fa-check"></i><b>1.1</b> Data Manipulation with Tidyverse</a></li>
-<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#visualization-with-ggplot2"><i class="fa fa-check"></i><b>1.2</b> Visualization with ggplot2</a></li>
-</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
 <li class="chapter" data-level="2" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>2</b> Data</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="data.html"><a href="data.html#the-iris-dataset"><i class="fa fa-check"></i><b>2.1</b> The Iris Dataset</a></li>
@@ -351,7 +346,6 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-
 </ul>
 
       </nav>
@@ -361,7 +355,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R Code Companion for the Textbook Introduction to Data Mining</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R Companion for the Textbook Introduction to Data Mining</a>
           </h1>
         </div>
 
@@ -370,21 +364,23 @@ div.csl-indent {
 
             <section class="normal" id="section-">
 <div id="header">
-<h1 class="title">R Code Companion for the Textbook Introduction to Data Mining</h1>
+<h1 class="title">R Companion for the Textbook Introduction to Data Mining</h1>
 <p class="author"><em>Michael Hahsler</em></p>
-<p class="date" style="margin-top: 1.5em;"><em>2021-07-09</em></p>
+<p class="date" style="margin-top: 1.5em;"><em>2021-07-11</em></p>
 </div>
 <div id="preface" class="section level1 unnumbered">
 <h1>Preface</h1>
 <p>This book contains documented R examples to accompany several chapters of the popular data mining textbook
 <a href="https://www-users.cs.umn.edu/~kumar001/dmbook/"><em>Introduction to Data Mining</em></a>
-by Pang-Ning Tan, Michael Steinbach, Anuj Karpatne and Vipin Kumar <span class="citation">(<a href="#ref-Tan2005" role="doc-biblioref">Tan, Steinbach, and Kumar 2005</a>)</span>.
-The code can be used with either edition (2006 or 2017).</p>
+by Pang-Ning Tan, Michael Steinbach, Anuj Karpatne and Vipin Kumar.</p>
+<p>The code can be used with either edition: <span class="citation"><a href="#ref-Tan2005" role="doc-biblioref">Tan et al.</a> (<a href="#ref-Tan2005" role="doc-biblioref">2005</a>)</span> or <span class="citation"><a href="#ref-Tan2018" role="doc-biblioref">Tan et al.</a> (<a href="#ref-Tan2018" role="doc-biblioref">2017</a>)</span>.</p>
 <p><img src="images/book_small.jpg" alt="Creative Commons License" />
 <img src="images/book_small_e2.jpg" alt="Creative Commons License" /></p>
-<p>The code examples collected in this book were developed for the course <a href="http://michael.hahsler.net/SMU/EMIS7331">CS 7331 Data Mining</a>
-held at <a href="http://www.smu.edu">SMU</a> and will be regularly updated and improved. Please visit
-<a href="https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples" class="uri">https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples</a> to submit corrections or suggest
+<p>The code examples collected in this book were developed for the course <a href="http://michael.hahsler.net/SMU/EMIS7331">CS 7331 - Data Mining</a>
+taught at <a href="http://www.smu.edu">SMU</a> since Spring 2013 and will be regularly updated and improved.
+The latest update includes the use of <code>tidyverse</code> and <code>ggplot2</code> throughput.
+Please use the edit function within this book or visit
+the <a href="https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples">book’s GitHub project page</a> to submit corrections or suggest
 improvements.</p>
 <p>The online version of this book is licensed under the <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p>
 <div class="figure">
@@ -394,12 +390,21 @@ improvements.</p>
 <!--
 Remember each Rmd file contains one and only one chapter, and a chapter is defined by the first-level # heading `#`.
 -->
+<p>Please cite this book as:</p>
+<blockquote>
+<p>Michael Hahsler (2021). <em>R Companion for the Textbook Introduction to Data Mining.</em> Online Book. <a href="https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/" class="uri">https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/</a></p>
+</blockquote>
+<p>I hope this book helps you to learn to use R more efficiently for your data mining projects.</p>
+<p>Michael Hahsler</p>
 
 </div>
 <h3>References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-Tan2018" class="csl-entry">
+Tan, P.-N., Steinbach, M. S., Karpatne, A., &amp; Kumar, V. (2017). <em>Introduction to data mining</em> (2nd Edition). Pearson. <a href="http://www-users.cs.umn.edu/\%7Ekumar/dmbook/">http://www-users.cs.umn.edu/\%7Ekumar/dmbook/</a>
+</div>
 <div id="ref-Tan2005" class="csl-entry">
-Tan, Pang-Ning, Michael S. Steinbach, and Vipin Kumar. 2005. <em>Introduction to Data Mining</em>. Addison-Wesley. <a href="http://www-users.cs.umn.edu/\%7Ekumar/dmbook/">http://www-users.cs.umn.edu/\%7Ekumar/dmbook/</a>.
+Tan, P.-N., Steinbach, M. S., &amp; Kumar, V. (2005). <em>Introduction to data mining</em>. Addison-Wesley. <a href="http://www-users.cs.umn.edu/\%7Ekumar/dmbook/">http://www-users.cs.umn.edu/\%7Ekumar/dmbook/</a>
 </div>
 </div>
             </section>
@@ -440,15 +445,15 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": null,
-"text": null
+"link": "https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples/blob/master/book_src/index.Rmd",
+"text": "Edit"
 },
 "history": {
 "link": null,
 "text": null
 },
 "view": {
-"link": null,
+"link": "https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples/blob/master/book_src/index.Rmd",
 "text": null
 },
 "download": null,

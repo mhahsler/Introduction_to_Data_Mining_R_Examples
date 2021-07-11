@@ -1,6 +1,4 @@
 introduction
-data-manipulation-with-tidyverse
-visualization-with-ggplot2
 data
 the-iris-dataset
 data-quality
