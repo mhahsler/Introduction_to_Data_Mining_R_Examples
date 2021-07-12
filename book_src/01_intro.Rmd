@@ -15,28 +15,50 @@ all_pkgs <- union(all_pkgs, pkgs)
 
 This companion book assumes that you have [R](https://cran.r-project.org/) and [RStudio Desktop](https://www.rstudio.com/products/rstudio/) installed and that you are familiar with the basics of R, how to run R code and install packages.
 
-If you are new to R, then working through [An Introduction to R](https://cran.r-project.org/doc/manuals/r-release/R-intro.html) will get you started.
+If you are new to R, then working through the official R manual [An Introduction to R](https://cran.r-project.org/doc/manuals/r-release/R-intro.html) [@RCore2021] will get you started.
 There are many introduction videos for RStudio and a basic video that shows you how to run code and how to install packages will suffice.
 
 The code in this book uses `tidyverse` to manipulate data and `ggplot2` for visualization.
-A great introduction to these very useful tools can be found in the book [R for Data Science](https://r4ds.had.co.nz) [@Wickham2017]. 
+A great introduction to these very useful tools can be found in the freely available web book [R for Data Science](https://r4ds.had.co.nz) by @Wickham2017. 
 
 ```{r}
 library(tidyverse)
 ```
 
-`tidyverse` is a collection of many very useful packages that work well together by 
-sharing design principles and data structures. `tidyverse` also includes `ggplot2`.
+`tidyverse` [@R-tidyverse] is a collection of many very useful packages that work well together by 
+sharing design principles and data structures. `tidyverse` also includes `ggplot2` [@R-ggplot2] for visualization.
 
-In this book, we will 
-use tidyverse tibbles to replace R's built-in data.frames, 
-the pipe operator `%>%` to chain
-functions and data transformation functions like `filter()`, `arrange()`, `select()`, and
+In this book, we will use
+
+* tidyverse tibbles to replace R's built-in data.frames,
+* the pipe operator `%>%` to chain functions together, and 
+* data transformation functions like `filter()`, `arrange()`, `select()`, `group_by()`, and
 `mutate()` provided by the tidyverse package `dplyr`. 
+
 A good introduction can be found in the
-[Section on Data Wrangling](https://r4ds.had.co.nz/wrangle-intro.html) of [@Wickham2017],
+[Section on Data Wrangling](https://r4ds.had.co.nz/wrangle-intro.html) [@Wickham2017],
 and
-a very useful resource is the [RStudio Data Transformation Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf). 
+a very useful reference resource is the [RStudio Data Transformation Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf). 
+
+Here is a short example. We create a tibble with the price in dollars per pound and the vitamin C content in milligrams (mg) per pound for three fruit. 
+```{r }
+fruit <- tibble(
+  name = c("apple", "banana", "orange"), 
+  price = c(2.5, 2.0, 3.5), 
+  vitamin_c = c(20, 45, 250))
+fruit
+```
+
+Now we add a column with the vitamin C (in mg) that a dollar buys you, filter only fruit
+that provides more than 20 mg and then order (arrange) the data by the vitamin C per dollar from largest to smallest.  
+```{r }
+affordable_vitamin_c_sources <- fruit %>% 
+  mutate(vitamin_c_per_dollar = vitamin_c / price) %>% 
+  filter(vitamin_c_per_dollar > 20) %>% arrange(desc(vitamin_c_per_dollar))
+affordable_vitamin_c_sources 
+```
+
+The pipes operator `%>%` lets you compose a sequence of function calls in a more readable way by passing the value to the left on as the first argument to the function to the right.
 
 For visualization, we will use mainly `ggplot2`.
 The _gg_ in `ggplot2` stands for __The Grammar of Graphics__ introduced in 
@@ -50,11 +72,25 @@ The main idea is that every graph is built from the same basic components:
 In `ggplot2`, the components are combined using the `+` operator.
 
 > `ggplot(data, mapping = aes(x = ..., y = ..., color = ...)) +`
-> `geom_point() +`
-> `coord_cartesian()`
+> `  geom_point()`
 
+Since we typically use a Cartesian coordinate system, `ggplot` uses that by default. 
 Each `geom_` function uses a `stat_` function to calculate what is visualizes. For example,
 `geom_bar` uses `stat_count` to create a bar chart by counting how often each value appears in the data (see `? geom_bar`). `geom_point` just uses the stat `"identity"` to display the points using the coordinates as they are.
 A great introduction can be found in the [Chapter on Data Visualization](https://r4ds.had.co.nz/data-visualisation.html) [@Wickham2017],
 and very useful is
 [RStudio's Data Visualization Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf).
+
+We can visualize our fruit data as a scatter plot.
+```{r }
+ggplot(fruit, aes(x = price, y = vitamin_c)) + 
+  geom_point()
+```
+
+Alternatively, we can visualize the vitamin C content of each fruit using bars.
+```{r }
+ggplot(fruit, aes(x = name, y = vitamin_c)) + 
+  geom_bar(stat = "identity")
+```
+Note that `geom_bar` by default tries to aggregate data by counting, but we just want to visualize the 
+value already available in the tibble, so we specify the identity statistic.

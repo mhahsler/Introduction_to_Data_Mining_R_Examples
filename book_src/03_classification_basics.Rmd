@@ -1,4 +1,4 @@
-# Classification: Basic Concepts and Techniques
+# Classification: Basic Concepts and Techniques 
 
 
 ```{r setup_03, include=FALSE}

@@ -38,27 +38,21 @@ This book contains documented R examples to accompany several chapters of the po
 [_Introduction to Data Mining_](https://www-users.cs.umn.edu/~kumar001/dmbook/)
 by Pang-Ning Tan, Michael Steinbach, Anuj Karpatne and Vipin Kumar.
 
-The code can be used with either edition: @Tan2005 or @Tan2018.
+The code can be used with either edition: 1st edition [@Tan2005] or 2nd edition [@Tan2018].
 
 ![Creative Commons License](images/book_small.jpg) 
 ![Creative Commons License](images/book_small_e2.jpg) 
 
 The code examples collected in this book were developed for the course [CS 7331 - Data Mining](http://michael.hahsler.net/SMU/EMIS7331) 
 taught at [SMU](http://www.smu.edu) since Spring 2013 and will be regularly updated and improved. 
-The latest update includes the use of `tidyverse` and `ggplot2` throughput.
+The latest update includes the use of the popular packages in the meta-package `tidyverse` [@R-tidyverse] including `ggplot2` [@R-ggplot2] for data wrangling and visualization along with
+`caret` [@R-caret] for model building.
+
+![Creative Commons License](images/by-nc-sa.png) The online version of this book is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+
 Please use the edit function within this book or visit
 the [book's GitHub project page](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples) to submit corrections or suggest 
-improvements.
-
-The online version of this book is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
-
-![Creative Commons License](images/by-nc-sa.png)  
-
-<!--
-Remember each Rmd file contains one and only one chapter, and a chapter is defined by the first-level # heading `#`.
--->
-
-Please cite this book as:
+improvements. To cite this book use:
 
 > Michael Hahsler (2021). _R Companion for the Textbook Introduction to Data Mining._ Online Book. https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/
 
