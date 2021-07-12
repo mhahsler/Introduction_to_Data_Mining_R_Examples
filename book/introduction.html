@@ -444,11 +444,11 @@ and very useful is
 <p>We can visualize our fruit data as a scatter plot.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="introduction.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(fruit, <span class="fu">aes</span>(<span class="at">x =</span> price, <span class="at">y =</span> vitamin_c)) <span class="sc">+</span> </span>
 <span id="cb9-2"><a href="introduction.html#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>Alternatively, we can visualize the vitamin C content of each fruit using bars.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="introduction.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(fruit, <span class="fu">aes</span>(<span class="at">x =</span> name, <span class="at">y =</span> vitamin_c)) <span class="sc">+</span> </span>
 <span id="cb10-2"><a href="introduction.html#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 Note that <code>geom_bar</code> by default tries to aggregate data by counting, but we just want to visualize the
 value already available in the tibble, so we specify the identity statistic.</p>
 

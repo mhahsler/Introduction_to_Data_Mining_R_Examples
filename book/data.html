@@ -463,7 +463,7 @@ Start with summary statistics for each column to identify outliers and missing v
 ## with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value
 ## with `binwidth`.</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>See if you can spot the one red dot that is far away from all others.</p>
 <p>We need complete data for many data mining methods. To remove missing values (<code>NA</code>) and
 duplicates (identical data points which might be a mistake in the data), we often do this:</p>
@@ -515,31 +515,31 @@ We group the iris dataset by species and then calculate a summary statistic for 
 <h3><span class="header-section-number">2.4.1</span> Random Sampling</h3>
 <p>The built-in sample function can sample from a vector with replacement.</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="data.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>), <span class="at">size =</span> <span class="dv">10</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<pre><code>##  [1] &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;B&quot; &quot;A&quot; &quot;C&quot; &quot;A&quot; &quot;C&quot; &quot;A&quot;</code></pre>
+<pre><code>##  [1] &quot;B&quot; &quot;A&quot; &quot;C&quot; &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;C&quot; &quot;B&quot; &quot;A&quot; &quot;A&quot;</code></pre>
 <p>We often want to sample rows from a dataset. This can be done by sampling without replacement from a vector with row indices (using the functions <code>seq</code> and <code>nrow</code>). The sample is vector is then used to subset the rows of the dataset.</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="data.html#cb32-1" aria-hidden="true" tabindex="-1"></a>take <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">seq</span>(<span class="fu">nrow</span>(iris)), <span class="at">size =</span> <span class="dv">15</span>)</span>
 <span id="cb32-2"><a href="data.html#cb32-2" aria-hidden="true" tabindex="-1"></a>take</span></code></pre></div>
-<pre><code>##  [1]  66   8  17  47 135  87 103  12 145  43  54  27
-## [13]  22 109 146</code></pre>
+<pre><code>##  [1]  34  75  53  16   2  13  35  42  80  87 141 134
+## [13]  67  12 143</code></pre>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="data.html#cb34-1" aria-hidden="true" tabindex="-1"></a>iris[take, ]</span></code></pre></div>
 <pre><code>## # A tibble: 15 x 5
 ##    Sepal.Length Sepal.Width Petal.Length Petal.Width
 ##           &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
-##  1          6.7         3.1          4.4         1.4
-##  2          5           3.4          1.5         0.2
-##  3          5.4         3.9          1.3         0.4
-##  4          5.1         3.8          1.6         0.2
-##  5          6.1         2.6          5.6         1.4
-##  6          6.7         3.1          4.7         1.5
-##  7          7.1         3            5.9         2.1
-##  8          4.8         3.4          1.6         0.2
-##  9          6.7         3.3          5.7         2.5
-## 10          4.4         3.2          1.3         0.2
-## 11          5.5         2.3          4           1.3
-## 12          5           3.4          1.6         0.4
-## 13          5.1         3.7          1.5         0.4
-## 14          6.7         2.5          5.8         1.8
-## 15          6.7         3            5.2         2.3
+##  1          5.5         4.2          1.4         0.2
+##  2          6.4         2.9          4.3         1.3
+##  3          6.9         3.1          4.9         1.5
+##  4          5.7         4.4          1.5         0.4
+##  5          4.9         3            1.4         0.2
+##  6          4.8         3            1.4         0.1
+##  7          4.9         3.1          1.5         0.2
+##  8          4.5         2.3          1.3         0.3
+##  9          5.7         2.6          3.5         1  
+## 10          6.7         3.1          4.7         1.5
+## 11          6.7         3.1          5.6         2.4
+## 12          6.3         2.8          5.1         1.5
+## 13          5.6         3            4.5         1.5
+## 14          4.8         3.4          1.6         0.2
+## 15          5.8         2.7          5.1         1.9
 ## # … with 1 more variable: Species &lt;fct&gt;</code></pre>
 <p><code>dplyr</code> from tidyverse lets us sample rows from tibbles directly. I set the random number generator seed to make the results reproducible.</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="data.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1000</span>)</span>
@@ -554,7 +554,7 @@ We group the iris dataset by species and then calculate a summary statistic for 
 ## with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value
 ## with `binwidth`.</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 <div id="stratified-sampling" class="section level3" number="2.4.2">
 <h3><span class="header-section-number">2.4.2</span> Stratified Sampling</h3>
@@ -595,7 +595,7 @@ sampled rows.</p>
 ## with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value
 ## with `binwidth`.</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
 </div>
 <div id="features" class="section level2" number="2.5">
@@ -623,7 +623,7 @@ Points that are closer together in the high-dimensional space, tend also be clos
 ## Warning: `line.width` does not currently support
 ## multiple values.</code></pre>
 <div id="htmlwidget-1545c60f9b87a294716c" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1545c60f9b87a294716c">{"x":{"visdat":{"3fcf338ab3f7b":["function () ","plotlyVisDat"]},"cur_data":"3fcf338ab3f7b","attrs":{"3fcf338ab3f7b":{"x":{},"y":{},"z":{},"color":{},"size":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"Sepal.Length"},"yaxis":{"title":"Petal.Length"},"zaxis":{"title":"Sepal.Width"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9,5.4,4.8,4.8,4.3,5.8,5.7,5.4,5.1,5.7,5.1,5.4,5.1,4.6,5.1,4.8,5,5,5.2,5.2,4.7,4.8,5.4,5.2,5.5,4.9,5,5.5,4.9,4.4,5.1,5,4.5,4.4,5,5.1,4.8,5.1,4.6,5.3,5],"y":[1.4,1.4,1.3,1.5,1.4,1.7,1.4,1.5,1.4,1.5,1.5,1.6,1.4,1.1,1.2,1.5,1.3,1.4,1.7,1.5,1.7,1.5,1,1.7,1.9,1.6,1.6,1.5,1.4,1.6,1.6,1.5,1.5,1.4,1.5,1.2,1.3,1.4,1.3,1.5,1.3,1.3,1.3,1.6,1.9,1.4,1.6,1.4,1.5,1.4],"z":[3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1,3.7,3.4,3,3,4,4.4,3.9,3.5,3.8,3.8,3.4,3.7,3.6,3.3,3.4,3,3.4,3.5,3.4,3.2,3.1,3.4,4.1,4.2,3.1,3.2,3.5,3.6,3,3.4,3.5,2.3,3.2,3.5,3.8,3,3.8,3.2,3.7,3.3],"type":"scatter3d","mode":"markers","name":"setosa","marker":{"color":"rgba(102,194,165,1)","size":[13.75,13.75,13.75,13.75,13.75,21.25,17.5,13.75,13.75,10,13.75,13.75,10,10,13.75,21.25,21.25,17.5,17.5,17.5,13.75,21.25,13.75,25,13.75,13.75,21.25,13.75,13.75,13.75,13.75,21.25,10,13.75,13.75,13.75,13.75,10,13.75,13.75,17.5,17.5,13.75,28.75,21.25,17.5,13.75,13.75,13.75,13.75],"sizemode":"area","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)","size":[13.75,13.75,13.75,13.75,13.75,21.25,17.5,13.75,13.75,10,13.75,13.75,10,10,13.75,21.25,21.25,17.5,17.5,17.5,13.75,21.25,13.75,25,13.75,13.75,21.25,13.75,13.75,13.75,13.75,21.25,10,13.75,13.75,13.75,13.75,10,13.75,13.75,17.5,17.5,13.75,28.75,21.25,17.5,13.75,13.75,13.75,13.75]},"error_y":{"color":"rgba(102,194,165,1)","width":[]},"error_x":{"color":"rgba(102,194,165,1)","width":[]},"line":{"color":"rgba(102,194,165,1)"},"frame":null},{"x":[7,6.4,6.9,5.5,6.5,5.7,6.3,4.9,6.6,5.2,5,5.9,6,6.1,5.6,6.7,5.6,5.8,6.2,5.6,5.9,6.1,6.3,6.1,6.4,6.6,6.8,6.7,6,5.7,5.5,5.5,5.8,6,5.4,6,6.7,6.3,5.6,5.5,5.5,6.1,5.8,5,5.6,5.7,5.7,6.2,5.1,5.7],"y":[4.7,4.5,4.9,4,4.6,4.5,4.7,3.3,4.6,3.9,3.5,4.2,4,4.7,3.6,4.4,4.5,4.1,4.5,3.9,4.8,4,4.9,4.7,4.3,4.4,4.8,5,4.5,3.5,3.8,3.7,3.9,5.1,4.5,4.5,4.7,4.4,4.1,4,4.4,4.6,4,3.3,4.2,4.2,4.2,4.3,3,4.1],"z":[3.2,3.2,3.1,2.3,2.8,2.8,3.3,2.4,2.9,2.7,2,3,2.2,2.9,2.9,3.1,3,2.7,2.2,2.5,3.2,2.8,2.5,2.8,2.9,3,2.8,3,2.9,2.6,2.4,2.4,2.7,2.7,3,3.4,3.1,2.3,3,2.5,2.6,3,2.6,2.3,2.7,3,2.9,2.9,2.5,2.8],"type":"scatter3d","mode":"markers","name":"versicolor","marker":{"color":"rgba(252,141,98,1)","size":[58.75,62.5,62.5,55,62.5,55,66.25,43.75,55,58.75,43.75,62.5,43.75,58.75,55,58.75,62.5,43.75,62.5,47.5,73.75,55,62.5,51.25,55,58.75,58.75,70,62.5,43.75,47.5,43.75,51.25,66.25,62.5,66.25,62.5,55,55,55,51.25,58.75,51.25,43.75,55,51.25,55,55,47.5,55],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[58.75,62.5,62.5,55,62.5,55,66.25,43.75,55,58.75,43.75,62.5,43.75,58.75,55,58.75,62.5,43.75,62.5,47.5,73.75,55,62.5,51.25,55,58.75,58.75,70,62.5,43.75,47.5,43.75,51.25,66.25,62.5,66.25,62.5,55,55,55,51.25,58.75,51.25,43.75,55,51.25,55,55,47.5,55]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"frame":null},{"x":[6.3,5.8,7.1,6.3,6.5,7.6,4.9,7.3,6.7,7.2,6.5,6.4,6.8,5.7,5.8,6.4,6.5,7.7,7.7,6,6.9,5.6,7.7,6.3,6.7,7.2,6.2,6.1,6.4,7.2,7.4,7.9,6.4,6.3,6.1,7.7,6.3,6.4,6,6.9,6.7,6.9,5.8,6.8,6.7,6.7,6.3,6.5,6.2,5.9],"y":[6,5.1,5.9,5.6,5.8,6.6,4.5,6.3,5.8,6.1,5.1,5.3,5.5,5,5.1,5.3,5.5,6.7,6.9,5,5.7,4.9,6.7,4.9,5.7,6,4.8,4.9,5.6,5.8,6.1,6.4,5.6,5.1,5.6,6.1,5.6,5.5,4.8,5.4,5.6,5.1,5.1,5.9,5.7,5.2,5,5.2,5.4,5.1],"z":[3.3,2.7,3,2.9,3,3,2.5,2.9,2.5,3.6,3.2,2.7,3,2.5,2.8,3.2,3,3.8,2.6,2.2,3.2,2.8,2.8,2.7,3.3,3.2,2.8,3,2.8,3,2.8,3.8,2.8,2.8,2.6,3,3.4,3.1,3,3.1,3.1,3.1,2.7,3.2,3.3,3,2.5,3,3.4,3],"type":"scatter3d","mode":"markers","name":"virginica","marker":{"color":"rgba(141,160,203,1)","size":[100,77.5,85,73.75,88.75,85,70,73.75,73.75,100,81.25,77.5,85,81.25,96.25,92.5,73.75,88.75,92.5,62.5,92.5,81.25,81.25,73.75,85,73.75,73.75,73.75,85,66.25,77.5,81.25,88.75,62.5,58.75,92.5,96.25,73.75,73.75,85,96.25,92.5,77.5,92.5,100,92.5,77.5,81.25,92.5,73.75],"sizemode":"area","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)","size":[100,77.5,85,73.75,88.75,85,70,73.75,73.75,100,81.25,77.5,85,81.25,96.25,92.5,73.75,88.75,92.5,62.5,92.5,81.25,81.25,73.75,85,73.75,73.75,73.75,85,66.25,77.5,81.25,88.75,62.5,58.75,92.5,96.25,73.75,73.75,85,96.25,92.5,77.5,92.5,100,92.5,77.5,81.25,92.5,73.75]},"error_y":{"color":"rgba(141,160,203,1)","width":[]},"error_x":{"color":"rgba(141,160,203,1)","width":[]},"line":{"color":"rgba(141,160,203,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-1545c60f9b87a294716c">{"x":{"visdat":{"41af93298eac":["function () ","plotlyVisDat"]},"cur_data":"41af93298eac","attrs":{"41af93298eac":{"x":{},"y":{},"z":{},"color":{},"size":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"Sepal.Length"},"yaxis":{"title":"Petal.Length"},"zaxis":{"title":"Sepal.Width"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9,5.4,4.8,4.8,4.3,5.8,5.7,5.4,5.1,5.7,5.1,5.4,5.1,4.6,5.1,4.8,5,5,5.2,5.2,4.7,4.8,5.4,5.2,5.5,4.9,5,5.5,4.9,4.4,5.1,5,4.5,4.4,5,5.1,4.8,5.1,4.6,5.3,5],"y":[1.4,1.4,1.3,1.5,1.4,1.7,1.4,1.5,1.4,1.5,1.5,1.6,1.4,1.1,1.2,1.5,1.3,1.4,1.7,1.5,1.7,1.5,1,1.7,1.9,1.6,1.6,1.5,1.4,1.6,1.6,1.5,1.5,1.4,1.5,1.2,1.3,1.4,1.3,1.5,1.3,1.3,1.3,1.6,1.9,1.4,1.6,1.4,1.5,1.4],"z":[3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1,3.7,3.4,3,3,4,4.4,3.9,3.5,3.8,3.8,3.4,3.7,3.6,3.3,3.4,3,3.4,3.5,3.4,3.2,3.1,3.4,4.1,4.2,3.1,3.2,3.5,3.6,3,3.4,3.5,2.3,3.2,3.5,3.8,3,3.8,3.2,3.7,3.3],"type":"scatter3d","mode":"markers","name":"setosa","marker":{"color":"rgba(102,194,165,1)","size":[13.75,13.75,13.75,13.75,13.75,21.25,17.5,13.75,13.75,10,13.75,13.75,10,10,13.75,21.25,21.25,17.5,17.5,17.5,13.75,21.25,13.75,25,13.75,13.75,21.25,13.75,13.75,13.75,13.75,21.25,10,13.75,13.75,13.75,13.75,10,13.75,13.75,17.5,17.5,13.75,28.75,21.25,17.5,13.75,13.75,13.75,13.75],"sizemode":"area","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)","size":[13.75,13.75,13.75,13.75,13.75,21.25,17.5,13.75,13.75,10,13.75,13.75,10,10,13.75,21.25,21.25,17.5,17.5,17.5,13.75,21.25,13.75,25,13.75,13.75,21.25,13.75,13.75,13.75,13.75,21.25,10,13.75,13.75,13.75,13.75,10,13.75,13.75,17.5,17.5,13.75,28.75,21.25,17.5,13.75,13.75,13.75,13.75]},"error_y":{"color":"rgba(102,194,165,1)","width":[]},"error_x":{"color":"rgba(102,194,165,1)","width":[]},"line":{"color":"rgba(102,194,165,1)"},"frame":null},{"x":[7,6.4,6.9,5.5,6.5,5.7,6.3,4.9,6.6,5.2,5,5.9,6,6.1,5.6,6.7,5.6,5.8,6.2,5.6,5.9,6.1,6.3,6.1,6.4,6.6,6.8,6.7,6,5.7,5.5,5.5,5.8,6,5.4,6,6.7,6.3,5.6,5.5,5.5,6.1,5.8,5,5.6,5.7,5.7,6.2,5.1,5.7],"y":[4.7,4.5,4.9,4,4.6,4.5,4.7,3.3,4.6,3.9,3.5,4.2,4,4.7,3.6,4.4,4.5,4.1,4.5,3.9,4.8,4,4.9,4.7,4.3,4.4,4.8,5,4.5,3.5,3.8,3.7,3.9,5.1,4.5,4.5,4.7,4.4,4.1,4,4.4,4.6,4,3.3,4.2,4.2,4.2,4.3,3,4.1],"z":[3.2,3.2,3.1,2.3,2.8,2.8,3.3,2.4,2.9,2.7,2,3,2.2,2.9,2.9,3.1,3,2.7,2.2,2.5,3.2,2.8,2.5,2.8,2.9,3,2.8,3,2.9,2.6,2.4,2.4,2.7,2.7,3,3.4,3.1,2.3,3,2.5,2.6,3,2.6,2.3,2.7,3,2.9,2.9,2.5,2.8],"type":"scatter3d","mode":"markers","name":"versicolor","marker":{"color":"rgba(252,141,98,1)","size":[58.75,62.5,62.5,55,62.5,55,66.25,43.75,55,58.75,43.75,62.5,43.75,58.75,55,58.75,62.5,43.75,62.5,47.5,73.75,55,62.5,51.25,55,58.75,58.75,70,62.5,43.75,47.5,43.75,51.25,66.25,62.5,66.25,62.5,55,55,55,51.25,58.75,51.25,43.75,55,51.25,55,55,47.5,55],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[58.75,62.5,62.5,55,62.5,55,66.25,43.75,55,58.75,43.75,62.5,43.75,58.75,55,58.75,62.5,43.75,62.5,47.5,73.75,55,62.5,51.25,55,58.75,58.75,70,62.5,43.75,47.5,43.75,51.25,66.25,62.5,66.25,62.5,55,55,55,51.25,58.75,51.25,43.75,55,51.25,55,55,47.5,55]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"frame":null},{"x":[6.3,5.8,7.1,6.3,6.5,7.6,4.9,7.3,6.7,7.2,6.5,6.4,6.8,5.7,5.8,6.4,6.5,7.7,7.7,6,6.9,5.6,7.7,6.3,6.7,7.2,6.2,6.1,6.4,7.2,7.4,7.9,6.4,6.3,6.1,7.7,6.3,6.4,6,6.9,6.7,6.9,5.8,6.8,6.7,6.7,6.3,6.5,6.2,5.9],"y":[6,5.1,5.9,5.6,5.8,6.6,4.5,6.3,5.8,6.1,5.1,5.3,5.5,5,5.1,5.3,5.5,6.7,6.9,5,5.7,4.9,6.7,4.9,5.7,6,4.8,4.9,5.6,5.8,6.1,6.4,5.6,5.1,5.6,6.1,5.6,5.5,4.8,5.4,5.6,5.1,5.1,5.9,5.7,5.2,5,5.2,5.4,5.1],"z":[3.3,2.7,3,2.9,3,3,2.5,2.9,2.5,3.6,3.2,2.7,3,2.5,2.8,3.2,3,3.8,2.6,2.2,3.2,2.8,2.8,2.7,3.3,3.2,2.8,3,2.8,3,2.8,3.8,2.8,2.8,2.6,3,3.4,3.1,3,3.1,3.1,3.1,2.7,3.2,3.3,3,2.5,3,3.4,3],"type":"scatter3d","mode":"markers","name":"virginica","marker":{"color":"rgba(141,160,203,1)","size":[100,77.5,85,73.75,88.75,85,70,73.75,73.75,100,81.25,77.5,85,81.25,96.25,92.5,73.75,88.75,92.5,62.5,92.5,81.25,81.25,73.75,85,73.75,73.75,73.75,85,66.25,77.5,81.25,88.75,62.5,58.75,92.5,96.25,73.75,73.75,85,96.25,92.5,77.5,92.5,100,92.5,77.5,81.25,92.5,73.75],"sizemode":"area","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)","size":[100,77.5,85,73.75,88.75,85,70,73.75,73.75,100,81.25,77.5,85,81.25,96.25,92.5,73.75,88.75,92.5,62.5,92.5,81.25,81.25,73.75,85,73.75,73.75,73.75,85,66.25,77.5,81.25,88.75,62.5,58.75,92.5,96.25,73.75,73.75,85,96.25,92.5,77.5,92.5,100,92.5,77.5,81.25,92.5,73.75]},"error_y":{"color":"rgba(141,160,203,1)","width":[]},"error_x":{"color":"rgba(141,160,203,1)","width":[]},"line":{"color":"rgba(141,160,203,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p>The principal components can be calculated from a matrix using the function <code>prcomp()</code>. We select
 all numeric columns (by removing the species column) and convert the data.frame into a matrix before
 the calculation.</p>
@@ -637,7 +637,7 @@ the calculation.</p>
 <p>How important is each principal component can also be seen using a <a href="https://en.wikipedia.org/wiki/Scree_plot">scree plot</a>. The plot function for the result of
 the <code>prcomp</code> function visualizes how much variability in the data is explained by each additional principal component.</p>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="data.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pc, <span class="at">type =</span> <span class="st">&quot;line&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>Note that the first principal component (PC1) explains most of the variability in the iris dataset.</p>
 <p>To find out what information is stored in the object <code>pc</code>, we can inspect the
 raw object (display <em>str</em>ucture).</p>
@@ -662,7 +662,7 @@ dataset to display the data projected on the first two principal components.</p>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="data.html#cb50-1" aria-hidden="true" tabindex="-1"></a>iris_projected <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(pc<span class="sc">$</span>x) <span class="sc">%&gt;%</span> <span class="fu">add_column</span>(<span class="at">Species =</span> iris<span class="sc">$</span>Species)</span>
 <span id="cb50-2"><a href="data.html#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris_projected, <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> Species)) <span class="sc">+</span> </span>
 <span id="cb50-3"><a href="data.html#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <p>Since the first principal component represents most of the variability, we can
 also show the data projected only on PC1.</p>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="data.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris_projected, </span>
@@ -672,17 +672,17 @@ also show the data projected only on PC1.</p>
 <span id="cb51-5"><a href="data.html#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(),</span>
 <span id="cb51-6"><a href="data.html#cb51-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>()</span>
 <span id="cb51-7"><a href="data.html#cb51-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <p>A plot of the projected data with the original axes added as arrows is called a
 <a href="https://en.wikipedia.org/wiki/Biplot">biplot</a>. If the arrows (original axes)
 align roughly with the axes of the projection, then they are correlated (linearly dependent).</p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="data.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(factoextra)</span></code></pre></div>
 <pre><code>## Welcome! Want to learn more? See two factoextra-related books at https://goo.gl/ve3WBa</code></pre>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="data.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_pca</span>(pc)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p>We can also display only the old and new axes.</p>
 <div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="data.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_pca_var</span>(pc)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>We see Petal.Width and Petal.Length point in the same direction which indicates that they are highly correlated. They are also roughly aligned with PC1 (called Dim1 in the plot) which means that PC1 represents most of the variability of these two variables. Sepal.Width parallel to the y-axis and therefore represented by PC2 (Dim2). Petal.Width/Petal.Length and Sepal.Width are almost at 90 degrees, indicating that they are close to uncorrelated. Sepal.Length correlated to all other variables and
 represented by both, PC1 and PC2 in the projection.</p>
 <p>Another popular method to project data into lower dimensions for visualization is <strong>t-distributed stochastic neighbor embedding (t-SNE)</strong> available in package <code>Rtsne</code>.</p>
@@ -698,7 +698,7 @@ represented by both, PC1 and PC2 in the projection.</p>
 <span id="cb57-3"><a href="data.html#cb57-3" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(fit) <span class="sc">%&gt;%</span> <span class="fu">add_column</span>(<span class="at">Species =</span> iris<span class="sc">$</span>Species)</span>
 <span id="cb57-4"><a href="data.html#cb57-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb57-5"><a href="data.html#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(fit, <span class="fu">aes</span>(<span class="at">x =</span> comp1, <span class="at">y =</span> comp2, <span class="at">color =</span> Species)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-28-1.png" width="672" />
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-28-1.png" width="672" />
 The resulting projection is similar (except for rotation and reflection) to the result of PCA.</p>
 </div>
 <div id="non-parametric-multidimensional-scaling" class="section level4" number="2.5.1.3">
@@ -721,7 +721,7 @@ distribution and see if it gives us an idea how we should group the continuous v
 a set of discrete values. A histogram visualizes the distribution of a single
 continuous feature.</p>
 <div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="data.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Petal.Width)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> .<span class="dv">2</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <p>The R function <code>cut</code> performs equal interval width discretization.</p>
 <div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="data.html#cb59-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> <span class="fu">pull</span>(Sepal.Width) <span class="sc">%&gt;%</span> <span class="fu">cut</span>(<span class="at">breaks =</span> <span class="dv">3</span>)</span></code></pre></div>
 <pre><code>##   [1] (2.8,3.6] (2.8,3.6] (2.8,3.6] (2.8,3.6] (2.8,3.6]
@@ -915,19 +915,19 @@ each discrete value.</p>
 <span id="cb74-3"><a href="data.html#cb74-3" aria-hidden="true" tabindex="-1"></a>      iris <span class="sc">%&gt;%</span> <span class="fu">pull</span>(Petal.Width) <span class="sc">%&gt;%</span> <span class="fu">discretize</span>(<span class="at">method =</span> <span class="st">&quot;interval&quot;</span>, <span class="at">breaks =</span> <span class="dv">3</span>, <span class="at">onlycuts =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb74-4"><a href="data.html#cb74-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
 <span id="cb74-5"><a href="data.html#cb74-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Discretization: interval&quot;</span>, <span class="at">subtitle =</span> <span class="st">&quot;Blue lines are boundaries&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="data.html#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(Petal.Width)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> .<span class="dv">2</span>) <span class="sc">+</span></span>
 <span id="cb75-2"><a href="data.html#cb75-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span></span>
 <span id="cb75-3"><a href="data.html#cb75-3" aria-hidden="true" tabindex="-1"></a>      iris <span class="sc">%&gt;%</span> <span class="fu">pull</span>(Petal.Width) <span class="sc">%&gt;%</span> <span class="fu">discretize</span>(<span class="at">method =</span> <span class="st">&quot;frequency&quot;</span>, <span class="at">breaks =</span> <span class="dv">3</span>, <span class="at">onlycuts =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb75-4"><a href="data.html#cb75-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
 <span id="cb75-5"><a href="data.html#cb75-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Discretization: frequency&quot;</span>, <span class="at">subtitle =</span> <span class="st">&quot;Blue lines are boundaries&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-31-2.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-31-2.png" width="672" /></p>
 <div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="data.html#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(Petal.Width)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> .<span class="dv">2</span>) <span class="sc">+</span></span>
 <span id="cb76-2"><a href="data.html#cb76-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span></span>
 <span id="cb76-3"><a href="data.html#cb76-3" aria-hidden="true" tabindex="-1"></a>      iris <span class="sc">%&gt;%</span> <span class="fu">pull</span>(Petal.Width) <span class="sc">%&gt;%</span> <span class="fu">discretize</span>(<span class="at">method =</span> <span class="st">&quot;cluster&quot;</span>, <span class="at">breaks =</span> <span class="dv">3</span>, <span class="at">onlycuts =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb76-4"><a href="data.html#cb76-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
 <span id="cb76-5"><a href="data.html#cb76-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Discretization: cluster&quot;</span>, <span class="at">subtitle =</span> <span class="st">&quot;Blue lines are boundaries&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-31-3.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-31-3.png" width="672" /></p>
 </div>
 <div id="standardize-data" class="section level3" number="2.5.4">
 <h3><span class="header-section-number">2.5.4</span> Standardize Data</h3>
@@ -1150,7 +1150,7 @@ Gower’s distance is scaled between 0 and 1).</p>
 <pre><code>## Don&#39;t know how to automatically pick scale for object of type dist. Defaulting to continuous.
 ## Don&#39;t know how to automatically pick scale for object of type dist. Defaulting to continuous.</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
 </div>
 </div>
 <div id="additional-proximity-measures-available-in-package-proxy" class="section level3" number="2.6.4">
@@ -1214,7 +1214,7 @@ The correlation between Petal.Length and Petal.Width can be visualized using a s
 <span id="cb126-2"><a href="data.html#cb126-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb126-3"><a href="data.html#cb126-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>)</span></code></pre></div>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
 <p><code>geom_smooth</code> adds a regression line by fitting a linear model (<code>lm</code>). Most points are close to this line indicating strong linear dependence (i.e., correlation).</p>
 <p>We can calculate individual correlations by specifying two vectors.</p>
 <div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="data.html#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(iris, <span class="fu">cor</span>(Petal.Length, Petal.Width))</span></code></pre></div>
@@ -1347,7 +1347,7 @@ too much information.</p>
 <p><a href="https://en.wikipedia.org/wiki/Density_estimation">Density estimation</a> constructions an estimate of an unobservable probability density function (a distribution) based on observed data.</p>
 <p>Just plotting the data is not very helpful for a single feature.</p>
 <div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="data.html#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Petal.Length, <span class="at">y =</span> <span class="dv">0</span>)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
 <div id="histograms" class="section level3" number="2.8.1">
 <h3><span class="header-section-number">2.8.1</span> Histograms</h3>
 <p>A <a href="https://en.wikipedia.org/wiki/Histogram">histograms</a> shows more about the distribution by counting how many values fall within a bucket and visualizing the counts as a bar chart.
@@ -1358,17 +1358,17 @@ for the original data points at the bottom of the histogram.</p>
 <span id="cb145-3"><a href="data.html#cb145-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rug</span>(<span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)</span></code></pre></div>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value
 ## with `binwidth`.</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
 <p>Two-dimensional distributions can be visualized using
 2-d binning or hexagonal bins.</p>
 <div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="data.html#cb147-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(Sepal.Length, Sepal.Width)) <span class="sc">+</span></span>
 <span id="cb147-2"><a href="data.html#cb147-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bin2d</span>(<span class="at">bins =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
 <span id="cb147-3"><a href="data.html#cb147-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
 <div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="data.html#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(Sepal.Length, Sepal.Width)) <span class="sc">+</span></span>
 <span id="cb148-2"><a href="data.html#cb148-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hex</span>(<span class="at">bins =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
 <span id="cb148-3"><a href="data.html#cb148-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-55-2.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-55-2.png" width="672" /></p>
 </div>
 <div id="kernel-density-estimate-kde" class="section level3" number="2.8.2">
 <h3><span class="header-section-number">2.8.2</span> Kernel Density Estimate (KDE)</h3>
@@ -1380,13 +1380,13 @@ The bandwidth (<code>bw</code>) of the kernel controls the amount of smoothing.<
 <div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="data.html#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(Petal.Length)) <span class="sc">+</span></span>
 <span id="cb149-2"><a href="data.html#cb149-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">bw =</span> .<span class="dv">2</span>) <span class="sc">+</span></span>
 <span id="cb149-3"><a href="data.html#cb149-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rug</span>(<span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-56-1.png" width="672" />
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-56-1.png" width="672" />
 Kernel density estimates can also be done in two dimensions. The lines are called contour lines and
 indicate density similar to elevation lines on maps.</p>
 <div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="data.html#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(Sepal.Length, Sepal.Width)) <span class="sc">+</span></span>
 <span id="cb150-2"><a href="data.html#cb150-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density2d</span>() <span class="sc">+</span></span>
 <span id="cb150-3"><a href="data.html#cb150-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
 </div>
 </div>
 <div id="exploring-data" class="section level2" number="2.9">
@@ -1583,7 +1583,7 @@ It is defined the length Q3 - Q2 which covers the 50% of the data in the middle.
 <h3><span class="header-section-number">2.10.1</span> Histogram</h3>
 <p>Histograms show the distribution of a single continuous feature.</p>
 <div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="data.html#cb191-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(Petal.Width)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">20</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
 </div>
 <div id="boxplot" class="section level3" number="2.10.2">
 <h3><span class="header-section-number">2.10.2</span> Boxplot</h3>
@@ -1592,7 +1592,7 @@ the boxes span the interquartile range. The whiskers (vertical lines) span typic
 interquartile range. Points that fall outside that range are typically outliers shown as dots.</p>
 <div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="data.html#cb192-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(Species, Sepal.Length)) <span class="sc">+</span> </span>
 <span id="cb192-2"><a href="data.html#cb192-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-74-1.png" width="672" />
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-74-1.png" width="672" />
 The group-wise medians can also be calculated directly.</p>
 <div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="data.html#cb193-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(Species) <span class="sc">%&gt;%</span> <span class="fu">summarize_if</span>(is.numeric, median)</span></code></pre></div>
 <pre><code>## # A tibble: 3 x 5
@@ -1608,7 +1608,7 @@ we first have to transform the data into long format (i.e., all feature values a
 <span id="cb195-2"><a href="data.html#cb195-2" aria-hidden="true" tabindex="-1"></a>iris_long <span class="ot">&lt;-</span> iris <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span>
 <span id="cb195-3"><a href="data.html#cb195-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris_long, <span class="fu">aes</span>(name, value)) <span class="sc">+</span> </span>
 <span id="cb195-4"><a href="data.html#cb195-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-76-1.png" width="672" />
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-76-1.png" width="672" />
 This visualization is only useful if all features have roughly the same range.</p>
 </div>
 <div id="scatter-plot" class="section level3" number="2.10.3">
@@ -1616,7 +1616,7 @@ This visualization is only useful if all features have roughly the same range.</
 <p>Scatter plots show the relationship between two continuous features.</p>
 <div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="data.html#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Petal.Length, <span class="at">y =</span> Petal.Width, <span class="at">color =</span> Species)) <span class="sc">+</span> </span>
 <span id="cb196-2"><a href="data.html#cb196-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-77-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-77-1.png" width="672" /></p>
 </div>
 <div id="scatter-plot-matrix" class="section level3" number="2.10.4">
 <h3><span class="header-section-number">2.10.4</span> Scatter Plot Matrix</h3>
@@ -1631,7 +1631,7 @@ This visualization is only useful if all features have roughly the same range.</
 ## with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value
 ## with `binwidth`.</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-78-1.png" width="672" />
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-78-1.png" width="672" />
 The implementation in package <code>GGally</code> also shows additional plots (histograms, density estimates and box plots) and correlation coefficients.</p>
 </div>
 <div id="data-matrix-visualization" class="section level3" number="2.10.5">
@@ -1652,7 +1652,7 @@ The implementation in package <code>GGally</code> also shows additional plots (h
 ## 6     2 Sepal.Width    3</code></pre>
 <div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="data.html#cb202-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris_long,</span>
 <span id="cb202-2"><a href="data.html#cb202-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> name, <span class="at">y =</span> id, <span class="at">fill =</span> value)) <span class="sc">+</span> <span class="fu">geom_tile</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
 <p>Smaller values are darker. Package <code>seriation</code> provides a simpler plotting function.</p>
 <div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="data.html#cb203-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(seriation)</span></code></pre></div>
 <pre><code>## Registered S3 methods overwritten by &#39;registry&#39;:
@@ -1665,11 +1665,11 @@ The implementation in package <code>GGally</code> also shows additional plots (h
 ## 
 ##     panel.lines</code></pre>
 <div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="data.html#cb207-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpimage</span>(iris_matrix, <span class="at">prop =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-81-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-81-1.png" width="672" /></p>
 <p>We can scale the features to z-scores to make them better comparable.</p>
 <div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="data.html#cb208-1" aria-hidden="true" tabindex="-1"></a>iris_scaled <span class="ot">&lt;-</span> <span class="fu">scale</span>(iris_matrix)</span>
 <span id="cb208-2"><a href="data.html#cb208-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpimage</span>(iris_scaled, <span class="at">prop =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-82-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-82-1.png" width="672" /></p>
 <p>This reveals red and blue blocks. Each row is a flower and the flowers in the Iris dataset are
 sorted by species. The blue blocks for the top 50 flowers shiw that these flowers are
 smaller than average for all but Speal.Width and the red blocks show that the bottom 50 flowers
@@ -1677,7 +1677,7 @@ are larger for most features.</p>
 <p>Often, reordering data matrices help with visualization. A reordering technique is called seriation.
 Ir reorders rows and columns to place more similar points closer together.</p>
 <div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="data.html#cb209-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpimage</span>(iris_scaled, <span class="at">order =</span> <span class="fu">seriate</span>(iris_scaled), <span class="at">prop =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-83-1.png" width="672" />
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-83-1.png" width="672" />
 We see that the rows (flowers) are organized from very blue to very red and the
 features are reordered to move Sepal.Width all the way to the right because it is very
 different from the other features.</p>
@@ -1700,15 +1700,15 @@ different from the other features.</p>
 <p>Package <code>ggcorrplot</code> provides a visualization for correlation matrices.</p>
 <div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="data.html#cb212-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggcorrplot)</span>
 <span id="cb212-2"><a href="data.html#cb212-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggcorrplot</span>(cm1)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-85-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-85-1.png" width="672" /></p>
 <p>Package <code>seriation</code> provides a reordered version for this plot using a heatmap.</p>
 <div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="data.html#cb213-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gghmap</span>(cm1)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-86-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-86-1.png" width="672" /></p>
 <p>Correlations can also be calculates between objects by trnsposing the data matrix.</p>
 <div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="data.html#cb214-1" aria-hidden="true" tabindex="-1"></a>cm2 <span class="ot">&lt;-</span> iris <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>Species) <span class="sc">%&gt;%</span> <span class="fu">as.matrix</span>() <span class="sc">%&gt;%</span> <span class="fu">t</span>() <span class="sc">%&gt;%</span> <span class="fu">cor</span>()</span>
 <span id="cb214-2"><a href="data.html#cb214-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb214-3"><a href="data.html#cb214-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggcorrplot</span>(cm2)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-87-1.png" width="672" />
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-87-1.png" width="672" />
 Object-to-object correlations can be used as a measure of similarity. The dark red blocks
 indicate different species.</p>
 </div>
@@ -1718,14 +1718,14 @@ indicate different species.</p>
 for each object (flower).</p>
 <div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="data.html#cb215-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
 <span id="cb215-2"><a href="data.html#cb215-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggparcoord</span>(<span class="fu">as_tibble</span>(iris), <span class="at">columns =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">groupColumn =</span> <span class="dv">5</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-88-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-88-1.png" width="672" /></p>
 <p>The plot can be improved by reordering the variables to place correlated features next to each other.</p>
 <div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="data.html#cb216-1" aria-hidden="true" tabindex="-1"></a>o <span class="ot">&lt;-</span> <span class="fu">seriate</span>(<span class="fu">as.dist</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">cor</span>(iris[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])), <span class="at">method =</span> <span class="st">&quot;BBURCG&quot;</span>)</span>
 <span id="cb216-2"><a href="data.html#cb216-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_order</span>(o)</span></code></pre></div>
 <pre><code>## Petal.Length  Petal.Width Sepal.Length  Sepal.Width 
 ##            3            4            1            2</code></pre>
 <div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="data.html#cb218-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggparcoord</span>(<span class="fu">as_tibble</span>(iris), <span class="at">columns =</span> <span class="fu">get_order</span>(o), <span class="at">groupColumn =</span> <span class="dv">5</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-89-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-89-1.png" width="672" /></p>
 </div>
 <div id="more-visulizations" class="section level3" number="2.10.8">
 <h3><span class="header-section-number">2.10.8</span> More Visulizations</h3>

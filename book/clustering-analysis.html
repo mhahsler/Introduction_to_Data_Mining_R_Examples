@@ -398,7 +398,7 @@ The original dataset has the points ordered by group. We can shuffle the data (r
 <div id="data-cleaning" class="section level3" number="7.1.1">
 <h3><span class="header-section-number">7.1.1</span> Data cleaning</h3>
 <div class="sourceCode" id="cb634"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb634-1"><a href="clustering-analysis.html#cb634-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ruspini, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-241-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-241-1.png" width="672" /></p>
 <div class="sourceCode" id="cb635"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb635-1"><a href="clustering-analysis.html#cb635-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ruspini)</span></code></pre></div>
 <pre><code>##        x               y        
 ##  Min.   :  4.0   Min.   :  4.0  
@@ -483,7 +483,7 @@ nominal label).</p>
 ## 10 -0.652   1.25  2      
 ## # … with 65 more rows</code></pre>
 <div class="sourceCode" id="cb643"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb643-1"><a href="clustering-analysis.html#cb643-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ruspini_clustered, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> cluster)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-244-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-244-1.png" width="672" /></p>
 <p>Add the centroids to the plot.</p>
 <div class="sourceCode" id="cb644"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb644-1"><a href="clustering-analysis.html#cb644-1" aria-hidden="true" tabindex="-1"></a>centroids <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(km<span class="sc">$</span>centers, <span class="at">rownames =</span> <span class="st">&quot;cluster&quot;</span>)</span>
 <span id="cb644-2"><a href="clustering-analysis.html#cb644-2" aria-hidden="true" tabindex="-1"></a>centroids</span></code></pre></div>
@@ -496,13 +496,13 @@ nominal label).</p>
 ## 4 4       -1.14  -0.556</code></pre>
 <div class="sourceCode" id="cb646"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb646-1"><a href="clustering-analysis.html#cb646-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ruspini_clustered, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> cluster)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb646-2"><a href="clustering-analysis.html#cb646-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> centroids, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> cluster), <span class="at">shape =</span> <span class="dv">3</span>, <span class="at">size =</span> <span class="dv">10</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-245-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-245-1.png" width="672" /></p>
 <p>Use the <code>factoextra</code> package for visualization</p>
 <div class="sourceCode" id="cb647"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb647-1"><a href="clustering-analysis.html#cb647-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(factoextra)</span>
 <span id="cb647-2"><a href="clustering-analysis.html#cb647-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_cluster</span>(km, <span class="at">data =</span> ruspini_scaled, <span class="at">centroids =</span> <span class="cn">TRUE</span>, <span class="at">repel =</span> <span class="cn">TRUE</span>, <span class="at">ellipse.type =</span> <span class="st">&quot;norm&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: ggrepel: 10 unlabeled data points (too many
 ## overlaps). Consider increasing max.overlaps</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-246-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-246-1.png" width="672" /></p>
 <div id="inspect-clusters" class="section level4" number="7.2.1.1">
 <h4><span class="header-section-number">7.2.1.1</span> Inspect clusters</h4>
 <p>We inspect the clusters created by the 4-cluster k-means solution. The following code can be adapted to be used for other clustering methods.</p>
@@ -513,7 +513,7 @@ nominal label).</p>
 <span id="cb649-2"><a href="clustering-analysis.html#cb649-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> value, <span class="at">y =</span> feature, <span class="at">fill =</span> cluster)) <span class="sc">+</span></span>
 <span id="cb649-3"><a href="clustering-analysis.html#cb649-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
 <span id="cb649-4"><a href="clustering-analysis.html#cb649-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">rows =</span> <span class="fu">vars</span>(cluster))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-247-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-247-1.png" width="672" /></p>
 </div>
 <div id="extract-a-single-cluster" class="section level5" number="7.2.1.1.2">
 <h5><span class="header-section-number">7.2.1.1.2</span> Extract a single cluster</h5>
@@ -551,12 +551,12 @@ example calculates summary statistics and then plots all data points of cluster 
 ##  Max.   :2.037   Max.   :0.821</code></pre>
 <div class="sourceCode" id="cb654"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb654-1"><a href="clustering-analysis.html#cb654-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cluster1, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb654-2"><a href="clustering-analysis.html#cb654-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-248-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-248-1.png" width="672" /></p>
 <p>What happens if we try to cluster with 8 centers?</p>
 <div class="sourceCode" id="cb655"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb655-1"><a href="clustering-analysis.html#cb655-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_cluster</span>(<span class="fu">kmeans</span>(ruspini_scaled, <span class="at">centers =</span> <span class="dv">8</span>), <span class="at">data =</span> ruspini_scaled,</span>
 <span id="cb655-2"><a href="clustering-analysis.html#cb655-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">centroids =</span> <span class="cn">TRUE</span>,  <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">ellipse.type =</span> <span class="st">&quot;norm&quot;</span>)</span></code></pre></div>
 <pre><code>## Too few points to calculate an ellipse</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-249-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-249-1.png" width="672" /></p>
 </div>
 </div>
 </div>
@@ -569,12 +569,12 @@ example calculates summary statistics and then plots all data points of cluster 
 <p>Hierarchical clustering does not return cluster assignments but a dendrogram. The standard plot
 function plots the dendrogram.</p>
 <div class="sourceCode" id="cb659"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb659-1"><a href="clustering-analysis.html#cb659-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(hc)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-252-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-252-1.png" width="672" /></p>
 <p>Use <code>factoextra</code> (ggplot version). We can specify the number of clusters to visualize how the dendrogram will be cut into clusters.</p>
 <div class="sourceCode" id="cb660"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb660-1"><a href="clustering-analysis.html#cb660-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_dend</span>(hc, <span class="at">k =</span> <span class="dv">4</span>)</span></code></pre></div>
 <pre><code>## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated.
 ## Please use `guides(&lt;scale&gt; = &quot;none&quot;)` instead.</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-253-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-253-1.png" width="672" /></p>
 <p>More plotting options for dendrograms, including plotting
 parts of large dendrograms can be found <a href="https://rpubs.com/gaston/dendrograms">here.</a></p>
 <p>Extract cluster assignments by cutting the dendrogram into four parts and add the cluster id to the data.</p>
@@ -598,18 +598,18 @@ parts of large dendrograms can be found <a href="https://rpubs.com/gaston/dendro
 ## # … with 65 more rows</code></pre>
 <div class="sourceCode" id="cb664"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb664-1"><a href="clustering-analysis.html#cb664-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cluster_complete, <span class="fu">aes</span>(x, y, <span class="at">color =</span> cluster)) <span class="sc">+</span></span>
 <span id="cb664-2"><a href="clustering-analysis.html#cb664-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-254-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-254-1.png" width="672" /></p>
 <p>Try 8 clusters (Note: <code>fviz_cluster</code> needs a list with data and the cluster labels for hclust)</p>
 <div class="sourceCode" id="cb665"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb665-1"><a href="clustering-analysis.html#cb665-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_cluster</span>(<span class="fu">list</span>(<span class="at">data =</span> ruspini_scaled, <span class="at">cluster =</span> <span class="fu">cutree</span>(hc, <span class="at">k =</span> <span class="dv">8</span>)), <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-255-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-255-1.png" width="672" /></p>
 <p>Clustering with single link</p>
 <div class="sourceCode" id="cb666"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb666-1"><a href="clustering-analysis.html#cb666-1" aria-hidden="true" tabindex="-1"></a>hc_single <span class="ot">&lt;-</span> <span class="fu">hclust</span>(d, <span class="at">method =</span> <span class="st">&quot;single&quot;</span>)</span>
 <span id="cb666-2"><a href="clustering-analysis.html#cb666-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_dend</span>(hc_single, <span class="at">k =</span> <span class="dv">4</span>)</span></code></pre></div>
 <pre><code>## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated.
 ## Please use `guides(&lt;scale&gt; = &quot;none&quot;)` instead.</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-256-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-256-1.png" width="672" /></p>
 <div class="sourceCode" id="cb668"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb668-1"><a href="clustering-analysis.html#cb668-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_cluster</span>(<span class="fu">list</span>(<span class="at">data =</span> ruspini_scaled, <span class="at">cluster =</span> <span class="fu">cutree</span>(hc_single, <span class="at">k =</span> <span class="dv">4</span>)), <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-256-2.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-256-2.png" width="672" /></p>
 </div>
 <div id="density-based-clustering-with-dbscan" class="section level3" number="7.2.3">
 <h3><span class="header-section-number">7.2.3</span> Density-based clustering with DBSCAN</h3>
@@ -621,7 +621,7 @@ a core point. It is often chosen as a smoothing parameter. I use here minPts = 4
 The knee is around eps = .32.</p>
 <div class="sourceCode" id="cb670"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb670-1"><a href="clustering-analysis.html#cb670-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kNNdistplot</span>(ruspini_scaled, <span class="at">k =</span> <span class="dv">3</span>)</span>
 <span id="cb670-2"><a href="clustering-analysis.html#cb670-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> .<span class="dv">32</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-258-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-258-1.png" width="672" /></p>
 <p>run dbscan</p>
 <div class="sourceCode" id="cb671"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb671-1"><a href="clustering-analysis.html#cb671-1" aria-hidden="true" tabindex="-1"></a>db <span class="ot">&lt;-</span> <span class="fu">dbscan</span>(ruspini_scaled, <span class="at">eps =</span> .<span class="dv">32</span>, <span class="at">minPts =</span> <span class="dv">4</span>)</span>
 <span id="cb671-2"><a href="clustering-analysis.html#cb671-2" aria-hidden="true" tabindex="-1"></a>db</span></code></pre></div>
@@ -641,10 +641,10 @@ The knee is around eps = .32.</p>
 ##  - attr(*, &quot;class&quot;)= chr [1:2] &quot;dbscan_fast&quot; &quot;dbscan&quot;</code></pre>
 <div class="sourceCode" id="cb675"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb675-1"><a href="clustering-analysis.html#cb675-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ruspini_scaled <span class="sc">%&gt;%</span> <span class="fu">add_column</span>(<span class="at">cluster =</span> <span class="fu">factor</span>(db<span class="sc">$</span>cluster)),</span>
 <span id="cb675-2"><a href="clustering-analysis.html#cb675-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(x, y, <span class="at">color =</span> cluster)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-259-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-259-1.png" width="672" /></p>
 <p><strong>Note:</strong> Cluster 0 represents outliers).</p>
 <div class="sourceCode" id="cb676"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb676-1"><a href="clustering-analysis.html#cb676-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_cluster</span>(db, ruspini_scaled, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-260-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-260-1.png" width="672" /></p>
 <p>Play with eps (neighborhood size) and MinPts (minimum of points needed for core cluster)</p>
 </div>
 <div id="partitioning-around-medoids-pam" class="section level3" number="7.2.4">
@@ -701,10 +701,10 @@ An advantage is that you can use any distance metric not just Euclidean distance
 ## 4 4        1.45   0.554</code></pre>
 <div class="sourceCode" id="cb686"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb686-1"><a href="clustering-analysis.html#cb686-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ruspini_clustered, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> cluster)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb686-2"><a href="clustering-analysis.html#cb686-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> medoids, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> cluster), <span class="at">shape =</span> <span class="dv">3</span>, <span class="at">size =</span> <span class="dv">10</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-261-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-261-1.png" width="672" /></p>
 <div class="sourceCode" id="cb687"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb687-1"><a href="clustering-analysis.html#cb687-1" aria-hidden="true" tabindex="-1"></a><span class="do">## __Note:__ `fviz_cluster` needs the original data.</span></span>
 <span id="cb687-2"><a href="clustering-analysis.html#cb687-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_cluster</span>(<span class="fu">c</span>(p, <span class="fu">list</span>(<span class="at">data =</span> ruspini_scaled)), <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">ellipse.type =</span> <span class="st">&quot;norm&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-261-2.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-261-2.png" width="672" /></p>
 </div>
 <div id="gaussian-mixture-models" class="section level3" number="7.2.5">
 <h3><span class="header-section-number">7.2.5</span> Gaussian Mixture Models</h3>
@@ -738,7 +738,7 @@ penalty term to guard against overfitting.</p>
 ##  1  2  3  4  5 
 ## 23 20 15  3 14</code></pre>
 <div class="sourceCode" id="cb694"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb694-1"><a href="clustering-analysis.html#cb694-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m, <span class="at">what =</span> <span class="st">&quot;classification&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-263-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-263-1.png" width="672" /></p>
 <p>Rerun with a fixed number of 4 clusters</p>
 <div class="sourceCode" id="cb695"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb695-1"><a href="clustering-analysis.html#cb695-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">Mclust</span>(ruspini_scaled, <span class="at">G=</span><span class="dv">4</span>)</span>
 <span id="cb695-2"><a href="clustering-analysis.html#cb695-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m)</span></code></pre></div>
@@ -756,7 +756,7 @@ penalty term to guard against overfitting.</p>
 ##  1  2  3  4 
 ## 23 20 15 17</code></pre>
 <div class="sourceCode" id="cb697"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb697-1"><a href="clustering-analysis.html#cb697-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m, <span class="at">what =</span> <span class="st">&quot;classification&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-264-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-264-1.png" width="672" /></p>
 </div>
 <div id="spectral-clustering" class="section level3" number="7.2.6">
 <h3><span class="header-section-number">7.2.6</span> Spectral clustering</h3>
@@ -801,7 +801,7 @@ penalty term to guard against overfitting.</p>
 ## [1] 53.27 53.27  8.81 18.84</code></pre>
 <div class="sourceCode" id="cb706"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb706-1"><a href="clustering-analysis.html#cb706-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ruspini_scaled <span class="sc">%&gt;%</span> <span class="fu">add_column</span>(<span class="at">cluster =</span> <span class="fu">factor</span>(cluster_spec)),</span>
 <span id="cb706-2"><a href="clustering-analysis.html#cb706-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(x, y, <span class="at">color =</span> cluster)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-265-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-265-1.png" width="672" /></p>
 </div>
 <div id="fuzzy-c-means-clustering" class="section level3" number="7.2.7">
 <h3><span class="header-section-number">7.2.7</span> Fuzzy C-Means Clustering</h3>
@@ -912,7 +912,7 @@ has a degree of membership to for each cluster.</p>
 <span id="cb709-2"><a href="clustering-analysis.html#cb709-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()  <span class="sc">+</span></span>
 <span id="cb709-3"><a href="clustering-analysis.html#cb709-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_scatterpie</span>(<span class="at">data =</span> <span class="fu">cbind</span>(ruspini_scaled, cluster_cmeans<span class="sc">$</span>membership),</span>
 <span id="cb709-4"><a href="clustering-analysis.html#cb709-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y), <span class="at">cols =</span> <span class="fu">colnames</span>(cluster_cmeans<span class="sc">$</span>membership), <span class="at">legend_name =</span> <span class="st">&quot;Membership&quot;</span>) <span class="sc">+</span> <span class="fu">coord_equal</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-267-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-267-1.png" width="672" /></p>
 </div>
 </div>
 <div id="internal-cluster-validation" class="section level2" number="7.3">
@@ -1055,7 +1055,7 @@ Look at <code>within.cluster.ss</code> and <code>avg.silwidth</code> below.</p>
 <h3><span class="header-section-number">7.3.2</span> Silhouette plot</h3>
 <div class="sourceCode" id="cb715"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb715-1"><a href="clustering-analysis.html#cb715-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cluster)</span>
 <span id="cb715-2"><a href="clustering-analysis.html#cb715-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">silhouette</span>(km<span class="sc">$</span>cluster, d))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-271-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-271-1.png" width="672" /></p>
 <p><strong>Note:</strong> The silhouette plot does not show correctly in R Studio if you have too many objects (bars are missing). I will work when you open a new plotting device with <code>windows()</code>, <code>x11()</code> or <code>quartz()</code>.</p>
 <p>ggplot visualization using <code>factoextra</code></p>
 <div class="sourceCode" id="cb716"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb716-1"><a href="clustering-analysis.html#cb716-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_silhouette</span>(<span class="fu">silhouette</span>(km<span class="sc">$</span>cluster, d))</span></code></pre></div>
@@ -1064,12 +1064,12 @@ Look at <code>within.cluster.ss</code> and <code>avg.silwidth</code> below.</p>
 ## 2       2   23          0.75
 ## 3       3   15          0.81
 ## 4       4   20          0.72</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-272-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-272-1.png" width="672" /></p>
 </div>
 <div id="find-optimal-number-of-clusters-for-k-means" class="section level3" number="7.3.3">
 <h3><span class="header-section-number">7.3.3</span> Find Optimal Number of Clusters for k-means</h3>
 <div class="sourceCode" id="cb718"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb718-1"><a href="clustering-analysis.html#cb718-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ruspini_scaled, <span class="fu">aes</span>(x, y)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-273-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-273-1.png" width="672" /></p>
 <div class="sourceCode" id="cb719"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb719-1"><a href="clustering-analysis.html#cb719-1" aria-hidden="true" tabindex="-1"></a><span class="do">## We will use different methods and try 1-10 clusters.</span></span>
 <span id="cb719-2"><a href="clustering-analysis.html#cb719-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
 <span id="cb719-3"><a href="clustering-analysis.html#cb719-3" aria-hidden="true" tabindex="-1"></a>ks <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">10</span></span></code></pre></div>
@@ -1083,7 +1083,7 @@ Look at <code>within.cluster.ss</code> and <code>avg.silwidth</code> below.</p>
 <span id="cb720-4"><a href="clustering-analysis.html#cb720-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb720-5"><a href="clustering-analysis.html#cb720-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">as_tibble</span>(ks, WCSS), <span class="fu">aes</span>(ks, WCSS)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb720-6"><a href="clustering-analysis.html#cb720-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">4</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-274-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-274-1.png" width="672" /></p>
 </div>
 <div id="average-silhouette-width" class="section level4" number="7.3.3.2">
 <h4><span class="header-section-number">7.3.3.2</span> Average Silhouette Width</h4>
@@ -1097,7 +1097,7 @@ Look at <code>within.cluster.ss</code> and <code>avg.silwidth</code> below.</p>
 <pre><code>## [1] 4</code></pre>
 <div class="sourceCode" id="cb723"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb723-1"><a href="clustering-analysis.html#cb723-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">as_tibble</span>(ks, ASW), <span class="fu">aes</span>(ks, ASW)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb723-2"><a href="clustering-analysis.html#cb723-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> best_k, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-275-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-275-1.png" width="672" /></p>
 </div>
 <div id="dunn-index" class="section level4" number="7.3.3.3">
 <h4><span class="header-section-number">7.3.3.3</span> Dunn Index</h4>
@@ -1109,7 +1109,7 @@ Look at <code>within.cluster.ss</code> and <code>avg.silwidth</code> below.</p>
 <span id="cb724-5"><a href="clustering-analysis.html#cb724-5" aria-hidden="true" tabindex="-1"></a>best_k <span class="ot">&lt;-</span> ks[<span class="fu">which.max</span>(DI)]</span>
 <span id="cb724-6"><a href="clustering-analysis.html#cb724-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">as_tibble</span>(ks, DI), <span class="fu">aes</span>(ks, DI)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb724-7"><a href="clustering-analysis.html#cb724-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> best_k, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-276-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-276-1.png" width="672" /></p>
 </div>
 <div id="gap-statistic" class="section level4" number="7.3.3.4">
 <h4><span class="header-section-number">7.3.3.4</span> Gap Statistic</h4>
@@ -1137,7 +1137,7 @@ than 1 standard error away from the first local maximum.</p>
 ##  [9,] 1.61   2.17  0.5630 0.0409
 ## [10,] 1.50   2.09  0.5910 0.0393</code></pre>
 <div class="sourceCode" id="cb727"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb727-1"><a href="clustering-analysis.html#cb727-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(k)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-277-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-277-1.png" width="672" /></p>
 <p><strong>Note:</strong> these methods can also be used for hierarchical clustering.</p>
 <p>There have been many other methods and indices proposed to determine
 the number of clusters.
@@ -1147,7 +1147,7 @@ See, e.g., package <a href="https://cran.r-project.org/package=NbClust">NbClust<
 <div id="visualizing-the-distance-matrix" class="section level3" number="7.3.4">
 <h3><span class="header-section-number">7.3.4</span> Visualizing the Distance Matrix</h3>
 <div class="sourceCode" id="cb728"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb728-1"><a href="clustering-analysis.html#cb728-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ruspini_scaled, <span class="fu">aes</span>(x, y, <span class="at">color =</span> <span class="fu">factor</span>(km<span class="sc">$</span>cluster))) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-278-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-278-1.png" width="672" /></p>
 <div class="sourceCode" id="cb729"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb729-1"><a href="clustering-analysis.html#cb729-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">dist</span>(ruspini_scaled)</span></code></pre></div>
 <p>Inspect the distance matrix between the first 5 objects.</p>
 <div class="sourceCode" id="cb730"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb730-1"><a href="clustering-analysis.html#cb730-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.matrix</span>(d)[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
@@ -1160,24 +1160,24 @@ See, e.g., package <a href="https://cran.r-project.org/package=NbClust">NbClust<
 <p>A false-color image visualizes each value in the matrix as a pixel with the color representing the value.</p>
 <div class="sourceCode" id="cb732"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb732-1"><a href="clustering-analysis.html#cb732-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(seriation)</span>
 <span id="cb732-2"><a href="clustering-analysis.html#cb732-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pimage</span>(d, <span class="at">col =</span> <span class="fu">bluered</span>(<span class="dv">100</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-280-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-280-1.png" width="672" /></p>
 <p>Rows and columns are the objects as they are ordered in the data set. The diagonal represents the distance between an object and itself and has by definition a distance of 0 (dark line).
 Visualizing the unordered distance matrix does not show much structure, but we can reorder
 the matrix (rows and columns) using the k-means cluster labels from cluster 1 to 4. A clear block structure representing the clusters becomes visible.</p>
 <div class="sourceCode" id="cb733"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb733-1"><a href="clustering-analysis.html#cb733-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pimage</span>(d, <span class="at">order=</span><span class="fu">order</span>(km<span class="sc">$</span>cluster), <span class="at">col =</span> <span class="fu">bluered</span>(<span class="dv">100</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-281-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-281-1.png" width="672" /></p>
 <p>Plot function <code>dissplot</code> in package <strong>seriation</strong> rearranges the matrix and adds lines and cluster labels. In the lower half of the plot, it shows average dissimilarities between clusters. The function
 organizes the objects by cluster and then reorders clusters and objects within clusters so that more similar objects are closer together.</p>
 <div class="sourceCode" id="cb734"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb734-1"><a href="clustering-analysis.html#cb734-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dissplot</span>(d, <span class="at">labels =</span> km<span class="sc">$</span>cluster, <span class="at">options=</span><span class="fu">list</span>(<span class="at">main=</span><span class="st">&quot;k-means with k=4&quot;</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-282-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-282-1.png" width="672" /></p>
 <p>The reordering by <code>dissplot</code> makes the misspecification of k visible as blocks.</p>
 <div class="sourceCode" id="cb735"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb735-1"><a href="clustering-analysis.html#cb735-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dissplot</span>(d, <span class="at">labels =</span> <span class="fu">kmeans</span>(ruspini_scaled, <span class="at">centers =</span> <span class="dv">3</span>)<span class="sc">$</span>cluster, <span class="at">col =</span> <span class="fu">bluered</span>(<span class="dv">100</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-283-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-283-1.png" width="672" /></p>
 <div class="sourceCode" id="cb736"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb736-1"><a href="clustering-analysis.html#cb736-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dissplot</span>(d, <span class="at">labels =</span> <span class="fu">kmeans</span>(ruspini_scaled, <span class="at">centers =</span> <span class="dv">9</span>)<span class="sc">$</span>cluster, <span class="at">col =</span> <span class="fu">bluered</span>(<span class="dv">100</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-283-2.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-283-2.png" width="672" /></p>
 <p>Using <code>factoextra</code></p>
 <div class="sourceCode" id="cb737"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb737-1"><a href="clustering-analysis.html#cb737-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_dist</span>(d)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-284-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-284-1.png" width="672" /></p>
 </div>
 </div>
 <div id="external-cluster-validation" class="section level2" number="7.4">
@@ -1190,7 +1190,7 @@ class label not provided to the clustering algorithm.</p>
 <span id="cb738-2"><a href="clustering-analysis.html#cb738-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
 <span id="cb738-3"><a href="clustering-analysis.html#cb738-3" aria-hidden="true" tabindex="-1"></a>shapes <span class="ot">&lt;-</span> <span class="fu">mlbench.smiley</span>(<span class="at">n =</span> <span class="dv">500</span>, <span class="at">sd1 =</span> <span class="fl">0.1</span>, <span class="at">sd2 =</span> <span class="fl">0.05</span>)</span>
 <span id="cb738-4"><a href="clustering-analysis.html#cb738-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(shapes)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-285-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-285-1.png" width="672" /></p>
 <p>Prepare data</p>
 <div class="sourceCode" id="cb739"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb739-1"><a href="clustering-analysis.html#cb739-1" aria-hidden="true" tabindex="-1"></a>truth <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(shapes<span class="sc">$</span>class)</span>
 <span id="cb739-2"><a href="clustering-analysis.html#cb739-2" aria-hidden="true" tabindex="-1"></a>shapes <span class="ot">&lt;-</span> <span class="fu">scale</span>(shapes<span class="sc">$</span>x)</span>
@@ -1198,7 +1198,7 @@ class label not provided to the clustering algorithm.</p>
 <span id="cb739-4"><a href="clustering-analysis.html#cb739-4" aria-hidden="true" tabindex="-1"></a>shapes <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(shapes)</span>
 <span id="cb739-5"><a href="clustering-analysis.html#cb739-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb739-6"><a href="clustering-analysis.html#cb739-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(shapes, <span class="fu">aes</span>(x, y)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-286-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-286-1.png" width="672" /></p>
 <p>Find optimal number of Clusters for k-means</p>
 <div class="sourceCode" id="cb740"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb740-1"><a href="clustering-analysis.html#cb740-1" aria-hidden="true" tabindex="-1"></a>ks <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">20</span></span></code></pre></div>
 <p>Use within sum of squares (look for the knee)</p>
@@ -1207,13 +1207,13 @@ class label not provided to the clustering algorithm.</p>
 <span id="cb741-3"><a href="clustering-analysis.html#cb741-3" aria-hidden="true" tabindex="-1"></a>})</span>
 <span id="cb741-4"><a href="clustering-analysis.html#cb741-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb741-5"><a href="clustering-analysis.html#cb741-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">as_tibble</span>(ks, WCSS), <span class="fu">aes</span>(ks, WCSS)) <span class="sc">+</span> <span class="fu">geom_line</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-288-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-288-1.png" width="672" /></p>
 <p>Looks like it could be 7 clusters</p>
 <div class="sourceCode" id="cb742"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb742-1"><a href="clustering-analysis.html#cb742-1" aria-hidden="true" tabindex="-1"></a>km <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(shapes, <span class="at">centers =</span> <span class="dv">7</span>, <span class="at">nstart =</span> <span class="dv">10</span>)</span>
 <span id="cb742-2"><a href="clustering-analysis.html#cb742-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb742-3"><a href="clustering-analysis.html#cb742-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(shapes <span class="sc">%&gt;%</span> <span class="fu">add_column</span>(<span class="at">cluster =</span> <span class="fu">factor</span>(km<span class="sc">$</span>cluster)), <span class="fu">aes</span>(x, y, <span class="at">color =</span> cluster)) <span class="sc">+</span></span>
 <span id="cb742-4"><a href="clustering-analysis.html#cb742-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-289-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-289-1.png" width="672" /></p>
 <p>Hierarchical clustering: We use single-link because of the mouth is non-convex and chaining may help.</p>
 <div class="sourceCode" id="cb743"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb743-1"><a href="clustering-analysis.html#cb743-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">dist</span>(shapes)</span>
 <span id="cb743-2"><a href="clustering-analysis.html#cb743-2" aria-hidden="true" tabindex="-1"></a>hc <span class="ot">&lt;-</span> <span class="fu">hclust</span>(d, <span class="at">method =</span> <span class="st">&quot;single&quot;</span>)</span></code></pre></div>
@@ -1223,13 +1223,13 @@ class label not provided to the clustering algorithm.</p>
 <span id="cb744-3"><a href="clustering-analysis.html#cb744-3" aria-hidden="true" tabindex="-1"></a>})</span>
 <span id="cb744-4"><a href="clustering-analysis.html#cb744-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb744-5"><a href="clustering-analysis.html#cb744-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">as_tibble</span>(ks, ASW), <span class="fu">aes</span>(ks, ASW)) <span class="sc">+</span> <span class="fu">geom_line</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-291-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-291-1.png" width="672" /></p>
 <p>The maximum is clearly at 4 clusters.</p>
 <div class="sourceCode" id="cb745"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb745-1"><a href="clustering-analysis.html#cb745-1" aria-hidden="true" tabindex="-1"></a>hc_4 <span class="ot">&lt;-</span> <span class="fu">cutree</span>(hc, <span class="dv">4</span>)</span>
 <span id="cb745-2"><a href="clustering-analysis.html#cb745-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb745-3"><a href="clustering-analysis.html#cb745-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(shapes <span class="sc">%&gt;%</span> <span class="fu">add_column</span>(<span class="at">cluster =</span> <span class="fu">factor</span>(hc_4)), <span class="fu">aes</span>(x, y, <span class="at">color =</span> cluster)) <span class="sc">+</span></span>
 <span id="cb745-4"><a href="clustering-analysis.html#cb745-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-292-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-292-1.png" width="672" /></p>
 <p>Compare with ground truth with the <a href="https://en.wikipedia.org/wiki/Rand_index#Adjusted_Rand_index">corrected (=adjusted) Rand index (ARI)</a>,
 the <a href="https://en.wikipedia.org/wiki/Variation_of_information">variation of information (VI) index</a>, <a href="https://en.wikipedia.org/wiki/Entropy_(information_theory)">entropy</a> and <a href="https://en.wikipedia.org/wiki/Cluster_analysis#External_evaluation">purity</a>.</p>
 <p><code>cluster_stats</code> computes ARI and VI as comparative measures. I define functions for
@@ -1319,7 +1319,7 @@ The larger the LOF value gets, the more likely the point is an outlier.</p>
 <p>Outliers can be identified using summary statistics, histograms, scatterplots (pairs plots), and boxplots, etc. We use here a pairs plot (the diagonal contains smoothed histograms). The outlier is visible as the single separate point in the scatter plot and as the long tail of the smoothed histogram for <code>x</code> (we would expect most observations to fall in the range [-3,3] in normalized data).</p>
 <div class="sourceCode" id="cb751"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb751-1"><a href="clustering-analysis.html#cb751-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;GGally&quot;</span>)</span>
 <span id="cb751-2"><a href="clustering-analysis.html#cb751-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(ruspini_scaled_outlier)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-297-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-297-1.png" width="672" /></p>
 <p>The outlier is a problem for k-means</p>
 <div class="sourceCode" id="cb752"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb752-1"><a href="clustering-analysis.html#cb752-1" aria-hidden="true" tabindex="-1"></a>km <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(ruspini_scaled_outlier, <span class="at">centers =</span> <span class="dv">4</span>, <span class="at">nstart =</span> <span class="dv">10</span>)</span>
 <span id="cb752-2"><a href="clustering-analysis.html#cb752-2" aria-hidden="true" tabindex="-1"></a>ruspini_scaled_outlier_km <span class="ot">&lt;-</span> ruspini_scaled_outlier<span class="sc">%&gt;%</span></span>
@@ -1328,7 +1328,7 @@ The larger the LOF value gets, the more likely the point is an outlier.</p>
 <span id="cb752-5"><a href="clustering-analysis.html#cb752-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb752-6"><a href="clustering-analysis.html#cb752-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ruspini_scaled_outlier_km, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> cluster)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb752-7"><a href="clustering-analysis.html#cb752-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> centroids, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> cluster), <span class="at">shape =</span> <span class="dv">3</span>, <span class="at">size =</span> <span class="dv">10</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-298-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-298-1.png" width="672" /></p>
 <p>This problem can be fixed by increasing the number of clusters and removing small clusters in a post-processing step or by identifying and removing outliers before clustering.</p>
 </div>
 <div id="local-outlier-factor-lof" class="section level4" number="7.5.1.2">
@@ -1352,16 +1352,16 @@ Calculate the LOF (I choose a neighborhood size of 10 for density estimation),</
 ## [71]  1.174  0.996  1.116  0.934  1.588 17.027</code></pre>
 <div class="sourceCode" id="cb757"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb757-1"><a href="clustering-analysis.html#cb757-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ruspini_scaled_outlier <span class="sc">%&gt;%</span> <span class="fu">add_column</span>(<span class="at">lof =</span> lof), <span class="fu">aes</span>(x, y, <span class="at">color =</span> lof)) <span class="sc">+</span></span>
 <span id="cb757-2"><a href="clustering-analysis.html#cb757-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">scale_color_gradient</span>(<span class="at">low =</span> <span class="st">&quot;gray&quot;</span>, <span class="at">high =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-299-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-299-1.png" width="672" /></p>
 <p>Plot the points sorted by increasing LOF and look for a knee.</p>
 <div class="sourceCode" id="cb758"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb758-1"><a href="clustering-analysis.html#cb758-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">tibble</span>(<span class="at">index =</span> <span class="fu">seq_len</span>(<span class="fu">length</span>(lof)), <span class="at">lof =</span> <span class="fu">sort</span>(lof)), <span class="fu">aes</span>(index, lof)) <span class="sc">+</span></span>
 <span id="cb758-2"><a href="clustering-analysis.html#cb758-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb758-3"><a href="clustering-analysis.html#cb758-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-300-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-300-1.png" width="672" /></p>
 <p>Choose a threshold above 1.</p>
 <div class="sourceCode" id="cb759"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb759-1"><a href="clustering-analysis.html#cb759-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ruspini_scaled_outlier <span class="sc">%&gt;%</span> <span class="fu">add_column</span>(<span class="at">outlier =</span> lof <span class="sc">&gt;=</span> <span class="dv">2</span>), <span class="fu">aes</span>(x, y, <span class="at">color =</span> outlier)) <span class="sc">+</span></span>
 <span id="cb759-2"><a href="clustering-analysis.html#cb759-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-301-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-301-1.png" width="672" /></p>
 <div class="sourceCode" id="cb760"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb760-1"><a href="clustering-analysis.html#cb760-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Analyze the found outliers (they might be interesting data points) and then cluster the data without them.</span></span>
 <span id="cb760-2"><a href="clustering-analysis.html#cb760-2" aria-hidden="true" tabindex="-1"></a>ruspini_scaled_clean <span class="ot">&lt;-</span> ruspini_scaled_outlier  <span class="sc">%&gt;%</span> <span class="fu">filter</span>(lof <span class="sc">&lt;</span> <span class="dv">2</span>)</span>
 <span id="cb760-3"><a href="clustering-analysis.html#cb760-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1372,7 +1372,7 @@ Calculate the LOF (I choose a neighborhood size of 10 for density estimation),</
 <span id="cb760-8"><a href="clustering-analysis.html#cb760-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb760-9"><a href="clustering-analysis.html#cb760-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ruspini_scaled_clean_km, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> cluster)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb760-10"><a href="clustering-analysis.html#cb760-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> centroids, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> cluster), <span class="at">shape =</span> <span class="dv">3</span>, <span class="at">size =</span> <span class="dv">10</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-301-2.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-301-2.png" width="672" /></p>
 <p>There are many other outlier removal strategies available. See, e.g., package
 <a href="https://cran.r-project.org/package=outliers">outliers</a>.</p>
 </div>
@@ -1391,7 +1391,7 @@ cluster tendency before attempting to cluster the data.</p>
 <h4><span class="header-section-number">7.5.2.1</span> Scatter plots</h4>
 <p>The first step is visual inspection using scatter plots.</p>
 <div class="sourceCode" id="cb762"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb762-1"><a href="clustering-analysis.html#cb762-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(shapes, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-303-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-303-1.png" width="672" /></p>
 <p>Cluster tendency is typically indicated by several separated point clouds. Often an appropriate number of clusters can also be visually obtained by counting the number of point clouds. We see four clusters, but the mouth is not convex/spherical and thus will pose a problems to algorithms like k-means.</p>
 <p>If the data has more than two features then you can use a pairs plot (scatterplot matrix) or look at a scatterplot of the first two principal components using PCA.
 #### Visual Analysis for Cluster Tendency Assessment (VAT)</p>
@@ -1402,11 +1402,11 @@ objects to show potential clustering tendency as a block structure
 <span id="cb763-2"><a href="clustering-analysis.html#cb763-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb763-3"><a href="clustering-analysis.html#cb763-3" aria-hidden="true" tabindex="-1"></a>d_shapes <span class="ot">&lt;-</span> <span class="fu">dist</span>(<span class="fu">scale</span>(shapes))</span>
 <span id="cb763-4"><a href="clustering-analysis.html#cb763-4" aria-hidden="true" tabindex="-1"></a><span class="fu">VAT</span>(d_shapes, <span class="at">col =</span> <span class="fu">bluered</span>(<span class="dv">100</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-304-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-304-1.png" width="672" /></p>
 <p>iVAT uses the largest distances for all possible paths between two objects
 instead of the direct distances to make the block structure better visible.</p>
 <div class="sourceCode" id="cb764"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb764-1"><a href="clustering-analysis.html#cb764-1" aria-hidden="true" tabindex="-1"></a><span class="fu">iVAT</span>(d_shapes, <span class="at">col =</span> <span class="fu">bluered</span>(<span class="dv">100</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-305-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-305-1.png" width="672" /></p>
 </div>
 <div id="hopkins-statistic" class="section level4" number="7.5.2.2">
 <h4><span class="header-section-number">7.5.2.2</span> Hopkins statistic</h4>
@@ -1416,20 +1416,20 @@ instead of the direct distances to make the block structure better visible.</p>
 ## [1] 0.907
 ## 
 ## $plot</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-306-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-306-1.png" width="672" /></p>
 <p>Both plots show a strong cluster structure with 4 clusters.</p>
 </div>
 <div id="data-without-clustering-tendency" class="section level4" number="7.5.2.3">
 <h4><span class="header-section-number">7.5.2.3</span> Data Without Clustering Tendency</h4>
 <div class="sourceCode" id="cb767"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb767-1"><a href="clustering-analysis.html#cb767-1" aria-hidden="true" tabindex="-1"></a>data_random <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">runif</span>(<span class="dv">500</span>), <span class="at">y =</span> <span class="fu">runif</span>(<span class="dv">500</span>))</span>
 <span id="cb767-2"><a href="clustering-analysis.html#cb767-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_random, <span class="fu">aes</span>(x, y)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-307-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-307-1.png" width="672" /></p>
 <p>No point clouds are visible, just noise.</p>
 <div class="sourceCode" id="cb768"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb768-1"><a href="clustering-analysis.html#cb768-1" aria-hidden="true" tabindex="-1"></a>d_random <span class="ot">&lt;-</span> <span class="fu">dist</span>(data_random)</span>
 <span id="cb768-2"><a href="clustering-analysis.html#cb768-2" aria-hidden="true" tabindex="-1"></a><span class="fu">VAT</span>(d_random, <span class="at">col =</span> <span class="fu">bluered</span>(<span class="dv">100</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-308-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-308-1.png" width="672" /></p>
 <div class="sourceCode" id="cb769"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb769-1"><a href="clustering-analysis.html#cb769-1" aria-hidden="true" tabindex="-1"></a><span class="fu">iVAT</span>(d_random, <span class="at">col =</span> <span class="fu">bluered</span>(<span class="dv">100</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-308-2.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-308-2.png" width="672" /></p>
 <div class="sourceCode" id="cb770"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb770-1"><a href="clustering-analysis.html#cb770-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_clust_tendency</span>(data_random, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">graph =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## $hopkins_stat
 ## [1] 0.464
@@ -1444,7 +1444,7 @@ instead of the direct distances to make the block structure better visible.</p>
 <div class="sourceCode" id="cb772"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb772-1"><a href="clustering-analysis.html#cb772-1" aria-hidden="true" tabindex="-1"></a>km <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(data_random, <span class="at">centers =</span> <span class="dv">4</span>)</span>
 <span id="cb772-2"><a href="clustering-analysis.html#cb772-2" aria-hidden="true" tabindex="-1"></a>random_clustered<span class="ot">&lt;-</span> data_random <span class="sc">%&gt;%</span> <span class="fu">add_column</span>(<span class="at">cluster =</span> <span class="fu">factor</span>(km<span class="sc">$</span>cluster))</span>
 <span id="cb772-3"><a href="clustering-analysis.html#cb772-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(random_clustered, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> cluster)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-309-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-309-1.png" width="672" /></p>
 <p>k-means discretizes the space into similarly sized regions.</p>
 
 </div>

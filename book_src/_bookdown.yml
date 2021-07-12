@@ -2,6 +2,7 @@ delete_merged_file: true
 view: https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples/blob/master/book_src/%s
 edit: https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples/blob/master/book_src/%s
 output_dir: "../book"
+book_filename: "R-Companion-Data-Mining"
 language:
   ui:
     chapter_name: "Chapter "

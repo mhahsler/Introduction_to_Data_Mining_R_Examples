@@ -458,7 +458,7 @@ not contain examples of each class leading to a hard to understand error message
 ## The final value used for the model was mincriterion
 ##  = 0.99.</code></pre>
 <div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="classification-alternative-techniques.html#cb369-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ctreeFit<span class="sc">$</span>finalModel)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-157-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-157-1.png" width="672" /></p>
 <p>The final model can be directly used for predict()</p>
 <div class="sourceCode" id="cb370"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb370-1"><a href="classification-alternative-techniques.html#cb370-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(ctreeFit, <span class="fu">head</span>(Zoo_test))</span></code></pre></div>
 <pre><code>## [1] mammal        mollusc.et.al bird         
@@ -947,7 +947,7 @@ Here legs are measured between 0 and 6 while all other variables are between
 ## NeuralNet       0</code></pre>
 <div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="classification-alternative-techniques.html#cb404-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lattice)</span>
 <span id="cb404-2"><a href="classification-alternative-techniques.html#cb404-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bwplot</span>(resamps, <span class="at">layout =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-167-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-167-1.png" width="672" /></p>
 <p>Perform inference about differences between models. For each metric, all pair-wise differences are computed and tested to assess if the difference is equal to zero. By default Bonferroni correction for multiple comparison is used. Differences are shown in the upper triangle and p-values are in the lower triangle.</p>
 <div class="sourceCode" id="cb405"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb405-1"><a href="classification-alternative-techniques.html#cb405-1" aria-hidden="true" tabindex="-1"></a>difs <span class="ot">&lt;-</span> <span class="fu">diff</span>(resamps)</span>
 <span id="cb405-2"><a href="classification-alternative-techniques.html#cb405-2" aria-hidden="true" tabindex="-1"></a>difs</span></code></pre></div>
@@ -1202,24 +1202,24 @@ the decision boundary look like it has small steps even if it is a
 ## 10          4.9         3.1 setosa 
 ## # … with 140 more rows</code></pre>
 <div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="classification-alternative-techniques.html#cb420-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(x, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Sepal.Width, <span class="at">color =</span> Species)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-172-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-172-1.png" width="672" /></p>
 <p><em>Note:</em> There is some overplotting and you could use <code>geom_jitter()</code> instead of <code>geom_point()</code>.</p>
 <div id="k-nearest-neighbors-classifier" class="section level4" number="4.5.1.1">
 <h4><span class="header-section-number">4.5.1.1</span> K-Nearest Neighbors Classifier</h4>
 <div class="sourceCode" id="cb421"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb421-1"><a href="classification-alternative-techniques.html#cb421-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
 <span id="cb421-2"><a href="classification-alternative-techniques.html#cb421-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">knn3</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">k =</span> <span class="dv">1</span>)</span>
 <span id="cb421-3"><a href="classification-alternative-techniques.html#cb421-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;kNN (1 neighbor)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-173-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-173-1.png" width="672" /></p>
 <div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb422-1"><a href="classification-alternative-techniques.html#cb422-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">knn3</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">k =</span> <span class="dv">10</span>)</span>
 <span id="cb422-2"><a href="classification-alternative-techniques.html#cb422-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;kNN (10 neighbor)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-173-2.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-173-2.png" width="672" /></p>
 </div>
 <div id="naive-bayes-classifier" class="section level4" number="4.5.1.2">
 <h4><span class="header-section-number">4.5.1.2</span> Naive Bayes Classifier</h4>
 <div class="sourceCode" id="cb423"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb423-1"><a href="classification-alternative-techniques.html#cb423-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
 <span id="cb423-2"><a href="classification-alternative-techniques.html#cb423-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">naiveBayes</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
 <span id="cb423-3"><a href="classification-alternative-techniques.html#cb423-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Naive Bayes&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-174-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-174-1.png" width="672" /></p>
 </div>
 <div id="linear-discriminant-analysis" class="section level4" number="4.5.1.3">
 <h4><span class="header-section-number">4.5.1.3</span> Linear Discriminant Analysis</h4>
@@ -1231,7 +1231,7 @@ the decision boundary look like it has small steps even if it is a
 ##     select</code></pre>
 <div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb427-1"><a href="classification-alternative-techniques.html#cb427-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">lda</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
 <span id="cb427-2"><a href="classification-alternative-techniques.html#cb427-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;LDA&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-175-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-175-1.png" width="672" /></p>
 </div>
 <div id="multinomial-logistic-regression-implemented-in-nnet" class="section level4" number="4.5.1.4">
 <h4><span class="header-section-number">4.5.1.4</span> Multinomial Logistic Regression (implemented in nnet)</h4>
@@ -1253,22 +1253,22 @@ the decision boundary look like it has small steps even if it is a
 ## final  value 55.212479 
 ## stopped after 100 iterations</code></pre>
 <div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb430-1"><a href="classification-alternative-techniques.html#cb430-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">titel =</span> <span class="st">&quot;Multinomial Logistic Regression&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-176-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-176-1.png" width="672" /></p>
 </div>
 <div id="decision-trees-1" class="section level4" number="4.5.1.5">
 <h4><span class="header-section-number">4.5.1.5</span> Decision Trees</h4>
 <div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb431-1"><a href="classification-alternative-techniques.html#cb431-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;rpart&quot;</span>)</span>
 <span id="cb431-2"><a href="classification-alternative-techniques.html#cb431-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">rpart</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
 <span id="cb431-3"><a href="classification-alternative-techniques.html#cb431-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;CART&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-177-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-177-1.png" width="672" /></p>
 <div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb432-1"><a href="classification-alternative-techniques.html#cb432-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">rpart</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> .,</span>
 <span id="cb432-2"><a href="classification-alternative-techniques.html#cb432-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">cp =</span> <span class="fl">0.001</span>, <span class="at">minsplit =</span> <span class="dv">1</span>))</span>
 <span id="cb432-3"><a href="classification-alternative-techniques.html#cb432-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;CART (overfitting)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-177-2.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-177-2.png" width="672" /></p>
 <div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb433-1"><a href="classification-alternative-techniques.html#cb433-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(C50)</span>
 <span id="cb433-2"><a href="classification-alternative-techniques.html#cb433-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">C5.0</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
 <span id="cb433-3"><a href="classification-alternative-techniques.html#cb433-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;C5.0&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-177-3.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-177-3.png" width="672" /></p>
 <div class="sourceCode" id="cb434"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb434-1"><a href="classification-alternative-techniques.html#cb434-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomForest)</span></code></pre></div>
 <pre><code>## randomForest 4.6-14</code></pre>
 <pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
@@ -1282,39 +1282,39 @@ the decision boundary look like it has small steps even if it is a
 ##     margin</code></pre>
 <div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb440-1"><a href="classification-alternative-techniques.html#cb440-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">randomForest</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
 <span id="cb440-2"><a href="classification-alternative-techniques.html#cb440-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Random Forest&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-177-4.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-177-4.png" width="672" /></p>
 </div>
 <div id="svm" class="section level4" number="4.5.1.6">
 <h4><span class="header-section-number">4.5.1.6</span> SVM</h4>
 <div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb441-1"><a href="classification-alternative-techniques.html#cb441-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
 <span id="cb441-2"><a href="classification-alternative-techniques.html#cb441-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">svm</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">kernel =</span> <span class="st">&quot;linear&quot;</span>)</span>
 <span id="cb441-3"><a href="classification-alternative-techniques.html#cb441-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;SVM (linear kernel)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-178-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-178-1.png" width="672" /></p>
 <div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb442-1"><a href="classification-alternative-techniques.html#cb442-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">svm</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">kernel =</span> <span class="st">&quot;radial&quot;</span>)</span>
 <span id="cb442-2"><a href="classification-alternative-techniques.html#cb442-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;SVM (radial kernel)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-178-2.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-178-2.png" width="672" /></p>
 <div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb443-1"><a href="classification-alternative-techniques.html#cb443-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">svm</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">kernel =</span> <span class="st">&quot;polynomial&quot;</span>)</span>
 <span id="cb443-2"><a href="classification-alternative-techniques.html#cb443-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;SVM (polynomial kernel)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-178-3.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-178-3.png" width="672" /></p>
 <div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb444-1"><a href="classification-alternative-techniques.html#cb444-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">svm</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">kernel =</span> <span class="st">&quot;sigmoid&quot;</span>)</span>
 <span id="cb444-2"><a href="classification-alternative-techniques.html#cb444-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;SVM (sigmoid kernel)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-178-4.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-178-4.png" width="672" /></p>
 </div>
 <div id="single-layer-feed-forward-neural-networks" class="section level4" number="4.5.1.7">
 <h4><span class="header-section-number">4.5.1.7</span> Single Layer Feed-forward Neural Networks</h4>
 <div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb445-1"><a href="classification-alternative-techniques.html#cb445-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet)</span>
 <span id="cb445-2"><a href="classification-alternative-techniques.html#cb445-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span>x <span class="sc">%&gt;%</span> <span class="fu">nnet</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">size =</span> <span class="dv">1</span>, <span class="at">maxit =</span> <span class="dv">1000</span>, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb445-3"><a href="classification-alternative-techniques.html#cb445-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;NN (1 neuron)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-179-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-179-1.png" width="672" /></p>
 <div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb446-1"><a href="classification-alternative-techniques.html#cb446-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span>x <span class="sc">%&gt;%</span> <span class="fu">nnet</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">size =</span> <span class="dv">2</span>, <span class="at">maxit =</span> <span class="dv">1000</span>, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb446-2"><a href="classification-alternative-techniques.html#cb446-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;NN (2 neurons)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-179-2.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-179-2.png" width="672" /></p>
 <div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb447-1"><a href="classification-alternative-techniques.html#cb447-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span>x <span class="sc">%&gt;%</span> <span class="fu">nnet</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">size =</span> <span class="dv">4</span>, <span class="at">maxit =</span> <span class="dv">1000</span>, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb447-2"><a href="classification-alternative-techniques.html#cb447-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;NN (4 neurons)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-179-3.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-179-3.png" width="672" /></p>
 <div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb448-1"><a href="classification-alternative-techniques.html#cb448-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span>x <span class="sc">%&gt;%</span> <span class="fu">nnet</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">size =</span> <span class="dv">10</span>, <span class="at">maxit =</span> <span class="dv">1000</span>, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb448-2"><a href="classification-alternative-techniques.html#cb448-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;NN (10 neurons)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-179-4.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-179-4.png" width="672" /></p>
 </div>
 <div id="deep-learning-with-keras" class="section level4" number="4.5.1.8">
 <h4><span class="header-section-number">4.5.1.8</span> Deep Learning with keras</h4>
@@ -1342,10 +1342,10 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 <span id="cb451-14"><a href="classification-alternative-techniques.html#cb451-14" aria-hidden="true" tabindex="-1"></a>history</span></code></pre></div>
 <pre><code>## 
 ## Final epoch (plot to see history):
-##     loss: 0.6389
-## accuracy: 0.7267</code></pre>
+##     loss: 0.5727
+## accuracy: 0.6933</code></pre>
 <div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb453-1"><a href="classification-alternative-techniques.html#cb453-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;keras (relu activation)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-182-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-182-1.png" width="672" /></p>
 <div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb454-1"><a href="classification-alternative-techniques.html#cb454-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">keras_model_sequential</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb454-2"><a href="classification-alternative-techniques.html#cb454-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">10</span>, <span class="at">activation =</span> <span class="st">&#39;tanh&#39;</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">2</span>),</span>
 <span id="cb454-3"><a href="classification-alternative-techniques.html#cb454-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">kernel_regularizer =</span> <span class="fu">regularizer_l2</span>(<span class="at">l =</span> <span class="fl">0.01</span>)) <span class="sc">%&gt;%</span></span>
@@ -1362,10 +1362,10 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 <span id="cb454-14"><a href="classification-alternative-techniques.html#cb454-14" aria-hidden="true" tabindex="-1"></a>history</span></code></pre></div>
 <pre><code>## 
 ## Final epoch (plot to see history):
-##     loss: 0.5659
-## accuracy: 0.76</code></pre>
+##     loss: 0.5993
+## accuracy: 0.7333</code></pre>
 <div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb456-1"><a href="classification-alternative-techniques.html#cb456-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;Species&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;keras (tanh activation)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-182-2.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-182-2.png" width="672" /></p>
 </div>
 </div>
 <div id="circle-dataset" class="section level3" number="4.5.2">
@@ -1397,30 +1397,30 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 ## 10 -0.488   0.638  2    
 ## # … with 490 more rows</code></pre>
 <div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb459-1"><a href="classification-alternative-techniques.html#cb459-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(x, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> class)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-183-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-183-1.png" width="672" /></p>
 <div id="k-nearest-neighbors-classifier-1" class="section level4" number="4.5.2.1">
 <h4><span class="header-section-number">4.5.2.1</span> K-Nearest Neighbors Classifier</h4>
 <div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb460-1"><a href="classification-alternative-techniques.html#cb460-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
 <span id="cb460-2"><a href="classification-alternative-techniques.html#cb460-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">knn3</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">k =</span> <span class="dv">1</span>)</span>
 <span id="cb460-3"><a href="classification-alternative-techniques.html#cb460-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;kNN (1 neighbor)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-184-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-184-1.png" width="672" /></p>
 <div class="sourceCode" id="cb461"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb461-1"><a href="classification-alternative-techniques.html#cb461-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">knn3</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">k =</span> <span class="dv">10</span>)</span>
 <span id="cb461-2"><a href="classification-alternative-techniques.html#cb461-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;kNN (10 neighbor)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-184-2.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-184-2.png" width="672" /></p>
 </div>
 <div id="naive-bayes-classifier-1" class="section level4" number="4.5.2.2">
 <h4><span class="header-section-number">4.5.2.2</span> Naive Bayes Classifier</h4>
 <div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb462-1"><a href="classification-alternative-techniques.html#cb462-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
 <span id="cb462-2"><a href="classification-alternative-techniques.html#cb462-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">naiveBayes</span>(class <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
 <span id="cb462-3"><a href="classification-alternative-techniques.html#cb462-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;naive Bayes&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-185-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-185-1.png" width="672" /></p>
 </div>
 <div id="linear-discriminant-analysis-1" class="section level4" number="4.5.2.3">
 <h4><span class="header-section-number">4.5.2.3</span> Linear Discriminant Analysis</h4>
 <div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="classification-alternative-techniques.html#cb463-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
 <span id="cb463-2"><a href="classification-alternative-techniques.html#cb463-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">lda</span>(class <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
 <span id="cb463-3"><a href="classification-alternative-techniques.html#cb463-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;LDA&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-186-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-186-1.png" width="672" /></p>
 </div>
 <div id="multinomial-logistic-regression-implemented-in-nnet-1" class="section level4" number="4.5.2.4">
 <h4><span class="header-section-number">4.5.2.4</span> Multinomial Logistic Regression (implemented in nnet)</h4>
@@ -1432,58 +1432,58 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 ## final  value 346.308371 
 ## converged</code></pre>
 <div class="sourceCode" id="cb466"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb466-1"><a href="classification-alternative-techniques.html#cb466-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">titel =</span> <span class="st">&quot;Multinomial Logistic Regression&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-187-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-187-1.png" width="672" /></p>
 </div>
 <div id="decision-trees-2" class="section level4" number="4.5.2.5">
 <h4><span class="header-section-number">4.5.2.5</span> Decision Trees</h4>
 <div class="sourceCode" id="cb467"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb467-1"><a href="classification-alternative-techniques.html#cb467-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;rpart&quot;</span>)</span>
 <span id="cb467-2"><a href="classification-alternative-techniques.html#cb467-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">rpart</span>(class <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
 <span id="cb467-3"><a href="classification-alternative-techniques.html#cb467-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;CART&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-188-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-188-1.png" width="672" /></p>
 <div class="sourceCode" id="cb468"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb468-1"><a href="classification-alternative-techniques.html#cb468-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">rpart</span>(class <span class="sc">~</span> ., <span class="at">data =</span> .,</span>
 <span id="cb468-2"><a href="classification-alternative-techniques.html#cb468-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">rpart.control</span>(<span class="at">cp =</span> <span class="fl">0.001</span>, <span class="at">minsplit =</span> <span class="dv">1</span>))</span>
 <span id="cb468-3"><a href="classification-alternative-techniques.html#cb468-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;CART (overfitting)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-188-2.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-188-2.png" width="672" /></p>
 <div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb469-1"><a href="classification-alternative-techniques.html#cb469-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(C50)</span>
 <span id="cb469-2"><a href="classification-alternative-techniques.html#cb469-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">C5.0</span>(class <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
 <span id="cb469-3"><a href="classification-alternative-techniques.html#cb469-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;C5.0&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-188-3.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-188-3.png" width="672" /></p>
 <div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb470-1"><a href="classification-alternative-techniques.html#cb470-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomForest)</span>
 <span id="cb470-2"><a href="classification-alternative-techniques.html#cb470-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">randomForest</span>(class <span class="sc">~</span> ., <span class="at">data =</span> .)</span>
 <span id="cb470-3"><a href="classification-alternative-techniques.html#cb470-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Random Forest&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-188-4.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-188-4.png" width="672" /></p>
 </div>
 <div id="svm-1" class="section level4" number="4.5.2.6">
 <h4><span class="header-section-number">4.5.2.6</span> SVM</h4>
 <div class="sourceCode" id="cb471"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb471-1"><a href="classification-alternative-techniques.html#cb471-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
 <span id="cb471-2"><a href="classification-alternative-techniques.html#cb471-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">svm</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">kernel =</span> <span class="st">&quot;linear&quot;</span>)</span>
 <span id="cb471-3"><a href="classification-alternative-techniques.html#cb471-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;SVM (linear kernel)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-189-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-189-1.png" width="672" /></p>
 <div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb472-1"><a href="classification-alternative-techniques.html#cb472-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">svm</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">kernel =</span> <span class="st">&quot;radial&quot;</span>)</span>
 <span id="cb472-2"><a href="classification-alternative-techniques.html#cb472-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;SVM (radial kernel)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-189-2.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-189-2.png" width="672" /></p>
 <div class="sourceCode" id="cb473"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb473-1"><a href="classification-alternative-techniques.html#cb473-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">svm</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">kernel =</span> <span class="st">&quot;polynomial&quot;</span>)</span>
 <span id="cb473-2"><a href="classification-alternative-techniques.html#cb473-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;SVM (polynomial kernel)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-189-3.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-189-3.png" width="672" /></p>
 <div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb474-1"><a href="classification-alternative-techniques.html#cb474-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> <span class="fu">svm</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">kernel =</span> <span class="st">&quot;sigmoid&quot;</span>)</span>
 <span id="cb474-2"><a href="classification-alternative-techniques.html#cb474-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;SVM (sigmoid kernel)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-189-4.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-189-4.png" width="672" /></p>
 </div>
 <div id="single-layer-feed-forward-neural-networks-1" class="section level4" number="4.5.2.7">
 <h4><span class="header-section-number">4.5.2.7</span> Single Layer Feed-forward Neural Networks</h4>
 <div class="sourceCode" id="cb475"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb475-1"><a href="classification-alternative-techniques.html#cb475-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet)</span>
 <span id="cb475-2"><a href="classification-alternative-techniques.html#cb475-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span>x <span class="sc">%&gt;%</span> <span class="fu">nnet</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">size =</span> <span class="dv">1</span>, <span class="at">maxit =</span> <span class="dv">1000</span>, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb475-3"><a href="classification-alternative-techniques.html#cb475-3" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;NN (1 neuron)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-190-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-190-1.png" width="672" /></p>
 <div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb476-1"><a href="classification-alternative-techniques.html#cb476-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span>x <span class="sc">%&gt;%</span> <span class="fu">nnet</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">size =</span> <span class="dv">2</span>, <span class="at">maxit =</span> <span class="dv">1000</span>, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb476-2"><a href="classification-alternative-techniques.html#cb476-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;NN (2 neurons)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-190-2.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-190-2.png" width="672" /></p>
 <div class="sourceCode" id="cb477"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb477-1"><a href="classification-alternative-techniques.html#cb477-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span>x <span class="sc">%&gt;%</span> <span class="fu">nnet</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">size =</span> <span class="dv">4</span>, <span class="at">maxit =</span> <span class="dv">1000</span>, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb477-2"><a href="classification-alternative-techniques.html#cb477-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;NN (4 neurons)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-190-3.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-190-3.png" width="672" /></p>
 <div class="sourceCode" id="cb478"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb478-1"><a href="classification-alternative-techniques.html#cb478-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span>x <span class="sc">%&gt;%</span> <span class="fu">nnet</span>(class <span class="sc">~</span> ., <span class="at">data =</span> ., <span class="at">size =</span> <span class="dv">10</span>, <span class="at">maxit =</span> <span class="dv">1000</span>, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb478-2"><a href="classification-alternative-techniques.html#cb478-2" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;NN (10 neurons)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-190-4.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-190-4.png" width="672" /></p>
 </div>
 <div id="deep-learning-with-keras-1" class="section level4" number="4.5.2.8">
 <h4><span class="header-section-number">4.5.2.8</span> Deep Learning with keras</h4>
@@ -1511,10 +1511,10 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 <span id="cb481-14"><a href="classification-alternative-techniques.html#cb481-14" aria-hidden="true" tabindex="-1"></a>history</span></code></pre></div>
 <pre><code>## 
 ## Final epoch (plot to see history):
-##     loss: 0.1731
-## accuracy: 0.972</code></pre>
+##     loss: 0.1956
+## accuracy: 0.954</code></pre>
 <div class="sourceCode" id="cb483"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb483-1"><a href="classification-alternative-techniques.html#cb483-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;keras (relu activation)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-193-1.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-193-1.png" width="672" /></p>
 <div class="sourceCode" id="cb484"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb484-1"><a href="classification-alternative-techniques.html#cb484-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">keras_model_sequential</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb484-2"><a href="classification-alternative-techniques.html#cb484-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">10</span>, <span class="at">activation =</span> <span class="st">&#39;tanh&#39;</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">2</span>),</span>
 <span id="cb484-3"><a href="classification-alternative-techniques.html#cb484-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">kernel_regularizer =</span> <span class="fu">regularizer_l2</span>(<span class="at">l =</span> <span class="fl">0.0001</span>)) <span class="sc">%&gt;%</span></span>
@@ -1531,10 +1531,10 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 <span id="cb484-14"><a href="classification-alternative-techniques.html#cb484-14" aria-hidden="true" tabindex="-1"></a>history</span></code></pre></div>
 <pre><code>## 
 ## Final epoch (plot to see history):
-##     loss: 0.3153
-## accuracy: 0.966</code></pre>
+##     loss: 0.362
+## accuracy: 0.95</code></pre>
 <div class="sourceCode" id="cb486"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb486-1"><a href="classification-alternative-techniques.html#cb486-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decisionplot</span>(model, x, <span class="at">cl =</span> <span class="st">&quot;class&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;keras (tanh activation)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-193-2.png" width="672" /></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-193-2.png" width="672" /></p>
 </div>
 </div>
 </div>
