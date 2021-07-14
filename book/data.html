@@ -6,15 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 2 Data | R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
-<meta name="description" content="This chapter gives examples for cleaning and preparing data for data mining. Packages used for this chapter: arules (Hahsler et al. 2021), caret (Kuhn 2021), factoextra (Kassambara and Mundt...">
+<meta name="description" content="This chapter provides examples for cleaning and preparing data for data mining. Packages used for this chapter: arules (Hahsler et al. 2021), caret (Kuhn 2021), factoextra (Kassambara and Mundt...">
 <meta name="generator" content="bookdown 0.22.12 with bs4_book()">
 <meta property="og:title" content="Chapter 2 Data | R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
-<meta property="og:description" content="This chapter gives examples for cleaning and preparing data for data mining. Packages used for this chapter: arules (Hahsler et al. 2021), caret (Kuhn 2021), factoextra (Kassambara and Mundt...">
+<meta property="og:description" content="This chapter provides examples for cleaning and preparing data for data mining. Packages used for this chapter: arules (Hahsler et al. 2021), caret (Kuhn 2021), factoextra (Kassambara and Mundt...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 2 Data | R Companion for Introduction to Data Mining">
-<meta name="twitter:description" content="This chapter gives examples for cleaning and preparing data for data mining. Packages used for this chapter: arules (Hahsler et al. 2021), caret (Kuhn 2021), factoextra (Kassambara and Mundt...">
+<meta name="twitter:description" content="This chapter provides examples for cleaning and preparing data for data mining. Packages used for this chapter: arules (Hahsler et al. 2021), caret (Kuhn 2021), factoextra (Kassambara and Mundt...">
 <meta name="twitter:image" content="/images/cover.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -69,15 +69,17 @@
 <h1>
 <span class="header-section-number">2</span> Data<a class="anchor" aria-label="anchor" href="#data"><i class="fas fa-link"></i></a>
 </h1>
-<p>This chapter gives examples for cleaning and preparing data for data mining.</p>
+<p>This chapter provides examples for cleaning and preparing data for data mining.</p>
 <p><strong>Packages used for this chapter:</strong> <em>arules</em> <span class="citation">(<a href="references.html#ref-R-arules" role="doc-biblioref">Hahsler et al. 2021</a>)</span>, <em>caret</em> <span class="citation">(<a href="references.html#ref-R-caret" role="doc-biblioref">Kuhn 2021</a>)</span>, <em>factoextra</em> <span class="citation">(<a href="references.html#ref-R-factoextra" role="doc-biblioref">Kassambara and Mundt 2020</a>)</span>, <em>GGally</em> <span class="citation">(<a href="references.html#ref-R-GGally" role="doc-biblioref">Schloerke et al. 2021</a>)</span>, <em>plotly</em> <span class="citation">(<a href="references.html#ref-R-plotly" role="doc-biblioref">Sievert et al. 2021</a>)</span>, <em>proxy</em> <span class="citation">(<a href="references.html#ref-R-proxy" role="doc-biblioref">Meyer and Buchta 2021</a>)</span>, <em>sampling</em> <span class="citation">(<a href="references.html#ref-R-sampling" role="doc-biblioref">Tillé and Matei 2021</a>)</span>, <em>seriation</em> <span class="citation">(<a href="references.html#ref-R-seriation" role="doc-biblioref">Hahsler, Buchta, and Hornik 2021</a>)</span>, <em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2021c</a>)</span></p>
 <div id="the-iris-dataset" class="section level2" number="2.1">
 <h2>
 <span class="header-section-number">2.1</span> The Iris Dataset<a class="anchor" aria-label="anchor" href="#the-iris-dataset"><i class="fas fa-link"></i></a>
 </h2>
-<p>We will use a toy dataset that comes with R. <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set">Fisher’s iris data set</a> gives the measurements in centimeters of the variables sepal length and width and petal length and width, respectively, for 150 50 flowers from each of 3 species of iris. The species are Iris Setosa, Iris Versicolor, and Iris Virginica.
-For more details see: <code><a href="https://rdrr.io/r/datasets/iris.html">? iris</a></code></p>
-<p>Load the iris data set and convert the data.frame into a tibble. <em>Note:</em> datasets that come with R or R packages can be loaded with <code><a href="https://rdrr.io/r/utils/data.html">data()</a></code>.</p>
+<p>We will use a toy dataset that comes with R. <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set">Fisher’s iris dataset</a> gives the measurements in centimeters of the variables sepal length, sepal width petal length, and petal width for 150 flowers. The dataset containd 50 flowers from each of 3 species of iris. The species are Iris Setosa, Iris Versicolor, and Iris Virginica.
+For more details see <code><a href="https://rdrr.io/r/datasets/iris.html">? iris</a></code>.</p>
+<p>We load the iris data set. Datasets that come with R or R packages can be loaded with <code><a href="https://rdrr.io/r/utils/data.html">data()</a></code>.
+The standard format for data in R is a data.frame. We convert the data.frame into a tidyverse
+tibble.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
@@ -98,35 +100,21 @@ For more details see: <code><a href="https://rdrr.io/r/datasets/iris.html">? iri
 ## 10          4.9         3.1          1.5         0.1
 ## # … with 140 more rows, and 1 more variable:
 ## #   Species &lt;fct&gt;</code></pre>
-<p>We see that the data contains 150 rows (flowers) and 5 features. tibbles only show the first few rows and do not show all features, if they do not fit the screen width. We can force print to show all features by changing the width.</p>
+<p>We see that the data contains 150 rows (flowers) and 5 features. tibbles only show the first few rows and do not show all features, if they do not fit the screen width. We can call <code>print</code> and define how many rows to show using parameter <code>n</code> and force print to show all features by changing the <code>width</code> to infinity.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">iris</span>, width <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">iris</span>, n <span class="op">=</span> <span class="fl">3</span>, width <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 150 x 5
-##    Sepal.Length Sepal.Width Petal.Length Petal.Width
-##           &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
-##  1          5.1         3.5          1.4         0.2
-##  2          4.9         3            1.4         0.2
-##  3          4.7         3.2          1.3         0.2
-##  4          4.6         3.1          1.5         0.2
-##  5          5           3.6          1.4         0.2
-##  6          5.4         3.9          1.7         0.4
-##  7          4.6         3.4          1.4         0.3
-##  8          5           3.4          1.5         0.2
-##  9          4.4         2.9          1.4         0.2
-## 10          4.9         3.1          1.5         0.1
-##    Species
-##    &lt;fct&gt;  
-##  1 setosa 
-##  2 setosa 
-##  3 setosa 
-##  4 setosa 
-##  5 setosa 
-##  6 setosa 
-##  7 setosa 
-##  8 setosa 
-##  9 setosa 
-## 10 setosa 
-## # … with 140 more rows</code></pre>
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width
+##          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
+## 1          5.1         3.5          1.4         0.2
+## 2          4.9         3            1.4         0.2
+## 3          4.7         3.2          1.3         0.2
+##   Species
+##   &lt;fct&gt;  
+## 1 setosa 
+## 2 setosa 
+## 3 setosa 
+## # … with 147 more rows</code></pre>
 </div>
 <div id="data-quality" class="section level2" number="2.2">
 <h2>
@@ -150,14 +138,16 @@ Start with summary statistics for each column to identify outliers and missing v
 ##  Mean   :1.2                  
 ##  3rd Qu.:1.8                  
 ##  Max.   :2.5</code></pre>
-<p>You can also summarize specific columns using a statistic function like <code>mean</code>.</p>
+<p>You can also summarize specific columns using a statistic function like <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code>.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">summarize_if</span><span class="op">(</span><span class="va">is.numeric</span>, <span class="va">mean</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 1 x 4
 ##   Sepal.Length Sepal.Width Petal.Length Petal.Width
 ##          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
 ## 1         5.84        3.06         3.76        1.20</code></pre>
-<p>Another way to inspect your data is to use a scatterplot matrix (we use here <code>ggpairs</code> from package <code>GGally</code>). In this plot, you can visually identify noise data points and ouliers (points that are far from the majority of other points).</p>
+<p>To find outliers or data problems, you need to look for
+very small values (often a suspicious large number of zeros) using min and for extremely large values using max. Comparing median and mean tells us if the distribution is symmetric.</p>
+<p>A visual method to inspect the data is to use a scatterplot matrix (we use here <code><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs()</a></code> from package <code>GGally</code>). In this plot, we can visually identify noise data points and ouliers (points that are far from the majority of other points).</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggobi.github.io/ggally/">GGally</a></span><span class="op">)</span></code></pre></div>
 <pre><code>## Registered S3 method overwritten by 'GGally':
@@ -175,7 +165,7 @@ Start with summary statistics for each column to identify outliers and missing v
 ## with `binwidth`.</code></pre>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-13-1.png" width="672"></div>
 <p>See if you can spot the one red dot that is far away from all others.</p>
-<p>We need complete data for many data mining methods. To remove missing values (<code>NA</code>) and
+<p>Many data mining methods require complete data, that is the data cannot contain missing values (<code>NA</code>). To remove missing values and
 duplicates (identical data points which might be a mistake in the data), we often do this:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">clean.data</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">drop_na</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="op">)</span>
@@ -194,8 +184,7 @@ duplicates (identical data points which might be a mistake in the data), we ofte
 ##  Mean   :1.2                  
 ##  3rd Qu.:1.8                  
 ##  Max.   :2.5</code></pre>
-<p>Note that one case (non-unique) is gone leaving only 149 flowers. The data did not contain missing values, but if it did, they would also have been dropped.
-Typically, you should spend more time on data cleaning.</p>
+<p>Note that one non-unique case is gone leaving only 149 flowers. The data did not contain missing values, but if it did, they would also have been dropped. Typically, you should spend a lot more time on data cleaning.</p>
 </div>
 <div id="aggregation" class="section level2" number="2.3">
 <h2>
@@ -227,43 +216,43 @@ We group the iris dataset by species and then calculate a summary statistic for 
 <h2>
 <span class="header-section-number">2.4</span> Sampling<a class="anchor" aria-label="anchor" href="#sampling"><i class="fas fa-link"></i></a>
 </h2>
-<p><a href="https://en.wikipedia.org/wiki/Sampling_(statistics)">Sampling</a> is often used in data mining to reduce the dataset size.</p>
+<p><a href="https://en.wikipedia.org/wiki/Sampling_(statistics)">Sampling</a> is often used in data mining to reduce the dataset size before modeling or visualization.</p>
 <div id="random-sampling" class="section level3" number="2.4.1">
 <h3>
 <span class="header-section-number">2.4.1</span> Random Sampling<a class="anchor" aria-label="anchor" href="#random-sampling"><i class="fas fa-link"></i></a>
 </h3>
-<p>The built-in sample function can sample from a vector with replacement.</p>
+<p>The built-in sample function can sample from a vector. Here we sample with replacement.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">10</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<pre><code>##  [1] "A" "A" "C" "A" "B" "B" "A" "C" "B" "B"</code></pre>
-<p>We often want to sample rows from a dataset. This can be done by sampling without replacement from a vector with row indices (using the functions <code>seq</code> and <code>nrow</code>). The sample is vector is then used to subset the rows of the dataset.</p>
+<pre><code>##  [1] "C" "A" "B" "B" "C" "A" "A" "C" "B" "B"</code></pre>
+<p>We often want to sample rows from a dataset. This can be done by sampling without replacement from a vector with row indices (using the functions <code><a href="https://rdrr.io/r/base/seq.html">seq()</a></code> and <code><a href="https://rdrr.io/r/base/nrow.html">nrow()</a></code>). The sample vector is then used to subset the rows of the dataset.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">take</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>
 <span class="va">take</span></code></pre></div>
-<pre><code>##  [1]  47  70  89  33  82  73 106  71   2 112  60  37
-## [13]   1  72 137</code></pre>
+<pre><code>##  [1]  77 139   2 116 130 100 108  66  98  47  26  19
+## [13]  85 120  72</code></pre>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris</span><span class="op">[</span><span class="va">take</span>, <span class="op">]</span></code></pre></div>
 <pre><code>## # A tibble: 15 x 5
 ##    Sepal.Length Sepal.Width Petal.Length Petal.Width
 ##           &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
-##  1          5.1         3.8          1.6         0.2
-##  2          5.6         2.5          3.9         1.1
-##  3          5.6         3            4.1         1.3
-##  4          5.2         4.1          1.5         0.1
-##  5          5.5         2.4          3.7         1  
-##  6          6.3         2.5          4.9         1.5
-##  7          7.6         3            6.6         2.1
-##  8          5.9         3.2          4.8         1.8
-##  9          4.9         3            1.4         0.2
-## 10          6.4         2.7          5.3         1.9
-## 11          5.2         2.7          3.9         1.4
-## 12          5.5         3.5          1.3         0.2
-## 13          5.1         3.5          1.4         0.2
-## 14          6.1         2.8          4           1.3
-## 15          6.3         3.4          5.6         2.4
+##  1          6.8         2.8          4.8         1.4
+##  2          6           3            4.8         1.8
+##  3          4.9         3            1.4         0.2
+##  4          6.4         3.2          5.3         2.3
+##  5          7.2         3            5.8         1.6
+##  6          5.7         2.8          4.1         1.3
+##  7          7.3         2.9          6.3         1.8
+##  8          6.7         3.1          4.4         1.4
+##  9          6.2         2.9          4.3         1.3
+## 10          5.1         3.8          1.6         0.2
+## 11          5           3            1.6         0.2
+## 12          5.7         3.8          1.7         0.3
+## 13          5.4         3            4.5         1.5
+## 14          6           2.2          5           1.5
+## 15          6.1         2.8          4           1.3
 ## # … with 1 more variable: Species &lt;fct&gt;</code></pre>
-<p><code>dplyr</code> from tidyverse lets us sample rows from tibbles directly. I set the random number generator seed to make the results reproducible.</p>
+<p><code>dplyr</code> from tidyverse lets us sample rows from tibbles directly using <code>slice_sample()</code>. I set the random number generator seed to make the results reproducible.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>
 
@@ -289,7 +278,7 @@ while controlling the proportions of the subpopulation in the resulting sample.<
 <p>In the following, the subpopulations are the different types of species and we want
 to make sure to sample the same number (5) flowers from each. The library <code>sampling</code>
 provides a function for stratified sampling. The column <code>ID_unit</code> in the resulting data.frame
-contains the row numbers of the sampled rows. We can use <code>slice</code> from <code>dplyr</code> to select the
+contains the row numbers of the sampled rows. We can use <code>slice()</code> from <code>dplyr</code> to select the
 sampled rows.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">sampling</span><span class="op">)</span>
@@ -337,12 +326,12 @@ sampled rows.</p>
 <h4>
 <span class="header-section-number">2.5.1.1</span> Principal Components Analysis (PCA)<a class="anchor" aria-label="anchor" href="#principal-components-analysis-pca"><i class="fas fa-link"></i></a>
 </h4>
-<p><a href="https://en.wikipedia.org/wiki/Principal_component_analysis">PCA</a> calculates principal components (a new orthonormal basis vectors in the data space) from data points such that the first principal component explains the most variability in the data, the second the next most and so on.
+<p><a href="https://en.wikipedia.org/wiki/Principal_component_analysis">PCA</a> calculates principal components (a set of new orthonormal basis vectors in the data space) from data points such that the first principal component explains the most variability in the data, the second the next most and so on.
 In data analysis, PCA is used to project high-dimensional data points onto the first few (typically two) principal components for visualization as a scatter plot and as preprocessing for modeling (e.g., before k-means clustering).
-Points that are closer together in the high-dimensional space, tend also be closer together in the lower-dimensional space,</p>
-<p>Look at the 3d data using an interactive 3d plot (needs package plotly). However, 3d plots are hard to print out and the iris data is actually in 4 dimensions.</p>
+Points that are closer together in the high-dimensional original space, tend also be closer together when projected into the lower-dimensional space,</p>
+<p>We can use an interactive 3-d plot (from package <code>plotly</code>) to look at three of the four dimensions of the iris dataset. Note that it is hard to visualize more than 3 dimensions.</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">##library(plotly) # I don't load the package because it's namespace clashes with select in dplyr.</span>
+<code class="sourceCode R"><span class="co"># library(plotly) # I don't load the package because it's namespace clashes with select in dplyr.</span>
 <span class="fu">plotly</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/plotly/reference/plot_ly.html">plot_ly</a></span><span class="op">(</span><span class="va">iris</span>, x <span class="op">=</span> <span class="op">~</span><span class="va">Sepal.Length</span>, y <span class="op">=</span> <span class="op">~</span><span class="va">Petal.Length</span>, z <span class="op">=</span> <span class="op">~</span><span class="va">Sepal.Width</span>,
   size <span class="op">=</span> <span class="op">~</span><span class="va">Petal.Width</span>, color <span class="op">=</span> <span class="op">~</span><span class="va">Species</span>, type<span class="op">=</span><span class="st">"scatter3d"</span><span class="op">)</span></code></pre></div>
 <pre><code>## No scatter3d mode specifed:
@@ -357,8 +346,8 @@ Points that are closer together in the high-dimensional space, tend also be clos
 ## Warning: `line.width` does not currently support
 ## multiple values.</code></pre>
 <div id="htmlwidget-1545c60f9b87a294716c" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1545c60f9b87a294716c">{"x":{"visdat":{"587701bbbd6fb":["function () ","plotlyVisDat"]},"cur_data":"587701bbbd6fb","attrs":{"587701bbbd6fb":{"x":{},"y":{},"z":{},"color":{},"size":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"Sepal.Length"},"yaxis":{"title":"Petal.Length"},"zaxis":{"title":"Sepal.Width"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9,5.4,4.8,4.8,4.3,5.8,5.7,5.4,5.1,5.7,5.1,5.4,5.1,4.6,5.1,4.8,5,5,5.2,5.2,4.7,4.8,5.4,5.2,5.5,4.9,5,5.5,4.9,4.4,5.1,5,4.5,4.4,5,5.1,4.8,5.1,4.6,5.3,5],"y":[1.4,1.4,1.3,1.5,1.4,1.7,1.4,1.5,1.4,1.5,1.5,1.6,1.4,1.1,1.2,1.5,1.3,1.4,1.7,1.5,1.7,1.5,1,1.7,1.9,1.6,1.6,1.5,1.4,1.6,1.6,1.5,1.5,1.4,1.5,1.2,1.3,1.4,1.3,1.5,1.3,1.3,1.3,1.6,1.9,1.4,1.6,1.4,1.5,1.4],"z":[3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1,3.7,3.4,3,3,4,4.4,3.9,3.5,3.8,3.8,3.4,3.7,3.6,3.3,3.4,3,3.4,3.5,3.4,3.2,3.1,3.4,4.1,4.2,3.1,3.2,3.5,3.6,3,3.4,3.5,2.3,3.2,3.5,3.8,3,3.8,3.2,3.7,3.3],"type":"scatter3d","mode":"markers","name":"setosa","marker":{"color":"rgba(102,194,165,1)","size":[13.75,13.75,13.75,13.75,13.75,21.25,17.5,13.75,13.75,10,13.75,13.75,10,10,13.75,21.25,21.25,17.5,17.5,17.5,13.75,21.25,13.75,25,13.75,13.75,21.25,13.75,13.75,13.75,13.75,21.25,10,13.75,13.75,13.75,13.75,10,13.75,13.75,17.5,17.5,13.75,28.75,21.25,17.5,13.75,13.75,13.75,13.75],"sizemode":"area","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)","size":[13.75,13.75,13.75,13.75,13.75,21.25,17.5,13.75,13.75,10,13.75,13.75,10,10,13.75,21.25,21.25,17.5,17.5,17.5,13.75,21.25,13.75,25,13.75,13.75,21.25,13.75,13.75,13.75,13.75,21.25,10,13.75,13.75,13.75,13.75,10,13.75,13.75,17.5,17.5,13.75,28.75,21.25,17.5,13.75,13.75,13.75,13.75]},"error_y":{"color":"rgba(102,194,165,1)","width":[]},"error_x":{"color":"rgba(102,194,165,1)","width":[]},"line":{"color":"rgba(102,194,165,1)"},"frame":null},{"x":[7,6.4,6.9,5.5,6.5,5.7,6.3,4.9,6.6,5.2,5,5.9,6,6.1,5.6,6.7,5.6,5.8,6.2,5.6,5.9,6.1,6.3,6.1,6.4,6.6,6.8,6.7,6,5.7,5.5,5.5,5.8,6,5.4,6,6.7,6.3,5.6,5.5,5.5,6.1,5.8,5,5.6,5.7,5.7,6.2,5.1,5.7],"y":[4.7,4.5,4.9,4,4.6,4.5,4.7,3.3,4.6,3.9,3.5,4.2,4,4.7,3.6,4.4,4.5,4.1,4.5,3.9,4.8,4,4.9,4.7,4.3,4.4,4.8,5,4.5,3.5,3.8,3.7,3.9,5.1,4.5,4.5,4.7,4.4,4.1,4,4.4,4.6,4,3.3,4.2,4.2,4.2,4.3,3,4.1],"z":[3.2,3.2,3.1,2.3,2.8,2.8,3.3,2.4,2.9,2.7,2,3,2.2,2.9,2.9,3.1,3,2.7,2.2,2.5,3.2,2.8,2.5,2.8,2.9,3,2.8,3,2.9,2.6,2.4,2.4,2.7,2.7,3,3.4,3.1,2.3,3,2.5,2.6,3,2.6,2.3,2.7,3,2.9,2.9,2.5,2.8],"type":"scatter3d","mode":"markers","name":"versicolor","marker":{"color":"rgba(252,141,98,1)","size":[58.75,62.5,62.5,55,62.5,55,66.25,43.75,55,58.75,43.75,62.5,43.75,58.75,55,58.75,62.5,43.75,62.5,47.5,73.75,55,62.5,51.25,55,58.75,58.75,70,62.5,43.75,47.5,43.75,51.25,66.25,62.5,66.25,62.5,55,55,55,51.25,58.75,51.25,43.75,55,51.25,55,55,47.5,55],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[58.75,62.5,62.5,55,62.5,55,66.25,43.75,55,58.75,43.75,62.5,43.75,58.75,55,58.75,62.5,43.75,62.5,47.5,73.75,55,62.5,51.25,55,58.75,58.75,70,62.5,43.75,47.5,43.75,51.25,66.25,62.5,66.25,62.5,55,55,55,51.25,58.75,51.25,43.75,55,51.25,55,55,47.5,55]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"frame":null},{"x":[6.3,5.8,7.1,6.3,6.5,7.6,4.9,7.3,6.7,7.2,6.5,6.4,6.8,5.7,5.8,6.4,6.5,7.7,7.7,6,6.9,5.6,7.7,6.3,6.7,7.2,6.2,6.1,6.4,7.2,7.4,7.9,6.4,6.3,6.1,7.7,6.3,6.4,6,6.9,6.7,6.9,5.8,6.8,6.7,6.7,6.3,6.5,6.2,5.9],"y":[6,5.1,5.9,5.6,5.8,6.6,4.5,6.3,5.8,6.1,5.1,5.3,5.5,5,5.1,5.3,5.5,6.7,6.9,5,5.7,4.9,6.7,4.9,5.7,6,4.8,4.9,5.6,5.8,6.1,6.4,5.6,5.1,5.6,6.1,5.6,5.5,4.8,5.4,5.6,5.1,5.1,5.9,5.7,5.2,5,5.2,5.4,5.1],"z":[3.3,2.7,3,2.9,3,3,2.5,2.9,2.5,3.6,3.2,2.7,3,2.5,2.8,3.2,3,3.8,2.6,2.2,3.2,2.8,2.8,2.7,3.3,3.2,2.8,3,2.8,3,2.8,3.8,2.8,2.8,2.6,3,3.4,3.1,3,3.1,3.1,3.1,2.7,3.2,3.3,3,2.5,3,3.4,3],"type":"scatter3d","mode":"markers","name":"virginica","marker":{"color":"rgba(141,160,203,1)","size":[100,77.5,85,73.75,88.75,85,70,73.75,73.75,100,81.25,77.5,85,81.25,96.25,92.5,73.75,88.75,92.5,62.5,92.5,81.25,81.25,73.75,85,73.75,73.75,73.75,85,66.25,77.5,81.25,88.75,62.5,58.75,92.5,96.25,73.75,73.75,85,96.25,92.5,77.5,92.5,100,92.5,77.5,81.25,92.5,73.75],"sizemode":"area","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)","size":[100,77.5,85,73.75,88.75,85,70,73.75,73.75,100,81.25,77.5,85,81.25,96.25,92.5,73.75,88.75,92.5,62.5,92.5,81.25,81.25,73.75,85,73.75,73.75,73.75,85,66.25,77.5,81.25,88.75,62.5,58.75,92.5,96.25,73.75,73.75,85,96.25,92.5,77.5,92.5,100,92.5,77.5,81.25,92.5,73.75]},"error_y":{"color":"rgba(141,160,203,1)","width":[]},"error_x":{"color":"rgba(141,160,203,1)","width":[]},"line":{"color":"rgba(141,160,203,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script><p>The principal components can be calculated from a matrix using the function <code><a href="https://rdrr.io/r/stats/prcomp.html">prcomp()</a></code>. We select
-all numeric columns (by removing the species column) and convert the data.frame into a matrix before
+<script type="application/json" data-for="htmlwidget-1545c60f9b87a294716c">{"x":{"visdat":{"5b2a345b19a3b":["function () ","plotlyVisDat"]},"cur_data":"5b2a345b19a3b","attrs":{"5b2a345b19a3b":{"x":{},"y":{},"z":{},"color":{},"size":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"Sepal.Length"},"yaxis":{"title":"Petal.Length"},"zaxis":{"title":"Sepal.Width"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9,5.4,4.8,4.8,4.3,5.8,5.7,5.4,5.1,5.7,5.1,5.4,5.1,4.6,5.1,4.8,5,5,5.2,5.2,4.7,4.8,5.4,5.2,5.5,4.9,5,5.5,4.9,4.4,5.1,5,4.5,4.4,5,5.1,4.8,5.1,4.6,5.3,5],"y":[1.4,1.4,1.3,1.5,1.4,1.7,1.4,1.5,1.4,1.5,1.5,1.6,1.4,1.1,1.2,1.5,1.3,1.4,1.7,1.5,1.7,1.5,1,1.7,1.9,1.6,1.6,1.5,1.4,1.6,1.6,1.5,1.5,1.4,1.5,1.2,1.3,1.4,1.3,1.5,1.3,1.3,1.3,1.6,1.9,1.4,1.6,1.4,1.5,1.4],"z":[3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1,3.7,3.4,3,3,4,4.4,3.9,3.5,3.8,3.8,3.4,3.7,3.6,3.3,3.4,3,3.4,3.5,3.4,3.2,3.1,3.4,4.1,4.2,3.1,3.2,3.5,3.6,3,3.4,3.5,2.3,3.2,3.5,3.8,3,3.8,3.2,3.7,3.3],"type":"scatter3d","mode":"markers","name":"setosa","marker":{"color":"rgba(102,194,165,1)","size":[13.75,13.75,13.75,13.75,13.75,21.25,17.5,13.75,13.75,10,13.75,13.75,10,10,13.75,21.25,21.25,17.5,17.5,17.5,13.75,21.25,13.75,25,13.75,13.75,21.25,13.75,13.75,13.75,13.75,21.25,10,13.75,13.75,13.75,13.75,10,13.75,13.75,17.5,17.5,13.75,28.75,21.25,17.5,13.75,13.75,13.75,13.75],"sizemode":"area","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)","size":[13.75,13.75,13.75,13.75,13.75,21.25,17.5,13.75,13.75,10,13.75,13.75,10,10,13.75,21.25,21.25,17.5,17.5,17.5,13.75,21.25,13.75,25,13.75,13.75,21.25,13.75,13.75,13.75,13.75,21.25,10,13.75,13.75,13.75,13.75,10,13.75,13.75,17.5,17.5,13.75,28.75,21.25,17.5,13.75,13.75,13.75,13.75]},"error_y":{"color":"rgba(102,194,165,1)","width":[]},"error_x":{"color":"rgba(102,194,165,1)","width":[]},"line":{"color":"rgba(102,194,165,1)"},"frame":null},{"x":[7,6.4,6.9,5.5,6.5,5.7,6.3,4.9,6.6,5.2,5,5.9,6,6.1,5.6,6.7,5.6,5.8,6.2,5.6,5.9,6.1,6.3,6.1,6.4,6.6,6.8,6.7,6,5.7,5.5,5.5,5.8,6,5.4,6,6.7,6.3,5.6,5.5,5.5,6.1,5.8,5,5.6,5.7,5.7,6.2,5.1,5.7],"y":[4.7,4.5,4.9,4,4.6,4.5,4.7,3.3,4.6,3.9,3.5,4.2,4,4.7,3.6,4.4,4.5,4.1,4.5,3.9,4.8,4,4.9,4.7,4.3,4.4,4.8,5,4.5,3.5,3.8,3.7,3.9,5.1,4.5,4.5,4.7,4.4,4.1,4,4.4,4.6,4,3.3,4.2,4.2,4.2,4.3,3,4.1],"z":[3.2,3.2,3.1,2.3,2.8,2.8,3.3,2.4,2.9,2.7,2,3,2.2,2.9,2.9,3.1,3,2.7,2.2,2.5,3.2,2.8,2.5,2.8,2.9,3,2.8,3,2.9,2.6,2.4,2.4,2.7,2.7,3,3.4,3.1,2.3,3,2.5,2.6,3,2.6,2.3,2.7,3,2.9,2.9,2.5,2.8],"type":"scatter3d","mode":"markers","name":"versicolor","marker":{"color":"rgba(252,141,98,1)","size":[58.75,62.5,62.5,55,62.5,55,66.25,43.75,55,58.75,43.75,62.5,43.75,58.75,55,58.75,62.5,43.75,62.5,47.5,73.75,55,62.5,51.25,55,58.75,58.75,70,62.5,43.75,47.5,43.75,51.25,66.25,62.5,66.25,62.5,55,55,55,51.25,58.75,51.25,43.75,55,51.25,55,55,47.5,55],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[58.75,62.5,62.5,55,62.5,55,66.25,43.75,55,58.75,43.75,62.5,43.75,58.75,55,58.75,62.5,43.75,62.5,47.5,73.75,55,62.5,51.25,55,58.75,58.75,70,62.5,43.75,47.5,43.75,51.25,66.25,62.5,66.25,62.5,55,55,55,51.25,58.75,51.25,43.75,55,51.25,55,55,47.5,55]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"frame":null},{"x":[6.3,5.8,7.1,6.3,6.5,7.6,4.9,7.3,6.7,7.2,6.5,6.4,6.8,5.7,5.8,6.4,6.5,7.7,7.7,6,6.9,5.6,7.7,6.3,6.7,7.2,6.2,6.1,6.4,7.2,7.4,7.9,6.4,6.3,6.1,7.7,6.3,6.4,6,6.9,6.7,6.9,5.8,6.8,6.7,6.7,6.3,6.5,6.2,5.9],"y":[6,5.1,5.9,5.6,5.8,6.6,4.5,6.3,5.8,6.1,5.1,5.3,5.5,5,5.1,5.3,5.5,6.7,6.9,5,5.7,4.9,6.7,4.9,5.7,6,4.8,4.9,5.6,5.8,6.1,6.4,5.6,5.1,5.6,6.1,5.6,5.5,4.8,5.4,5.6,5.1,5.1,5.9,5.7,5.2,5,5.2,5.4,5.1],"z":[3.3,2.7,3,2.9,3,3,2.5,2.9,2.5,3.6,3.2,2.7,3,2.5,2.8,3.2,3,3.8,2.6,2.2,3.2,2.8,2.8,2.7,3.3,3.2,2.8,3,2.8,3,2.8,3.8,2.8,2.8,2.6,3,3.4,3.1,3,3.1,3.1,3.1,2.7,3.2,3.3,3,2.5,3,3.4,3],"type":"scatter3d","mode":"markers","name":"virginica","marker":{"color":"rgba(141,160,203,1)","size":[100,77.5,85,73.75,88.75,85,70,73.75,73.75,100,81.25,77.5,85,81.25,96.25,92.5,73.75,88.75,92.5,62.5,92.5,81.25,81.25,73.75,85,73.75,73.75,73.75,85,66.25,77.5,81.25,88.75,62.5,58.75,92.5,96.25,73.75,73.75,85,96.25,92.5,77.5,92.5,100,92.5,77.5,81.25,92.5,73.75],"sizemode":"area","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)","size":[100,77.5,85,73.75,88.75,85,70,73.75,73.75,100,81.25,77.5,85,81.25,96.25,92.5,73.75,88.75,92.5,62.5,92.5,81.25,81.25,73.75,85,73.75,73.75,73.75,85,66.25,77.5,81.25,88.75,62.5,58.75,92.5,96.25,73.75,73.75,85,96.25,92.5,77.5,92.5,100,92.5,77.5,81.25,92.5,73.75]},"error_y":{"color":"rgba(141,160,203,1)","width":[]},"error_x":{"color":"rgba(141,160,203,1)","width":[]},"line":{"color":"rgba(141,160,203,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script><p>The principal components can be calculated from a matrix using the function <code><a href="https://rdrr.io/r/stats/prcomp.html">prcomp()</a></code>. We select
+all numeric columns (by unselecting the species column) and convert the tibble into a matrix before
 the calculation.</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pc</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/prcomp.html">prcomp</a></span><span class="op">(</span><span class="op">)</span>
@@ -392,15 +381,16 @@ raw object (display <em>str</em>ucture).</p>
 ##   .. ..$ : NULL
 ##   .. ..$ : chr [1:4] "PC1" "PC2" "PC3" "PC4"
 ##  - attr(*, "class")= chr "prcomp"</code></pre>
-<p>The element <code>x</code> contains the data points projected on the principal components.
+<p>The object <code>pc</code> (like most objects in R) is a list with a class attribute.
+The list element <code>x</code> contains the data points projected on the principal components.
 We can convert the matrix into a tibble and add the species column from the original
-dataset to display the data projected on the first two principal components.</p>
+dataset back (since the rows are in the same order), and then display the data projected on the first two principal components.</p>
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris_projected</span> <span class="op">&lt;-</span> <span class="fu">as_tibble</span><span class="op">(</span><span class="va">pc</span><span class="op">$</span><span class="va">x</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">add_column</span><span class="op">(</span>Species <span class="op">=</span> <span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span>
 <span class="fu">ggplot</span><span class="op">(</span><span class="va">iris_projected</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">PC1</span>, y <span class="op">=</span> <span class="va">PC2</span>, color <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-24-1.png" width="672"></div>
-<p>Since the first principal component represents most of the variability, we can
+<p>Flowers that are displayed close together in this projection are also close together in the original 4-dimensional space. Since the first principal component represents most of the variability, we can
 also show the data projected only on PC1.</p>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">iris_projected</span>, 
@@ -411,6 +401,7 @@ also show the data projected only on PC1.</p>
       axis.title.y <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>
   <span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-25-1.png" width="672"></div>
+<p>We see that we can perfectly separate the species Setosa using just the first principal component. The other two species are harder to separate.</p>
 <p>A plot of the projected data with the original axes added as arrows is called a
 <a href="https://en.wikipedia.org/wiki/Biplot">biplot</a>. If the arrows (original axes)
 align roughly with the axes of the projection, then they are correlated (linearly dependent).</p>
@@ -424,19 +415,22 @@ align roughly with the axes of the projection, then they are correlated (linearl
 <div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/factoextra/man/fviz_pca.html">fviz_pca_var</a></span><span class="op">(</span><span class="va">pc</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-27-1.png" width="672"></div>
-<p>We see Petal.Width and Petal.Length point in the same direction which indicates that they are highly correlated. They are also roughly aligned with PC1 (called Dim1 in the plot) which means that PC1 represents most of the variability of these two variables. Sepal.Width parallel to the y-axis and therefore represented by PC2 (Dim2). Petal.Width/Petal.Length and Sepal.Width are almost at 90 degrees, indicating that they are close to uncorrelated. Sepal.Length correlated to all other variables and
+<p>We see Petal.Width and Petal.Length point in the same direction which indicates that they are highly correlated. They are also roughly aligned with PC1 (called Dim1 in the plot) which means that PC1 represents most of the variability of these two variables. Sepal.Width is almost aligned with the y-axis and therefore it is represented by PC2 (Dim2). Petal.Width/Petal.Length and Sepal.Width are almost at 90 degrees, indicating that they are close to uncorrelated. Sepal.Length is correlated to all other variables and
 represented by both, PC1 and PC2 in the projection.</p>
-<p>Another popular method to project data into lower dimensions for visualization is <strong>t-distributed stochastic neighbor embedding (t-SNE)</strong> available in package <code>Rtsne</code>.</p>
+<p>There exist other methods to embed data from higher dimensions into a lower-dimensional space.
+A popular method to project data into lower dimensions for visualization is <strong>t-distributed stochastic neighbor embedding (t-SNE)</strong> available in package <code>Rtsne</code>.</p>
 </div>
 <div id="multi-dimensional-scaling-mds" class="section level4" number="2.5.1.2">
 <h4>
 <span class="header-section-number">2.5.1.2</span> Multi-Dimensional Scaling (MDS)<a class="anchor" aria-label="anchor" href="#multi-dimensional-scaling-mds"><i class="fas fa-link"></i></a>
 </h4>
-<p><a href="https://en.wikipedia.org/wiki/Multidimensional_scaling">MDS</a> is similar to PCA. Instead of data points, it takes pairwise distances (i.e., a distance matrix) and produces a space where points are placed to represent these distances as well as possible. The axis in this space are called components and are similar to the principal components in PCA.</p>
-<p>First, we calculate a distance matrix from the 4-d space of the iris dataset.</p>
+<p><a href="https://en.wikipedia.org/wiki/Multidimensional_scaling">MDS</a> is similar to PCA. Instead of data points, it starts with pairwise distances (i.e., a distance matrix) and produces a space where points are placed to represent these distances as well as possible. The axes in this space are called components and are similar to the principal components in PCA.</p>
+<p>First, we calculate a distance matrix (Euclidean distances) from the 4-d space of the iris dataset.</p>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/factoextra/man/dist.html">dist</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>Metric (classic) MDS tries to reconstruct a 2-d space from the distance matrix. Points with smaller distances are closer in the reconstructed space.</p>
+<p>Metric (classic) MDS tries to construct a space
+where points with lower distances are placed closer together.
+We project the data represented by a distance matrix on <code>k = 2</code> dimensions.</p>
 <div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cmdscale.html">cmdscale</a></span><span class="op">(</span><span class="va">d</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"comp1"</span>, <span class="st">"comp2"</span><span class="op">)</span>
@@ -445,14 +439,15 @@ represented by both, PC1 and PC2 in the projection.</p>
 <span class="fu">ggplot</span><span class="op">(</span><span class="va">fit</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">comp1</span>, y <span class="op">=</span> <span class="va">comp2</span>, color <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure">
 <img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-29-1.png" width="672">
-The resulting projection is similar (except for rotation and reflection) to the result of PCA.</div>
+The resulting projection is similar (except for rotation and reflection) to the result of
+the projection using PCA.</div>
 </div>
 <div id="non-parametric-multidimensional-scaling" class="section level4" number="2.5.1.3">
 <h4>
 <span class="header-section-number">2.5.1.3</span> Non-Parametric Multidimensional Scaling<a class="anchor" aria-label="anchor" href="#non-parametric-multidimensional-scaling"><i class="fas fa-link"></i></a>
 </h4>
 <p>Non-parametric multidimensional scaling performs MDS while relaxing the need of linear relationships. Methods are available in package <code>MASS</code> as functions
-<code>isoMDS</code> and <code>sammon</code>.</p>
+<code>isoMDS()</code> and <code>sammon()</code>.</p>
 </div>
 </div>
 <div id="feature-selection" class="section level3" number="2.5.2">
@@ -467,15 +462,17 @@ We will talk about feature selection when we discuss classification models in Ch
 <span class="header-section-number">2.5.3</span> Discretize Features<a class="anchor" aria-label="anchor" href="#discretize-features"><i class="fas fa-link"></i></a>
 </h3>
 <p>Some data mining methods require discrete data.
-Discretization converts continuous features into discrete features.</p>
-<p>Petal.Width is a continuous feature. Before we perform discretization, we should look at the
+Discretization converts continuous features into discrete features.
+As an example, we will discretize the continuous feature Petal.Width.
+Before we perform discretization, we should look at the
 distribution and see if it gives us an idea how we should group the continuous values into
 a set of discrete values. A histogram visualizes the distribution of a single
 continuous feature.</p>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">iris</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Petal.Width</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_histogram</span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">.2</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-30-1.png" width="672"></div>
-<p>The R function <code>cut</code> performs equal interval width discretization.</p>
+<p>The bins in the histogram represent a discretization using a fixed bin width.
+The R function <code><a href="https://rdrr.io/r/base/cut.html">cut()</a></code> performs equal interval width discretization.</p>
 <div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">pull</span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>##   [1] (2.8,3.6] (2.8,3.6] (2.8,3.6] (2.8,3.6] (2.8,3.6]
@@ -509,7 +506,7 @@ continuous feature.</p>
 ## [141] (2.8,3.6] (2.8,3.6] (2,2.8]   (2.8,3.6] (2.8,3.6]
 ## [146] (2.8,3.6] (2,2.8]   (2.8,3.6] (2.8,3.6] (2.8,3.6]
 ## Levels: (2,2.8] (2.8,3.6] (3.6,4.4]</code></pre>
-<p>Other discretization methods include equal frequency discretization using k-means clustering.
+<p>Other discretization methods include equal frequency discretization or using k-means clustering.
 These methods are implemented by several R packages. We use here the implementation in package
 <code>arules</code> and visualize the results as histograms with blue lines to separate intervals assigned to
 each discrete value.</p>
@@ -688,16 +685,19 @@ each discrete value.</p>
       <span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">pull</span><span class="op">(</span><span class="va">Petal.Width</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/discretize.html">discretize</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"cluster"</span>, breaks <span class="op">=</span> <span class="fl">3</span>, onlycuts <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
     color <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Discretization: cluster"</span>, subtitle <span class="op">=</span> <span class="st">"Blue lines are boundaries"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-32-3.png" width="672"></div>
+<div class="inline-figure">
+<img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-32-3.png" width="672">
+The user needs to decide on the number of intervals and the used method.</div>
 </div>
 <div id="standardize-data" class="section level3" number="2.5.4">
 <h3>
 <span class="header-section-number">2.5.4</span> Standardize Data<a class="anchor" aria-label="anchor" href="#standardize-data"><i class="fas fa-link"></i></a>
 </h3>
-<p>Standardizing (scaling, normalizing) the range of features values to make them comparable.
+<p>Standardizing (scaling, normalizing) the range of features values is important to make them comparable.
 The most popular method is to convert the values of each feature to <a href="https://en.wikipedia.org/wiki/Standard_score">z-scores</a>.
 by subtracting the mean (centering) and dividing by the
-standard deviation (scaling).</p>
+standard deviation (scaling). The standardized feature will have a mean of zero and are measured
+in standard deviations from the mean. Positive values indicate how many standard deviation the original feature value was above the average. Negative standardized values indicate below-average values.</p>
 <p><em>Note:</em> tidyverse currently does not have a simple scale function,
 so I make one that provides a wrapper for the standard scale function in R:</p>
 <div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
@@ -736,8 +736,7 @@ so I make one that provides a wrapper for the standard scale function in R:</p>
 ##  Mean   : 0.000                  
 ##  3rd Qu.: 0.788                  
 ##  Max.   : 1.706</code></pre>
-<p>The standardized feature has a mean of zero and is measured in standard deviations away from zero.
-Most “normal” values will fall in the range [-3,3] (standard deviations).</p>
+<p>The standardized feature has a mean of zero and most “normal” values will fall in the range [-3,3] (standard deviations).</p>
 </div>
 </div>
 <div id="proximities-similarities-and-distances" class="section level2" number="2.6">
@@ -753,7 +752,7 @@ from A to B is the same as the distance from B to A. R therefore stores only a t
 </h3>
 <p>The <a href="https://en.wikipedia.org/wiki/Minkowski_distance">Minkowsky distance</a> is a family of
 metric distances including Euclidean and Manhattan distance. To avoid one feature to dominate the
-distance calculation, scaled data is typically used.</p>
+distance calculation, scaled data is typically used. We select the first 5 flowers for this example.</p>
 <div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris_sample</span> <span class="op">&lt;-</span> <span class="va">iris.scaled</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">slice</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
 <span class="va">iris_sample</span></code></pre></div>
@@ -765,23 +764,24 @@ distance calculation, scaled data is typically used.</p>
 ## 3       -1.38       0.327         -1.39       -1.31
 ## 4       -1.50       0.0979        -1.28       -1.31
 ## 5       -1.02       1.25          -1.34       -1.31</code></pre>
-<p>Calculate distances matrices between the first 5 flowers.</p>
+<p>Different types of Minkowsky distance matrices between the first 5 flowers can be calculated using
+<code><a href="https://rdrr.io/pkg/seriation/man/dissimilarity.html">dist()</a></code>.</p>
 <div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/arules/man/dissimilarity.html">dist</a></span><span class="op">(</span><span class="va">iris_sample</span>, method<span class="op">=</span><span class="st">"euclidean"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/arules/man/dissimilarity.html">dist</a></span><span class="op">(</span><span class="va">iris_sample</span>, method <span class="op">=</span> <span class="st">"euclidean"</span><span class="op">)</span></code></pre></div>
 <pre><code>##       1     2     3     4
 ## 2 1.172                  
 ## 3 0.843 0.522            
 ## 4 1.100 0.433 0.283      
 ## 5 0.259 1.382 0.988 1.246</code></pre>
 <div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/arules/man/dissimilarity.html">dist</a></span><span class="op">(</span><span class="va">iris_sample</span>, method<span class="op">=</span><span class="st">"manhattan"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/arules/man/dissimilarity.html">dist</a></span><span class="op">(</span><span class="va">iris_sample</span>, method <span class="op">=</span> <span class="st">"manhattan"</span><span class="op">)</span></code></pre></div>
 <pre><code>##       1     2     3     4
 ## 2 1.389                  
 ## 3 1.228 0.757            
 ## 4 1.578 0.648 0.463      
 ## 5 0.350 1.497 1.337 1.687</code></pre>
 <div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/arules/man/dissimilarity.html">dist</a></span><span class="op">(</span><span class="va">iris_sample</span>, method<span class="op">=</span><span class="st">"maximum"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/arules/man/dissimilarity.html">dist</a></span><span class="op">(</span><span class="va">iris_sample</span>, method <span class="op">=</span> <span class="st">"maximum"</span><span class="op">)</span></code></pre></div>
 <pre><code>##       1     2     3     4
 ## 2 1.147                  
 ## 3 0.688 0.459            
@@ -846,8 +846,8 @@ Manhattan distance and also the squared Euclidean distance.</p>
 <h3>
 <span class="header-section-number">2.6.3</span> Distances for Mixed Data<a class="anchor" aria-label="anchor" href="#distances-for-mixed-data"><i class="fas fa-link"></i></a>
 </h3>
-<p>Most distance measures work only on numeric data. Often we have a mixture of
-numbers and nominal features like this data:</p>
+<p>Most distance measures work only on numeric data. Often, we have a mixture of
+numbers and nominal or ordinal features like this data:</p>
 <div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">people</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span>
   height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span>      <span class="fl">160</span>,    <span class="fl">185</span>,    <span class="fl">170</span><span class="op">)</span>,
@@ -861,7 +861,7 @@ numbers and nominal features like this data:</p>
 ## 1    160     52 female
 ## 2    185     90 male  
 ## 3    170     75 male</code></pre>
-<p><strong>Note:</strong> Nominal features need to be a factor and not character (<code>&lt;chr&gt;</code>).</p>
+<p>It is important that nominal features are stored as factors and not character (<code>&lt;chr&gt;</code>).</p>
 <div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">people</span> <span class="op">&lt;-</span> <span class="va">people</span> <span class="op">%&gt;%</span> <span class="fu">mutate_if</span><span class="op">(</span><span class="va">is.character</span>, <span class="va">factor</span><span class="op">)</span>
 <span class="va">people</span></code></pre></div>
@@ -875,7 +875,7 @@ numbers and nominal features like this data:</p>
 <h4>
 <span class="header-section-number">2.6.3.1</span> Gower’s Coefficient<a class="anchor" aria-label="anchor" href="#gowers-coefficient"><i class="fas fa-link"></i></a>
 </h4>
-<p>Gower’s coefficient of similarity works with mixed data by calculating the appropriate similarity
+<p>The Gower’s coefficient of similarity works with mixed data by calculating the appropriate similarity
 for each feature and then
 aggregating them into a single measure. The package <code>proxy</code> implements
 Gower’s coefficient converted into a distance.</p>
@@ -898,7 +898,7 @@ Gower’s coefficient converted into a distance.</p>
 <pre><code>##       1     2
 ## 2 1.000      
 ## 3 0.668 0.332</code></pre>
-<p>Gower’s coefficient calculation implicitly scales the data because it calculates distances on each feature individualy, so no need to scale
+<p>Gower’s coefficient calculation implicitly scales the data because it calculates distances on each feature individually, so there is no need to scale
 the data first.</p>
 </div>
 <div id="using-euclidean-distance-with-mixed-data" class="section level4" number="2.6.3.2">
@@ -927,20 +927,20 @@ distance will result in a usable distance measure.</p>
 ## 1    160     52          1        0
 ## 2    185     90          0        1
 ## 3    170     75          0        1</code></pre>
-<p>Note that feature sex has now two columns. If we want to<br>
-height, weight and sex to have the same influence on the distance measure, then we need
+<p>Note that feature sex has now two columns. If we want that
+height, weight and sex have the same influence on the distance measure, then we need
 to weight the sex columns by 1/2 after scaling.</p>
 <div class="sourceCode" id="cb117"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">weight</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">/</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">4</span>, nrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">data_dummy</span><span class="op">)</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">data_dummy_scaled</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">data_dummy</span><span class="op">)</span> <span class="op">*</span> <span class="va">weight</span>
+<code class="sourceCode R"><span class="va">weight_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">/</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">4</span>, nrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">data_dummy</span><span class="op">)</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">data_dummy_scaled</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">data_dummy</span><span class="op">)</span> <span class="op">*</span> <span class="va">weight_matrix</span>
 
 <span class="va">d_dummy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">dist</a></span><span class="op">(</span><span class="va">data_dummy_scaled</span><span class="op">)</span>
 <span class="va">d_dummy</span></code></pre></div>
 <pre><code>##      1    2
 ## 2 3.06     
 ## 3 1.89 1.43</code></pre>
-<p>The distance using dummy variables is (mostly) consistent with Gower’s distance (other than that
-Gower’s distance is scaled between 0 and 1).</p>
+<p>The distance using dummy variables is consistent with Gower’s distance. However, note that
+Gower’s distance is scaled between 0 and 1 while the Euclidean distance is not.</p>
 <div class="sourceCode" id="cb119"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="fu">tibble</span><span class="op">(</span><span class="va">d_dummy</span>, <span class="va">d_Gower</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">d_dummy</span>, y <span class="op">=</span> <span class="va">d_Gower</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
@@ -1015,14 +1015,15 @@ We typically think of the <a href="https://en.wikipedia.org/wiki/Pearson_correla
 ## Petal.Length       0.963
 ## Petal.Width        1.000</code></pre>
 <p><code>cor</code> calculates a correlation matrix with pairwise correlations between features.
-The correlation between Petal.Length and Petal.Width can be visualized using a scatter plot.</p>
+Correlation matrices are symmetric, but different to distances, the whole matrix is stored.</p>
+<p>The correlation between Petal.Length and Petal.Width can be visualized using a scatter plot.</p>
 <div class="sourceCode" id="cb126"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">iris</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">Petal.Length</span>, <span class="va">Petal.Width</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">geom_smooth</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span></code></pre></div>
 <pre><code>## `geom_smooth()` using formula 'y ~ x'</code></pre>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-47-1.png" width="672"></div>
-<p><code>geom_smooth</code> adds a regression line by fitting a linear model (<code>lm</code>). Most points are close to this line indicating strong linear dependence (i.e., correlation).</p>
+<p><code>geom_smooth</code> adds a regression line by fitting a linear model (<code>lm</code>). Most points are close to this line indicating strong linear dependence (i.e., high correlation).</p>
 <p>We can calculate individual correlations by specifying two vectors.</p>
 <div class="sourceCode" id="cb128"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">iris</span>, <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">Petal.Length</span>, <span class="va">Petal.Width</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -1030,7 +1031,7 @@ The correlation between Petal.Length and Petal.Width can be visualized using a s
 <p><em>Note:</em> <code>with</code> lets you use columns using just their names and
 <code><a href="https://rdrr.io/r/base/with.html">with(iris, cor(Petal.Length, Petal.Width))</a></code>
 is the same as <code><a href="https://rdrr.io/r/stats/cor.html">cor(iris$Petal.Length, iris$Petal.Width)</a></code>.</p>
-<p>Finally, we can test if the correlation is significantly different from zero.</p>
+<p>Finally, we can test if a correlation is significantly different from zero.</p>
 <div class="sourceCode" id="cb130"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">iris</span>, <span class="fu"><a href="https://rdrr.io/r/stats/cor.test.html">cor.test</a></span><span class="op">(</span><span class="va">Petal.Length</span>, <span class="va">Petal.Width</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
@@ -1052,7 +1053,7 @@ is the same as <code><a href="https://rdrr.io/r/stats/cor.html">cor(iris$Petal.L
 <h3>
 <span class="header-section-number">2.7.2</span> Rank Correlation<a class="anchor" aria-label="anchor" href="#rank-correlation"><i class="fas fa-link"></i></a>
 </h3>
-<p>Rank correlation is used for ordinal features.
+<p>Rank correlation is used for ordinal features or if the correlation is not linear.
 To show this, we first convert the continuous features in the Iris dataset into
 ordered factors (ordinal) with three levels using the function <code>cut</code>.</p>
 <div class="sourceCode" id="cb132"><pre class="downlit sourceCode r">
@@ -1164,7 +1165,7 @@ too much information.</p>
 <span class="header-section-number">2.8</span> Density Estimation<a class="anchor" aria-label="anchor" href="#density-estimation"><i class="fas fa-link"></i></a>
 </h2>
 <p><a href="https://en.wikipedia.org/wiki/Density_estimation">Density estimation</a> constructions an estimate of an unobservable probability density function (a distribution) based on observed data.</p>
-<p>Just plotting the data is not very helpful for a single feature.</p>
+<p>Just plotting the data using points is not very helpful for a single feature.</p>
 <div class="sourceCode" id="cb144"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">iris</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Petal.Length</span>, y <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-54-1.png" width="672"></div>
@@ -1172,7 +1173,7 @@ too much information.</p>
 <h3>
 <span class="header-section-number">2.8.1</span> Histograms<a class="anchor" aria-label="anchor" href="#histograms"><i class="fas fa-link"></i></a>
 </h3>
-<p>A <a href="https://en.wikipedia.org/wiki/Histogram">histograms</a> shows more about the distribution by counting how many values fall within a bucket and visualizing the counts as a bar chart.
+<p>A <a href="https://en.wikipedia.org/wiki/Histogram">histograms</a> shows more about the distribution by counting how many values fall within a bin and visualizing the counts as a bar chart.
 We use <code>geom_rug</code> to place marks
 for the original data points at the bottom of the histogram.</p>
 <div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
@@ -1200,7 +1201,8 @@ for the original data points at the bottom of the histogram.</p>
 <span class="header-section-number">2.8.2</span> Kernel Density Estimate (KDE)<a class="anchor" aria-label="anchor" href="#kernel-density-estimate-kde"><i class="fas fa-link"></i></a>
 </h3>
 <p><a href="https://en.wikipedia.org/wiki/Kernel_density_estimation">Kernel density estimation</a>
-is used to estimate the probability density function of a feature. It works by replacing each
+is used to estimate the probability density function (distribution) of a feature.
+It works by replacing each
 value with a kernel function (often a Gaussian) and then adding them up. The result is
 an estimated probability density function that looks like a smoothed version of the histogram.
 The bandwidth (<code>bw</code>) of the kernel controls the amount of smoothing.</p>
@@ -1210,11 +1212,10 @@ The bandwidth (<code>bw</code>) of the kernel controls the amount of smoothing.<
   <span class="fu">geom_rug</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure">
 <img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-57-1.png" width="672">
-Kernel density estimates can also be done in two dimensions. The lines are called contour lines and
-indicate density similar to elevation lines on maps.</div>
+Kernel density estimates can also be done in two dimensions.</div>
 <div class="sourceCode" id="cb150"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">iris</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">Sepal.Length</span>, <span class="va">Sepal.Width</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_density2d</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_density_2d_filled</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">geom_jitter</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-58-1.png" width="672"></div>
 </div>
@@ -1251,29 +1252,39 @@ indicate density similar to elevation lines on maps.</div>
 <div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">pull</span><span class="op">(</span><span class="va">Sepal.Length</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 0.828</code></pre>
-<p>Ignore missing values (Note: this data does not contain any, but this is
-what you would do)</p>
+<p>Data with missing values will result in statistics of <code>NA</code>. Adding the
+parameter <code>na.rm = TRUE</code> can be used in most statistics functions to ignore
+missing values.</p>
 <div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">pull</span><span class="op">(</span><span class="va">Sepal.Length</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span>na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 5.84</code></pre>
-<p>Robust mean (trim 10% of observations from each end of the distribution)</p>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="cn">NA</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] NA</code></pre>
 <div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="cn">NA</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>,  na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p>Outliers are typically unser the smallest and the largest values of a feature.
+To make the mean more robust to outliers, we can trim 10% of observations from each end of the distribution.</p>
+<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">pull</span><span class="op">(</span><span class="va">Sepal.Length</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 5.84</code></pre>
+<div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">pull</span><span class="op">(</span><span class="va">Sepal.Length</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span>trim <span class="op">=</span> <span class="fl">.1</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 5.81</code></pre>
-<p>Calculate a summary for all numeric columns</p>
-<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
+<p>Sepal length does not have outliers, so the trimmed mean is almost identical.</p>
+<p>To calculate a summary for a set of features (e.g., all numeric features), tidyverse
+provides <code>summarize_if()</code>.</p>
+<div class="sourceCode" id="cb165"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">summarize_if</span><span class="op">(</span><span class="va">is.numeric</span>, <span class="va">mean</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 1 x 4
 ##   Sepal.Length Sepal.Width Petal.Length Petal.Width
 ##          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
 ## 1         5.84        3.06         3.76        1.20</code></pre>
-<div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">summarize_if</span><span class="op">(</span><span class="va">is.numeric</span>, <span class="va">sd</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 1 x 4
 ##   Sepal.Length Sepal.Width Petal.Length Petal.Width
 ##          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
 ## 1        0.828       0.436         1.77       0.762</code></pre>
-<div class="sourceCode" id="cb165"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">summarize_if</span><span class="op">(</span><span class="va">is.numeric</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>min <span class="op">=</span> <span class="va">min</span>, median <span class="op">=</span> <span class="va">median</span>, max <span class="op">=</span> <span class="va">max</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 1 x 12
 ##   Sepal.Length_min Sepal.Width_min Petal.Length_min
@@ -1286,20 +1297,72 @@ what you would do)</p>
 ## #   Petal.Width_median &lt;dbl&gt;, Sepal.Length_max &lt;dbl&gt;,
 ## #   Sepal.Width_max &lt;dbl&gt;, Petal.Length_max &lt;dbl&gt;,
 ## #   Petal.Width_max &lt;dbl&gt;</code></pre>
-<p>MAD (median absolute deviation)</p>
-<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
+<p>The median absolute deviation (MAD) is another measure of dispersion.</p>
+<div class="sourceCode" id="cb171"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">summarize_if</span><span class="op">(</span><span class="va">is.numeric</span>, <span class="va">mad</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 1 x 4
 ##   Sepal.Length Sepal.Width Petal.Length Petal.Width
 ##          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
 ## 1         1.04       0.445         1.85        1.04</code></pre>
 </div>
-<div id="tabulate-data" class="section level3" number="2.9.2">
+<div id="grouping" class="section level3" number="2.9.2">
 <h3>
-<span class="header-section-number">2.9.2</span> Tabulate data<a class="anchor" aria-label="anchor" href="#tabulate-data"><i class="fas fa-link"></i></a>
+<span class="header-section-number">2.9.2</span> Grouping<a class="anchor" aria-label="anchor" href="#grouping"><i class="fas fa-link"></i></a>
 </h3>
-<p>Count the number of flowers for each species.</p>
-<div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
+<p>We can use the nominal feature to form groups and then calculate group-wise
+statistics for the continuous features. We often use group-wise averages to see
+if they differ between groups.</p>
+<div class="sourceCode" id="cb173"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">summarize</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="va">Sepal.Length</span>, <span class="va">mean</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 3 x 2
+##   Species    Sepal.Length
+##   &lt;fct&gt;             &lt;dbl&gt;
+## 1 setosa             5.01
+## 2 versicolor         5.94
+## 3 virginica          6.59</code></pre>
+<div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">summarize_all</span><span class="op">(</span><span class="va">mean</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 3 x 5
+##   Species    Sepal.Length Sepal.Width Petal.Length
+##   &lt;fct&gt;             &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;
+## 1 setosa             5.01        3.43         1.46
+## 2 versicolor         5.94        2.77         4.26
+## 3 virginica          6.59        2.97         5.55
+## # … with 1 more variable: Petal.Width &lt;dbl&gt;</code></pre>
+<p>We see that the species viginica has the highest average for all, but Sepal.Width.</p>
+<p>The statistical difference between the groups can be tested using
+<a href="http://www.sthda.com/english/wiki/one-way-anova-test-in-r">ANOVA (analysis of variance)</a>.</p>
+<div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">res.aov</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">Sepal.Length</span> <span class="op">~</span> <span class="va">Species</span>, data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">res.aov</span><span class="op">)</span></code></pre></div>
+<pre><code>##              Df Sum Sq Mean Sq F value Pr(&gt;F)    
+## Species       2   63.2   31.61     119 &lt;2e-16 ***
+## Residuals   147   39.0    0.27                   
+## ---
+## Signif. codes:  
+## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+<div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/TukeyHSD.html">TukeyHSD</a></span><span class="op">(</span><span class="va">res.aov</span><span class="op">)</span></code></pre></div>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = Sepal.Length ~ Species, data = iris)
+## 
+## $Species
+##                       diff   lwr   upr p adj
+## versicolor-setosa    0.930 0.686 1.174     0
+## virginica-setosa     1.582 1.338 1.826     0
+## virginica-versicolor 0.652 0.408 0.896     0</code></pre>
+<p>The summary shows that there is a significant difference for Sepal.Length between the groups. <code>TukeyHDS</code>
+evaluates differences between pairs of groups. In this case, all are significantly different.
+If the data only contains two groups, the <code>t.test</code> can be used.</p>
+</div>
+<div id="tabulate-data" class="section level3" number="2.9.3">
+<h3>
+<span class="header-section-number">2.9.3</span> Tabulate data<a class="anchor" aria-label="anchor" href="#tabulate-data"><i class="fas fa-link"></i></a>
+</h3>
+<p>We can count the number of flowers for each species.</p>
+<div class="sourceCode" id="cb181"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">summarize</span><span class="op">(</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 3 x 2
 ##   Species    `n()`
@@ -1308,8 +1371,8 @@ what you would do)</p>
 ## 2 versicolor    50
 ## 3 virginica     50</code></pre>
 <p>In base R, this can be also done using <code>count(iris$Species)</code>.</p>
-<p>We discretize the data using cut.</p>
-<div class="sourceCode" id="cb171"><pre class="downlit sourceCode r">
+<p>For the following examples, we discretize the data using cut.</p>
+<div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris_ord</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">mutate_if</span><span class="op">(</span><span class="va">is.numeric</span>,
   <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">3</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="st">"short"</span>, <span class="st">"medium"</span>, <span class="st">"long"</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
 
@@ -1329,7 +1392,7 @@ what you would do)</p>
 ## 10 short        medium      short        short      
 ## # … with 140 more rows, and 1 more variable:
 ## #   Species &lt;fct&gt;</code></pre>
-<div class="sourceCode" id="cb173"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb185"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">iris_ord</span><span class="op">)</span></code></pre></div>
 <pre><code>##  Sepal.Length Sepal.Width Petal.Length Petal.Width
 ##  short :59    short :47   short :50    short :50  
@@ -1340,7 +1403,7 @@ what you would do)</p>
 ##  versicolor:50  
 ##  virginica :50</code></pre>
 <p>Cross tabulation is used to find out if two discrete features are related.</p>
-<div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb187"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">iris_ord</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">Sepal.Length</span>, <span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">tbl</span></code></pre></div>
 <pre><code>##             Species
@@ -1355,7 +1418,7 @@ relationship. For the iris data, we see that species setosa has mostly a short S
 while versicolor and virginica have longer sepals.</p>
 <p>Creating a cross table with tidyverse is a little more involved and uses pivot
 operations and grouping.</p>
-<div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb189"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris_ord</span> <span class="op">%&gt;%</span>
   <span class="fu">select</span><span class="op">(</span><span class="va">Species</span>, <span class="va">Sepal.Length</span><span class="op">)</span> <span class="op">%&gt;%</span>
 <span class="co">### Relationship Between Nominal and Ordinal Features</span>
@@ -1371,7 +1434,7 @@ operations and grouping.</p>
 <p>We can use a statistical test to
 determine if there is a significant relationship between the two features.
 <a href="https://en.wikipedia.org/wiki/Chi-squared_test">Pearson’s chi-squared test</a> for independence is performed with the null hypothesis that the joint distribution of the cell counts in a 2-dimensional contingency table is the product of the row and column marginals. The null hypothesis h0 is independence between rows and columns.</p>
-<div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb191"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tbl</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/chisq.test.html">chisq.test</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##  Pearson's Chi-squared test
@@ -1380,7 +1443,7 @@ determine if there is a significant relationship between the two features.
 ## X-squared = 112, df = 4, p-value &lt;2e-16</code></pre>
 <p>The small p-value indicates that the null hypothesis of independence needs to be rejected.
 For small counts (cells with counts &lt;5), <a href="https://en.wikipedia.org/wiki/Fisher%27s_exact_test">Fisher’s exact test</a> is better.</p>
-<div class="sourceCode" id="cb181"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb193"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/fisher.test.html">fisher.test</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##  Fisher's Exact Test for Count Data
@@ -1388,31 +1451,10 @@ For small counts (cells with counts &lt;5), <a href="https://en.wikipedia.org/wi
 ## data:  tbl
 ## p-value &lt;2e-16
 ## alternative hypothesis: two.sided</code></pre>
-<p>We can use the nominal feature to form groups and then calculate group-wise
-statistics for the continuous features. We often use group-wise averages to see
-if they differ between groups.</p>
-<div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">summarize</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="va">Sepal.Length</span>, <span class="va">mean</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 3 x 2
-##   Species    Sepal.Length
-##   &lt;fct&gt;             &lt;dbl&gt;
-## 1 setosa             5.01
-## 2 versicolor         5.94
-## 3 virginica          6.59</code></pre>
-<div class="sourceCode" id="cb185"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">summarize_all</span><span class="op">(</span><span class="va">mean</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 3 x 5
-##   Species    Sepal.Length Sepal.Width Petal.Length
-##   &lt;fct&gt;             &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;
-## 1 setosa             5.01        3.43         1.46
-## 2 versicolor         5.94        2.77         4.26
-## 3 virginica          6.59        2.97         5.55
-## # … with 1 more variable: Petal.Width &lt;dbl&gt;</code></pre>
-<p>We see that the species viginica has the highest average for all, but Sepal.Width.</p>
 </div>
-<div id="percentiles-quantiles" class="section level3" number="2.9.3">
+<div id="percentiles-quantiles" class="section level3" number="2.9.4">
 <h3>
-<span class="header-section-number">2.9.3</span> Percentiles (Quantiles)<a class="anchor" aria-label="anchor" href="#percentiles-quantiles"><i class="fas fa-link"></i></a>
+<span class="header-section-number">2.9.4</span> Percentiles (Quantiles)<a class="anchor" aria-label="anchor" href="#percentiles-quantiles"><i class="fas fa-link"></i></a>
 </h3>
 <p><a href="https://en.wikipedia.org/wiki/Quantile">Quantiles</a>
 are cutting points dividing the range of a probability distribution into
@@ -1421,13 +1463,13 @@ For example, the median is the empirical 50% quantile
 dividing the observations into 50% of the observations being smaller than the median and the other 50% being larger than the median.</p>
 <p>By default quartiles are calculated. 25% is typically called Q1,
 50% is called Q2 or the median and 75% is called Q3.</p>
-<div class="sourceCode" id="cb187"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb195"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">pull</span><span class="op">(</span><span class="va">Petal.Length</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>##   0%  25%  50%  75% 100% 
 ## 1.00 1.60 4.35 5.10 6.90</code></pre>
 <p>The interquartile range is a measure for variability that is robust against outliers.
 It is defined the length Q3 - Q2 which covers the 50% of the data in the middle.</p>
-<div class="sourceCode" id="cb189"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb197"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">summarize</span><span class="op">(</span>IQR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">Petal.Length</span>, probs <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">Petal.Length</span>, probs <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##     IQR
@@ -1444,9 +1486,9 @@ It is defined the length Q3 - Q2 which covers the 50% of the data in the middle.
 <span class="header-section-number">2.10.1</span> Histogram<a class="anchor" aria-label="anchor" href="#histogram"><i class="fas fa-link"></i></a>
 </h3>
 <p>Histograms show the distribution of a single continuous feature.</p>
-<div class="sourceCode" id="cb191"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb199"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">iris</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">Petal.Width</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-74-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-75-1.png" width="672"></div>
 </div>
 <div id="boxplot" class="section level3" number="2.10.2">
 <h3>
@@ -1455,13 +1497,13 @@ It is defined the length Q3 - Q2 which covers the 50% of the data in the middle.
 <p>Boxplots are used to compare the distribution of a feature between different groups. The horizontal line in the middle of the boxes are the group-wise medians,
 the boxes span the interquartile range. The whiskers (vertical lines) span typically 1.4 times the
 interquartile range. Points that fall outside that range are typically outliers shown as dots.</p>
-<div class="sourceCode" id="cb192"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb200"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">iris</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">Species</span>, <span class="va">Sepal.Length</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_boxplot</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure">
-<img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-75-1.png" width="672">
+<img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-76-1.png" width="672">
 The group-wise medians can also be calculated directly.</div>
-<div class="sourceCode" id="cb193"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb201"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">summarize_if</span><span class="op">(</span><span class="va">is.numeric</span>, <span class="va">median</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 3 x 5
 ##   Species    Sepal.Length Sepal.Width Petal.Length
@@ -1472,31 +1514,40 @@ The group-wise medians can also be calculated directly.</div>
 ## # … with 1 more variable: Petal.Width &lt;dbl&gt;</code></pre>
 <p>To compare the distribution of the four features using a ggplot boxplot,
 we first have to transform the data into long format (i.e., all feature values are combined into a single column).</p>
-<div class="sourceCode" id="cb195"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb203"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>
 <span class="va">iris_long</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>id <span class="op">=</span> <span class="fu">row_number</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>
 <span class="fu">ggplot</span><span class="op">(</span><span class="va">iris_long</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">geom_boxplot</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+  <span class="fu">geom_boxplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Original value"</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure">
-<img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-77-1.png" width="672">
-This visualization is only useful if all features have roughly the same range.</div>
+<img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-78-1.png" width="672">
+This visualization is only useful if all features have roughly the same range. The data can be scaled
+first to compare the distributions.</div>
+<div class="sourceCode" id="cb204"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>
+<span class="va">iris_long_scaled</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">scale_numeric</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>id <span class="op">=</span> <span class="fu">row_number</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>
+<span class="fu">ggplot</span><span class="op">(</span><span class="va">iris_long_scaled</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">geom_boxplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Scaled value"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-79-1.png" width="672"></div>
 </div>
 <div id="scatter-plot" class="section level3" number="2.10.3">
 <h3>
 <span class="header-section-number">2.10.3</span> Scatter plot<a class="anchor" aria-label="anchor" href="#scatter-plot"><i class="fas fa-link"></i></a>
 </h3>
 <p>Scatter plots show the relationship between two continuous features.</p>
-<div class="sourceCode" id="cb196"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb205"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">iris</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Petal.Length</span>, y <span class="op">=</span> <span class="va">Petal.Width</span>, color <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-78-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-80-1.png" width="672"></div>
 </div>
 <div id="scatter-plot-matrix" class="section level3" number="2.10.4">
 <h3>
 <span class="header-section-number">2.10.4</span> Scatter Plot Matrix<a class="anchor" aria-label="anchor" href="#scatter-plot-matrix"><i class="fas fa-link"></i></a>
 </h3>
 <p>A scatter plot matrix show the relationship between several features</p>
-<div class="sourceCode" id="cb197"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb206"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://ggobi.github.io/ggally/">"GGally"</a></span><span class="op">)</span>
 <span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs</a></span><span class="op">(</span><span class="va">iris</span>,  <span class="fu">aes</span><span class="op">(</span>color <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value
@@ -1507,7 +1558,7 @@ This visualization is only useful if all features have roughly the same range.</
 ## with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value
 ## with `binwidth`.</code></pre>
-<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-79-1.png" width="672">
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-81-1.png" width="672">
 The implementation in package <code>GGally</code> also shows additional plots (histograms, density estimates and box plots) and correlation coefficients.</p>
 </div>
 <div id="data-matrix-visualization" class="section level3" number="2.10.5">
@@ -1515,10 +1566,10 @@ The implementation in package <code>GGally</code> also shows additional plots (h
 <span class="header-section-number">2.10.5</span> Data Matrix Visualization<a class="anchor" aria-label="anchor" href="#data-matrix-visualization"><i class="fas fa-link"></i></a>
 </h3>
 <p>Matrix visualization shows the values in the matrix using a color scale.</p>
-<div class="sourceCode" id="cb199"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb208"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris_matrix</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">as.matrix</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>We need the long format for tidyverse.</p>
-<div class="sourceCode" id="cb200"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb209"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">iris_matrix</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>id <span class="op">=</span> <span class="fu">row_number</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/arules/man/sort.html">head</a></span><span class="op">(</span><span class="va">iris_long</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 3
@@ -1530,12 +1581,12 @@ The implementation in package <code>GGally</code> also shows additional plots (h
 ## 4     1 Petal.Width    0.2
 ## 5     2 Sepal.Length   4.9
 ## 6     2 Sepal.Width    3</code></pre>
-<div class="sourceCode" id="cb202"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb211"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">iris_long</span>,
   <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">name</span>, y <span class="op">=</span> <span class="va">id</span>, fill <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_tile</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-81-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-83-1.png" width="672"></div>
 <p>Smaller values are darker. Package <code>seriation</code> provides a simpler plotting function.</p>
-<div class="sourceCode" id="cb203"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb212"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mhahsler/seriation">seriation</a></span><span class="op">)</span></code></pre></div>
 <pre><code>## Registered S3 methods overwritten by 'registry':
 ##   method               from 
@@ -1546,24 +1597,24 @@ The implementation in package <code>GGally</code> also shows additional plots (h
 <pre><code>## The following object is masked from 'package:lattice':
 ## 
 ##     panel.lines</code></pre>
-<div class="sourceCode" id="cb207"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb216"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/pimage.html">ggpimage</a></span><span class="op">(</span><span class="va">iris_matrix</span>, prop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-82-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-84-1.png" width="672"></div>
 <p>We can scale the features to z-scores to make them better comparable.</p>
-<div class="sourceCode" id="cb208"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb217"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">iris_scaled</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">iris_matrix</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/pimage.html">ggpimage</a></span><span class="op">(</span><span class="va">iris_scaled</span>, prop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-83-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-85-1.png" width="672"></div>
 <p>This reveals red and blue blocks. Each row is a flower and the flowers in the Iris dataset are
 sorted by species. The blue blocks for the top 50 flowers shiw that these flowers are
 smaller than average for all but Speal.Width and the red blocks show that the bottom 50 flowers
 are larger for most features.</p>
 <p>Often, reordering data matrices help with visualization. A reordering technique is called seriation.
 Ir reorders rows and columns to place more similar points closer together.</p>
-<div class="sourceCode" id="cb209"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb218"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/pimage.html">ggpimage</a></span><span class="op">(</span><span class="va">iris_scaled</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/seriate.html">seriate</a></span><span class="op">(</span><span class="va">iris_scaled</span><span class="op">)</span>, prop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure">
-<img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-84-1.png" width="672">
+<img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-86-1.png" width="672">
 We see that the rows (flowers) are organized from very blue to very red and the
 features are reordered to move Sepal.Width all the way to the right because it is very
 different from the other features.</div>
@@ -1573,7 +1624,7 @@ different from the other features.</div>
 <span class="header-section-number">2.10.6</span> Correlation Matrix<a class="anchor" aria-label="anchor" href="#correlation-matrix"><i class="fas fa-link"></i></a>
 </h3>
 <p>A correlation matrix contains the correlation between features.</p>
-<div class="sourceCode" id="cb210"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb219"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cm1</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">as.matrix</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">cm1</span></code></pre></div>
 <pre><code>##              Sepal.Length Sepal.Width Petal.Length
@@ -1587,21 +1638,21 @@ different from the other features.</div>
 ## Petal.Length       0.963
 ## Petal.Width        1.000</code></pre>
 <p>Package <code>ggcorrplot</code> provides a visualization for correlation matrices.</p>
-<div class="sourceCode" id="cb212"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb221"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.sthda.com/english/wiki/ggcorrplot">ggcorrplot</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/ggcorrplot/man/ggcorrplot.html">ggcorrplot</a></span><span class="op">(</span><span class="va">cm1</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-86-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-88-1.png" width="672"></div>
 <p>Package <code>seriation</code> provides a reordered version for this plot using a heatmap.</p>
-<div class="sourceCode" id="cb213"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/hmap.html">gghmap</a></span><span class="op">(</span><span class="va">cm1</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-87-1.png" width="672"></div>
+<div class="sourceCode" id="cb222"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/hmap.html">gghmap</a></span><span class="op">(</span><span class="va">cm1</span>, prop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-89-1.png" width="672"></div>
 <p>Correlations can also be calculates between objects by trnsposing the data matrix.</p>
-<div class="sourceCode" id="cb214"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb223"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cm2</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">Species</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">as.matrix</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/ggcorrplot/man/ggcorrplot.html">ggcorrplot</a></span><span class="op">(</span><span class="va">cm2</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure">
-<img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-88-1.png" width="672">
+<img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-90-1.png" width="672">
 Object-to-object correlations can be used as a measure of similarity. The dark red blocks
 indicate different species.</div>
 </div>
@@ -1611,19 +1662,19 @@ indicate different species.</div>
 </h3>
 <p>Parallel coordinate plots can visualize several featues in a single plot. Lines connect the values
 for each object (flower).</p>
-<div class="sourceCode" id="cb215"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb224"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggobi.github.io/ggally/">GGally</a></span><span class="op">)</span>
-<span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggparcoord.html">ggparcoord</a></span><span class="op">(</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>, columns <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, groupColumn <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-89-1.png" width="672"></div>
+<span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggparcoord.html">ggparcoord</a></span><span class="op">(</span><span class="va">iris</span>, columns <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, groupColumn <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-91-1.png" width="672"></div>
 <p>The plot can be improved by reordering the variables to place correlated features next to each other.</p>
-<div class="sourceCode" id="cb216"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb225"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/seriate.html">seriate</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">as.dist</a></span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, method <span class="op">=</span> <span class="st">"BBURCG"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/get_order.html">get_order</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span></code></pre></div>
 <pre><code>## Petal.Length  Petal.Width Sepal.Length  Sepal.Width 
 ##            3            4            1            2</code></pre>
-<div class="sourceCode" id="cb218"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggparcoord.html">ggparcoord</a></span><span class="op">(</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/get_order.html">get_order</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span>, groupColumn <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-90-1.png" width="672"></div>
+<div class="sourceCode" id="cb227"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggparcoord.html">ggparcoord</a></span><span class="op">(</span><span class="va">iris</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/get_order.html">get_order</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span>, groupColumn <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-92-1.png" width="672"></div>
 </div>
 <div id="more-visulizations" class="section level3" number="2.10.8">
 <h3>
@@ -1682,8 +1733,9 @@ for each object (flower).</p>
 <li>
 <a class="nav-link" href="#exploring-data"><span class="header-section-number">2.9</span> Exploring Data</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#basic-statistics"><span class="header-section-number">2.9.1</span> Basic statistics</a></li>
-<li><a class="nav-link" href="#tabulate-data"><span class="header-section-number">2.9.2</span> Tabulate data</a></li>
-<li><a class="nav-link" href="#percentiles-quantiles"><span class="header-section-number">2.9.3</span> Percentiles (Quantiles)</a></li>
+<li><a class="nav-link" href="#grouping"><span class="header-section-number">2.9.2</span> Grouping</a></li>
+<li><a class="nav-link" href="#tabulate-data"><span class="header-section-number">2.9.3</span> Tabulate data</a></li>
+<li><a class="nav-link" href="#percentiles-quantiles"><span class="header-section-number">2.9.4</span> Percentiles (Quantiles)</a></li>
 </ul>
 </li>
 <li>

@@ -1,6 +1,6 @@
 # Data
 
-This chapter gives examples for cleaning and preparing data for data mining.
+This chapter provides examples for cleaning and preparing data for data mining.
 
 ```{r setup_02, include=FALSE}
 pkgs <- sort(c('tidyverse', 'GGally', 'plotly', 'factoextra', 'arules', 
@@ -22,10 +22,12 @@ options(digits = 3)
 ```
 
 
-We will use a toy dataset that comes with R. [Fisher's iris data set](https://en.wikipedia.org/wiki/Iris_flower_data_set) gives the measurements in centimeters of the variables sepal length and width and petal length and width, respectively, for 150 50 flowers from each of 3 species of iris. The species are Iris Setosa, Iris Versicolor, and Iris Virginica.
-For more details see: `? iris`
+We will use a toy dataset that comes with R. [Fisher's iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set) gives the measurements in centimeters of the variables sepal length, sepal width petal length, and petal width for 150 flowers. The dataset containd 50 flowers from each of 3 species of iris. The species are Iris Setosa, Iris Versicolor, and Iris Virginica.
+For more details see `? iris`.
 
-Load the iris data set and convert the data.frame into a tibble. _Note:_ datasets that come with R or R packages can be loaded with `data()`.
+We load the iris data set. Datasets that come with R or R packages can be loaded with `data()`.
+The standard format for data in R is a data.frame. We convert the data.frame into a tidyverse
+tibble.
 
 ```{r }
 library(tidyverse)
@@ -34,10 +36,10 @@ iris <- as_tibble(iris)
 iris
 ```
 
-We see that the data contains 150 rows (flowers) and 5 features. tibbles only show the first few rows and do not show all features, if they do not fit the screen width. We can force print to show all features by changing the width.
+We see that the data contains 150 rows (flowers) and 5 features. tibbles only show the first few rows and do not show all features, if they do not fit the screen width. We can call `print` and define how many rows to show using parameter `n` and force print to show all features by changing the `width` to infinity.
 
 ```{r }
-print(iris, width = Inf)
+print(iris, n = 3, width = Inf)
 ```
 
 
@@ -50,13 +52,16 @@ Start with summary statistics for each column to identify outliers and missing v
 summary(iris)
 ```
 
-You can also summarize specific columns using a statistic function like `mean`.
+You can also summarize specific columns using a statistic function like `mean()`.
 
 ```{r }
 iris %>% summarize_if(is.numeric, mean)
 ```
 
-Another way to inspect your data is to use a scatterplot matrix (we use here `ggpairs` from package `GGally`). In this plot, you can visually identify noise data points and ouliers (points that are far from the majority of other points).
+To find outliers or data problems, you need to look for
+very small values (often a suspicious large number of zeros) using min and for extremely large values using max. Comparing median and mean tells us if the distribution is symmetric. 
+
+A visual method to inspect the data is to use a scatterplot matrix (we use here `ggpairs()` from package `GGally`). In this plot, we can visually identify noise data points and ouliers (points that are far from the majority of other points).
 
 ```{r }
 library(GGally)
@@ -65,7 +70,7 @@ ggpairs(iris, aes(color = Species))
 
 See if you can spot the one red dot that is far away from all others.
 
-We need complete data for many data mining methods. To remove missing values (`NA`) and 
+Many data mining methods require complete data, that is the data cannot contain missing values (`NA`). To remove missing values and 
 duplicates (identical data points which might be a mistake in the data), we often do this:
 
 ```{r }
@@ -73,8 +78,7 @@ clean.data <- iris %>% drop_na() %>% unique()
 summary(clean.data)
 ```
 
-Note that one case (non-unique) is gone leaving only 149 flowers. The data did not contain missing values, but if it did, they would also have been dropped. 
-Typically, you should spend more time on data cleaning.
+Note that one non-unique case is gone leaving only 149 flowers. The data did not contain missing values, but if it did, they would also have been dropped. Typically, you should spend a lot more time on data cleaning.
 
 ## Aggregation
 
@@ -89,17 +93,17 @@ Using this information, we can compare how features differ between groups.
 
 ## Sampling
 
-[Sampling](https://en.wikipedia.org/wiki/Sampling_(statistics)) is often used in data mining to reduce the dataset size.
+[Sampling](https://en.wikipedia.org/wiki/Sampling_(statistics)) is often used in data mining to reduce the dataset size before modeling or visualization.
 
 ### Random Sampling
 
-The built-in sample function can sample from a vector with replacement.
+The built-in sample function can sample from a vector. Here we sample with replacement.
 
 ```{r }
 sample(c("A", "B", "C"), size = 10, replace = TRUE)
 ```
 
-We often want to sample rows from a dataset. This can be done by sampling without replacement from a vector with row indices (using the functions `seq` and `nrow`). The sample is vector is then used to subset the rows of the dataset.
+We often want to sample rows from a dataset. This can be done by sampling without replacement from a vector with row indices (using the functions `seq()` and `nrow()`). The sample vector is then used to subset the rows of the dataset.
 
 ```{r }
 take <- sample(seq(nrow(iris)), size = 15)
@@ -108,7 +112,7 @@ take
 iris[take, ]
 ```
 
-`dplyr` from tidyverse lets us sample rows from tibbles directly. I set the random number generator seed to make the results reproducible.
+`dplyr` from tidyverse lets us sample rows from tibbles directly using `slice_sample()`. I set the random number generator seed to make the results reproducible.
 
 ```{r }
 set.seed(1000)
@@ -126,7 +130,7 @@ ggpairs(s, aes(color = Species))
  In the following, the subpopulations are the different types of species and we want
  to make sure to sample the same number (5) flowers from each. The library `sampling`
  provides a function for stratified sampling. The column `ID_unit` in the resulting data.frame
- contains the row numbers of the sampled rows. We can use `slice` from `dplyr` to select the 
+ contains the row numbers of the sampled rows. We can use `slice()` from `dplyr` to select the 
  sampled rows.
 
 ```{r }
@@ -146,20 +150,20 @@ ggpairs(s2, aes(color = Species))
 
 #### Principal Components Analysis (PCA)
 
-[PCA](https://en.wikipedia.org/wiki/Principal_component_analysis) calculates principal components (a new orthonormal basis vectors in the data space) from data points such that the first principal component explains the most variability in the data, the second the next most and so on.
+[PCA](https://en.wikipedia.org/wiki/Principal_component_analysis) calculates principal components (a set of new orthonormal basis vectors in the data space) from data points such that the first principal component explains the most variability in the data, the second the next most and so on.
 In data analysis, PCA is used to project high-dimensional data points onto the first few (typically two) principal components for visualization as a scatter plot and as preprocessing for modeling (e.g., before k-means clustering).
-Points that are closer together in the high-dimensional space, tend also be closer together in the lower-dimensional space,
+Points that are closer together in the high-dimensional original space, tend also be closer together when projected into the lower-dimensional space,
 
-Look at the 3d data using an interactive 3d plot (needs package plotly). However, 3d plots are hard to print out and the iris data is actually in 4 dimensions.
+We can use an interactive 3-d plot (from package `plotly`) to look at three of the four dimensions of the iris dataset. Note that it is hard to visualize more than 3 dimensions.
 
 ```{r }
-##library(plotly) # I don't load the package because it's namespace clashes with select in dplyr.
+# library(plotly) # I don't load the package because it's namespace clashes with select in dplyr.
 plotly::plot_ly(iris, x = ~Sepal.Length, y = ~Petal.Length, z = ~Sepal.Width,
   size = ~Petal.Width, color = ~Species, type="scatter3d")
 ```
 
 The principal components can be calculated from a matrix using the function `prcomp()`. We select 
-all numeric columns (by removing the species column) and convert the data.frame into a matrix before
+all numeric columns (by unselecting the species column) and convert the tibble into a matrix before
 the calculation. 
 
 ```{r }
@@ -183,9 +187,10 @@ raw object (display *str*ucture).
 str(pc)
 ```
 
-The element `x` contains the data points projected on the principal components.
+The object `pc` (like most objects in R) is a list with a class attribute.
+The list element `x` contains the data points projected on the principal components.
 We can convert the matrix into a tibble and add the species column from the original
-dataset to display the data projected on the first two principal components.
+dataset back (since the rows are in the same order), and then display the data projected on the first two principal components.
 
 ```{r }
 iris_projected <- as_tibble(pc$x) %>% add_column(Species = iris$Species)
@@ -193,7 +198,7 @@ ggplot(iris_projected, aes(x = PC1, y = PC2, color = Species)) +
   geom_point()
 ```
 
-Since the first principal component represents most of the variability, we can
+Flowers that are displayed close together in this projection are also close together in the original 4-dimensional space. Since the first principal component represents most of the variability, we can
 also show the data projected only on PC1.
 
 ```{r }
@@ -205,6 +210,8 @@ ggplot(iris_projected,
       axis.title.y = element_blank()
   )
 ```
+
+We see that we can perfectly separate the species Setosa using just the first principal component. The other two species are harder to separate.
 
 A plot of the projected data with the original axes added as arrows is called a
 [biplot](https://en.wikipedia.org/wiki/Biplot). If the arrows (original axes) 
@@ -221,22 +228,25 @@ We can also display only the old and new axes.
 fviz_pca_var(pc)
 ```
 
-We see Petal.Width and Petal.Length point in the same direction which indicates that they are highly correlated. They are also roughly aligned with PC1 (called Dim1 in the plot) which means that PC1 represents most of the variability of these two variables. Sepal.Width parallel to the y-axis and therefore represented by PC2 (Dim2). Petal.Width/Petal.Length and Sepal.Width are almost at 90 degrees, indicating that they are close to uncorrelated. Sepal.Length correlated to all other variables and 
+We see Petal.Width and Petal.Length point in the same direction which indicates that they are highly correlated. They are also roughly aligned with PC1 (called Dim1 in the plot) which means that PC1 represents most of the variability of these two variables. Sepal.Width is almost aligned with the y-axis and therefore it is represented by PC2 (Dim2). Petal.Width/Petal.Length and Sepal.Width are almost at 90 degrees, indicating that they are close to uncorrelated. Sepal.Length is correlated to all other variables and 
 represented by both, PC1 and PC2 in the projection.
 
-Another popular method to project data into lower dimensions for visualization is __t-distributed stochastic neighbor embedding (t-SNE)__ available in package `Rtsne`.
+There exist other methods to embed data from higher dimensions into a lower-dimensional space.
+A popular method to project data into lower dimensions for visualization is __t-distributed stochastic neighbor embedding (t-SNE)__ available in package `Rtsne`.
 
 #### Multi-Dimensional Scaling (MDS)
 
-[MDS](https://en.wikipedia.org/wiki/Multidimensional_scaling) is similar to PCA. Instead of data points, it takes pairwise distances (i.e., a distance matrix) and produces a space where points are placed to represent these distances as well as possible. The axis in this space are called components and are similar to the principal components in PCA. 
+[MDS](https://en.wikipedia.org/wiki/Multidimensional_scaling) is similar to PCA. Instead of data points, it starts with pairwise distances (i.e., a distance matrix) and produces a space where points are placed to represent these distances as well as possible. The axes in this space are called components and are similar to the principal components in PCA. 
 
-First, we calculate a distance matrix from the 4-d space of the iris dataset.
+First, we calculate a distance matrix (Euclidean distances) from the 4-d space of the iris dataset.
 
 ```{r }
 d <- iris %>% select(-Species) %>% dist()
 ```
 
-Metric (classic) MDS tries to reconstruct a 2-d space from the distance matrix. Points with smaller distances are closer in the reconstructed space. 
+Metric (classic) MDS tries to construct a space 
+where points with lower distances are placed closer together. 
+We project the data represented by a distance matrix  on  `k = 2` dimensions.
 
 ```{r }
 fit <- cmdscale(d, k = 2)
@@ -245,13 +255,14 @@ fit <- as_tibble(fit) %>% add_column(Species = iris$Species)
 
 ggplot(fit, aes(x = comp1, y = comp2, color = Species)) + geom_point()
 ```
-The resulting projection is similar (except for rotation and reflection) to the result of PCA.
+The resulting projection is similar (except for rotation and reflection) to the result of
+the projection using PCA.
 
 
 #### Non-Parametric Multidimensional Scaling
 
 Non-parametric multidimensional scaling performs MDS while relaxing the need of linear relationships. Methods are available in package `MASS` as functions
-`isoMDS` and `sammon`.
+`isoMDS()` and `sammon()`.
 
 ### Feature Selection
 
@@ -262,8 +273,8 @@ We will talk about feature selection when we discuss classification models in Ch
 
 Some data mining methods require discrete data.
 Discretization converts continuous features into discrete features. 
-
-Petal.Width is a continuous feature. Before we perform discretization, we should look at the 
+As an example, we will discretize the continuous feature Petal.Width. 
+Before we perform discretization, we should look at the 
 distribution and see if it gives us an idea how we should group the continuous values into
 a set of discrete values. A histogram visualizes the distribution of a single
 continuous feature.
@@ -272,13 +283,14 @@ continuous feature.
 ggplot(iris, aes(x = Petal.Width)) + geom_histogram(binwidth = .2)
 ```
 
-The R function `cut` performs equal interval width discretization.
+The bins in the histogram represent a discretization using a fixed bin width. 
+The R function `cut()` performs equal interval width discretization.
 
 ```{r }
 iris %>% pull(Sepal.Width) %>% cut(breaks = 3)
 ```
 
-Other discretization methods include equal frequency discretization using k-means clustering.
+Other discretization methods include equal frequency discretization or using k-means clustering.
 These methods are implemented by several R packages. We use here the implementation in package 
 `arules` and visualize the results as histograms with blue lines to separate intervals assigned to
 each discrete value.
@@ -307,13 +319,16 @@ ggplot(iris, aes(Petal.Width)) + geom_histogram(binwidth = .2) +
     color = "blue") +
   labs(title = "Discretization: cluster", subtitle = "Blue lines are boundaries")
 ```
+The user needs to decide on the number of intervals and the used method.
+
 
 ### Standardize Data
 
-Standardizing (scaling, normalizing) the range of features values to make them comparable. 
+Standardizing (scaling, normalizing) the range of features values is important to make them comparable. 
 The most popular method is to convert the values of each feature to [z-scores](https://en.wikipedia.org/wiki/Standard_score).
 by subtracting the mean (centering) and dividing by the
-standard deviation (scaling). 
+standard deviation (scaling). The standardized feature will have a mean of zero and are measured
+in standard deviations from the mean. Positive values indicate how many standard deviation the original feature value was above the average. Negative standardized values indicate below-average values.
 
 _Note:_ tidyverse currently does not have a simple scale function,
 so I make one that provides a wrapper for the standard scale function in R:
@@ -326,12 +341,11 @@ iris.scaled
 summary(iris.scaled)
 ```
 
-The standardized feature has a mean of zero and is measured in standard deviations away from zero.
-Most "normal" values will fall in the range [-3,3] (standard deviations).
+The standardized feature has a mean of zero and most "normal" values will fall in the range [-3,3] (standard deviations).
 
 ## Proximities: Similarities and Distances
 
-R stores proximity as dissimilarities/distances matrices. Similarities are first converted to dissimilarities.
+R stores proximity as dissimilarities/distances matrices. Similarities are first converted to dissimilarities. 
 Distances are symmetric, i.e., the distance 
 from A to B is the same as the distance from B to A. R therefore stores only a triangle (typically the lower triangle) of the distance matrix.
 
@@ -339,19 +353,20 @@ from A to B is the same as the distance from B to A. R therefore stores only a t
 
 The [Minkowsky distance](https://en.wikipedia.org/wiki/Minkowski_distance) is a family of
 metric distances including Euclidean and Manhattan distance. To avoid one feature to dominate the 
-distance calculation, scaled data is typically used.
+distance calculation, scaled data is typically used. We select the first 5 flowers for this example.
 
 ```{r }
 iris_sample <- iris.scaled %>% select(-Species) %>% slice(1:5)
 iris_sample
 ```
 
-Calculate distances matrices between the first 5 flowers.
+Different types of Minkowsky distance matrices between the first 5 flowers can be calculated using
+`dist()`.
 
 ```{r }
-dist(iris_sample, method="euclidean")
-dist(iris_sample, method="manhattan")
-dist(iris_sample, method="maximum")
+dist(iris_sample, method = "euclidean")
+dist(iris_sample, method = "manhattan")
+dist(iris_sample, method = "maximum")
 ```
 
 We see that only the lower triangle of the distance matrices are stored (note that rows start with row 2). 
@@ -393,8 +408,8 @@ dist(b, method = "binary")
 
 ### Distances for Mixed Data
 
-Most distance measures work only on numeric data. Often we have a mixture of 
-numbers and nominal features like this data:
+Most distance measures work only on numeric data. Often, we have a mixture of 
+numbers and nominal or ordinal features like this data:
 
 ```{r }
 people <- tibble(
@@ -405,7 +420,7 @@ people <- tibble(
 people
 ```
 
-__Note:__ Nominal features need to be a factor and not character (`<chr>`).
+It is important that nominal features are stored as factors and not character (`<chr>`).
 
 ```{r }
 people <- people %>% mutate_if(is.character, factor)
@@ -414,7 +429,7 @@ people
 
 #### Gower's Coefficient
 
-Gower's coefficient of similarity works with mixed data by calculating the appropriate similarity
+The Gower's coefficient of similarity works with mixed data by calculating the appropriate similarity
 for each feature and then 
 aggregating them into a single measure. The package `proxy` implements
 Gower's coefficient converted into a distance.
@@ -425,7 +440,7 @@ d_Gower <- dist(people, method = "Gower")
 d_Gower
 ```
 
-Gower's coefficient calculation implicitly scales the data because it calculates distances on each feature individualy, so no need to scale
+Gower's coefficient calculation implicitly scales the data because it calculates distances on each feature individually, so there is no need to scale
 the data first.
 
 #### Using Euclidean Distance with Mixed Data
@@ -442,20 +457,20 @@ data_dummy <- dummyVars(~., people) %>% predict(people)
 data_dummy
 ```
 
-Note that feature sex has now two columns. If we want to  
-height, weight and sex to have the same influence on the distance measure, then we need 
+Note that feature sex has now two columns. If we want that 
+height, weight and sex have the same influence on the distance measure, then we need 
 to weight the sex columns by 1/2 after scaling.
 
 ```{r }
-weight <- matrix(c(1, 1, 1/2, 1/2), ncol = 4, nrow = nrow(data_dummy), byrow = TRUE)
-data_dummy_scaled <- scale(data_dummy) * weight
+weight_matrix <- matrix(c(1, 1, 1/2, 1/2), ncol = 4, nrow = nrow(data_dummy), byrow = TRUE)
+data_dummy_scaled <- scale(data_dummy) * weight_matrix
 
 d_dummy <- dist(data_dummy_scaled)
 d_dummy
 ```
 
-The distance using dummy variables is (mostly) consistent with Gower's distance (other than that
-Gower's distance is scaled between 0 and 1).
+The distance using dummy variables is consistent with Gower's distance. However, note that
+Gower's distance is scaled between 0 and 1 while the Euclidean distance is not.
 
 ```{r }
 ggplot(tibble(d_dummy, d_Gower), aes(x = d_dummy, y = d_Gower)) +
@@ -489,6 +504,8 @@ cc
 ```
 
 `cor` calculates a correlation matrix with pairwise correlations between features.
+Correlation matrices are symmetric, but different to distances, the whole matrix is stored.
+
 The correlation between Petal.Length and Petal.Width can be visualized using a scatter plot.
 
 ```{r }
@@ -497,7 +514,7 @@ ggplot(iris, aes(Petal.Length, Petal.Width)) +
   geom_smooth(method = "lm")
 ```
 
-`geom_smooth` adds a regression line by fitting a linear model (`lm`). Most points are close to this line indicating strong linear dependence (i.e., correlation). 
+`geom_smooth` adds a regression line by fitting a linear model (`lm`). Most points are close to this line indicating strong linear dependence (i.e., high correlation). 
 
 We can calculate individual correlations by specifying two vectors.
 ````{r }
@@ -508,7 +525,7 @@ _Note:_ `with` lets you use columns using just their names and
 `with(iris, cor(Petal.Length, Petal.Width))`
 is the same as `cor(iris$Petal.Length, iris$Petal.Width)`.
 
-Finally, we can test if the correlation is significantly different from zero.
+Finally, we can test if a correlation is significantly different from zero.
 ```{r }
 with(iris, cor.test(Petal.Length, Petal.Width))
 ```
@@ -526,7 +543,7 @@ with(iris, cor.test(Sepal.Length, Sepal.Width))
 
 ### Rank Correlation 
 
-Rank correlation is used for ordinal features.
+Rank correlation is used for ordinal features or if the correlation is not linear.
 To show this, we first convert the continuous features in the Iris dataset into
 ordered factors (ordinal) with three levels using the function `cut`.
 
@@ -572,7 +589,7 @@ iris %>% select(-Species) %>% cor()
 
 [Density estimation](https://en.wikipedia.org/wiki/Density_estimation) constructions an estimate of an unobservable probability density function (a distribution) based on observed data.
 
-Just plotting the data is not very helpful for a single feature.
+Just plotting the data using points is not very helpful for a single feature.
 
 ```{r }
 ggplot(iris, aes(x = Petal.Length, y = 0)) + geom_point()
@@ -580,7 +597,7 @@ ggplot(iris, aes(x = Petal.Length, y = 0)) + geom_point()
 
 ### Histograms
 
-A [histograms](https://en.wikipedia.org/wiki/Histogram) shows more about the distribution by counting how many values fall within a bucket and visualizing the counts as a bar chart.
+A [histograms](https://en.wikipedia.org/wiki/Histogram) shows more about the distribution by counting how many values fall within a bin and visualizing the counts as a bar chart.
 We use `geom_rug` to place marks 
 for the original data points at the bottom of the histogram. 
 
@@ -607,7 +624,8 @@ ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
 ### Kernel Density Estimate (KDE)
 
 [Kernel density estimation](https://en.wikipedia.org/wiki/Kernel_density_estimation) 
-is used to estimate the probability density function of a feature. It works by replacing each
+is used to estimate the probability density function (distribution) of a feature. 
+It works by replacing each
 value with a kernel function (often a Gaussian) and then adding them up. The result is 
 an estimated probability density function that looks like a smoothed version of the histogram.
 The bandwidth (`bw`) of the kernel controls the amount of smoothing. 
@@ -617,12 +635,11 @@ ggplot(iris, aes(Petal.Length)) +
   geom_density(bw = .2) +
   geom_rug(alpha = 1/2)
 ```
-Kernel density estimates can also be done in two dimensions. The lines are called contour lines and
-indicate density similar to elevation lines on maps.
+Kernel density estimates can also be done in two dimensions. 
 
 ```{r }
 ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
-  geom_density2d() +
+  geom_density_2d_filled() +
   geom_jitter()
 ```
 
@@ -643,20 +660,27 @@ iris %>% pull(Sepal.Length) %>% mean()
 iris %>% pull(Sepal.Length) %>% sd()
 ```
 
-Ignore missing values (Note: this data does not contain any, but this is
-what you would do)
+Data with missing values will result in statistics of `NA`. Adding the 
+parameter `na.rm = TRUE` can be used in most statistics functions to ignore 
+missing values.
 
 ```{r }
-iris %>% pull(Sepal.Length) %>% mean(na.rm = TRUE)
+mean(c(1, 2, NA, 3, 4, 5))
+mean(c(1, 2, NA, 3, 4, 5),  na.rm = TRUE)
 ```
 
-Robust mean (trim 10% of observations from each end of the distribution)
+Outliers are typically unser the smallest and the largest values of a feature.
+To make the mean more robust to outliers, we can trim 10% of observations from each end of the distribution.
 
 ```{r }
+iris %>% pull(Sepal.Length) %>% mean()
 iris %>% pull(Sepal.Length) %>% mean(trim = .1)
 ```
 
-Calculate a summary for all numeric columns
+Sepal length does not have outliers, so the trimmed mean is almost identical.
+
+To calculate a summary for a set of features (e.g., all numeric features), tidyverse 
+provides `summarize_if()`.
 
 ```{r }
 iris %>% summarize_if(is.numeric, mean)
@@ -665,15 +689,42 @@ iris %>% summarize_if(is.numeric, sd)
 iris %>% summarize_if(is.numeric, list(min = min, median = median, max = max))
 ```
 
-MAD (median absolute deviation)
+The median absolute deviation (MAD) is another measure of dispersion.
 
 ```{r }
 iris %>% summarize_if(is.numeric, mad)
 ```
 
+
+### Grouping
+
+We can use the nominal feature to form groups and then calculate group-wise 
+statistics for the continuous features. We often use group-wise averages to see
+if they differ between groups.
+
+```{r }
+iris %>% group_by(Species) %>% summarize(across(Sepal.Length, mean))
+iris %>% group_by(Species) %>% summarize_all(mean)
+```
+We see that the species viginica has the highest average for all, but Sepal.Width.
+
+The statistical difference between the groups can be tested using 
+[ANOVA (analysis of variance)](http://www.sthda.com/english/wiki/one-way-anova-test-in-r).
+```{r }
+res.aov <- aov(Sepal.Length ~ Species, data = iris)
+summary(res.aov)
+TukeyHSD(res.aov)
+```
+
+The summary shows that there is a significant difference for Sepal.Length between the groups. `TukeyHDS`
+evaluates differences between pairs of groups. In this case, all are significantly different.
+If the data only contains two groups, the `t.test` can be used.
+
+
+
 ### Tabulate data
 
-Count the number of flowers for each species.
+We can count the number of flowers for each species.
 
 ```{r }
 iris %>% group_by(Species) %>% summarize(n())
@@ -681,7 +732,7 @@ iris %>% group_by(Species) %>% summarize(n())
 
 In base R, this can be also done using `count(iris$Species)`.
 
-We discretize the data using cut.
+For the following examples, we discretize the data using cut.
 ```{r }
 iris_ord <- iris %>% mutate_if(is.numeric,
   function(x) cut(x, 3, labels = c("short", "medium", "long"), ordered = TRUE))
@@ -728,16 +779,6 @@ For small counts (cells with counts <5), [Fisher's exact test](https://en.wikipe
 ```{r }
 fisher.test(tbl)
 ```
-
-We can use the nominal feature to form groups and then calculate group-wise 
-statistics for the continuous features. We often use group-wise averages to see
-if they differ between groups.
-
-```{r }
-iris %>% group_by(Species) %>% summarize(across(Sepal.Length, mean))
-iris %>% group_by(Species) %>% summarize_all(mean)
-```
-We see that the species viginica has the highest average for all, but Sepal.Width.
 
 ### Percentiles (Quantiles)
 
@@ -794,9 +835,19 @@ we first have to transform the data into long format (i.e., all feature values a
 library(tidyr)
 iris_long <- iris %>% mutate(id = row_number()) %>% pivot_longer(1:4)
 ggplot(iris_long, aes(name, value)) + 
-  geom_boxplot()
+  geom_boxplot() +
+  labs(y = "Original value")
 ```
-This visualization is only useful if all features have roughly the same range.
+This visualization is only useful if all features have roughly the same range. The data can be scaled 
+first to compare the distributions.
+
+```{r }
+library(tidyr)
+iris_long_scaled <- iris %>% scale_numeric() %>% mutate(id = row_number()) %>% pivot_longer(1:4)
+ggplot(iris_long_scaled, aes(name, value)) + 
+  geom_boxplot() +
+  labs(y = "Scaled value")
+```
 
 
 ### Scatter plot
@@ -885,7 +936,7 @@ ggcorrplot(cm1)
 Package `seriation` provides a reordered version for this plot using a heatmap.
 
 ```{r }
-gghmap(cm1)
+gghmap(cm1, prop = TRUE)
 ```
 
 Correlations can also be calculates between objects by trnsposing the data matrix.
@@ -898,7 +949,6 @@ ggcorrplot(cm2)
 Object-to-object correlations can be used as a measure of similarity. The dark red blocks
 indicate different species.
 
-
 ### Parallel Coordinates Plot
 
 Parallel coordinate plots can visualize several featues in a single plot. Lines connect the values 
@@ -906,7 +956,7 @@ for each object (flower).
 
 ```{r }
 library(GGally)
-ggparcoord(as_tibble(iris), columns = 1:4, groupColumn = 5)
+ggparcoord(iris, columns = 1:4, groupColumn = 5)
 ```
 
 The plot can be improved by reordering the variables to place correlated features next to each other.
@@ -914,7 +964,7 @@ The plot can be improved by reordering the variables to place correlated feature
 ```{r }
 o <- seriate(as.dist(1-cor(iris[,1:4])), method = "BBURCG")
 get_order(o)
-ggparcoord(as_tibble(iris), columns = get_order(o), groupColumn = 5)
+ggparcoord(iris, columns = get_order(o), groupColumn = 5)
 ```
 
 ### More Visulizations

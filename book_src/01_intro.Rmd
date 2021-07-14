@@ -13,6 +13,8 @@ all_pkgs <- union(all_pkgs, pkgs)
 
 **Packages used for this chapter:** `r format_pkgs(pkgs)`
 
+
+## Used Software
 This companion book assumes that you have [R](https://cran.r-project.org/) and [RStudio Desktop](https://www.rstudio.com/products/rstudio/) installed and that you are familiar with the basics of R, how to run R code and install packages.
 
 If you are new to R, then working through the official R manual [An Introduction to R](https://cran.r-project.org/doc/manuals/r-release/R-intro.html) [@RCore2021] will get you started.
@@ -20,6 +22,8 @@ There are many introduction videos for RStudio and a basic video that shows you 
 
 The code in this book uses `tidyverse` to manipulate data and `ggplot2` for visualization.
 A great introduction to these very useful tools can be found in the freely available web book [R for Data Science](https://r4ds.had.co.nz) by @Wickham2017. 
+
+## Tidyverse
 
 ```{r}
 library(tidyverse)
@@ -59,6 +63,8 @@ affordable_vitamin_c_sources
 ```
 
 The pipes operator `%>%` lets you compose a sequence of function calls in a more readable way by passing the value to the left on as the first argument to the function to the right.
+
+## ggplot2
 
 For visualization, we will use mainly `ggplot2`.
 The _gg_ in `ggplot2` stands for __The Grammar of Graphics__ introduced in 

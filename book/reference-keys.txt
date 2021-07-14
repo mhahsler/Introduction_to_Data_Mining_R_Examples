@@ -1,4 +1,7 @@
 introduction
+used-software
+tidyverse
+ggplot2
 data
 the-iris-dataset
 data-quality
@@ -31,6 +34,7 @@ histograms
 kernel-density-estimate-kde
 exploring-data
 basic-statistics
+grouping
 tabulate-data
 percentiles-quantiles
 visualization
