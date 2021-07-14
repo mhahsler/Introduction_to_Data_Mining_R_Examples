@@ -1,10 +1,6 @@
-bookdown::gitbook:
-  pandoc_args: [ "--csl", "apa.csl" ]
-  config:
-    toc:
-      collapse: section
-      before: |
-        <li><a href="./">R Companion for Data Mining</a></li>
-        <li><a href="http://michael.hahsler.net">by Michael Hahsler</a></li>
-      after: |
-        <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+bookdown::bs4_book:
+  repo: 
+    base:   https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples
+    branch: master
+    subdir: book_src
+  

@@ -1,4 +1,4 @@
-# R Code Examples for Introduction to Data Mining
+# R Companion for Introduction to Data Mining
 
 <img src="book_small_e2.jpg" align="right">
 <img src="book_small.jpg" align="right">
@@ -9,7 +9,7 @@ This repository contains slides and documented R examples to accompany several c
 [_Introduction to Data Mining,_](https://www-users.cs.umn.edu/~kumar001/dmbook/index.php) Addison Wesley, 1st or 2nd edition.
 
 The slides and examples are used in my course [CS 7331 - Data Mining](http://michael.hahsler.net/SMU/EMIS7331) taught at [SMU](https://www.smu.edu/) and will be regularly updated and improved. The code examples are now compiled into the free online book
-[R Companion for the Textbook Introduction to Data Mining](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/) which is
+[R Companion for Introduction to Data Mining](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/) which is
 published under the creative commons attribution license and you can
 share and adapt them freely. Please open an [issue](issues)  
 for corrections or to suggest improvements. 
@@ -34,5 +34,4 @@ The raw R code and the Powerpoint files can be found in the repository directori
 All code and documents in this repository are licensed under a [Creative Commons Attribution-NonCommercial 4.0 International License](http://creativecommons.org/licenses/by-nc/4.0/)
 
  
- For questions please contact
- [Michael Hahsler](http://michael.hahsler.net).
+For questions please contact [Michael Hahsler](http://michael.hahsler.net).
