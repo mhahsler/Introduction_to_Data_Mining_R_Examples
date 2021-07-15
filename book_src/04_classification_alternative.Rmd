@@ -674,7 +674,6 @@ decisionplot(model, x, cl = "class") + labs(title = "keras (tanh activation)")
 
 ## More Information
 
-* [Example using deep learning with keras.](chap4_keras.html)
 * Package caret: http://topepo.github.io/caret/index.html
 * Tidymodels (machine learning with tidyverse): https://www.tidymodels.org/
 * R taskview on machine learning: http://cran.r-project.org/web/views/MachineLearning.html
