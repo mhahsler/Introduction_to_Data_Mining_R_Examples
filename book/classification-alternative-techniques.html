@@ -4,16 +4,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Chapter 4 Classification: Alternative Techniques | R Companion for Introduction to Data Mining</title>
+<title>Chapter 4 Classification: Alternative Techniques | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
 <meta name="description" content="Packages used for this chapter: C50 (Kuhn and Quinlan 2021), caret (Kuhn 2021), e1071 (Meyer et al. 2021), keras (Allaire and Chollet 2021), lattice (Sarkar 2021), MASS (Ripley 2021a), mlbench...">
 <meta name="generator" content="bookdown 0.22.12 with bs4_book()">
-<meta property="og:title" content="Chapter 4 Classification: Alternative Techniques | R Companion for Introduction to Data Mining">
+<meta property="og:title" content="Chapter 4 Classification: Alternative Techniques | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
 <meta property="og:description" content="Packages used for this chapter: C50 (Kuhn and Quinlan 2021), caret (Kuhn 2021), e1071 (Meyer et al. 2021), keras (Allaire and Chollet 2021), lattice (Sarkar 2021), MASS (Ripley 2021a), mlbench...">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Chapter 4 Classification: Alternative Techniques | R Companion for Introduction to Data Mining">
+<meta name="twitter:title" content="Chapter 4 Classification: Alternative Techniques | An R Companion for Introduction to Data Mining">
 <meta name="twitter:description" content="Packages used for this chapter: C50 (Kuhn and Quinlan 2021), caret (Kuhn 2021), e1071 (Meyer et al. 2021), keras (Allaire and Chollet 2021), lattice (Sarkar 2021), MASS (Ripley 2021a), mlbench...">
 <meta name="twitter:image" content="/images/cover.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -37,7 +37,7 @@
 
     <div class="d-flex align-items-start justify-content-between">
       <h1>
-        <a href="index.html" title="">R Companion for Introduction to Data Mining</a>
+        <a href="index.html" title="">An R Companion for Introduction to Data Mining</a>
       </h1>
       <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
     </div>
@@ -1144,7 +1144,7 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 <span class="va">history</span></code></pre></div>
 <pre><code>## 
 ## Final epoch (plot to see history):
-##     loss: 0.6972
+##     loss: 0.6333
 ## accuracy: 0.7267</code></pre>
 <div class="sourceCode" id="cb462"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"keras (relu activation)"</span><span class="op">)</span></code></pre></div>
@@ -1166,8 +1166,8 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 <span class="va">history</span></code></pre></div>
 <pre><code>## 
 ## Final epoch (plot to see history):
-##     loss: 0.6224
-## accuracy: 0.7533</code></pre>
+##     loss: 0.5977
+## accuracy: 0.76</code></pre>
 <div class="sourceCode" id="cb465"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"keras (tanh activation)"</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-185-2.png" width="672"></div>
@@ -1357,8 +1357,8 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 <span class="va">history</span></code></pre></div>
 <pre><code>## 
 ## Final epoch (plot to see history):
-##     loss: 0.1787
-## accuracy: 0.966</code></pre>
+##     loss: 0.1879
+## accuracy: 0.962</code></pre>
 <div class="sourceCode" id="cb492"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"keras (relu activation)"</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-196-1.png" width="672"></div>
@@ -1379,8 +1379,8 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 <span class="va">history</span></code></pre></div>
 <pre><code>## 
 ## Final epoch (plot to see history):
-##     loss: 0.3549
-## accuracy: 0.922</code></pre>
+##     loss: 0.3245
+## accuracy: 0.948</code></pre>
 <div class="sourceCode" id="cb495"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"keras (tanh activation)"</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-196-2.png" width="672"></div>
@@ -1392,7 +1392,6 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 <span class="header-section-number">4.6</span> More Information<a class="anchor" aria-label="anchor" href="#more-information"><i class="fas fa-link"></i></a>
 </h2>
 <ul>
-<li><a href="chap4_keras.html">Example using deep learning with keras.</a></li>
 <li>Package caret: <a href="http://topepo.github.io/caret/index.html" class="uri">http://topepo.github.io/caret/index.html</a>
 </li>
 <li>Tidymodels (machine learning with tidyverse): <a href="https://www.tidymodels.org/" class="uri">https://www.tidymodels.org/</a>
@@ -1448,7 +1447,7 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2021-07-14.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2021-07-15.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

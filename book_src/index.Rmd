@@ -1,5 +1,5 @@
 --- 
-title: "R Companion for Introduction to Data Mining"
+title: "An R Companion for Introduction to Data Mining"
 author: "Michael Hahsler"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -10,7 +10,7 @@ bibliography: [book.bib, packages.bib]
 #biblio-style: apalike
 link-citations: yes
 nocite: '@*'
-description: "This book contains documented R examples to accompany several chapters of the popular data mining textbook _Introduction to Data Mining_ by Pang-Ning Tan, Michael Steinbach and Vipin Kumar (1st or 2nd edition)."
+description: "This book contains documented R examples to accompany several chapters of the popular data mining textbook _Introduction to Data Mining_ by Pang-Ning Tan, Michael Steinbach and Vipin Kumar."
 ---
 
 ```{r setup, include=FALSE}
@@ -55,7 +55,7 @@ Please use the edit function within this book or visit
 the [book's GitHub project page](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples) to submit corrections or suggest 
 improvements. To cite this book use:
 
-> Michael Hahsler (2021). _R Companion for Introduction to Data Mining._ Online Book. https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/
+> Michael Hahsler (2021). _An R Companion for Introduction to Data Mining._ Online Book. https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/
 
 I hope this book helps you to learn to use R more efficiently for your data mining projects.
 

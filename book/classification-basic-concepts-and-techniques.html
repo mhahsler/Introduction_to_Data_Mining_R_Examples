@@ -4,16 +4,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Chapter 3 Classification: Basic Concepts and Techniques | R Companion for Introduction to Data Mining</title>
+<title>Chapter 3 Classification: Basic Concepts and Techniques | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
 <meta name="description" content="Packages used for this chapter: caret (Kuhn 2021), FSelector (Romanski, Kotthoff, and Schratz 2021), lattice (Sarkar 2021), mlbench (Leisch and Dimitriadou. 2021), pROC (Robin et al. 2021), rpart...">
 <meta name="generator" content="bookdown 0.22.12 with bs4_book()">
-<meta property="og:title" content="Chapter 3 Classification: Basic Concepts and Techniques | R Companion for Introduction to Data Mining">
+<meta property="og:title" content="Chapter 3 Classification: Basic Concepts and Techniques | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
 <meta property="og:description" content="Packages used for this chapter: caret (Kuhn 2021), FSelector (Romanski, Kotthoff, and Schratz 2021), lattice (Sarkar 2021), mlbench (Leisch and Dimitriadou. 2021), pROC (Robin et al. 2021), rpart...">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Chapter 3 Classification: Basic Concepts and Techniques | R Companion for Introduction to Data Mining">
+<meta name="twitter:title" content="Chapter 3 Classification: Basic Concepts and Techniques | An R Companion for Introduction to Data Mining">
 <meta name="twitter:description" content="Packages used for this chapter: caret (Kuhn 2021), FSelector (Romanski, Kotthoff, and Schratz 2021), lattice (Sarkar 2021), mlbench (Leisch and Dimitriadou. 2021), pROC (Robin et al. 2021), rpart...">
 <meta name="twitter:image" content="/images/cover.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -37,7 +37,7 @@
 
     <div class="d-flex align-items-start justify-content-between">
       <h1>
-        <a href="index.html" title="">R Companion for Introduction to Data Mining</a>
+        <a href="index.html" title="">An R Companion for Introduction to Data Mining</a>
       </h1>
       <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
     </div>
@@ -846,7 +846,7 @@ to derive a score.</p>
 <code class="sourceCode R"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/as.simple.formula.html">as.simple.formula</a></span><span class="op">(</span><span class="va">subset</span>, <span class="st">"type"</span><span class="op">)</span>
 <span class="va">f</span></code></pre></div>
 <pre><code>## type ~ feathers + milk + backbone + toothed + eggs
-## &lt;environment: 0x562b617d9b88&gt;</code></pre>
+## &lt;environment: 0x55e6f1525ad8&gt;</code></pre>
 <div class="sourceCode" id="cb299"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">m</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
@@ -1591,7 +1591,7 @@ and thus the performance measures could not be calculates.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2021-07-14.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2021-07-15.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
