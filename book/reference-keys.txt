@@ -45,7 +45,7 @@ scatter-plot-matrix
 data-matrix-visualization
 correlation-matrix
 parallel-coordinates-plot
-more-visulizations
+more-visualizations
 classification-basic-concepts-and-techniques
 the-zoo-dataset
 decision-trees
@@ -81,7 +81,7 @@ gradient-boosted-decision-trees-xgboost
 artificial-neural-network
 comparing-models
 applying-the-chosen-model-to-the-test-data
-decision-boundaries
+comparing-decision-boundaries-of-popular-classification-techniques
 iris-dataset
 k-nearest-neighbors-classifier
 naive-bayes-classifier
@@ -99,8 +99,7 @@ multinomial-logistic-regression-implemented-in-nnet-1
 decision-trees-2
 svm-1
 single-layer-feed-forward-neural-networks-1
-deep-learning-with-keras-1
-more-information
+more-information-on-classification-with-r
 association-analysis-basic-concepts-and-algorithms
 the-arules-package
 transactions

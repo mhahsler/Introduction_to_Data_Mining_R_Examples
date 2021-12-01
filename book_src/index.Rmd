@@ -1,4 +1,4 @@
---- 
+---
 title: "An R Companion for Introduction to Data Mining"
 author: "Michael Hahsler"
 date: "`r Sys.Date()`"
@@ -11,6 +11,9 @@ bibliography: [book.bib, packages.bib]
 link-citations: yes
 nocite: '@*'
 description: "This book contains documented R examples to accompany several chapters of the popular data mining textbook _Introduction to Data Mining_ by Pang-Ning Tan, Michael Steinbach and Vipin Kumar."
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
@@ -33,37 +36,50 @@ format_pkgs <- function(pkgs)
   paste(sapply(pkgs, FUN = function(p) sprintf('_%s_ [@R-%s]', p ,p)), collapse = ', ')
 ```
 
-
-
-# Preface {-}
+# Preface {.unnumbered}
 
 ```{r fig.align='center', out.width="50%", echo=FALSE, include=identical(knitr:::pandoc_to(), 'html')}
 knitr::include_graphics('images/cover.png', dpi = NA)
 ```
 
-This book contains documented R examples to accompany several chapters of the popular data mining textbook
-[_Introduction to Data Mining_](https://www-users.cs.umn.edu/~kumar001/dmbook/)
-by Pang-Ning Tan, Michael Steinbach, Anuj Karpatne and Vipin Kumar.
-The companion book can be used with either edition: 1st edition [@Tan2005] or 2nd edition [@Tan2018].
+This book contains documented R examples to accompany several chapters
+of the popular data mining textbook [*Introduction to Data
+Mining*](https://www-users.cs.umn.edu/~kumar001/dmbook/) by Pang-Ning
+Tan, Michael Steinbach, Anuj Karpatne and Vipin Kumar. The companion
+book can be used with either edition: 1st edition [@Tan2005] or 2nd
+edition [@Tan2018].
 
-The code examples collected in this book were developed for the course [CS 7331 - Data Mining](http://michael.hahsler.net/SMU/EMIS7331) 
-taught at [SMU](http://www.smu.edu) since Spring 2013 and will be regularly updated and improved. 
-The latest update includes the use of the popular packages in the meta-package `tidyverse` [@R-tidyverse] including `ggplot2` [@R-ggplot2] for data wrangling and visualization along with
+The code examples collected in this book were developed for the course
+[CS 7331 - Data Mining](http://michael.hahsler.net/SMU/EMIS7331) taught
+at [SMU](http://www.smu.edu) since Spring 2013 and will be regularly
+updated and improved. The latest update includes the use of the popular
+packages in the meta-package `tidyverse` [@R-tidyverse] including
+`ggplot2` [@R-ggplot2] for data wrangling and visualization along with
 `caret` [@R-caret] for model building.
 
-Please use the edit function within this book or visit
-the [book's GitHub project page](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples) to submit corrections or suggest 
-improvements. To cite this book use:
+Please use the edit function within this book or visit the [book's
+GitHub project
+page](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples)
+to submit corrections or suggest improvements. To cite this book use:
 
-> Michael Hahsler (2021). _An R Companion for Introduction to Data Mining._ Online Book. https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/
+> Michael Hahsler (2021). *An R Companion for Introduction to Data
+> Mining.* Online Book.
+> <https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/>
 
-I hope this book helps you to learn to use R more efficiently for your data mining projects.
+I hope this book helps you to learn to use R more efficiently for your
+data mining projects.
 
 Michael Hahsler
 
+## License {.unnumbered}
 
-## License {-}
+![Creative Commons License](images/by-nc-sa.png) The online version of
+this book is licensed under the [Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 International
+License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 
-![Creative Commons License](images/by-nc-sa.png) The online version of this book is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
-
-The cover art is based on ["rocks"](https://www.flickr.com/photos/69017177@N00/5063131410) by [stebulus](https://www.flickr.com/photos/69017177@N00) licensed with [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/?ref=ccsearch&atype=rich).
+The cover art is based on
+["rocks"](https://www.flickr.com/photos/69017177@N00/5063131410) by
+[stebulus](https://www.flickr.com/photos/69017177@N00) licensed with [CC
+BY
+2.0](https://creativecommons.org/licenses/by/2.0/?ref=ccsearch&atype=rich).

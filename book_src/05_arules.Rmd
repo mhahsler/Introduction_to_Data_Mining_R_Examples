@@ -1,5 +1,10 @@
-# Association Analysis: Basic Concepts and Algorithms
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
 
+# Association Analysis: Basic Concepts and Algorithms
 
 ```{r setup_05, include=FALSE}
 pkgs <- sort(c('tidyverse', 'arules', 'arulesViz', 'mlbench'))
@@ -14,7 +19,8 @@ all_pkgs <- union(all_pkgs, pkgs)
 **Packages used for this chapter:** `r format_pkgs(pkgs)`
 
 You can read the free sample chapter from the textbook [@Tan2005]:
-[Chapter 5. Association Analysis: Basic Concepts and Algorithms](https://www-users.cs.umn.edu/~kumar001/dmbook/ch5_association_analysis.pdf)
+[Chapter 5. Association Analysis: Basic Concepts and
+Algorithms](https://www-users.cs.umn.edu/~kumar001/dmbook/ch5_association_analysis.pdf)
 
 ## The arules Package
 
@@ -26,28 +32,25 @@ library(arules)
 library(arulesViz)
 ```
 
-For information about the `arules` package try:
-`help(package="arules")`
-and
-`vignette("arules")` (also available at [CRAN](http://cran.r-project.org/web/packages/arules/vignettes/arules.pdf))
+For information about the `arules` package try: `help(package="arules")`
+and `vignette("arules")` (also available at
+[CRAN](http://cran.r-project.org/web/packages/arules/vignettes/arules.pdf))
 
 arules uses the S4 object system to implement classes and methods.
-Standard R objects use the [S3 object system](http://adv-r.had.co.nz/S3.html)
-which do not use formal class definitions and are usually implemented
-as a list with a class attribute.
-`arules` and many other R packages use the
-[S4 object system](http://adv-r.had.co.nz/S4.html) which is based on
-formal class definitions with member variables and methods 
-(similar to object-oriented programming languages like Java and C++).
-Some important differences of using S4 objects compared to the usual S3
-objects are:
+Standard R objects use the [S3 object
+system](http://adv-r.had.co.nz/S3.html) which do not use formal class
+definitions and are usually implemented as a list with a class
+attribute. `arules` and many other R packages use the [S4 object
+system](http://adv-r.had.co.nz/S4.html) which is based on formal class
+definitions with member variables and methods (similar to
+object-oriented programming languages like Java and C++). Some important
+differences of using S4 objects compared to the usual S3 objects are:
 
-* coercion (casting): `as(from, "class_name")`
-* help for classes: `class? class_name`
-
-
+-   coercion (casting): `as(from, "class_name")`
+-   help for classes: `class? class_name`
 
 ## Transactions
+
 ### Create Transactions
 
 We will use the Zoo dataset from `mlbench`.
@@ -57,19 +60,21 @@ data(Zoo, package = "mlbench")
 head(Zoo)
 ```
 
-The data in the data.frame need to be converted into a set of transactions where each row represents a transaction and each column is translated into items.
-This is done using the contructor `transactions()`.
-For the Zoo data set this means that we consider animals as transactions
-and the different traits (features) will become items that each animal has. For
-example the animal _antelope_ has the item _hair_ in its transaction.
+The data in the data.frame need to be converted into a set of
+transactions where each row represents a transaction and each column is
+translated into items. This is done using the constructor
+`transactions()`. For the Zoo data set this means that we consider
+animals as transactions and the different traits (features) will become
+items that each animal has. For example the animal *antelope* has the
+item *hair* in its transaction.
 
 ```{r }
 trans <- transactions(Zoo)
 ```
 
-
-The conversion gives a warning because only discrete features (`factor` and `logical`) can be
-directly translated into items. Continuous features need to be discretized first.
+The conversion gives a warning because only discrete features (`factor`
+and `logical`) can be directly translated into items. Continuous
+features need to be discretized first.
 
 What is column 13?
 
@@ -87,17 +92,19 @@ ggplot(Zoo_has_legs, aes(legs)) + geom_bar()
 table(Zoo_has_legs$legs)
 ```
 
-__Alternatives:__
+**Alternatives:**
 
-* use each unique value as an item:
+-   use each unique value as an item:
 
 ```{r }
 Zoo_unique_leg_values <- Zoo %>% mutate(legs = factor(legs))
 head(Zoo_unique_leg_values$legs)
 ```
 
-* discretize (see [`? discretize`](https://www.rdocumentation.org/packages/arules/topics/discretize) and
-[discretization in the code for Chapter 2](chap2.html#discretize-features)):
+-   discretize (see
+    [`? discretize`](https://www.rdocumentation.org/packages/arules/topics/discretize)
+    and [discretization in the code for Chapter
+    2](chap2.html#discretize-features)):
 
 ```{r }
 Zoo_discretized_legs <- Zoo %>% mutate(
@@ -106,8 +113,7 @@ Zoo_discretized_legs <- Zoo %>% mutate(
 table(Zoo_discretized_legs$legs)
 ```
 
-
- Convert data into a set of transactions
+Convert data into a set of transactions
 
 ```{r }
 trans <- transactions(Zoo_has_legs)
@@ -120,7 +126,9 @@ trans
 summary(trans)
 ```
 
-Look at created items. They are still called column names since the transactions are actually stored as a large sparse logical matrix (see below).
+Look at created items. They are still called column names since the
+transactions are actually stored as a large sparse logical matrix (see
+below).
 
 ```{r }
 colnames(trans)
@@ -132,7 +140,8 @@ Compare with the original features (column names) from Zoo
 colnames(Zoo)
 ```
 
-Look at a (first) few transactions as a matrix. 1 indicates the presence of an item.
+Look at a (first) few transactions as a matrix. 1 indicates the presence
+of an item.
 
 ```{r }
 as(trans, "matrix")[1:3,]
@@ -150,7 +159,8 @@ Plot the binary matrix. Dark dots represent 1s.
 image(trans)
 ```
 
-Look at the relative frequency (=support) of items in the data set. Here we look at the 10 most frequent items.
+Look at the relative frequency (=support) of items in the data set. Here
+we look at the 10 most frequent items.
 
 ```{r }
 itemFrequencyPlot(trans,topN = 20)
@@ -162,7 +172,7 @@ ggplot(
   ), aes(x = Item, y = Support)) + geom_line()
 ```
 
-__Alternative encoding:__ Also create items for FALSE (use factor)
+**Alternative encoding:** Also create items for FALSE (use factor)
 
 ```{r }
 sapply(Zoo_has_legs, class)
@@ -183,8 +193,9 @@ inspect(trans_insects)
 
 ### Vertical Layout (Transaction ID Lists)
 
-The default layout for transactions is horizontal layout (i.e. each transaction is a row).
-The vertical layout represents transaction data as a list of transaction IDs for each item (= transaction ID lists).
+The default layout for transactions is horizontal layout (i.e. each
+transaction is a row). The vertical layout represents transaction data
+as a list of transaction IDs for each item (= transaction ID lists).
 
 ```{r }
 vertical <- as(trans, "tidLists")
@@ -192,6 +203,7 @@ as(vertical, "matrix")[1:10, 1:5]
 ```
 
 ## Frequent Itemsets
+
 ### Mine Frequent Itemsets
 
 For this dataset we have already a huge number of possible itemsets
@@ -207,17 +219,17 @@ its <- apriori(trans, parameter=list(target = "frequent"))
 its
 ```
 
-Default minimum support is .1 (10\%).
-__Note:__ We use here a very small data set. For larger datasets
-the default minimum support might be to low and you may run out of memory. You probably want to start out with a higher minimum support like
-.5 (50\%) and then work your way down.
+Default minimum support is .1 (10%). **Note:** We use here a very small
+data set. For larger datasets the default minimum support might be to
+low and you may run out of memory. You probably want to start out with a
+higher minimum support like .5 (50%) and then work your way down.
 
 ```{r }
 5/nrow(trans)
 ```
 
 In order to find itemsets that effect 5 animals I need to go down to a
-support of about 5\%.
+support of about 5%.
 
 ```{r }
 its <- apriori(trans, parameter=list(target = "frequent", support = 0.05))
@@ -266,12 +278,12 @@ ggplot(as_tibble(counts, rownames = "Itemsets"),
   aes(Itemsets, counts)) + geom_bar(stat = "identity")
 ```
 
-
-
 ## Association Rules
+
 ### Mine Association Rules
 
-We use the APRIORI algorithm (see [`? apriori`](https://www.rdocumentation.org/packages/arules/topics/apriori))
+We use the APRIORI algorithm (see
+[`? apriori`](https://www.rdocumentation.org/packages/arules/topics/apriori))
 
 ```{r }
 rules <- apriori(trans, parameter = list(support = 0.05, confidence = 0.9))
@@ -322,9 +334,12 @@ inspect(head(rules, by = "phi"))
 
 ### Mine Using Templates
 
-Sometimes it is beneficial to specify what items should be where in the rule. For apriori we can use the parameter appearance to specify this (see [`? APappearance`](https://www.rdocumentation.org/packages/arules/topics/APappearance)). In
-the following we restrict rules to an animal `type` in the RHS and any item in
-the LHS.
+Sometimes it is beneficial to specify what items should be where in the
+rule. For apriori we can use the parameter appearance to specify this
+(see
+[`? APappearance`](https://www.rdocumentation.org/packages/arules/topics/APappearance)).
+In the following we restrict rules to an animal `type` in the RHS and
+any item in the LHS.
 
 ```{r }
 type <- grep("type=", itemLabels(trans), value = TRUE)
@@ -351,8 +366,8 @@ Default scatterplot
 plot(rules)
 ```
 
-Note that some jitter (randomly move points) was added to show how many rules have the
-same confidence and support value. Without jitter:
+Note that some jitter (randomly move points) was added to show how many
+rules have the same confidence and support value. Without jitter:
 
 ```{r }
 plot(rules, control = list(jitter = 0))
@@ -375,19 +390,20 @@ plot(rules, method = "graph")
 plot(head(rules, by = "phi", n = 100), method = "graph")
 ```
 
-
 ## Interactive Visualizations
 
-We will use the association rules mined from the Iris dataset for the following examples.
+We will use the association rules mined from the Iris dataset for the
+following examples.
 
 ```{r }
 data(iris)
 summary(iris)
 ```
 
-Convert the data to transactions. Note that the features are numeric and need to be discretized.
-The conversion automatically applies frequency-based discretization with 3 classes to each numeric
-feature (with a warning).
+Convert the data to transactions. Note that the features are numeric and
+need to be discretized. The conversion automatically applies
+frequency-based discretization with 3 classes to each numeric feature
+(with a warning).
 
 ```{r }
 iris_trans <- transactions(iris)
@@ -407,13 +423,13 @@ rules
 inspectDT(rules)
 ```
 
-### Scatter Plot 
+### Scatter Plot
 
-Plot rules as a scatter plot using an interactive html widget. To avoid overplotting,
-jitter is added automatically. Set `jitter = 0` to disable jitter. Hovering over rules shows 
-rule information.
-_Note:_ plotly/javascript does not do well with too many points, so plot
-selects the top 1000 rules with a warning if more rules are supplied.
+Plot rules as a scatter plot using an interactive html widget. To avoid
+overplotting, jitter is added automatically. Set `jitter = 0` to disable
+jitter. Hovering over rules shows rule information. *Note:*
+plotly/javascript does not do well with too many points, so plot selects
+the top 1000 rules with a warning if more rules are supplied.
 
 ```{r }
 plot(rules, engine = "html")
@@ -421,16 +437,17 @@ plot(rules, engine = "html")
 
 ### Matrix Visualization
 
-Plot rules as a matrix using an interactive html widget. 
+Plot rules as a matrix using an interactive html widget.
 
 ```{r }
 plot(rules, method = "matrix", engine = "html") 
 ```
 
 ### Visualization as Graph
- 
-Plot rules as a graph using an interactive html widget.
-_Note:_  the used javascript library does not do well with too many graph nodes, so plot selects the top 100 rules only (with a warning).
+
+Plot rules as a graph using an interactive html widget. *Note:* the used
+javascript library does not do well with too many graph nodes, so plot
+selects the top 100 rules only (with a warning).
 
 ```{r }
 plot(rules, method = "graph", engine = "html")
@@ -438,9 +455,11 @@ plot(rules, method = "graph", engine = "html")
 
 ### Interactive Rule Explorer
 
-You can specify a rule set or a dataset. To explore rules that can be mined from iris, use:
-`ruleExplorer(iris)`
+You can specify a rule set or a dataset. To explore rules that can be
+mined from iris, use: `ruleExplorer(iris)`
 
-The rule explorer creates an interactive Shiny application that can be used locally or 
-deployed on a server for sharing. A deployed version of the ruleExplorer is available 
-[here](https://mhahsler-apps.shinyapps.io/ruleExplorer_demo/) (using [shinyapps.io](https://www.shinyapps.io/)).
+The rule explorer creates an interactive Shiny application that can be
+used locally or deployed on a server for sharing. A deployed version of
+the ruleExplorer is available
+[here](https://mhahsler-apps.shinyapps.io/ruleExplorer_demo/) (using
+[shinyapps.io](https://www.shinyapps.io/)).

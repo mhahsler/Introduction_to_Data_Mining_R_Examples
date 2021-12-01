@@ -1,5 +1,10 @@
-# Classification: Basic Concepts and Techniques 
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
 
+# Classification: Basic Concepts and Techniques
 
 ```{r setup_03, include=FALSE}
 pkgs <- sort(c('tidyverse', 'rpart', 'rpart.plot', 'caret', 
@@ -15,29 +20,40 @@ all_pkgs <- union(all_pkgs, pkgs)
 **Packages used for this chapter:** `r format_pkgs(pkgs)`
 
 You can read the free sample chapter from the textbook [@Tan2005]:
-[Chapter 3. Classification: Basic Concepts and Techniques](https://www-users.cs.umn.edu/~kumar001/dmbook/ch3_classification.pdf)
+[Chapter 3. Classification: Basic Concepts and
+Techniques](https://www-users.cs.umn.edu/~kumar001/dmbook/ch3_classification.pdf)
 
 ## The Zoo Dataset
-We will use the Zoo dataset which is included in the R package __mlbench__ (you may have to install it).
-The Zoo dataset containing 17 (mostly logical) variables on different 101 animals as a
-  data frame with 17 columns (hair, feathers, eggs, milk, airborne, aquatic, predator, toothed, backbone, breathes, venomous, fins, legs, tail, domestic, catsize, type). We convert the data frame into a tidyverse tibble (optional).
+
+We will use the Zoo dataset which is included in the R package
+**mlbench** (you may have to install it). The Zoo dataset containing 17
+(mostly logical) variables on different 101 animals as a data frame with
+17 columns (hair, feathers, eggs, milk, airborne, aquatic, predator,
+toothed, backbone, breathes, venomous, fins, legs, tail, domestic,
+catsize, type). We convert the data frame into a tidyverse tibble
+(optional).
 
 ```{r }
 data(Zoo, package="mlbench")
 head(Zoo)
 ```
 
-_Note:_ data.frames in R can have row names. The Zoo data set uses the animal name as the row names. tibbles from `tidyverse` do not support row names. To keep the animal name you can add a column with the animal name.
+*Note:* data.frames in R can have row names. The Zoo data set uses the
+animal name as the row names. tibbles from `tidyverse` do not support
+row names. To keep the animal name you can add a column with the animal
+name.
 
 ```{r }
 library(tidyverse)
 as_tibble(Zoo, rownames = "animal")
 ```
 
-You will have to remove the animal column before learning a model! In the following I use the data.frame.
+You will have to remove the animal column before learning a model! In
+the following I use the data.frame.
 
-
-I translate all the TRUE/FALSE values into factors (nominal). This is often needed for building models. Always check `summary()` to make sure the data is ready for model learning.
+I translate all the TRUE/FALSE values into factors (nominal). This is
+often needed for building models. Always check `summary()` to make sure
+the data is ready for model learning.
 
 ```{r }
 Zoo <- Zoo %>%
@@ -62,15 +78,17 @@ tree_default <- Zoo %>% rpart(type ~ ., data = .)
 tree_default
 ```
 
-__Notes:__
-- `%>%` supplies the data for `rpart`. Since `data` is not the first argument of `rpart`, the syntax `data = .` is used to specify where the data in `Zoo` goes. The call is equivalent to `tree_default <- rpart(type ~ ., data = Zoo)`.
-- The formula models the `type` variable by all other features represented by `.`. `data = .`
-  means that the data provided by the pipe (`%>%`) will be passed to rpart as the
-  argument `data`.
+**Notes:** - `%>%` supplies the data for `rpart`. Since `data` is not
+the first argument of `rpart`, the syntax `data = .` is used to specify
+where the data in `Zoo` goes. The call is equivalent to
+`tree_default <- rpart(type ~ ., data = Zoo)`. - The formula models the
+`type` variable by all other features represented by `.`. `data = .`
+means that the data provided by the pipe (`%>%`) will be passed to rpart
+as the argument `data`.
 
-- the class variable needs a factor (nominal) or rpart
-  will create a regression tree instead of a decision tree. Use `as.factor()`
-  if necessary.
+-   the class variable needs a factor (nominal) or rpart will create a
+    regression tree instead of a decision tree. Use `as.factor()` if
+    necessary.
 
 Plotting
 
@@ -79,17 +97,16 @@ library(rpart.plot)
 rpart.plot(tree_default, extra = 2)
 ```
 
-_Note:_ `extra=2` prints for each leaf node the number of correctly
-classified objects from data and the total number of objects
-from the training data falling into that node (correct/total).
+*Note:* `extra=2` prints for each leaf node the number of correctly
+classified objects from data and the total number of objects from the
+training data falling into that node (correct/total).
 
 ### Create a Full Tree
 
-To create a full tree, we set the complexity parameter cp to 0 (split even
-if it does not improve the tree) and we set the minimum number of
-observations in a node needed to split to the smallest value of 2
-(see: `?rpart.control`).
-_Note:_ full trees overfit the training data!
+To create a full tree, we set the complexity parameter cp to 0 (split
+even if it does not improve the tree) and we set the minimum number of
+observations in a node needed to split to the smallest value of 2 (see:
+`?rpart.control`). *Note:* full trees overfit the training data!
 
 ```{r }
 tree_full <- Zoo %>% rpart(type ~., data = ., control = rpart.control(minsplit = 2, cp = 0))
@@ -169,16 +186,20 @@ predict(tree_default , my_animal, type = "class")
 
 ## Model Evaluation with Caret
 
-The package [`caret`](https://topepo.github.io/caret/) makes preparing training sets, building
-classification (and regression) models and evaluation easier. A great cheat sheet can be found [here](https://ugoproto.github.io/ugo_r_doc/pdf/caret.pdf).
+The package [`caret`](https://topepo.github.io/caret/) makes preparing
+training sets, building classification (and regression) models and
+evaluation easier. A great cheat sheet can be found
+[here](https://ugoproto.github.io/ugo_r_doc/pdf/caret.pdf).
 
 ```{r }
 library(caret)
 ```
 
-Cross-validation runs are independent and can be done faster in parallel.
-To enable multi-core support, `caret` uses the package `foreach` and
-you need to load a `do` backend. For Linux, you can use `doMC` with 4 cores. Windows needs different backend like `doParallel` (see `caret` cheat sheet above).
+Cross-validation runs are independent and can be done faster in
+parallel. To enable multi-core support, `caret` uses the package
+`foreach` and you need to load a `do` backend. For Linux, you can use
+`doMC` with 4 cores. Windows needs different backend like `doParallel`
+(see `caret` cheat sheet above).
 
 ```{r }
 ## Linux backend
@@ -198,11 +219,11 @@ Set random number generator seed to make results reproducible
 set.seed(2000)
 ```
 
-
 ### Hold out Test Data
 
-Test data is not used in the model building process and set aside purely for testing the model.
-Here, we partition data the 80% training and  20% testing.
+Test data is not used in the model building process and set aside purely
+for testing the model. Here, we partition data the 80% training and 20%
+testing.
 
 ```{r }
 inTrain <- createDataPartition(y = Zoo$type, p = .8, list = FALSE)
@@ -210,19 +231,19 @@ Zoo_train <- Zoo %>% slice(inTrain)
 Zoo_test <- Zoo %>% slice(-inTrain)
 ```
 
-
 ### Learn a Model and Tune Hyperparameters on the Training Data
 
-The package `caret` combines training and validation for hyperparameter tuning into a single function called `train()`.
-It internally splits the data into training and validation sets and thus will
-provide you with error estimates for different hyperparameter settings. `trainControl` is used
-to choose how testing is performed.
+The package `caret` combines training and validation for hyperparameter
+tuning into a single function called `train()`. It internally splits the
+data into training and validation sets and thus will provide you with
+error estimates for different hyperparameter settings. `trainControl` is
+used to choose how testing is performed.
 
-For rpart, train tries to tune the cp parameter (tree complexity)
-using accuracy to chose the best model. I set minsplit to 2 since we have
-not much data.
-__Note:__ Parameters used for tuning (in this case `cp`) need to be set using
-a data.frame in the argument `tuneGrid`! Setting it in control will be ignored.
+For rpart, train tries to tune the `cp` parameter (tree complexity)
+using accuracy to chose the best model. I set `minsplit` to 2 since we
+have not much data. **Note:** Parameters used for tuning (in this case
+`cp`) need to be set using a data.frame in the argument `tuneGrid`!
+Setting it in control will be ignored.
 
 ```{r }
 fit <- Zoo_train %>%
@@ -235,20 +256,22 @@ fit <- Zoo_train %>%
 fit
 ```
 
-__Note:__ Train has built 10 trees using the training folds for each value of `cp` and the reported values for accuracy and Kappa are the averages on the validation folds.
+**Note:** Train has built 10 trees using the training folds for each
+value of `cp` and the reported values for accuracy and Kappa are the
+averages on the validation folds.
 
-A model using the best tuning parameters
-and using all the data supplied to `train()` is available as `fit$finalModel`.
+A model using the best tuning parameters and using all the data supplied
+to `train()` is available as `fit$finalModel`.
 
 ```{r }
 rpart.plot(fit$finalModel, extra = 2,
   box.palette = list("Gy", "Gn", "Bu", "Bn", "Or", "Rd", "Pu"))
 ```
 
-caret also computes variable importance. By default it uses competing splits
-(splits which would be runners up, but do not get chosen by the tree)
-for rpart models (see `? varImp`). Toothed is the
-runner up for many splits, but it never gets chosen!
+caret also computes variable importance. By default it uses competing
+splits (splits which would be runners up, but do not get chosen by the
+tree) for rpart models (see `? varImp`). Toothed is the runner up for
+many splits, but it never gets chosen!
 
 ```{r }
 varImp(fit)
@@ -262,7 +285,9 @@ imp
 ggplot(imp)
 ```
 
-__Note:__ Not all models provide a variable importance function. In this case caret might calculate varImp by itself and ignore the model (see `? varImp`)!
+**Note:** Not all models provide a variable importance function. In this
+case caret might calculate the variable importance by itself and ignore
+the model (see `? varImp`)!
 
 ## Testing: Confusion Matrix and Confidence Interval for Accuracy
 
@@ -273,41 +298,44 @@ pred <- predict(fit, newdata = Zoo_test)
 pred
 ```
 
-
-Caret's `confusionMatrix()` function calculates accuracy, confidence intervals, kappa and many more evaluation metrics. You need to use separate test data to create a confusion matrix based on the generalization error.
+Caret's `confusionMatrix()` function calculates accuracy, confidence
+intervals, kappa and many more evaluation metrics. You need to use
+separate test data to create a confusion matrix based on the
+generalization error.
 
 ```{r }
 confusionMatrix(data = pred, ref = Zoo_test$type)
 ```
 
+**Some notes**
 
-__Some notes__
-
-* Many classification algorithms and `train` in caret do not deal well
-  with missing values.
-  If your classification model can deal with missing values (e.g., `rpart`) then use `na.action = na.pass` when you call `train` and `predict`.
-  Otherwise, you need to remove observations with missing values with
-  `na.omit` or use imputation to replace the missing values before you train the model. Make sure that
-  you still have enough observations left.
-* Make sure that nominal variables (this includes logical variables)
-  are coded as factors.
-* The class variable for train in caret cannot have level names that are
-  keywords in R (e.g., `TRUE` and `FALSE`). Rename them to, for example,
-   "yes" and "no."
-* Make sure that nominal variables (factors) have examples for all possible
-  values. Some methods might have problems with variable values
-  without examples. You can drop empty levels using `droplevels` or `factor`.
-* Sampling in train might create a sample that does not
-  contain examples for all values in a nominal (factor) variable. You will get
-  an error message. This most
-  likely happens for variables which have one very rare value. You may have to
-  remove the variable.
+-   Many classification algorithms and `train` in caret do not deal well
+    with missing values. If your classification model can deal with
+    missing values (e.g., `rpart`) then use `na.action = na.pass` when
+    you call `train` and `predict`. Otherwise, you need to remove
+    observations with missing values with `na.omit` or use imputation to
+    replace the missing values before you train the model. Make sure
+    that you still have enough observations left.
+-   Make sure that nominal variables (this includes logical variables)
+    are coded as factors.
+-   The class variable for train in caret cannot have level names that
+    are keywords in R (e.g., `TRUE` and `FALSE`). Rename them to, for
+    example, "yes" and "no."
+-   Make sure that nominal variables (factors) have examples for all
+    possible values. Some methods might have problems with variable
+    values without examples. You can drop empty levels using
+    `droplevels` or `factor`.
+-   Sampling in train might create a sample that does not contain
+    examples for all values in a nominal (factor) variable. You will get
+    an error message. This most likely happens for variables which have
+    one very rare value. You may have to remove the variable.
 
 ## Model Comparison
 
-We will compare decision trees with a k-nearest neighbors (kNN) classifier.
-We will create fixed sampling scheme (10-folds) so we compare the different models
-using exactly the same folds. It is specified as `trControl` during training.
+We will compare decision trees with a k-nearest neighbors (kNN)
+classifier. We will create fixed sampling scheme (10-folds) so we
+compare the different models using exactly the same folds. It is
+specified as `trControl` during training.
 
 ```{r }
 train_index <- createFolds(Zoo_train$type, k = 10)
@@ -324,8 +352,9 @@ rpartFit <- Zoo_train %>% train(type ~ .,
   )
 ```
 
-__Note:__ for kNN we ask `train` to scale the data using `preProcess = "scale"`. Logicals will
-be used as 0-1 variables in Euclidean distance calculation.
+**Note:** for kNN we ask `train` to scale the data using
+`preProcess = "scale"`. Logicals will be used as 0-1 variables in
+Euclidean distance calculation.
 
 ```{r }
 knnFit <- Zoo_train %>% train(type ~ .,
@@ -347,19 +376,20 @@ resamps <- resamples(list(
 summary(resamps)
 ```
 
-`caret` provides some visualizations using the package `lattice`. For example, a boxplot to
-compare the accuracy and kappa distribution (over the 10 folds).
+`caret` provides some visualizations using the package `lattice`. For
+example, a boxplot to compare the accuracy and kappa distribution (over
+the 10 folds).
 
 ```{r }
 library(lattice)
 bwplot(resamps, layout = c(3, 1))
 ```
 
-We see that kNN is performing consistently better on the folds than CART (except for some outlier folds).
+We see that kNN is performing consistently better on the folds than CART
+(except for some outlier folds).
 
-
-Find out if one models is statistically better than the other (is
-the difference in accuracy is not zero).
+Find out if one models is statistically better than the other (is the
+difference in accuracy is not zero).
 
 ```{r }
 difs <- diff(resamps)
@@ -367,9 +397,15 @@ difs
 summary(difs)
 ```
 
-p-values tells you the probability of seeing an even more extreme value (difference between accuracy) given that the null hypothesis (difference = 0) is true. For a better classifier, the p-value should be less than .05 or 0.01. `diff` automatically applies Bonferroni correction for multiple comparisons. In this case, kNN seems better but the classifiers do not perform statistically differently.
+p-values tells you the probability of seeing an even more extreme value
+(difference between accuracy) given that the null hypothesis (difference
+= 0) is true. For a better classifier, the p-value should be less than
+.05 or 0.01. `diff` automatically applies Bonferroni correction for
+multiple comparisons. In this case, kNN seems better but the classifiers
+do not perform statistically differently.
 
 ## Feature Selection and Feature Preparation
+
 Decision trees implicitly select features for splitting, but we can also
 select features manually.
 
@@ -377,13 +413,14 @@ select features manually.
 library(FSelector)
 ```
 
-see: http://en.wikibooks.org/wiki/Data_Mining_Algorithms_In_R/Dimensionality_Reduction/Feature_Selection#The_Feature_Ranking_Approach
+see:
+<http://en.wikibooks.org/wiki/Data_Mining_Algorithms_In_R/Dimensionality_Reduction/Feature_Selection#The_Feature_Ranking_Approach>
 
 ### Univariate Feature Importance Score
-These scores measure how related
-each feature is to the class variable.
-For discrete features (as in our case), the chi-square statistic can be used
-to derive a score.
+
+These scores measure how related each feature is to the class variable.
+For discrete features (as in our case), the chi-square statistic can be
+used to derive a score.
 
 ```{r }
 weights <- Zoo_train %>% chi.squared(type ~ ., data = .) %>%
@@ -392,7 +429,8 @@ weights <- Zoo_train %>% chi.squared(type ~ ., data = .) %>%
 weights
 ```
 
-plot importance in descending order (using `reorder` to order factor levels used by `ggplot`).
+plot importance in descending order (using `reorder` to order factor
+levels used by `ggplot`).
 
 ```{r }
 ggplot(weights,
@@ -408,7 +446,8 @@ subset <- cutoff.k(weights %>% column_to_rownames("feature"), 5)
 subset
 ```
 
-Use only the best 5 features to build a model (`Fselector` provides `as.simple.formula`)
+Use only the best 5 features to build a model (`Fselector` provides
+`as.simple.formula`)
 
 ```{r }
 f <- as.simple.formula(subset, "type")
@@ -420,7 +459,8 @@ rpart.plot(m, extra = 2, roundint = FALSE)
 
 There are many alternative ways to calculate univariate importance
 scores (see package FSelector). Some of them (also) work for continuous
-features. One example is the information gain ratio based on entropy as used in decision tree induction.
+features. One example is the information gain ratio based on entropy as
+used in decision tree induction.
 
 ```{r }
 Zoo_train %>% gain.ratio(type ~ ., data = .) %>%
@@ -429,6 +469,7 @@ Zoo_train %>% gain.ratio(type ~ ., data = .) %>%
 ```
 
 ### Feature Subset Selection
+
 Often features are related and calculating importance for each feature
 independently is not optimal. We can use greedy search heuristics. For
 example `cfs` uses correlation/entropy with best first search.
@@ -438,11 +479,11 @@ Zoo_train %>% cfs(type ~ ., data = .)
 ```
 
 Black-box feature selection uses an evaluator function (the black box)
-to calculate a score to be maximized.
-First, we define an evaluation function that builds a model given a subset
-of features and calculates a quality score. We use here the
-average for 5 bootstrap samples (`method = "cv"` can also be used instead), no tuning (to be faster), and the
-average accuracy as the score.
+to calculate a score to be maximized. First, we define an evaluation
+function that builds a model given a subset of features and calculates a
+quality score. We use here the average for 5 bootstrap samples
+(`method = "cv"` can also be used instead), no tuning (to be faster),
+and the average accuracy as the score.
 
 ```{r }
 evaluator <- function(subset) {
@@ -465,8 +506,8 @@ Start with all features (but not the class variable `type`)
 features <- Zoo_train %>% colnames() %>% setdiff("type")
 ```
 
-There are several (greedy) search strategies available. These run
-for a while!
+There are several (greedy) search strategies available. These run for a
+while!
 
 ```{r }
 ##subset <- backward.search(features, evaluator)
@@ -476,20 +517,22 @@ for a while!
 ##subset
 ```
 
-
 ### Using Dummy Variables for Factors
 
-Nominal features (factors) are often encoded as a series of 0-1 dummy variables.
-For example, let us try to predict if an animal is a predator given the type.
-First we use the original encoding of type as a factor with several values.
+Nominal features (factors) are often encoded as a series of 0-1 dummy
+variables. For example, let us try to predict if an animal is a predator
+given the type. First we use the original encoding of type as a factor
+with several values.
 
 ```{r }
 tree_predator <- Zoo_train %>% rpart(predator ~ type, data = .)
 rpart.plot(tree_predator, extra = 2, roundint = FALSE)
 ```
 
-__Note:__ Some splits use multiple values. Building the tree will become
-extremely slow if a factor has many levels (different values) since the tree has to check all possible splits into two subsets. This situation should be avoided.
+**Note:** Some splits use multiple values. Building the tree will become
+extremely slow if a factor has many levels (different values) since the
+tree has to check all possible splits into two subsets. This situation
+should be avoided.
 
 Recode type as a set of 0-1 dummy variables using `class2ind`. See also
 `? dummyVars` in package `caret`.
@@ -504,11 +547,10 @@ tree_predator <- Zoo_train_dummy %>% rpart(predator ~ ., data = .,
 rpart.plot(tree_predator, roundint = FALSE)
 ```
 
-Using `caret` on the original factor encoding automatically translates factors
-(here type) into 0-1 dummy variables (e.g., `typeinsect = 0`).
-The reason is that some models cannot
-directly use factors and `caret` tries to consistently work with
-all of them.
+Using `caret` on the original factor encoding automatically translates
+factors (here type) into 0-1 dummy variables (e.g., `typeinsect = 0`).
+The reason is that some models cannot directly use factors and `caret`
+tries to consistently work with all of them.
 
 ```{r }
 fit <- Zoo_train %>% train(predator ~ type, data = ., method = "rpart",
@@ -519,15 +561,17 @@ fit
 rpart.plot(fit$finalModel, extra = 2)
 ```
 
-_Note:_ To use a fixed value for the tuning parameter `cp`, we have to
-create a tuning grid that only icontains that value.
+*Note:* To use a fixed value for the tuning parameter `cp`, we have to
+create a tuning grid that only contains that value.
 
 ## Class Imbalance
 
-Classifiers have a hard time to learn from data where we have much more observations for one class (called the majority class). This is called the class imbalance problem.
+Classifiers have a hard time to learn from data where we have much more
+observations for one class (called the majority class). This is called
+the class imbalance problem.
 
-Here is a very good [article about the problem and solutions.](http://www.kdnuggets.com/2016/08/learning-from-imbalanced-classes.html)
-
+Here is a very good [article about the problem and
+solutions.](http://www.kdnuggets.com/2016/08/learning-from-imbalanced-classes.html)
 
 ```{r }
 library(rpart)
@@ -541,11 +585,10 @@ Class distribution
 ggplot(Zoo, aes(y = type)) + geom_bar()
 ```
 
-To create an imbalanced problem, we want to decide if an animal is an reptile.
-First, we change the class variable
-to make it into a binary reptile/no reptile classification problem.
-__Note:__ We use here the training data for testing. You should use a
-separate testing data set!
+To create an imbalanced problem, we want to decide if an animal is an
+reptile. First, we change the class variable to make it into a binary
+reptile/no reptile classification problem. **Note:** We use here the
+training data for testing. You should use a separate testing data set!
 
 ```{r }
 Zoo_reptile <- Zoo %>% mutate(
@@ -566,7 +609,8 @@ See if we have a class imbalance problem.
 ggplot(Zoo_reptile, aes(y = type)) + geom_bar()
 ```
 
-Create test and training data. I use here a 50/50 split to make sure that the test set has some samples of the rare reptile class.
+Create test and training data. I use here a 50/50 split to make sure
+that the test set has some samples of the rare reptile class.
 
 ```{r }
 set.seed(1234)
@@ -575,8 +619,8 @@ training_reptile <- Zoo_reptile %>% slice(inTrain)
 testing_reptile <- Zoo_reptile %>% slice(-inTrain)
 ```
 
-the new class variable is clearly not balanced. This is a problem
-for building a tree!
+the new class variable is clearly not balanced. This is a problem for
+building a tree!
 
 ### Option 1: Use the Data As Is and Hope For The Best
 
@@ -587,9 +631,9 @@ fit <- training_reptile %>% train(type ~ .,
   trControl = trainControl(method = "cv"))
 ```
 
-__Warnings:__ "There were missing values in resampled performance measures."
-means that some test folds did not contain examples of both classes.
-This is very likely with class imbalance and small datasets.
+**Warnings:** "There were missing values in resampled performance
+measures." means that some test folds did not contain examples of both
+classes. This is very likely with class imbalance and small datasets.
 
 ```{r }
 fit
@@ -605,24 +649,24 @@ confusionMatrix(data = predict(fit, testing_reptile),
 ```
 
 Accuracy is high, but it is exactly the same as the no-information rate
-and kappa is zero. Sensitivity is also zero, meaning that we do not identify
-any positive (reptile). If the cost of missing a positive is much
-larger than the cost associated with misclassifying a negative, then accuracy
-is not a good measure!
-By dealing with imbalance, we are __not__ concerned
-with accuracy, but we want to increase the
+and kappa is zero. Sensitivity is also zero, meaning that we do not
+identify any positive (reptile). If the cost of missing a positive is
+much larger than the cost associated with misclassifying a negative,
+then accuracy is not a good measure! By dealing with imbalance, we are
+**not** concerned with accuracy, but we want to increase the
 sensitivity, i.e., the chance to identify positive examples.
 
-__Note:__ The positive class value (the one that
-you want to detect) is set manually to reptile using `positive = "reptile"`.
-Otherwise sensitivity/specificity will not be correctly calculated.
+**Note:** The positive class value (the one that you want to detect) is
+set manually to reptile using `positive = "reptile"`. Otherwise
+sensitivity/specificity will not be correctly calculated.
 
 ### Option 2: Balance Data With Resampling
 
 We use stratified sampling with replacement (to oversample the
-minority/positive class).
-You could also use SMOTE (in package __DMwR__) or other sampling strategies (e.g., from package __unbalanced__). We
-use 50+50 observations here (__Note:__ many samples will be chosen several times).
+minority/positive class). You could also use SMOTE (in package **DMwR**)
+or other sampling strategies (e.g., from package **unbalanced**). We use
+50+50 observations here (**Note:** many samples will be chosen several
+times).
 
 ```{r }
 library(sampling)
@@ -648,14 +692,15 @@ confusionMatrix(data = predict(fit, testing_reptile),
   ref = testing_reptile$type, positive = "reptile")
 ```
 
-__Note__ that the accuracy is below the no information rate!
-However, kappa (improvement of accuracy over randomness) and
-sensitivity (the ability to identify reptiles) have increased.
+**Note** that the accuracy is below the no information rate! However,
+kappa (improvement of accuracy over randomness) and sensitivity (the
+ability to identify reptiles) have increased.
 
-There is a tradeoff between sensitivity and specificity (how many of the identified animals are really reptiles)
-The tradeoff can be controlled using the sample
-proportions. We can sample more reptiles to increase sensitivity at the cost of
-lower specificity (this effect cannot be seen in the data since the test set has only a few reptiles).
+There is a tradeoff between sensitivity and specificity (how many of the
+identified animals are really reptiles) The tradeoff can be controlled
+using the sample proportions. We can sample more reptiles to increase
+sensitivity at the cost of lower specificity (this effect cannot be seen
+in the data since the test set has only a few reptiles).
 
 ```{r }
 id <- strata(training_reptile, stratanames = "type", size = c(50, 100), method = "srswr")
@@ -674,12 +719,11 @@ confusionMatrix(data = predict(fit, testing_reptile),
 
 ### Option 3: Build A Larger Tree and use Predicted Probabilities
 
-Increase complexity and require less data for splitting a node.
-Here I also use AUC (area under the ROC) as the tuning metric.
-You need to specify the two class
-summary function. Note that the tree still trying to improve accuracy on the
-data and not AUC! I also enable class probabilities since I want to predict
-probabilities later.
+Increase complexity and require less data for splitting a node. Here I
+also use AUC (area under the ROC) as the tuning metric. You need to
+specify the two class summary function. Note that the tree still trying
+to improve accuracy on the data and not AUC! I also enable class
+probabilities since I want to predict probabilities later.
 
 ```{r }
 fit <- training_reptile %>% train(type ~ .,
@@ -699,22 +743,20 @@ confusionMatrix(data = predict(fit, testing_reptile),
   ref = testing_reptile$type, positive = "reptile")
 ```
 
-__Note:__ Accuracy is high, but it is close or below to the no-information rate!
+**Note:** Accuracy is high, but it is close or below to the
+no-information rate!
 
 #### Create A Biased Classifier
 
-We can create a classifier which will detect more reptiles
-at the expense of misclassifying non-reptiles. This is equivalent
-to increasing the cost of misclassifying a reptile as a non-reptile.
-The usual rule is to predict in each node
-the majority class from the test data in the node.
-For a binary classification problem that means a probability of >50%.
-In the following, we reduce this threshold to 1% or more.
-This means that if the new observation ends up in a leaf node with 1% or
- more reptiles from training then the observation
- will be classified as a reptile.
- The data set is small and this works better with more data.
-
+We can create a classifier which will detect more reptiles at the
+expense of misclassifying non-reptiles. This is equivalent to increasing
+the cost of misclassifying a reptile as a non-reptile. The usual rule is
+to predict in each node the majority class from the test data in the
+node. For a binary classification problem that means a probability of
+\>50%. In the following, we reduce this threshold to 1% or more. This
+means that if the new observation ends up in a leaf node with 1% or more
+reptiles from training then the observation will be classified as a
+reptile. The data set is small and this works better with more data.
 
 ```{r }
 prob <- predict(fit, testing_reptile, type = "prob")
@@ -725,18 +767,21 @@ confusionMatrix(data = pred,
   ref = testing_reptile$type, positive = "reptile")
 ```
 
-__Note__ that accuracy goes down and is below the no information rate.
-However, both measures are based on the idea that all errors have the same
-cost. What is important is that we are now able to find more
+**Note** that accuracy goes down and is below the no information rate.
+However, both measures are based on the idea that all errors have the
+same cost. What is important is that we are now able to find more
 reptiles.
 
 #### Plot the ROC Curve
-Since we have a binary classification problem and a classifier that predicts
-a probability for an observation to be a reptile, we can also use a
-[receiver operating characteristic (ROC)](https://en.wikipedia.org/wiki/Receiver_operating_characteristic)
-curve. For the ROC curve all different cutoff thresholds for the probability
-are used and then connected with a line. The area under the curve represents
-a single number for how well the classifier works (the closer to one, the better).
+
+Since we have a binary classification problem and a classifier that
+predicts a probability for an observation to be a reptile, we can also
+use a [receiver operating characteristic
+(ROC)](https://en.wikipedia.org/wiki/Receiver_operating_characteristic)
+curve. For the ROC curve all different cutoff thresholds for the
+probability are used and then connected with a line. The area under the
+curve represents a single number for how well the classifier works (the
+closer to one, the better).
 
 ```{r }
 library("pROC")
@@ -748,11 +793,10 @@ ggroc(r) + geom_abline(intercept = 1, slope = 1, color = "darkgrey")
 
 ### Option 4: Use a Cost-Sensitive Classifier
 
-The implementation of CART in `rpart` can use a cost matrix for making splitting
-decisions (as parameter `loss`). The matrix has the form
+The implementation of CART in `rpart` can use a cost matrix for making
+splitting decisions (as parameter `loss`). The matrix has the form
 
- TP FP
- FN TN
+TP FP FN TN
 
 TP and TN have to be 0. We make FN very expensive (100).
 
@@ -771,9 +815,10 @@ fit <- training_reptile %>% train(type ~ .,
   trControl = trainControl(method = "cv"))
 ```
 
-The warning "There were missing values in resampled performance measures"
-means that some folds did not contain any reptiles (because of the class imbalance)
-and thus the performance measures could not be calculates.
+The warning "There were missing values in resampled performance
+measures" means that some folds did not contain any reptiles (because of
+the class imbalance) and thus the performance measures could not be
+calculates.
 
 ```{r }
 fit
@@ -784,6 +829,10 @@ confusionMatrix(data = predict(fit, testing_reptile),
   ref = testing_reptile$type, positive = "reptile")
 ```
 
-The high cost for false negatives results in a classifier that does not miss any reptile.
+The high cost for false negatives results in a classifier that does not
+miss any reptile.
 
-__Note:__ Using a cost-sensitive classifier is often the best option. Unfortunately, the most classification algorithms (or their implementation) do not have the ability to consider misclassification cost.
+**Note:** Using a cost-sensitive classifier is often the best option.
+Unfortunately, the most classification algorithms (or their
+implementation) do not have the ability to consider misclassification
+cost.

@@ -1,3 +1,9 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
 # Classification: Alternative Techniques
 
 ```{r setup_04, include=FALSE}
@@ -26,7 +32,6 @@ all_pkgs <- union(all_pkgs, pkgs)
 
 **Packages used for this chapter:** `r format_pkgs(pkgs)`
 
-
 We will use tidyverse to prepare the data.
 
 ```{r }
@@ -40,9 +45,14 @@ options(digits=3)
 ```
 
 ## Training and Test Data
-We will use the Zoo dataset which is included in the R package `mlbench` (you may have to install it).
-The Zoo dataset containing 17 (mostly logical) variables on different 101 animals as a
-  data frame with 17 columns (hair, feathers, eggs, milk, airborne, aquatic, predator, toothed, backbone, breathes, venomous, fins, legs, tail, domestic, catsize, type). We convert the data frame into a tidyverse tibble (optional).
+
+We will use the Zoo dataset which is included in the R package `mlbench`
+(you may have to install it). The Zoo dataset containing 17 (mostly
+logical) variables on different 101 animals as a data frame with 17
+columns (hair, feathers, eggs, milk, airborne, aquatic, predator,
+toothed, backbone, breathes, venomous, fins, legs, tail, domestic,
+catsize, type). We convert the data frame into a tidyverse tibble
+(optional).
 
 ```{r }
 data(Zoo, package="mlbench")
@@ -50,16 +60,17 @@ Zoo <- as_tibble(Zoo)
 Zoo
 ```
 
-
-We will use the package [__caret__](https://topepo.github.io/caret/) to make preparing training sets and building classification (and regression) models easier. A great cheat sheet can be found [here](https://ugoproto.github.io/ugo_r_doc/pdf/caret.pdf).
-
+We will use the package [**caret**](https://topepo.github.io/caret/) to
+make preparing training sets and building classification (and
+regression) models easier. A great cheat sheet can be found
+[here](https://ugoproto.github.io/ugo_r_doc/pdf/caret.pdf).
 
 ```{r }
 library(caret)
 ```
 
-Use multi-core support for cross-validation.
-__Note:__ It is commented out because it does not work with rJava used in RWeka below.
+Use multi-core support for cross-validation. **Note:** It is commented
+out because it does not work with rJava used in RWeka below.
 
 ```{r }
 ##library(doMC, quietly = TRUE)
@@ -67,7 +78,9 @@ __Note:__ It is commented out because it does not work with rJava used in RWeka 
 ##getDoParWorkers()
 ```
 
-Test data is not used in the model building process and needs to be set aside purely for testing the model after it is completely built. Here I use 80% for training.
+Test data is not used in the model building process and needs to be set
+aside purely for testing the model after it is completely built. Here I
+use 80% for training.
 
 ```{r }
 inTrain <- createDataPartition(y = Zoo$type, p = .8, list = FALSE)
@@ -76,25 +89,29 @@ Zoo_test <- Zoo %>% slice(-inTrain)
 ```
 
 ## Fitting Different Classification Models to the Training Data
-Create a fixed sampling scheme (10-folds) so we can compare the fitted models
-later.
+
+Create a fixed sampling scheme (10-folds) so we can compare the fitted
+models later.
 
 ```{r }
 train_index <- createFolds(Zoo_train$type, k = 10)
 ```
 
 The fixed folds are used in `train()` with the argument
-`trControl = trainControl(method = "cv", indexOut = train_index))`. If you
-don't need fixed folds, then remove `indexOut = train_index` in the code below.
+`trControl = trainControl(method = "cv", indexOut = train_index))`. If
+you don't need fixed folds, then remove `indexOut = train_index` in the
+code below.
 
 For help with building models in caret see: `? train`
 
-__Note:__ Be careful if you have many `NA` values in your data. `train()`
-and cross-validation many fail in some cases. If that is the case then you
-can remove features (columns) which have many `NA`s, omit `NA`s using
-`na.omit()` or use imputation to replace them with reasonable
-values (e.g., by the feature mean or via kNN). Highly imbalanced datasets are also problematic since there is a chance that a fold does
-not contain examples of each class leading to a hard to understand error message.
+**Note:** Be careful if you have many `NA` values in your data.
+`train()` and cross-validation many fail in some cases. If that is the
+case then you can remove features (columns) which have many `NA`s, omit
+`NA`s using `na.omit()` or use imputation to replace them with
+reasonable values (e.g., by the feature mean or via kNN). Highly
+imbalanced datasets are also problematic since there is a chance that a
+fold does not contain examples of each class leading to a hard to
+understand error message.
 
 ### Conditional Inference Tree (Decision Tree)
 
@@ -129,10 +146,10 @@ C45Fit$finalModel
 
 ### K-Nearest Neighbors
 
-__Note:__ kNN uses Euclidean distance, so data should be standardized (scaled) first.
-Here legs are measured between 0 and 6 while all other variables are between
-0 and 1. Scaling can be directly performed as preprocessing in `train` using the parameter
-`preProcess = "scale"`.
+**Note:** kNN uses Euclidean distance, so data should be standardized
+(scaled) first. Here legs are measured between 0 and 6 while all other
+variables are between 0 and 1. Scaling can be directly performed as
+preprocessing in `train` using the parameter `preProcess = "scale"`.
 
 ```{r }
 knnFit <- Zoo_train %>% train(type ~ .,
@@ -218,7 +235,8 @@ nnetFit$finalModel
 
 ## Comparing Models
 
-Collect the performance metrics from the models trained on the same data.
+Collect the performance metrics from the models trained on the same
+data.
 
 ```{r }
 resamps <- resamples(list(
@@ -243,7 +261,11 @@ library(lattice)
 bwplot(resamps, layout = c(3, 1))
 ```
 
-Perform inference about differences between models. For each metric, all pair-wise differences are computed and tested to assess if the difference is equal to zero. By default Bonferroni correction for multiple comparison is used. Differences are shown in the upper triangle and p-values are in the lower triangle.
+Perform inference about differences between models. For each metric, all
+pair-wise differences are computed and tested to assess if the
+difference is equal to zero. By default Bonferroni correction for
+multiple comparison is used. Differences are shown in the upper triangle
+and p-values are in the lower triangle.
 
 ```{r }
 difs <- diff(resamps)
@@ -251,12 +273,14 @@ difs
 summary(difs)
 ```
 
-All perform similarly well except ctree (differences in the first row are negative and the p-values in the first column are <.05 indicating that the null-hypothesis of a difference of 0 can be rejected).
-
+All perform similarly well except ctree (differences in the first row
+are negative and the p-values in the first column are \<.05 indicating
+that the null-hypothesis of a difference of 0 can be rejected).
 
 ## Applying the Chosen Model to the Test Data
 
-Most models do similarly well on the data. We choose here the random forest model.
+Most models do similarly well on the data. We choose here the random
+forest model.
 
 ```{r }
 pr <- predict(randomForestFit, Zoo_test)
@@ -269,46 +293,42 @@ Calculate the confusion matrix for the held-out test data.
 confusionMatrix(pr, reference = Zoo_test$type)
 ```
 
-## Decision Boundaries
+## Comparing Decision Boundaries of Popular Classification Techniques
 
 Classifiers create decision boundaries to discriminate between classes.
 Different classifiers are able to create different shapes of decision
 boundaries (e.g., some are strictly linear) and thus some classifiers
-may perform better for certain datasets. This page visualizes the decision
-boundaries found by several popular classification methods.
+may perform better for certain datasets. This page visualizes the
+decision boundaries found by several popular classification methods.
 
-The following plot adds the decision boundary by evaluating the classifier
-at evenly spaced grid points. Note that low resolution
-(to make evaluation faster) will make
-the decision boundary look like it has small steps even if it is a
-(straight) line.
+The following plot adds the decision boundary by evaluating the
+classifier at evenly spaced grid points. Note that low resolution (to
+make evaluation faster) will make the decision boundary look like it has
+small steps even if it is a (straight) line.
 
-```{r }
+```{r message=FALSE, warning=FALSE}
 library(scales)
 library(tidyverse)
 library(ggplot2)
 library(caret)
+```
 
-decisionplot <- function(model, x, cl = NULL, predict_type = "class",
-  resolution = 100) {
-
-  if(!is.null(cl)) {
-    x_data <- x %>% dplyr::select(-all_of(cl))
-    cl <- x %>% pull(cl)
-  } else cl <- 1
-  k <- length(unique(cl))
-
+```{r}
+decisionplot <- function(model, data, class_var, 
+  predict_type = c("class", "prob"), resolution = 200) {
+  
+  y <- data %>% pull(class_var)
+  x <- data %>% dplyr::select(-all_of(class_var))
+  
   # resubstitution accuracy
-  prediction <- predict(model, x_data, type = predict_type)
+  prediction <- predict(model, x, type = predict_type[1])
+  # LDA returns a list
   if(is.list(prediction)) prediction <- prediction$class
-  if(is.numeric(prediction))
-    prediction <-  factor(prediction, labels = levels(cl))
-  else
-    prediction <- factor(prediction, levels = levels(cl))
-
-  cm <- confusionMatrix(data = prediction, reference = cl)
+  prediction <- factor(prediction, levels = levels(y))
+  
+  cm <- confusionMatrix(data = prediction, reference = y)
   acc <- cm$overall["Accuracy"]
-
+  
   # evaluate model on a grid
   r <- sapply(x[, 1:2], range, na.rm = TRUE)
   xs <- seq(r[1,1], r[2,1], length.out = resolution)
@@ -316,33 +336,48 @@ decisionplot <- function(model, x, cl = NULL, predict_type = "class",
   g <- cbind(rep(xs, each = resolution), rep(ys, time = resolution))
   colnames(g) <- colnames(r)
   g <- as_tibble(g)
-
+  
   ### guess how to get class labels from predict
   ### (unfortunately not very consistent between models)
-  prediction <- predict(model, g, type = predict_type)
-  if(is.list(prediction)) prediction <- prediction$class
-  if(is.numeric(prediction))
-    prediction <-  factor(prediction, labels = levels(cl))
-  else
-    prediction <- factor(prediction, levels = levels(cl))
-
-  g <- g %>% add_column(prediction)
-
+  cl <- predict(model, g, type = predict_type[1])
+  
+  # LDA returns a list
+  if(is.list(cl)) { 
+    prob <- cl$posterior
+    cl <- cl$class
+  } else
+    try(prob <- predict(model, g, type = predict_type[2]))
+  
+  # we visualize the difference in probability/score between the 
+  # winning class and the second best class.
+  # don't use probability if predict for the classifier does not support it.
+  max_prob <- 1
+  try({
+    max_prob <- t(apply(prob, MARGIN = 1, sort, decreasing = TRUE))
+    max_prob <- max_prob[,1] - max_prob[,2]
+  }, silent = TRUE) 
+  
+  cl <- factor(cl, levels = levels(y))
+  
+  g <- g %>% add_column(class = cl, probability = max_prob)
+  
   ggplot(g, mapping = aes_string(
     x = colnames(g)[1],
     y = colnames(g)[2])) +
-    geom_tile(mapping = aes(fill = prediction)) +
-    geom_point(data = x, mapping =  aes_string(
-      x = colnames(x)[1],
-      y = colnames(x)[2],
-      shape = colnames(x)[3]), alpha = .5) +
+    geom_raster(mapping = aes(fill = class, alpha = probability)) +
+    geom_point(data = data, mapping =  aes_string(
+      x = colnames(data)[1],
+      y = colnames(data)[2],
+      shape = class_var), alpha = .5) + 
+    scale_alpha_continuous(range = c(0,1), limits = c(0,1), guide = "none") +  
     labs(subtitle = paste("Training accuracy:", round(acc, 2)))
 }
 ```
 
 ### Iris Dataset
 
-For easier visualization, we use on two dimensions of the Iris dataset.
+For easier visualization, we use two dimensions of the Iris dataset.
+Contour lines visualize the density like mountains on a map.
 
 ```{r }
 set.seed(1000)
@@ -353,28 +388,36 @@ iris <- as_tibble(iris)
 x <- iris %>% dplyr::select(Sepal.Length, Sepal.Width, Species)
 x
 
-ggplot(x, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
+ggplot(x, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +  
+  stat_density_2d(alpha = .2, geom = "polygon") +
+  geom_point()
 ```
 
-_Note:_ There is some overplotting and you could use `geom_jitter()` instead of `geom_point()`.
+*Note:* There is some overplotting and you could use `geom_jitter()`
+instead of `geom_point()`.
 
 #### K-Nearest Neighbors Classifier
 
 ```{r }
 library(caret)
 model <- x %>% knn3(Species ~ ., data = ., k = 1)
-decisionplot(model, x, cl = "Species") + labs(title = "kNN (1 neighbor)")
+decisionplot(model, x, class_var = "Species") + labs(title = "kNN (1 neighbor)")
 
-model <- x %>% knn3(Species ~ ., data = ., k = 10)
-decisionplot(model, x, cl = "Species") + labs(title = "kNN (10 neighbor)")
+model <- x %>% knn3(Species ~ ., data = ., k = 3)
+decisionplot(model, x, class_var = "Species") + labs(title = "kNN (3 neighbor)")
+
+model <- x %>% knn3(Species ~ ., data = ., k = 9)
+decisionplot(model, x, class_var = "Species") + labs(title = "kNN (9 neighbor)")
 ```
+
+Increasing the $k$ smooths the decision boundary.
 
 #### Naive Bayes Classifier
 
 ```{r }
 library(e1071)
 model <- x %>% naiveBayes(Species ~ ., data = .)
-decisionplot(model, x, cl = "Species") + labs(title = "Naive Bayes")
+decisionplot(model, x, class_var = "Species", predict_type = c("class", "raw")) + labs(title = "Naive Bayes")
 ```
 
 #### Linear Discriminant Analysis
@@ -382,18 +425,18 @@ decisionplot(model, x, cl = "Species") + labs(title = "Naive Bayes")
 ```{r }
 library(MASS)
 model <- x %>% lda(Species ~ ., data = .)
-decisionplot(model, x, cl = "Species") + labs(title = "LDA")
+decisionplot(model, x, class_var = "Species") + labs(title = "LDA")
 ```
 
 #### Multinomial Logistic Regression (implemented in nnet)
 
-Multinomial logistic regression is an extension of logistic regression to problems with more than two classes.
-
+Multinomial logistic regression is an extension of logistic regression
+to problems with more than two classes.
 
 ```{r }
 library(nnet)
 model <- x %>% multinom(Species ~., data = .)
-decisionplot(model, x, cl = "Species") + labs(titel = "Multinomial Logistic Regression")
+decisionplot(model, x, class_var = "Species") + labs(titel = "Multinomial Logistic Regression")
 ```
 
 #### Decision Trees
@@ -401,19 +444,19 @@ decisionplot(model, x, cl = "Species") + labs(titel = "Multinomial Logistic Regr
 ```{r }
 library("rpart")
 model <- x %>% rpart(Species ~ ., data = .)
-decisionplot(model, x, cl = "Species") + labs(title = "CART")
+decisionplot(model, x, class_var = "Species") + labs(title = "CART")
 
 model <- x %>% rpart(Species ~ ., data = .,
   control = rpart.control(cp = 0.001, minsplit = 1))
-decisionplot(model, x, cl = "Species") + labs(title = "CART (overfitting)")
+decisionplot(model, x, class_var = "Species") + labs(title = "CART (overfitting)")
 
 library(C50)
 model <- x %>% C5.0(Species ~ ., data = .)
-decisionplot(model, x, cl = "Species") + labs(title = "C5.0")
+decisionplot(model, x, class_var = "Species") + labs(title = "C5.0")
 
 library(randomForest)
 model <- x %>% randomForest(Species ~ ., data = .)
-decisionplot(model, x, cl = "Species") + labs(title = "Random Forest")
+decisionplot(model, x, class_var = "Species") + labs(title = "Random Forest")
 ```
 
 #### SVM
@@ -421,16 +464,16 @@ decisionplot(model, x, cl = "Species") + labs(title = "Random Forest")
 ```{r }
 library(e1071)
 model <- x %>% svm(Species ~ ., data = ., kernel = "linear")
-decisionplot(model, x, cl = "Species") + labs(title = "SVM (linear kernel)")
+decisionplot(model, x, class_var = "Species") + labs(title = "SVM (linear kernel)")
 
 model <- x %>% svm(Species ~ ., data = ., kernel = "radial")
-decisionplot(model, x, cl = "Species") + labs(title = "SVM (radial kernel)")
+decisionplot(model, x, class_var = "Species") + labs(title = "SVM (radial kernel)")
 
 model <- x %>% svm(Species ~ ., data = ., kernel = "polynomial")
-decisionplot(model, x, cl = "Species") + labs(title = "SVM (polynomial kernel)")
+decisionplot(model, x, class_var = "Species") + labs(title = "SVM (polynomial kernel)")
 
 model <- x %>% svm(Species ~ ., data = ., kernel = "sigmoid")
-decisionplot(model, x, cl = "Species") + labs(title = "SVM (sigmoid kernel)")
+decisionplot(model, x, class_var = "Species") + labs(title = "SVM (sigmoid kernel)")
 ```
 
 #### Single Layer Feed-forward Neural Networks
@@ -438,71 +481,92 @@ decisionplot(model, x, cl = "Species") + labs(title = "SVM (sigmoid kernel)")
 ```{r }
 library(nnet)
 model <-x %>% nnet(Species ~ ., data = ., size = 1, maxit = 1000, trace = FALSE)
-decisionplot(model, x, cl = "Species") + labs(title = "NN (1 neuron)")
+decisionplot(model, x, class_var  = "Species", 
+  predict_type = c("class", "raw")) + labs(title = "NN (1 neuron)")
 
 model <-x %>% nnet(Species ~ ., data = ., size = 2, maxit = 1000, trace = FALSE)
-decisionplot(model, x, cl = "Species") + labs(title = "NN (2 neurons)")
+decisionplot(model, x, class_var  = "Species", 
+  predict_type = c("class", "raw")) + labs(title = "NN (2 neurons)")
 
 model <-x %>% nnet(Species ~ ., data = ., size = 4, maxit = 1000, trace = FALSE)
-decisionplot(model, x, cl = "Species") + labs(title = "NN (4 neurons)")
+decisionplot(model, x, class_var  = "Species", 
+  predict_type = c("class", "raw")) + labs(title = "NN (4 neurons)")
 
 model <-x %>% nnet(Species ~ ., data = ., size = 10, maxit = 1000, trace = FALSE)
-decisionplot(model, x, cl = "Species") + labs(title = "NN (10 neurons)")
+decisionplot(model, x, class_var  = "Species", 
+  predict_type = c("class", "raw")) + labs(title = "NN (10 neurons)")
 ```
 
 #### Deep Learning with keras
 
-```{r }
+The keras package needs the packages `reticulate` and `tensorflow`. To
+install keras you need to
+
+1.  have a working Python installation,
+2.  install the keras R package `install.packages(keras)`, and
+3.  install the tensorflow/keras Python modules with
+    `library(keras); install_keras()`
+
+```{r message=FALSE, warning=FALSE}
 library(keras)
 ```
 
 define predict so it works with decision plot
 
 ```{r }
-predict.keras.engine.training.Model <- function(object, newdata, ...)
-  predict_classes(object, as.matrix(newdata))
+predict.iriskerasmodel <- function(object, newdata, 
+  type = c("class", "prob"), ...){
+  class(object) <- tail(class(object), -1)
+  prob <- predict(object, as.matrix(newdata[,1:2])) 
+  if(type == "prob") return(prob)
+
+  prob %>% k_argmax() %>% as.array() %>% factor(labels = levels(iris$Species))
+}
 ```
 
-Choices are the activation function, number of layers, number of units per layer and the optimizer.
-A L2 regularizer is used for the dense layer weights to reduce overfitting. The output is a
-categorical class value, therefore the output layer uses the softmax activation function,
+Choices are the activation function, number of layers, number of units
+per layer and the optimizer. A L2 regularizer is used for the dense
+layer weights to reduce overfitting. The output is a categorical class
+value, therefore the output layer uses the softmax activation function,
 the loss is categorical crossentropy, and the metric is accuracy.
 
-```{r }
+```{r warning=FALSE}
 model <- keras_model_sequential() %>%
   layer_dense(units = 10, activation = 'relu', input_shape = c(2),
     kernel_regularizer=regularizer_l2(l=0.01)) %>%
-  layer_dense(units = 4, activation = 'softmax') %>%
+  layer_dense(units = 3, activation = 'softmax') %>%
   compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
 
 history <- model %>% fit(
   as.matrix(x[,1:2]),
-  x %>% pull(3) %>% as.integer %>% to_categorical(),
+  x %>% pull(3) %>% as.integer() %>% `-`(1L) %>% to_categorical(),
   epochs = 100,
   batch_size = 10
 )
 
 history
 
-decisionplot(model, x, cl = "Species") + labs(title = "keras (relu activation)")
+class(model) <- c("iriskerasmodel", class(model))
+decisionplot(model, x, class_var = "Species") + labs(title = "keras (relu activation)")
 
 
 model <- keras_model_sequential() %>%
   layer_dense(units = 10, activation = 'tanh', input_shape = c(2),
     kernel_regularizer = regularizer_l2(l = 0.01)) %>%
-  layer_dense(units = 4, activation = 'softmax') %>%
+  layer_dense(units = 3, activation = 'softmax') %>%
   compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
 
 history <- model %>% fit(
   as.matrix(x[,1:2]),
-  x %>% pull(3) %>% as.integer %>% to_categorical(),
+  x %>% pull(3) %>% as.integer %>% `-`(1L) %>% to_categorical(),
   epochs = 100,
   batch_size = 10
 )
 
 history
 
-decisionplot(model, x, cl = "Species") + labs(title = "keras (tanh activation)")
+class(model) <- c("iriskerasmodel", class(model))
+decisionplot(model, x, class_var = "Species") + labs(title = "keras (tanh activation)")
 ```
 
 ### Circle Dataset
@@ -522,7 +586,8 @@ colnames(x) <- c("x", "y", "class")
 x <- as_tibble(x)
 x
 
-ggplot(x, aes(x = x, y = y, color = class)) + geom_point()
+ggplot(x, aes(x = x, y = y, color = class)) + 
+  geom_point()
 ```
 
 #### K-Nearest Neighbors Classifier
@@ -530,10 +595,10 @@ ggplot(x, aes(x = x, y = y, color = class)) + geom_point()
 ```{r }
 library(caret)
 model <- x %>% knn3(class ~ ., data = ., k = 1)
-decisionplot(model, x, cl = "class") + labs(title = "kNN (1 neighbor)")
+decisionplot(model, x, class_var = "class") + labs(title = "kNN (1 neighbor)")
 
 model <- x %>% knn3(class ~ ., data = ., k = 10)
-decisionplot(model, x, cl = "class") + labs(title = "kNN (10 neighbor)")
+decisionplot(model, x, class_var = "class") + labs(title = "kNN (10 neighbor)")
 ```
 
 #### Naive Bayes Classifier
@@ -541,7 +606,8 @@ decisionplot(model, x, cl = "class") + labs(title = "kNN (10 neighbor)")
 ```{r }
 library(e1071)
 model <- x %>% naiveBayes(class ~ ., data = .)
-decisionplot(model, x, cl = "class") + labs(title = "naive Bayes")
+decisionplot(model, x, class_var = "class", 
+  predict_type = c("class", "raw")) + labs(title = "naive Bayes")
 ```
 
 #### Linear Discriminant Analysis
@@ -549,18 +615,18 @@ decisionplot(model, x, cl = "class") + labs(title = "naive Bayes")
 ```{r }
 library(MASS)
 model <- x %>% lda(class ~ ., data = .)
-decisionplot(model, x, cl = "class") + labs(title = "LDA")
+decisionplot(model, x, class_var = "class") + labs(title = "LDA")
 ```
 
 #### Multinomial Logistic Regression (implemented in nnet)
 
-Multinomial logistic regression is an extension of logistic regression to problems with more than two classes.
-
+Multinomial logistic regression is an extension of logistic regression
+to problems with more than two classes.
 
 ```{r }
 library(nnet)
 model <- x %>% multinom(class ~., data = .)
-decisionplot(model, x, cl = "class") + labs(titel = "Multinomial Logistic Regression")
+decisionplot(model, x, class_var = "class") + labs(titel = "Multinomial Logistic Regression")
 ```
 
 #### Decision Trees
@@ -568,19 +634,19 @@ decisionplot(model, x, cl = "class") + labs(titel = "Multinomial Logistic Regres
 ```{r }
 library("rpart")
 model <- x %>% rpart(class ~ ., data = .)
-decisionplot(model, x, cl = "class") + labs(title = "CART")
+decisionplot(model, x, class_var = "class") + labs(title = "CART")
 
 model <- x %>% rpart(class ~ ., data = .,
   control = rpart.control(cp = 0.001, minsplit = 1))
-decisionplot(model, x, cl = "class") + labs(title = "CART (overfitting)")
+decisionplot(model, x, class_var = "class") + labs(title = "CART (overfitting)")
 
 library(C50)
 model <- x %>% C5.0(class ~ ., data = .)
-decisionplot(model, x, cl = "class") + labs(title = "C5.0")
+decisionplot(model, x, class_var = "class") + labs(title = "C5.0")
 
 library(randomForest)
 model <- x %>% randomForest(class ~ ., data = .)
-decisionplot(model, x, cl = "class") + labs(title = "Random Forest")
+decisionplot(model, x, class_var = "class") + labs(title = "Random Forest")
 ```
 
 #### SVM
@@ -588,16 +654,16 @@ decisionplot(model, x, cl = "class") + labs(title = "Random Forest")
 ```{r }
 library(e1071)
 model <- x %>% svm(class ~ ., data = ., kernel = "linear")
-decisionplot(model, x, cl = "class") + labs(title = "SVM (linear kernel)")
+decisionplot(model, x, class_var = "class") + labs(title = "SVM (linear kernel)")
 
 model <- x %>% svm(class ~ ., data = ., kernel = "radial")
-decisionplot(model, x, cl = "class") + labs(title = "SVM (radial kernel)")
+decisionplot(model, x, class_var = "class") + labs(title = "SVM (radial kernel)")
 
 model <- x %>% svm(class ~ ., data = ., kernel = "polynomial")
-decisionplot(model, x, cl = "class") + labs(title = "SVM (polynomial kernel)")
+decisionplot(model, x, class_var = "class") + labs(title = "SVM (polynomial kernel)")
 
 model <- x %>% svm(class ~ ., data = ., kernel = "sigmoid")
-decisionplot(model, x, cl = "class") + labs(title = "SVM (sigmoid kernel)")
+decisionplot(model, x, class_var = "class") + labs(title = "SVM (sigmoid kernel)")
 ```
 
 #### Single Layer Feed-forward Neural Networks
@@ -605,77 +671,26 @@ decisionplot(model, x, cl = "class") + labs(title = "SVM (sigmoid kernel)")
 ```{r }
 library(nnet)
 model <-x %>% nnet(class ~ ., data = ., size = 1, maxit = 1000, trace = FALSE)
-decisionplot(model, x, cl = "class") + labs(title = "NN (1 neuron)")
+decisionplot(model, x, class_var = "class", 
+  predict_type = c("class", "raw")) + labs(title = "NN (1 neuron)")
 
 model <-x %>% nnet(class ~ ., data = ., size = 2, maxit = 1000, trace = FALSE)
-decisionplot(model, x, cl = "class") + labs(title = "NN (2 neurons)")
+decisionplot(model, x, class_var = "class", 
+  predict_type = c("class", "raw")) + labs(title = "NN (2 neurons)")
 
 model <-x %>% nnet(class ~ ., data = ., size = 4, maxit = 1000, trace = FALSE)
-decisionplot(model, x, cl = "class") + labs(title = "NN (4 neurons)")
+decisionplot(model, x, class_var = "class", 
+  predict_type = c("class", "raw")) + labs(title = "NN (4 neurons)")
 
 model <-x %>% nnet(class ~ ., data = ., size = 10, maxit = 1000, trace = FALSE)
-decisionplot(model, x, cl = "class") + labs(title = "NN (10 neurons)")
+decisionplot(model, x, class_var = "class", 
+  predict_type = c("class", "raw")) + labs(title = "NN (10 neurons)")
 ```
 
-#### Deep Learning with keras
+## More Information on Classification with R
 
-```{r }
-library(keras)
-```
-
-redefine predict so it works with decision plot
-
-```{r }
-predict.keras.engine.training.Model <- function(object, newdata, ...)
-  predict_classes(object, as.matrix(newdata))
-```
-
-Choices are the activation function, number of layers, number of units per layer and the optimizer.
-A L2 regularizer is used for the dense layer weights to reduce overfitting. The output is a
-categorical class value, therefore the output layer uses the softmax activation function,
-the loss is categorical crossentropy, and the metric is accuracy.
-
-```{r }
-model <- keras_model_sequential() %>%
-  layer_dense(units = 10, activation = 'relu', input_shape = c(2),
-    kernel_regularizer=regularizer_l2(l = 0.0001)) %>%
-  layer_dense(units = 3, activation = 'softmax') %>%
-  compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
-
-history <- model %>% fit(
-  as.matrix(x[,1:2]),
-  x %>% pull(3) %>% as.integer %>% to_categorical(),
-  epochs = 100,
-  batch_size = 10
-)
-
-history
-
-decisionplot(model, x, cl = "class") + labs(title = "keras (relu activation)")
-
-
-model <- keras_model_sequential() %>%
-  layer_dense(units = 10, activation = 'tanh', input_shape = c(2),
-    kernel_regularizer = regularizer_l2(l = 0.0001)) %>%
-  layer_dense(units = 3, activation = 'softmax') %>%
-  compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
-
-history <- model %>% fit(
-  as.matrix(x[,1:2]),
-  x %>% pull(3) %>% as.integer %>% to_categorical(),
-  epochs = 100,
-  batch_size = 10
-)
-
-history
-
-decisionplot(model, x, cl = "class") + labs(title = "keras (tanh activation)")
-```
-
-## More Information
-
-* Package caret: http://topepo.github.io/caret/index.html
-* Tidymodels (machine learning with tidyverse): https://www.tidymodels.org/
-* R taskview on machine learning: http://cran.r-project.org/web/views/MachineLearning.html
-
-
+-   Package caret: <http://topepo.github.io/caret/index.html>
+-   Tidymodels (machine learning with tidyverse):
+    <https://www.tidymodels.org/>
+-   R taskview on machine learning:
+    <http://cran.r-project.org/web/views/MachineLearning.html>

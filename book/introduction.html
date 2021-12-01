@@ -7,7 +7,7 @@
 <title>Chapter 1 Introduction | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
 <meta name="description" content="Packages used for this chapter: ggplot2 (Wickham, Chang, et al. 2021), tidyverse (Wickham 2021c)  1.1 Used Software This companion book assumes that you have R and RStudio Desktop installed and...">
-<meta name="generator" content="bookdown 0.22.12 with bs4_book()">
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
 <meta property="og:title" content="Chapter 1 Introduction | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -18,16 +18,16 @@
 <meta name="twitter:image" content="/images/cover.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
-<script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet">
+<script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/transition.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet">
 <script src="libs/crosstalk/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet">
 <script src="libs/plotly-main/plotly-latest.min.js"></script><link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet">
 <script src="libs/datatables-binding/datatables.js"></script><link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet">
 <script src="libs/dt-core/js/jquery.dataTables.min.js"></script><link href="libs/nouislider/jquery.nouislider.min.css" rel="stylesheet">
 <script src="libs/nouislider/jquery.nouislider.min.js"></script><link href="libs/selectize/selectize.bootstrap3.css" rel="stylesheet">
-<script src="libs/selectize/selectize.min.js"></script><link href="libs/vis/vis.css" rel="stylesheet">
-<script src="libs/vis/vis.min.js"></script><script src="libs/visNetwork-binding/visNetwork.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS -->
+<script src="libs/selectize/selectize.min.js"></script><link href="libs/vis/vis-network.min.css" rel="stylesheet">
+<script src="libs/vis/vis-network.min.js"></script><script src="libs/visNetwork-binding/visNetwork.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS -->
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -74,11 +74,21 @@
 <h2>
 <span class="header-section-number">1.1</span> Used Software<a class="anchor" aria-label="anchor" href="#used-software"><i class="fas fa-link"></i></a>
 </h2>
-<p>This companion book assumes that you have <a href="https://cran.r-project.org/">R</a> and <a href="https://www.rstudio.com/products/rstudio/">RStudio Desktop</a> installed and that you are familiar with the basics of R, how to run R code and install packages.</p>
-<p>If you are new to R, then working through the official R manual <a href="https://cran.r-project.org/doc/manuals/r-release/R-intro.html">An Introduction to R</a> <span class="citation">(<a href="references.html#ref-RCore2021" role="doc-biblioref">Venables, Smith, and the R Core Team 2021</a>)</span> will get you started.
-There are many introduction videos for RStudio and a basic video that shows you how to run code and how to install packages will suffice.</p>
-<p>The code in this book uses <code>tidyverse</code> to manipulate data and <code>ggplot2</code> for visualization.
-A great introduction to these very useful tools can be found in the freely available web book <a href="https://r4ds.had.co.nz">R for Data Science</a> by <span class="citation"><a href="references.html#ref-Wickham2017" role="doc-biblioref">Wickham and Grolemund</a> (<a href="references.html#ref-Wickham2017" role="doc-biblioref">2017</a>)</span>.</p>
+<p>This companion book assumes that you have
+<a href="https://cran.r-project.org/">R</a> and <a href="https://www.rstudio.com/products/rstudio/">RStudio
+Desktop</a> installed and that
+you are familiar with the basics of R, how to run R code and install
+packages.</p>
+<p>If you are new to R, then working through the official R manual <a href="https://cran.r-project.org/doc/manuals/r-release/R-intro.html">An
+Introduction to
+R</a>
+<span class="citation">(<a href="references.html#ref-RCore2021" role="doc-biblioref">Venables, Smith, and the R Core Team 2021</a>)</span> will get you started. There are many introduction videos
+for RStudio and a basic video that shows you how to run code and how to
+install packages will suffice.</p>
+<p>The code in this book uses <code>tidyverse</code> to manipulate data and <code>ggplot2</code>
+for visualization. A great introduction to these very useful tools can
+be found in the freely available web book <a href="https://r4ds.had.co.nz">R for Data
+Science</a> by <span class="citation"><a href="references.html#ref-Wickham2017" role="doc-biblioref">Wickham and Grolemund</a> (<a href="references.html#ref-Wickham2017" role="doc-biblioref">2017</a>)</span>.</p>
 </div>
 <div id="tidyverse" class="section level2" number="1.2">
 <h2>
@@ -88,88 +98,102 @@ A great introduction to these very useful tools can be found in the freely avail
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></code></pre></div>
 <pre><code>## ── Attaching packages ────────────── tidyverse 1.3.1 ──</code></pre>
 <pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-## ✓ tibble  3.1.2     ✓ dplyr   1.0.7
-## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
-## ✓ readr   1.4.0     ✓ forcats 0.5.1</code></pre>
+## ✓ tibble  3.1.6     ✓ dplyr   1.0.7
+## ✓ tidyr   1.1.4     ✓ stringr 1.4.0
+## ✓ readr   2.1.0     ✓ forcats 0.5.1</code></pre>
 <pre><code>## ── Conflicts ───────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
-<p><code>tidyverse</code> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2021c</a>)</span> is a collection of many very useful packages that work well together by
-sharing design principles and data structures. <code>tidyverse</code> also includes <code>ggplot2</code> <span class="citation">(<a href="references.html#ref-R-ggplot2" role="doc-biblioref">Wickham, Chang, et al. 2021</a>)</span> for visualization.</p>
+<p><code>tidyverse</code> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2021c</a>)</span> is a collection of many very useful packages
+that work well together by sharing design principles and data
+structures. <code>tidyverse</code> also includes <code>ggplot2</code> <span class="citation">(<a href="references.html#ref-R-ggplot2" role="doc-biblioref">Wickham, Chang, et al. 2021</a>)</span> for
+visualization.</p>
 <p>In this book, we will use</p>
 <ul>
 <li>tidyverse tibbles to replace R’s built-in data.frames,</li>
 <li>the pipe operator <code>%&gt;%</code> to chain functions together, and</li>
-<li>data transformation functions like <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code>, <code>arrange()</code>, <code>select()</code>, <code>group_by()</code>, and
-<code>mutate()</code> provided by the tidyverse package <code>dplyr</code>.</li>
+<li>data transformation functions like <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code>,
+<code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code>, and <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> provided by the tidyverse
+package <code>dplyr</code>.</li>
 </ul>
-<p>A good introduction can be found in the
-<a href="https://r4ds.had.co.nz/wrangle-intro.html">Section on Data Wrangling</a> <span class="citation">(<a href="references.html#ref-Wickham2017" role="doc-biblioref">Wickham and Grolemund 2017</a>)</span>,
-and
-a very useful reference resource is the <a href="https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf">RStudio Data Transformation Cheat Sheet</a>.</p>
-<p>Here is a short example. We create a tibble with the price in dollars per pound and the vitamin C content in milligrams (mg) per pound for three fruit.</p>
+<p>A good introduction can be found in the <a href="https://r4ds.had.co.nz/wrangle-intro.html">Section on Data
+Wrangling</a> <span class="citation">(<a href="references.html#ref-Wickham2017" role="doc-biblioref">Wickham and Grolemund 2017</a>)</span>,
+and a very useful reference resource is the <a href="https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf">RStudio Data Transformation
+Cheat
+Sheet</a>.</p>
+<p>Here is a short example. We create a tibble with the price in dollars
+per pound and the vitamin C content in milligrams (mg) per pound for
+three fruit.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fruit</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">fruit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
   name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"orange"</span><span class="op">)</span>, 
   price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2.5</span>, <span class="fl">2.0</span>, <span class="fl">3.5</span><span class="op">)</span>, 
   vitamin_c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">45</span>, <span class="fl">250</span><span class="op">)</span><span class="op">)</span>
 <span class="va">fruit</span></code></pre></div>
-<pre><code>## # A tibble: 3 x 3
+<pre><code>## # A tibble: 3 × 3
 ##   name   price vitamin_c
 ##   &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt;
 ## 1 apple    2.5        20
 ## 2 banana   2          45
 ## 3 orange   3.5       250</code></pre>
-<p>Now we add a column with the vitamin C (in mg) that a dollar buys you, filter only fruit
-that provides more than 20 mg and then order (arrange) the data by the vitamin C per dollar from largest to smallest.</p>
+<p>Now we add a column with the vitamin C (in mg) that a dollar buys you,
+filter only fruit that provides more than 20 mg and then order (arrange)
+the data by the vitamin C per dollar from largest to smallest.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">affordable_vitamin_c_sources</span> <span class="op">&lt;-</span> <span class="va">fruit</span> <span class="op">%&gt;%</span> 
-  <span class="fu">mutate</span><span class="op">(</span>vitamin_c_per_dollar <span class="op">=</span> <span class="va">vitamin_c</span> <span class="op">/</span> <span class="va">price</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">vitamin_c_per_dollar</span> <span class="op">&gt;</span> <span class="fl">20</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">vitamin_c_per_dollar</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">affordable_vitamin_c_sources</span> <span class="op">&lt;-</span> <span class="va">fruit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>vitamin_c_per_dollar <span class="op">=</span> <span class="va">vitamin_c</span> <span class="op">/</span> <span class="va">price</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">vitamin_c_per_dollar</span> <span class="op">&gt;</span> <span class="fl">20</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">vitamin_c_per_dollar</span><span class="op">)</span><span class="op">)</span>
 <span class="va">affordable_vitamin_c_sources</span> </code></pre></div>
-<pre><code>## # A tibble: 2 x 4
+<pre><code>## # A tibble: 2 × 4
 ##   name   price vitamin_c vitamin_c_per_dollar
 ##   &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt;                &lt;dbl&gt;
 ## 1 orange   3.5       250                 71.4
 ## 2 banana   2          45                 22.5</code></pre>
-<p>The pipes operator <code>%&gt;%</code> lets you compose a sequence of function calls in a more readable way by passing the value to the left on as the first argument to the function to the right.</p>
+<p>The pipes operator <code>%&gt;%</code> lets you compose a sequence of function calls
+in a more readable way by passing the value to the left on as the first
+argument to the function to the right.</p>
 </div>
 <div id="ggplot2" class="section level2" number="1.3">
 <h2>
 <span class="header-section-number">1.3</span> ggplot2<a class="anchor" aria-label="anchor" href="#ggplot2"><i class="fas fa-link"></i></a>
 </h2>
-<p>For visualization, we will use mainly <code>ggplot2</code>.
-The <em>gg</em> in <code>ggplot2</code> stands for <strong>The Grammar of Graphics</strong> introduced in
-<span class="citation"><a href="references.html#ref-Wilkinson2005" role="doc-biblioref">Wilkinson</a> (<a href="references.html#ref-Wilkinson2005" role="doc-biblioref">2005</a>)</span>.
-The main idea is that every graph is built from the same basic components:</p>
+<p>For visualization, we will use mainly <code>ggplot2</code>. The <em>gg</em> in <code>ggplot2</code>
+stands for <strong>The Grammar of Graphics</strong> introduced in <span class="citation"><a href="references.html#ref-Wilkinson2005" role="doc-biblioref">Wilkinson</a> (<a href="references.html#ref-Wilkinson2005" role="doc-biblioref">2005</a>)</span>. The
+main idea is that every graph is built from the same basic components:</p>
 <ul>
 <li>the data,</li>
 <li>a coordinate system, and</li>
 <li>visual marks representing the data (geoms).</li>
 </ul>
-<p>In <code>ggplot2</code>, the components are combined using the <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code> operator.</p>
+<p>In <code>ggplot2</code>, the components are combined using the <code>+</code> operator.</p>
 <blockquote>
 <p><code>ggplot(data, mapping = aes(x = ..., y = ..., color = ...)) +</code>
-<code>geom_point()</code></p>
+<code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code></p>
 </blockquote>
-<p>Since we typically use a Cartesian coordinate system, <code>ggplot</code> uses that by default.
-Each <code>geom_</code> function uses a <code>stat_</code> function to calculate what is visualizes. For example,
-<code>geom_bar</code> uses <code>stat_count</code> to create a bar chart by counting how often each value appears in the data (see <code>? geom_bar</code>). <code>geom_point</code> just uses the stat <code>"identity"</code> to display the points using the coordinates as they are.
-A great introduction can be found in the <a href="https://r4ds.had.co.nz/data-visualisation.html">Chapter on Data Visualization</a> <span class="citation">(<a href="references.html#ref-Wickham2017" role="doc-biblioref">Wickham and Grolemund 2017</a>)</span>,
-and very useful is
-<a href="https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf">RStudio’s Data Visualization Cheat Sheet</a>.</p>
+<p>Since we typically use a Cartesian coordinate system, <code>ggplot</code> uses that
+by default. Each <code>geom_</code> function uses a <code>stat_</code> function to calculate
+what is visualizes. For example, <code>geom_bar</code> uses <code>stat_count</code> to create
+a bar chart by counting how often each value appears in the data (see
+<code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">? geom_bar</a></code>). <code>geom_point</code> just uses the stat <code>"identity"</code> to display
+the points using the coordinates as they are. A great introduction can
+be found in the <a href="https://r4ds.had.co.nz/data-visualisation.html">Chapter on Data
+Visualization</a>
+<span class="citation">(<a href="references.html#ref-Wickham2017" role="doc-biblioref">Wickham and Grolemund 2017</a>)</span>, and very useful is <a href="https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf">RStudio’s Data Visualization Cheat
+Sheet</a>.</p>
 <p>We can visualize our fruit data as a scatter plot.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">fruit</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">price</span>, y <span class="op">=</span> <span class="va">vitamin_c</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">price</span>, y <span class="op">=</span> <span class="va">vitamin_c</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-6-1.png" width="672"></div>
-<p>Alternatively, we can visualize the vitamin C content of each fruit using bars.</p>
+<p>Alternatively, we can visualize the vitamin C content of each fruit
+using bars.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span><span class="va">fruit</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">name</span>, y <span class="op">=</span> <span class="va">vitamin_c</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">geom_bar</span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span></code></pre></div>
-<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-7-1.png" width="672">
-Note that <code>geom_bar</code> by default tries to aggregate data by counting, but we just want to visualize the
-value already available in the tibble, so we specify the identity statistic.</p>
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">name</span>, y <span class="op">=</span> <span class="va">vitamin_c</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-7-1.png" width="672"></div>
+<p>Note that <code>geom_bar</code> by default tries to aggregate data by counting, but
+we just want to visualize the value already available in the tibble, so
+we specify the identity statistic.</p>
 
 </div>
 </div>
@@ -200,7 +224,7 @@ value already available in the tibble, so we specify the identity statistic.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2021-07-15.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2021-11-30.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

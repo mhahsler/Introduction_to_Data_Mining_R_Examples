@@ -7,7 +7,7 @@
 <title>Preface | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
 <meta name="description" content="This book contains documented R examples to accompany several chapters of the popular data mining textbook Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar.">
-<meta name="generator" content="bookdown 0.22.12 with bs4_book()">
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
 <meta property="og:title" content="Preface | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -18,16 +18,16 @@
 <meta name="twitter:image" content="/images/cover.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
-<script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet">
+<script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/transition.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet">
 <script src="libs/crosstalk/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet">
 <script src="libs/plotly-main/plotly-latest.min.js"></script><link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet">
 <script src="libs/datatables-binding/datatables.js"></script><link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet">
 <script src="libs/dt-core/js/jquery.dataTables.min.js"></script><link href="libs/nouislider/jquery.nouislider.min.css" rel="stylesheet">
 <script src="libs/nouislider/jquery.nouislider.min.js"></script><link href="libs/selectize/selectize.bootstrap3.css" rel="stylesheet">
-<script src="libs/selectize/selectize.min.js"></script><link href="libs/vis/vis.css" rel="stylesheet">
-<script src="libs/vis/vis.min.js"></script><script src="libs/visNetwork-binding/visNetwork.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS -->
+<script src="libs/selectize/selectize.min.js"></script><link href="libs/vis/vis-network.min.css" rel="stylesheet">
+<script src="libs/vis/vis-network.min.js"></script><script src="libs/visNetwork-binding/visNetwork.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS -->
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -69,27 +69,43 @@
 <h1>Preface<a class="anchor" aria-label="anchor" href="#preface"><i class="fas fa-link"></i></a>
 </h1>
 <div class="inline-figure"><img src="images/cover.png" width="50%" style="display: block; margin: auto;"></div>
-<p>This book contains documented R examples to accompany several chapters of the popular data mining textbook
-<a href="https://www-users.cs.umn.edu/~kumar001/dmbook/"><em>Introduction to Data Mining</em></a>
-by Pang-Ning Tan, Michael Steinbach, Anuj Karpatne and Vipin Kumar.
-The companion book can be used with either edition: 1st edition <span class="citation">(<a href="references.html#ref-Tan2005" role="doc-biblioref">Tan, Steinbach, and Kumar 2005</a>)</span> or 2nd edition <span class="citation">(<a href="references.html#ref-Tan2018" role="doc-biblioref">Tan et al. 2017</a>)</span>.</p>
-<p>The code examples collected in this book were developed for the course <a href="http://michael.hahsler.net/SMU/EMIS7331">CS 7331 - Data Mining</a>
-taught at <a href="http://www.smu.edu">SMU</a> since Spring 2013 and will be regularly updated and improved.
-The latest update includes the use of the popular packages in the meta-package <code>tidyverse</code> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2021c</a>)</span> including <code>ggplot2</code> <span class="citation">(<a href="references.html#ref-R-ggplot2" role="doc-biblioref">Wickham, Chang, et al. 2021</a>)</span> for data wrangling and visualization along with
+<p>This book contains documented R examples to accompany several chapters
+of the popular data mining textbook <a href="https://www-users.cs.umn.edu/~kumar001/dmbook/"><em>Introduction to Data
+Mining</em></a> by Pang-Ning
+Tan, Michael Steinbach, Anuj Karpatne and Vipin Kumar. The companion
+book can be used with either edition: 1st edition <span class="citation">(<a href="references.html#ref-Tan2005" role="doc-biblioref">Tan, Steinbach, and Kumar 2005</a>)</span> or 2nd
+edition <span class="citation">(<a href="references.html#ref-Tan2018" role="doc-biblioref">Tan et al. 2017</a>)</span>.</p>
+<p>The code examples collected in this book were developed for the course
+<a href="http://michael.hahsler.net/SMU/EMIS7331">CS 7331 - Data Mining</a> taught
+at <a href="http://www.smu.edu">SMU</a> since Spring 2013 and will be regularly
+updated and improved. The latest update includes the use of the popular
+packages in the meta-package <code>tidyverse</code> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2021c</a>)</span> including
+<code>ggplot2</code> <span class="citation">(<a href="references.html#ref-R-ggplot2" role="doc-biblioref">Wickham, Chang, et al. 2021</a>)</span> for data wrangling and visualization along with
 <code>caret</code> <span class="citation">(<a href="references.html#ref-R-caret" role="doc-biblioref">Kuhn 2021</a>)</span> for model building.</p>
-<p>Please use the edit function within this book or visit
-the <a href="https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples">book’s GitHub project page</a> to submit corrections or suggest
-improvements. To cite this book use:</p>
+<p>Please use the edit function within this book or visit the <a href="https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples">book’s
+GitHub project
+page</a>
+to submit corrections or suggest improvements. To cite this book use:</p>
 <blockquote>
-<p>Michael Hahsler (2021). <em>An R Companion for Introduction to Data Mining.</em> Online Book. <a href="https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/" class="uri">https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/</a></p>
+<p>Michael Hahsler (2021). <em>An R Companion for Introduction to Data
+Mining.</em> Online Book.
+<a href="https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/" class="uri">https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/</a></p>
 </blockquote>
-<p>I hope this book helps you to learn to use R more efficiently for your data mining projects.</p>
+<p>I hope this book helps you to learn to use R more efficiently for your
+data mining projects.</p>
 <p>Michael Hahsler</p>
 <div id="license" class="section level2 unnumbered">
 <h2>License<a class="anchor" aria-label="anchor" href="#license"><i class="fas fa-link"></i></a>
 </h2>
-<p><img src="images/by-nc-sa.png" alt="Creative Commons License"> The online version of this book is licensed under the <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p>
-<p>The cover art is based on <a href="https://www.flickr.com/photos/69017177@N00/5063131410">“rocks”</a> by <a href="https://www.flickr.com/photos/69017177@N00">stebulus</a> licensed with <a href="https://creativecommons.org/licenses/by/2.0/?ref=ccsearch&amp;atype=rich">CC BY 2.0</a>.</p>
+<p><img src="images/by-nc-sa.png" alt="Creative Commons License"> The online version of
+this book is licensed under the <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 International
+License</a>.</p>
+<p>The cover art is based on
+<a href="https://www.flickr.com/photos/69017177@N00/5063131410">“rocks”</a> by
+<a href="https://www.flickr.com/photos/69017177@N00">stebulus</a> licensed with <a href="https://creativecommons.org/licenses/by/2.0/?ref=ccsearch&amp;atype=rich">CC
+BY
+2.0</a>.</p>
 
 </div>
 </div>
@@ -118,7 +134,7 @@ improvements. To cite this book use:</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2021-07-15.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2021-11-30.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

@@ -7,7 +7,7 @@
 <title>Chapter 4 Classification: Alternative Techniques | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
 <meta name="description" content="Packages used for this chapter: C50 (Kuhn and Quinlan 2021), caret (Kuhn 2021), e1071 (Meyer et al. 2021), keras (Allaire and Chollet 2021), lattice (Sarkar 2021), MASS (Ripley 2021a), mlbench...">
-<meta name="generator" content="bookdown 0.22.12 with bs4_book()">
+<meta name="generator" content="bookdown 0.24 with bs4_book()">
 <meta property="og:title" content="Chapter 4 Classification: Alternative Techniques | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -18,16 +18,16 @@
 <meta name="twitter:image" content="/images/cover.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs/header-attrs.js"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
-<script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet">
+<script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/transition.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet">
 <script src="libs/crosstalk/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet">
 <script src="libs/plotly-main/plotly-latest.min.js"></script><link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet">
 <script src="libs/datatables-binding/datatables.js"></script><link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet">
 <script src="libs/dt-core/js/jquery.dataTables.min.js"></script><link href="libs/nouislider/jquery.nouislider.min.css" rel="stylesheet">
 <script src="libs/nouislider/jquery.nouislider.min.js"></script><link href="libs/selectize/selectize.bootstrap3.css" rel="stylesheet">
-<script src="libs/selectize/selectize.min.js"></script><link href="libs/vis/vis.css" rel="stylesheet">
-<script src="libs/vis/vis.min.js"></script><script src="libs/visNetwork-binding/visNetwork.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS -->
+<script src="libs/selectize/selectize.min.js"></script><link href="libs/vis/vis-network.min.css" rel="stylesheet">
+<script src="libs/vis/vis-network.min.js"></script><script src="libs/visNetwork-binding/visNetwork.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS -->
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -69,7 +69,7 @@
 <h1>
 <span class="header-section-number">4</span> Classification: Alternative Techniques<a class="anchor" aria-label="anchor" href="#classification-alternative-techniques"><i class="fas fa-link"></i></a>
 </h1>
-<p><strong>Packages used for this chapter:</strong> <em>C50</em> <span class="citation">(<a href="references.html#ref-R-C50" role="doc-biblioref">Kuhn and Quinlan 2021</a>)</span>, <em>caret</em> <span class="citation">(<a href="references.html#ref-R-caret" role="doc-biblioref">Kuhn 2021</a>)</span>, <em>e1071</em> <span class="citation">(<a href="references.html#ref-R-e1071" role="doc-biblioref">Meyer et al. 2021</a>)</span>, <em>keras</em> <span class="citation">(<a href="references.html#ref-R-keras" role="doc-biblioref">Allaire and Chollet 2021</a>)</span>, <em>lattice</em> <span class="citation">(<a href="references.html#ref-R-lattice" role="doc-biblioref">Sarkar 2021</a>)</span>, <em>MASS</em> <span class="citation">(<a href="references.html#ref-R-MASS" role="doc-biblioref">Ripley 2021a</a>)</span>, <em>mlbench</em> <span class="citation">(<a href="references.html#ref-R-mlbench" role="doc-biblioref">Leisch and Dimitriadou. 2021</a>)</span>, <em>nnet</em> <span class="citation">(<a href="references.html#ref-R-nnet" role="doc-biblioref">Ripley 2021b</a>)</span>, <em>randomForest</em> <span class="citation">(<a href="references.html#ref-R-randomForest" role="doc-biblioref">Breiman et al. 2018</a>)</span>, <em>rpart</em> <span class="citation">(<a href="references.html#ref-R-rpart" role="doc-biblioref">Therneau and Atkinson 2019</a>)</span>, <em>RWeka</em> <span class="citation">(<a href="references.html#ref-R-RWeka" role="doc-biblioref">Hornik 2020</a>)</span>, <em>scales</em> <span class="citation">(<a href="references.html#ref-R-scales" role="doc-biblioref">Wickham and Seidel 2020</a>)</span>, <em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2021c</a>)</span></p>
+<p><strong>Packages used for this chapter:</strong> <em>C50</em> <span class="citation">(<a href="references.html#ref-R-C50" role="doc-biblioref">Kuhn and Quinlan 2021</a>)</span>, <em>caret</em> <span class="citation">(<a href="references.html#ref-R-caret" role="doc-biblioref">Kuhn 2021</a>)</span>, <em>e1071</em> <span class="citation">(<a href="references.html#ref-R-e1071" role="doc-biblioref">Meyer et al. 2021</a>)</span>, <em>keras</em> <span class="citation">(<a href="references.html#ref-R-keras" role="doc-biblioref">Allaire and Chollet 2021</a>)</span>, <em>lattice</em> <span class="citation">(<a href="references.html#ref-R-lattice" role="doc-biblioref">Sarkar 2021</a>)</span>, <em>MASS</em> <span class="citation">(<a href="references.html#ref-R-MASS" role="doc-biblioref">Ripley 2021a</a>)</span>, <em>mlbench</em> <span class="citation">(<a href="references.html#ref-R-mlbench" role="doc-biblioref">Leisch and Dimitriadou. 2021</a>)</span>, <em>nnet</em> <span class="citation">(<a href="references.html#ref-R-nnet" role="doc-biblioref">Ripley 2021b</a>)</span>, <em>randomForest</em> <span class="citation">(<a href="references.html#ref-R-randomForest" role="doc-biblioref">Breiman et al. 2018</a>)</span>, <em>rpart</em> <span class="citation">(<a href="references.html#ref-R-rpart" role="doc-biblioref">Therneau and Atkinson 2019</a>)</span>, <em>RWeka</em> <span class="citation">(<a href="references.html#ref-R-RWeka" role="doc-biblioref">Hornik 2021</a>)</span>, <em>scales</em> <span class="citation">(<a href="references.html#ref-R-scales" role="doc-biblioref">Wickham and Seidel 2020</a>)</span>, <em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2021c</a>)</span></p>
 <p>We will use tidyverse to prepare the data.</p>
 <div class="sourceCode" id="cb368"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></code></pre></div>
@@ -80,14 +80,18 @@
 <h2>
 <span class="header-section-number">4.1</span> Training and Test Data<a class="anchor" aria-label="anchor" href="#training-and-test-data"><i class="fas fa-link"></i></a>
 </h2>
-<p>We will use the Zoo dataset which is included in the R package <code>mlbench</code> (you may have to install it).
-The Zoo dataset containing 17 (mostly logical) variables on different 101 animals as a
-data frame with 17 columns (hair, feathers, eggs, milk, airborne, aquatic, predator, toothed, backbone, breathes, venomous, fins, legs, tail, domestic, catsize, type). We convert the data frame into a tidyverse tibble (optional).</p>
+<p>We will use the Zoo dataset which is included in the R package <code>mlbench</code>
+(you may have to install it). The Zoo dataset containing 17 (mostly
+logical) variables on different 101 animals as a data frame with 17
+columns (hair, feathers, eggs, milk, airborne, aquatic, predator,
+toothed, backbone, breathes, venomous, fins, legs, tail, domestic,
+catsize, type). We convert the data frame into a tidyverse tibble
+(optional).</p>
 <div class="sourceCode" id="cb370"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">Zoo</span>, package<span class="op">=</span><span class="st">"mlbench"</span><span class="op">)</span>
 <span class="va">Zoo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">Zoo</span><span class="op">)</span>
 <span class="va">Zoo</span></code></pre></div>
-<pre><code>## # A tibble: 101 x 17
+<pre><code>## # A tibble: 101 × 17
 ##    hair  feathers eggs  milk  airborne aquatic predator
 ##    &lt;lgl&gt; &lt;lgl&gt;    &lt;lgl&gt; &lt;lgl&gt; &lt;lgl&gt;    &lt;lgl&gt;   &lt;lgl&gt;   
 ##  1 TRUE  FALSE    FALSE TRUE  FALSE    FALSE   TRUE    
@@ -105,45 +109,53 @@ data frame with 17 columns (hair, feathers, eggs, milk, airborne, aquatic, preda
 ## #   venomous &lt;lgl&gt;, fins &lt;lgl&gt;, legs &lt;int&gt;,
 ## #   tail &lt;lgl&gt;, domestic &lt;lgl&gt;, catsize &lt;lgl&gt;,
 ## #   type &lt;fct&gt;</code></pre>
-<p>We will use the package <a href="https://topepo.github.io/caret/"><strong>caret</strong></a> to make preparing training sets and building classification (and regression) models easier. A great cheat sheet can be found <a href="https://ugoproto.github.io/ugo_r_doc/pdf/caret.pdf">here</a>.</p>
+<p>We will use the package <a href="https://topepo.github.io/caret/"><strong>caret</strong></a> to
+make preparing training sets and building classification (and
+regression) models easier. A great cheat sheet can be found
+<a href="https://ugoproto.github.io/ugo_r_doc/pdf/caret.pdf">here</a>.</p>
 <div class="sourceCode" id="cb372"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/topepo/caret/">caret</a></span><span class="op">)</span></code></pre></div>
-<p>Use multi-core support for cross-validation.
-<strong>Note:</strong> It is commented out because it does not work with rJava used in RWeka below.</p>
+<p>Use multi-core support for cross-validation. <strong>Note:</strong> It is commented
+out because it does not work with rJava used in RWeka below.</p>
 <div class="sourceCode" id="cb373"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">##library(doMC, quietly = TRUE)</span>
 <span class="co">##registerDoMC(cores = 4)</span>
 <span class="co">##getDoParWorkers()</span></code></pre></div>
-<p>Test data is not used in the model building process and needs to be set aside purely for testing the model after it is completely built. Here I use 80% for training.</p>
+<p>Test data is not used in the model building process and needs to be set
+aside purely for testing the model after it is completely built. Here I
+use 80% for training.</p>
 <div class="sourceCode" id="cb374"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">inTrain</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/createDataPartition.html">createDataPartition</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">Zoo</span><span class="op">$</span><span class="va">type</span>, p <span class="op">=</span> <span class="fl">.8</span>, list <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">Zoo_train</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op">%&gt;%</span> <span class="fu">slice</span><span class="op">(</span><span class="va">inTrain</span><span class="op">)</span>
-<span class="va">Zoo_test</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op">%&gt;%</span> <span class="fu">slice</span><span class="op">(</span><span class="op">-</span><span class="va">inTrain</span><span class="op">)</span></code></pre></div>
+<span class="va">Zoo_train</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="va">inTrain</span><span class="op">)</span>
+<span class="va">Zoo_test</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="va">inTrain</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="fitting-different-classification-models-to-the-training-data" class="section level2" number="4.2">
 <h2>
 <span class="header-section-number">4.2</span> Fitting Different Classification Models to the Training Data<a class="anchor" aria-label="anchor" href="#fitting-different-classification-models-to-the-training-data"><i class="fas fa-link"></i></a>
 </h2>
-<p>Create a fixed sampling scheme (10-folds) so we can compare the fitted models
-later.</p>
+<p>Create a fixed sampling scheme (10-folds) so we can compare the fitted
+models later.</p>
 <div class="sourceCode" id="cb375"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">train_index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/createDataPartition.html">createFolds</a></span><span class="op">(</span><span class="va">Zoo_train</span><span class="op">$</span><span class="va">type</span>, k <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div>
 <p>The fixed folds are used in <code><a href="https://rdrr.io/pkg/caret/man/train.html">train()</a></code> with the argument
-<code>trControl = trainControl(method = "cv", indexOut = train_index))</code>. If you
-don’t need fixed folds, then remove <code>indexOut = train_index</code> in the code below.</p>
+<code>trControl = trainControl(method = "cv", indexOut = train_index))</code>. If
+you don’t need fixed folds, then remove <code>indexOut = train_index</code> in the
+code below.</p>
 <p>For help with building models in caret see: <code><a href="https://rdrr.io/pkg/caret/man/train.html">? train</a></code></p>
-<p><strong>Note:</strong> Be careful if you have many <code>NA</code> values in your data. <code><a href="https://rdrr.io/pkg/caret/man/train.html">train()</a></code>
-and cross-validation many fail in some cases. If that is the case then you
-can remove features (columns) which have many <code>NA</code>s, omit <code>NA</code>s using
-<code><a href="https://rdrr.io/r/stats/na.fail.html">na.omit()</a></code> or use imputation to replace them with reasonable
-values (e.g., by the feature mean or via kNN). Highly imbalanced datasets are also problematic since there is a chance that a fold does
-not contain examples of each class leading to a hard to understand error message.</p>
+<p><strong>Note:</strong> Be careful if you have many <code>NA</code> values in your data.
+<code><a href="https://rdrr.io/pkg/caret/man/train.html">train()</a></code> and cross-validation many fail in some cases. If that is the
+case then you can remove features (columns) which have many <code>NA</code>s, omit
+<code>NA</code>s using <code><a href="https://rdrr.io/r/stats/na.fail.html">na.omit()</a></code> or use imputation to replace them with
+reasonable values (e.g., by the feature mean or via kNN). Highly
+imbalanced datasets are also problematic since there is a chance that a
+fold does not contain examples of each class leading to a hard to
+understand error message.</p>
 <div id="conditional-inference-tree-decision-tree" class="section level3" number="4.2.1">
 <h3>
 <span class="header-section-number">4.2.1</span> Conditional Inference Tree (Decision Tree)<a class="anchor" aria-label="anchor" href="#conditional-inference-tree-decision-tree"><i class="fas fa-link"></i></a>
 </h3>
 <div class="sourceCode" id="cb376"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ctreeFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,
+<code class="sourceCode R"><span class="va">ctreeFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,
   method <span class="op">=</span> <span class="st">"ctree"</span>,
   data <span class="op">=</span> <span class="va">.</span>,
     tuneLength <span class="op">=</span> <span class="fl">5</span>,
@@ -176,7 +188,7 @@ not contain examples of each class leading to a hard to understand error message
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-160-1.png" width="672"></div>
 <p>The final model can be directly used for predict()</p>
 <div class="sourceCode" id="cb379"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/arules/man/predict.html">predict</a></span><span class="op">(</span><span class="va">ctreeFit</span>, <span class="fu"><a href="https://rdrr.io/pkg/arules/man/sort.html">head</a></span><span class="op">(</span><span class="va">Zoo_test</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">ctreeFit</span>, <span class="fu"><a href="https://rdrr.io/pkg/arules/man/sort.html">head</a></span><span class="op">(</span><span class="va">Zoo_test</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] mammal        mollusc.et.al bird         
 ## [4] mammal        mollusc.et.al bird         
 ## 7 Levels: mammal bird reptile fish ... mollusc.et.al</code></pre>
@@ -187,7 +199,7 @@ not contain examples of each class leading to a hard to understand error message
 </h3>
 <div class="sourceCode" id="cb381"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">RWeka</span><span class="op">)</span>
-<span class="va">C45Fit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,
+<span class="va">C45Fit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,
   method <span class="op">=</span> <span class="st">"J48"</span>,
   data <span class="op">=</span> <span class="va">.</span>,
     tuneLength <span class="op">=</span> <span class="fl">5</span>,
@@ -267,12 +279,12 @@ not contain examples of each class leading to a hard to understand error message
 <h3>
 <span class="header-section-number">4.2.3</span> K-Nearest Neighbors<a class="anchor" aria-label="anchor" href="#k-nearest-neighbors"><i class="fas fa-link"></i></a>
 </h3>
-<p><strong>Note:</strong> kNN uses Euclidean distance, so data should be standardized (scaled) first.
-Here legs are measured between 0 and 6 while all other variables are between
-0 and 1. Scaling can be directly performed as preprocessing in <code>train</code> using the parameter
-<code>preProcess = "scale"</code>.</p>
+<p><strong>Note:</strong> kNN uses Euclidean distance, so data should be standardized
+(scaled) first. Here legs are measured between 0 and 6 while all other
+variables are between 0 and 1. Scaling can be directly performed as
+preprocessing in <code>train</code> using the parameter <code>preProcess = "scale"</code>.</p>
 <div class="sourceCode" id="cb385"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">knnFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,
+<code class="sourceCode R"><span class="va">knnFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,
   method <span class="op">=</span> <span class="st">"knn"</span>,
   data <span class="op">=</span> <span class="va">.</span>,
   preProcess <span class="op">=</span> <span class="st">"scale"</span>,
@@ -323,7 +335,7 @@ Here legs are measured between 0 and 6 while all other variables are between
 <span class="header-section-number">4.2.4</span> PART (Rule-based classifier)<a class="anchor" aria-label="anchor" href="#part-rule-based-classifier"><i class="fas fa-link"></i></a>
 </h3>
 <div class="sourceCode" id="cb389"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rulesFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,
+<code class="sourceCode R"><span class="va">rulesFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,
   method <span class="op">=</span> <span class="st">"PART"</span>,
   data <span class="op">=</span> <span class="va">.</span>,
   tuneLength <span class="op">=</span> <span class="fl">5</span>,
@@ -392,7 +404,7 @@ Here legs are measured between 0 and 6 while all other variables are between
 <span class="header-section-number">4.2.5</span> Linear Support Vector Machines<a class="anchor" aria-label="anchor" href="#linear-support-vector-machines"><i class="fas fa-link"></i></a>
 </h3>
 <div class="sourceCode" id="cb393"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">svmFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span><span class="va">.</span>,
+<code class="sourceCode R"><span class="va">svmFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span><span class="va">.</span>,
   method <span class="op">=</span> <span class="st">"svmLinear"</span>,
   data <span class="op">=</span> <span class="va">.</span>,
     tuneLength <span class="op">=</span> <span class="fl">5</span>,
@@ -432,7 +444,7 @@ Here legs are measured between 0 and 6 while all other variables are between
 <span class="header-section-number">4.2.6</span> Random Forest<a class="anchor" aria-label="anchor" href="#random-forest"><i class="fas fa-link"></i></a>
 </h3>
 <div class="sourceCode" id="cb397"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">randomForestFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,
+<code class="sourceCode R"><span class="va">randomForestFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,
   method <span class="op">=</span> <span class="st">"rf"</span>,
   data <span class="op">=</span> <span class="va">.</span>,
     tuneLength <span class="op">=</span> <span class="fl">5</span>,
@@ -492,7 +504,7 @@ Here legs are measured between 0 and 6 while all other variables are between
 <span class="header-section-number">4.2.7</span> Gradient Boosted Decision Trees (xgboost)<a class="anchor" aria-label="anchor" href="#gradient-boosted-decision-trees-xgboost"><i class="fas fa-link"></i></a>
 </h3>
 <div class="sourceCode" id="cb401"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">xgboostFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,
+<code class="sourceCode R"><span class="va">xgboostFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,
   method <span class="op">=</span> <span class="st">"xgbTree"</span>,
   data <span class="op">=</span> <span class="va">.</span>,
   tuneLength <span class="op">=</span> <span class="fl">5</span>,
@@ -528,7 +540,7 @@ Here legs are measured between 0 and 6 while all other variables are between
 <div class="sourceCode" id="cb403"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">xgboostFit</span><span class="op">$</span><span class="va">finalModel</span></code></pre></div>
 <pre><code>## ##### xgb.Booster
-## raw: 83.5 Kb 
+## raw: 83.4 Kb 
 ## call:
 ##   xgboost::xgb.train(params = list(eta = param$eta, max_depth = param$max_depth, 
 ##     gamma = param$gamma, colsample_bytree = param$colsample_bytree, 
@@ -560,7 +572,7 @@ Here legs are measured between 0 and 6 while all other variables are between
 <span class="header-section-number">4.2.8</span> Artificial Neural Network<a class="anchor" aria-label="anchor" href="#artificial-neural-network"><i class="fas fa-link"></i></a>
 </h3>
 <div class="sourceCode" id="cb405"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nnetFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,
+<code class="sourceCode R"><span class="va">nnetFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,
   method <span class="op">=</span> <span class="st">"nnet"</span>,
   data <span class="op">=</span> <span class="va">.</span>,
     tuneLength <span class="op">=</span> <span class="fl">5</span>,
@@ -621,7 +633,8 @@ Here legs are measured between 0 and 6 while all other variables are between
 <h2>
 <span class="header-section-number">4.3</span> Comparing Models<a class="anchor" aria-label="anchor" href="#comparing-models"><i class="fas fa-link"></i></a>
 </h2>
-<p>Collect the performance metrics from the models trained on the same data.</p>
+<p>Collect the performance metrics from the models trained on the same
+data.</p>
 <div class="sourceCode" id="cb409"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">resamps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/resamples.html">resamples</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
   ctree <span class="op">=</span> <span class="va">ctreeFit</span>,
@@ -697,7 +710,11 @@ Here legs are measured between 0 and 6 while all other variables are between
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://lattice.r-forge.r-project.org/">lattice</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/lattice/man/xyplot.html">bwplot</a></span><span class="op">(</span><span class="va">resamps</span>, layout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-170-1.png" width="672"></div>
-<p>Perform inference about differences between models. For each metric, all pair-wise differences are computed and tested to assess if the difference is equal to zero. By default Bonferroni correction for multiple comparison is used. Differences are shown in the upper triangle and p-values are in the lower triangle.</p>
+<p>Perform inference about differences between models. For each metric, all
+pair-wise differences are computed and tested to assess if the
+difference is equal to zero. By default Bonferroni correction for
+multiple comparison is used. Differences are shown in the upper triangle
+and p-values are in the lower triangle.</p>
 <div class="sourceCode" id="cb414"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">difs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span><span class="op">(</span><span class="va">resamps</span><span class="op">)</span>
 <span class="va">difs</span></code></pre></div>
@@ -767,15 +784,18 @@ Here legs are measured between 0 and 6 while all other variables are between
 ## randomForest -0.031667
 ## xgboost      -0.030952
 ## NeuralNet</code></pre>
-<p>All perform similarly well except ctree (differences in the first row are negative and the p-values in the first column are &lt;.05 indicating that the null-hypothesis of a difference of 0 can be rejected).</p>
+<p>All perform similarly well except ctree (differences in the first row
+are negative and the p-values in the first column are &lt;.05 indicating
+that the null-hypothesis of a difference of 0 can be rejected).</p>
 </div>
 <div id="applying-the-chosen-model-to-the-test-data" class="section level2" number="4.4">
 <h2>
 <span class="header-section-number">4.4</span> Applying the Chosen Model to the Test Data<a class="anchor" aria-label="anchor" href="#applying-the-chosen-model-to-the-test-data"><i class="fas fa-link"></i></a>
 </h2>
-<p>Most models do similarly well on the data. We choose here the random forest model.</p>
+<p>Most models do similarly well on the data. We choose here the random
+forest model.</p>
 <div class="sourceCode" id="cb418"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/predict.html">predict</a></span><span class="op">(</span><span class="va">randomForestFit</span>, <span class="va">Zoo_test</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">randomForestFit</span>, <span class="va">Zoo_test</span><span class="op">)</span>
 <span class="va">pr</span></code></pre></div>
 <pre><code>##  [1] mammal        mollusc.et.al bird         
 ##  [4] mammal        insect        bird         
@@ -858,55 +878,40 @@ Here legs are measured between 0 and 6 while all other variables are between
 ## Detection Prevalence                0.111
 ## Balanced Accuracy                   1.000</code></pre>
 </div>
-<div id="decision-boundaries" class="section level2" number="4.5">
+<div id="comparing-decision-boundaries-of-popular-classification-techniques" class="section level2" number="4.5">
 <h2>
-<span class="header-section-number">4.5</span> Decision Boundaries<a class="anchor" aria-label="anchor" href="#decision-boundaries"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.5</span> Comparing Decision Boundaries of Popular Classification Techniques<a class="anchor" aria-label="anchor" href="#comparing-decision-boundaries-of-popular-classification-techniques"><i class="fas fa-link"></i></a>
 </h2>
 <p>Classifiers create decision boundaries to discriminate between classes.
 Different classifiers are able to create different shapes of decision
 boundaries (e.g., some are strictly linear) and thus some classifiers
-may perform better for certain datasets. This page visualizes the decision
-boundaries found by several popular classification methods.</p>
-<p>The following plot adds the decision boundary by evaluating the classifier
-at evenly spaced grid points. Note that low resolution
-(to make evaluation faster) will make
-the decision boundary look like it has small steps even if it is a
-(straight) line.</p>
+may perform better for certain datasets. This page visualizes the
+decision boundaries found by several popular classification methods.</p>
+<p>The following plot adds the decision boundary by evaluating the
+classifier at evenly spaced grid points. Note that low resolution (to
+make evaluation faster) will make the decision boundary look like it has
+small steps even if it is a (straight) line.</p>
 <div class="sourceCode" id="cb422"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org">scales</a></span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-## Attaching package: 'scales'</code></pre>
-<pre><code>## The following object is masked from 'package:purrr':
-## 
-##     discard</code></pre>
-<pre><code>## The following object is masked from 'package:readr':
-## 
-##     col_factor</code></pre>
-<div class="sourceCode" id="cb426"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org">scales</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/topepo/caret/">caret</a></span><span class="op">)</span>
-
-<span class="va">decisionplot</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, <span class="va">cl</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">predict_type</span> <span class="op">=</span> <span class="st">"class"</span>,
-  <span class="va">resolution</span> <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op">{</span>
-
-  <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">x_data</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu">all_of</span><span class="op">(</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span>
-    <span class="va">cl</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu">pull</span><span class="op">(</span><span class="va">cl</span><span class="op">)</span>
-  <span class="op">}</span> <span class="kw">else</span> <span class="va">cl</span> <span class="op">&lt;-</span> <span class="fl">1</span>
-  <span class="va">k</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/unique.html">unique</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span>
-
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/topepo/caret/">caret</a></span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb423"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">decisionplot</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">data</span>, <span class="va">class_var</span>, 
+  <span class="va">predict_type</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"prob"</span><span class="op">)</span>, <span class="va">resolution</span> <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> <span class="op">{</span>
+  
+  <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">class_var</span><span class="op">)</span>
+  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html">all_of</a></span><span class="op">(</span><span class="va">class_var</span><span class="op">)</span><span class="op">)</span>
+  
   <span class="co"># resubstitution accuracy</span>
-  <span class="va">prediction</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/predict.html">predict</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">x_data</span>, type <span class="op">=</span> <span class="va">predict_type</span><span class="op">)</span>
+  <span class="va">prediction</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, type <span class="op">=</span> <span class="va">predict_type</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
+  <span class="co"># LDA returns a list</span>
   <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">is.list</a></span><span class="op">(</span><span class="va">prediction</span><span class="op">)</span><span class="op">)</span> <span class="va">prediction</span> <span class="op">&lt;-</span> <span class="va">prediction</span><span class="op">$</span><span class="va">class</span>
-  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">is.numeric</a></span><span class="op">(</span><span class="va">prediction</span><span class="op">)</span><span class="op">)</span>
-    <span class="va">prediction</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">prediction</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span>
-  <span class="kw">else</span>
-    <span class="va">prediction</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">prediction</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span>
-
-  <span class="va">cm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">prediction</span>, reference <span class="op">=</span> <span class="va">cl</span><span class="op">)</span>
+  <span class="va">prediction</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">prediction</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>
+  
+  <span class="va">cm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">prediction</span>, reference <span class="op">=</span> <span class="va">y</span><span class="op">)</span>
   <span class="va">acc</span> <span class="op">&lt;-</span> <span class="va">cm</span><span class="op">$</span><span class="va">overall</span><span class="op">[</span><span class="st">"Accuracy"</span><span class="op">]</span>
-
+  
   <span class="co"># evaluate model on a grid</span>
   <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="va">range</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
   <span class="va">xs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="va">r</span><span class="op">[</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">]</span>, <span class="va">r</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">1</span><span class="op">]</span>, length.out <span class="op">=</span> <span class="va">resolution</span><span class="op">)</span>
@@ -914,42 +919,56 @@ the decision boundary look like it has small steps even if it is a
   <span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">xs</span>, each <span class="op">=</span> <span class="va">resolution</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">ys</span>, time <span class="op">=</span> <span class="va">resolution</span><span class="op">)</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span>
   <span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span>
-
+  
   <span class="co">### guess how to get class labels from predict</span>
   <span class="co">### (unfortunately not very consistent between models)</span>
-  <span class="va">prediction</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/predict.html">predict</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">g</span>, type <span class="op">=</span> <span class="va">predict_type</span><span class="op">)</span>
-  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">is.list</a></span><span class="op">(</span><span class="va">prediction</span><span class="op">)</span><span class="op">)</span> <span class="va">prediction</span> <span class="op">&lt;-</span> <span class="va">prediction</span><span class="op">$</span><span class="va">class</span>
-  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">is.numeric</a></span><span class="op">(</span><span class="va">prediction</span><span class="op">)</span><span class="op">)</span>
-    <span class="va">prediction</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">prediction</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span>
-  <span class="kw">else</span>
-    <span class="va">prediction</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">prediction</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span>
-
-  <span class="va">g</span> <span class="op">&lt;-</span> <span class="va">g</span> <span class="op">%&gt;%</span> <span class="fu">add_column</span><span class="op">(</span><span class="va">prediction</span><span class="op">)</span>
-
+  <span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">g</span>, type <span class="op">=</span> <span class="va">predict_type</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
+  
+  <span class="co"># LDA returns a list</span>
+  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">is.list</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span> 
+    <span class="va">prob</span> <span class="op">&lt;-</span> <span class="va">cl</span><span class="op">$</span><span class="va">posterior</span>
+    <span class="va">cl</span> <span class="op">&lt;-</span> <span class="va">cl</span><span class="op">$</span><span class="va">class</span>
+  <span class="op">}</span> <span class="kw">else</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/try.html">try</a></span><span class="op">(</span><span class="va">prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">g</span>, type <span class="op">=</span> <span class="va">predict_type</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
+  
+  <span class="co"># we visualize the difference in probability/score between the </span>
+  <span class="co"># winning class and the second best class.</span>
+  <span class="co"># don't use probability if predict for the classifier does not support it.</span>
+  <span class="va">max_prob</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/try.html">try</a></span><span class="op">(</span><span class="op">{</span>
+    <span class="va">max_prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">prob</span>, MARGIN <span class="op">=</span> <span class="fl">1</span>, <span class="va">sort</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+    <span class="va">max_prob</span> <span class="op">&lt;-</span> <span class="va">max_prob</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">max_prob</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>
+  <span class="op">}</span>, silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> 
+  
+  <span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cl</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>
+  
+  <span class="va">g</span> <span class="op">&lt;-</span> <span class="va">g</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/add_column.html">add_column</a></span><span class="op">(</span>class <span class="op">=</span> <span class="va">cl</span>, probability <span class="op">=</span> <span class="va">max_prob</span><span class="op">)</span>
+  
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">g</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_.html">aes_string</a></span><span class="op">(</span>
     x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,
     y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_tile</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">prediction</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">x</span>, mapping <span class="op">=</span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_.html">aes_string</a></span><span class="op">(</span>
-      x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,
-      y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,
-      shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_raster</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">class</span>, alpha <span class="op">=</span> <span class="va">probability</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, mapping <span class="op">=</span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_.html">aes_string</a></span><span class="op">(</span>
+      x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,
+      y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,
+      shape <span class="op">=</span> <span class="va">class_var</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span> <span class="op">+</span> 
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_alpha.html">scale_alpha_continuous</a></span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>, guide <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span>  
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Training accuracy:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">acc</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <div id="iris-dataset" class="section level3" number="4.5.1">
 <h3>
 <span class="header-section-number">4.5.1</span> Iris Dataset<a class="anchor" aria-label="anchor" href="#iris-dataset"><i class="fas fa-link"></i></a>
 </h3>
-<p>For easier visualization, we use on two dimensions of the Iris dataset.</p>
-<div class="sourceCode" id="cb427"><pre class="downlit sourceCode r">
+<p>For easier visualization, we use two dimensions of the Iris dataset. Contour lines visualize the density like mountains on a map.</p>
+<div class="sourceCode" id="cb424"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
 <span class="va">iris</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
 
 <span class="co">### Three classes (MASS also has a select function)</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Sepal.Length</span>, <span class="va">Sepal.Width</span>, <span class="va">Species</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Sepal.Length</span>, <span class="va">Sepal.Width</span>, <span class="va">Species</span><span class="op">)</span>
 <span class="va">x</span></code></pre></div>
-<pre><code>## # A tibble: 150 x 3
+<pre><code>## # A tibble: 150 × 3
 ##    Sepal.Length Sepal.Width Species
 ##           &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
 ##  1          5.1         3.5 setosa 
@@ -963,58 +982,62 @@ the decision boundary look like it has small steps even if it is a
 ##  9          4.4         2.9 setosa 
 ## 10          4.9         3.1 setosa 
 ## # … with 140 more rows</code></pre>
-<div class="sourceCode" id="cb429"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sepal.Length</span>, y <span class="op">=</span> <span class="va">Sepal.Width</span>, color <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-175-1.png" width="672"></div>
-<p><em>Note:</em> There is some overplotting and you could use <code><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html">geom_jitter()</a></code> instead of <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code>.</p>
+<div class="sourceCode" id="cb426"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sepal.Length</span>, y <span class="op">=</span> <span class="va">Sepal.Width</span>, color <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html">stat_density_2d</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.2</span>, geom <span class="op">=</span> <span class="st">"polygon"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-176-1.png" width="672"></div>
+<p><em>Note:</em> There is some overplotting and you could use <code><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html">geom_jitter()</a></code>
+instead of <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code>.</p>
 <div id="k-nearest-neighbors-classifier" class="section level4" number="4.5.1.1">
 <h4>
 <span class="header-section-number">4.5.1.1</span> K-Nearest Neighbors Classifier<a class="anchor" aria-label="anchor" href="#k-nearest-neighbors-classifier"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb430"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb427"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/topepo/caret/">caret</a></span><span class="op">)</span>
-<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/knn3.html">knn3</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, k <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"kNN (1 neighbor)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-176-1.png" width="672"></div>
-<div class="sourceCode" id="cb431"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/knn3.html">knn3</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, k <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"kNN (10 neighbor)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-176-2.png" width="672"></div>
+<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/knn3.html">knn3</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, k <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"kNN (1 neighbor)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-177-1.png" width="672"></div>
+<div class="sourceCode" id="cb428"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/knn3.html">knn3</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, k <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"kNN (10 neighbor)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-177-2.png" width="672"></div>
 </div>
 <div id="naive-bayes-classifier" class="section level4" number="4.5.1.2">
 <h4>
 <span class="header-section-number">4.5.1.2</span> Naive Bayes Classifier<a class="anchor" aria-label="anchor" href="#naive-bayes-classifier"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb432"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb429"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">e1071</span><span class="op">)</span>
-<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/naiveBayes.html">naiveBayes</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Naive Bayes"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-177-1.png" width="672"></div>
+<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/naiveBayes.html">naiveBayes</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span>, predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Naive Bayes"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-178-1.png" width="672"></div>
 </div>
 <div id="linear-discriminant-analysis" class="section level4" number="4.5.1.3">
 <h4>
 <span class="header-section-number">4.5.1.3</span> Linear Discriminant Analysis<a class="anchor" aria-label="anchor" href="#linear-discriminant-analysis"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb433"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb430"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## Attaching package: 'MASS'</code></pre>
 <pre><code>## The following object is masked from 'package:dplyr':
 ## 
 ##     select</code></pre>
-<div class="sourceCode" id="cb436"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/lda.html">lda</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"LDA"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-178-1.png" width="672"></div>
+<div class="sourceCode" id="cb433"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/lda.html">lda</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"LDA"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-179-1.png" width="672"></div>
 </div>
 <div id="multinomial-logistic-regression-implemented-in-nnet" class="section level4" number="4.5.1.4">
 <h4>
 <span class="header-section-number">4.5.1.4</span> Multinomial Logistic Regression (implemented in nnet)<a class="anchor" aria-label="anchor" href="#multinomial-logistic-regression-implemented-in-nnet"><i class="fas fa-link"></i></a>
 </h4>
-<p>Multinomial logistic regression is an extension of logistic regression to problems with more than two classes.</p>
-<div class="sourceCode" id="cb437"><pre class="downlit sourceCode r">
+<p>Multinomial logistic regression is an extension of logistic regression
+to problems with more than two classes.</p>
+<div class="sourceCode" id="cb434"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">nnet</a></span><span class="op">)</span>
-<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span></code></pre></div>
+<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span></code></pre></div>
 <pre><code>## # weights:  12 (6 variable)
 ## initial  value 164.791843 
 ## iter  10 value 62.715967
@@ -1029,30 +1052,30 @@ the decision boundary look like it has small steps even if it is a
 ## iter 100 value 55.212479
 ## final  value 55.212479 
 ## stopped after 100 iterations</code></pre>
-<div class="sourceCode" id="cb439"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>titel <span class="op">=</span> <span class="st">"Multinomial Logistic Regression"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-179-1.png" width="672"></div>
+<div class="sourceCode" id="cb436"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>titel <span class="op">=</span> <span class="st">"Multinomial Logistic Regression"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-180-1.png" width="672"></div>
 </div>
 <div id="decision-trees-1" class="section level4" number="4.5.1.5">
 <h4>
 <span class="header-section-number">4.5.1.5</span> Decision Trees<a class="anchor" aria-label="anchor" href="#decision-trees-1"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb440"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb437"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/bethatkinson/rpart">"rpart"</a></span><span class="op">)</span>
-<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"CART"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-180-1.png" width="672"></div>
-<div class="sourceCode" id="cb441"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>,
+<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"CART"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-181-1.png" width="672"></div>
+<div class="sourceCode" id="cb438"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>,
   control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">rpart.control</a></span><span class="op">(</span>cp <span class="op">=</span> <span class="fl">0.001</span>, minsplit <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"CART (overfitting)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-180-2.png" width="672"></div>
-<div class="sourceCode" id="cb442"><pre class="downlit sourceCode r">
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"CART (overfitting)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-181-2.png" width="672"></div>
+<div class="sourceCode" id="cb439"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://topepo.github.io/C5.0/">C50</a></span><span class="op">)</span>
-<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://topepo.github.io/C5.0/reference/C5.0.html">C5.0</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"C5.0"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-180-3.png" width="672"></div>
-<div class="sourceCode" id="cb443"><pre class="downlit sourceCode r">
+<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://topepo.github.io/C5.0/reference/C5.0.html">C5.0</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"C5.0"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-181-3.png" width="672"></div>
+<div class="sourceCode" id="cb440"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests/">randomForest</a></span><span class="op">)</span></code></pre></div>
 <pre><code>## randomForest 4.6-14</code></pre>
 <pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
@@ -1064,79 +1087,98 @@ the decision boundary look like it has small steps even if it is a
 <pre><code>## The following object is masked from 'package:ggplot2':
 ## 
 ##     margin</code></pre>
-<div class="sourceCode" id="cb449"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/randomForest/man/randomForest.html">randomForest</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Random Forest"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-180-4.png" width="672"></div>
+<div class="sourceCode" id="cb446"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/randomForest/man/randomForest.html">randomForest</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Random Forest"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-181-4.png" width="672"></div>
 </div>
 <div id="svm" class="section level4" number="4.5.1.6">
 <h4>
 <span class="header-section-number">4.5.1.6</span> SVM<a class="anchor" aria-label="anchor" href="#svm"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb450"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb447"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">e1071</span><span class="op">)</span>
-<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, kernel <span class="op">=</span> <span class="st">"linear"</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (linear kernel)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-181-1.png" width="672"></div>
-<div class="sourceCode" id="cb451"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, kernel <span class="op">=</span> <span class="st">"radial"</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (radial kernel)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-181-2.png" width="672"></div>
-<div class="sourceCode" id="cb452"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, kernel <span class="op">=</span> <span class="st">"polynomial"</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (polynomial kernel)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-181-3.png" width="672"></div>
-<div class="sourceCode" id="cb453"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, kernel <span class="op">=</span> <span class="st">"sigmoid"</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (sigmoid kernel)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-181-4.png" width="672"></div>
+<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, kernel <span class="op">=</span> <span class="st">"linear"</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (linear kernel)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-182-1.png" width="672"></div>
+<div class="sourceCode" id="cb448"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, kernel <span class="op">=</span> <span class="st">"radial"</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (radial kernel)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-182-2.png" width="672"></div>
+<div class="sourceCode" id="cb449"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, kernel <span class="op">=</span> <span class="st">"polynomial"</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (polynomial kernel)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-182-3.png" width="672"></div>
+<div class="sourceCode" id="cb450"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, kernel <span class="op">=</span> <span class="st">"sigmoid"</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (sigmoid kernel)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-182-4.png" width="672"></div>
 </div>
 <div id="single-layer-feed-forward-neural-networks" class="section level4" number="4.5.1.7">
 <h4>
 <span class="header-section-number">4.5.1.7</span> Single Layer Feed-forward Neural Networks<a class="anchor" aria-label="anchor" href="#single-layer-feed-forward-neural-networks"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb454"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb451"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">nnet</a></span><span class="op">)</span>
-<span class="va">model</span> <span class="op">&lt;-</span><span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, size <span class="op">=</span> <span class="fl">1</span>, maxit <span class="op">=</span> <span class="fl">1000</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"NN (1 neuron)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-182-1.png" width="672"></div>
-<div class="sourceCode" id="cb455"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span><span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, size <span class="op">=</span> <span class="fl">2</span>, maxit <span class="op">=</span> <span class="fl">1000</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"NN (2 neurons)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-182-2.png" width="672"></div>
-<div class="sourceCode" id="cb456"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span><span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, size <span class="op">=</span> <span class="fl">4</span>, maxit <span class="op">=</span> <span class="fl">1000</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"NN (4 neurons)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-182-3.png" width="672"></div>
-<div class="sourceCode" id="cb457"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span><span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, size <span class="op">=</span> <span class="fl">10</span>, maxit <span class="op">=</span> <span class="fl">1000</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"NN (10 neurons)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-182-4.png" width="672"></div>
+<span class="va">model</span> <span class="op">&lt;-</span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, size <span class="op">=</span> <span class="fl">1</span>, maxit <span class="op">=</span> <span class="fl">1000</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var  <span class="op">=</span> <span class="st">"Species"</span>, 
+  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"NN (1 neuron)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-183-1.png" width="672"></div>
+<div class="sourceCode" id="cb452"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, size <span class="op">=</span> <span class="fl">2</span>, maxit <span class="op">=</span> <span class="fl">1000</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var  <span class="op">=</span> <span class="st">"Species"</span>, 
+  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"NN (2 neurons)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-183-2.png" width="672"></div>
+<div class="sourceCode" id="cb453"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, size <span class="op">=</span> <span class="fl">4</span>, maxit <span class="op">=</span> <span class="fl">1000</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var  <span class="op">=</span> <span class="st">"Species"</span>, 
+  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"NN (4 neurons)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-183-3.png" width="672"></div>
+<div class="sourceCode" id="cb454"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span><span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, size <span class="op">=</span> <span class="fl">10</span>, maxit <span class="op">=</span> <span class="fl">1000</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var  <span class="op">=</span> <span class="st">"Species"</span>, 
+  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"NN (10 neurons)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-183-4.png" width="672"></div>
 </div>
 <div id="deep-learning-with-keras" class="section level4" number="4.5.1.8">
 <h4>
 <span class="header-section-number">4.5.1.8</span> Deep Learning with keras<a class="anchor" aria-label="anchor" href="#deep-learning-with-keras"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb458"><pre class="downlit sourceCode r">
+<p>The keras package needs the packages <code>reticulate</code> and <code>tensorflow</code>. To install keras you need to</p>
+<ol style="list-style-type: decimal">
+<li>have a working Python installation,</li>
+<li>install the keras R package <code>install.packages(keras)</code>, and</li>
+<li>install the tensorflow/keras Python modules with <code><a href="https://keras.rstudio.com">library(keras); install_keras()</a></code>
+</li>
+</ol>
+<div class="sourceCode" id="cb455"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://keras.rstudio.com">keras</a></span><span class="op">)</span></code></pre></div>
 <p>define predict so it works with decision plot</p>
-<div class="sourceCode" id="cb459"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">predict.keras.engine.training.Model</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">newdata</span>, <span class="va">...</span><span class="op">)</span>
-  <span class="fu"><a href="https://keras.rstudio.com/reference/predict_proba.html">predict_classes</a></span><span class="op">(</span><span class="va">object</span>, <span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">as.matrix</a></span><span class="op">(</span><span class="va">newdata</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>Choices are the activation function, number of layers, number of units per layer and the optimizer.
-A L2 regularizer is used for the dense layer weights to reduce overfitting. The output is a
-categorical class value, therefore the output layer uses the softmax activation function,
+<div class="sourceCode" id="cb456"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">predict.iriskerasmodel</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">newdata</span>, 
+  <span class="va">type</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"prob"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>
+  <span class="va">prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">object</span>, <span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">as.matrix</a></span><span class="op">(</span><span class="va">newdata</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> 
+  <span class="kw">if</span><span class="op">(</span><span class="va">type</span> <span class="op">==</span> <span class="st">"prob"</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">prob</span><span class="op">)</span>
+
+  <span class="va">prob</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://keras.rstudio.com/reference/k_argmax.html">k_argmax</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/array.html">as.array</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<p>Choices are the activation function, number of layers, number of units
+per layer and the optimizer. A L2 regularizer is used for the dense
+layer weights to reduce overfitting. The output is a categorical class
+value, therefore the output layer uses the softmax activation function,
 the loss is categorical crossentropy, and the metric is accuracy.</p>
-<div class="sourceCode" id="cb460"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://keras.rstudio.com/reference/keras_model_sequential.html">keras_model_sequential</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<div class="sourceCode" id="cb457"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://keras.rstudio.com/reference/keras_model_sequential.html">keras_model_sequential</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://keras.rstudio.com/reference/layer_dense.html">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="fl">10</span>, activation <span class="op">=</span> <span class="st">'relu'</span>, input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>,
-    kernel_regularizer<span class="op">=</span><span class="fu"><a href="https://keras.rstudio.com/reference/regularizer_l1.html">regularizer_l2</a></span><span class="op">(</span>l<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://keras.rstudio.com/reference/layer_dense.html">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="fl">4</span>, activation <span class="op">=</span> <span class="st">'softmax'</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://generics.r-lib.org/reference/compile.html">compile</a></span><span class="op">(</span>loss <span class="op">=</span> <span class="st">'categorical_crossentropy'</span>, optimizer <span class="op">=</span> <span class="st">'adam'</span>, metrics <span class="op">=</span> <span class="st">'accuracy'</span><span class="op">)</span>
-
-<span class="va">history</span> <span class="op">&lt;-</span> <span class="va">model</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span>
+    kernel_regularizer<span class="op">=</span><span class="fu"><a href="https://keras.rstudio.com/reference/regularizer_l1.html">regularizer_l2</a></span><span class="op">(</span>l<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://keras.rstudio.com/reference/layer_dense.html">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="fl">3</span>, activation <span class="op">=</span> <span class="st">'softmax'</span><span class="op">)</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://generics.r-lib.org/reference/compile.html">compile</a></span><span class="op">(</span>loss <span class="op">=</span> <span class="st">'categorical_crossentropy'</span>, optimizer <span class="op">=</span> <span class="st">'adam'</span>, metrics <span class="op">=</span> <span class="st">'accuracy'</span><span class="op">)</span></code></pre></div>
+<pre><code>## Loaded Tensorflow version 2.7.0</code></pre>
+<div class="sourceCode" id="cb459"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">history</span> <span class="op">&lt;-</span> <span class="va">model</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span>
   <span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">as.matrix</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,
-  <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu">pull</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">as.integer</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://keras.rstudio.com/reference/to_categorical.html">to_categorical</a></span><span class="op">(</span><span class="op">)</span>,
+  <span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu">`-`</span><span class="op">(</span><span class="fl">1L</span><span class="op">)</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://keras.rstudio.com/reference/to_categorical.html">to_categorical</a></span><span class="op">(</span><span class="op">)</span>,
   epochs <span class="op">=</span> <span class="fl">100</span>,
   batch_size <span class="op">=</span> <span class="fl">10</span>
 <span class="op">)</span>
@@ -1144,21 +1186,22 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 <span class="va">history</span></code></pre></div>
 <pre><code>## 
 ## Final epoch (plot to see history):
-##     loss: 0.6333
-## accuracy: 0.7267</code></pre>
+##     loss: 0.9799
+## accuracy: 0.7067</code></pre>
+<div class="sourceCode" id="cb461"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="st">"iriskerasmodel"</span>, <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"keras (relu activation)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-186-1.png" width="672"></div>
 <div class="sourceCode" id="cb462"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"keras (relu activation)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-185-1.png" width="672"></div>
-<div class="sourceCode" id="cb463"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://keras.rstudio.com/reference/keras_model_sequential.html">keras_model_sequential</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://keras.rstudio.com/reference/keras_model_sequential.html">keras_model_sequential</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://keras.rstudio.com/reference/layer_dense.html">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="fl">10</span>, activation <span class="op">=</span> <span class="st">'tanh'</span>, input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>,
-    kernel_regularizer <span class="op">=</span> <span class="fu"><a href="https://keras.rstudio.com/reference/regularizer_l1.html">regularizer_l2</a></span><span class="op">(</span>l <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://keras.rstudio.com/reference/layer_dense.html">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="fl">4</span>, activation <span class="op">=</span> <span class="st">'softmax'</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    kernel_regularizer <span class="op">=</span> <span class="fu"><a href="https://keras.rstudio.com/reference/regularizer_l1.html">regularizer_l2</a></span><span class="op">(</span>l <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://keras.rstudio.com/reference/layer_dense.html">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="fl">3</span>, activation <span class="op">=</span> <span class="st">'softmax'</span><span class="op">)</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://generics.r-lib.org/reference/compile.html">compile</a></span><span class="op">(</span>loss <span class="op">=</span> <span class="st">'categorical_crossentropy'</span>, optimizer <span class="op">=</span> <span class="st">'adam'</span>, metrics <span class="op">=</span> <span class="st">'accuracy'</span><span class="op">)</span>
 
-<span class="va">history</span> <span class="op">&lt;-</span> <span class="va">model</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span>
+<span class="va">history</span> <span class="op">&lt;-</span> <span class="va">model</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span>
   <span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">as.matrix</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,
-  <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu">pull</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">as.integer</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://keras.rstudio.com/reference/to_categorical.html">to_categorical</a></span><span class="op">(</span><span class="op">)</span>,
+  <span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="va">as.integer</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu">`-`</span><span class="op">(</span><span class="fl">1L</span><span class="op">)</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://keras.rstudio.com/reference/to_categorical.html">to_categorical</a></span><span class="op">(</span><span class="op">)</span>,
   epochs <span class="op">=</span> <span class="fl">100</span>,
   batch_size <span class="op">=</span> <span class="fl">10</span>
 <span class="op">)</span>
@@ -1166,11 +1209,12 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 <span class="va">history</span></code></pre></div>
 <pre><code>## 
 ## Final epoch (plot to see history):
-##     loss: 0.5977
-## accuracy: 0.76</code></pre>
-<div class="sourceCode" id="cb465"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"keras (tanh activation)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-185-2.png" width="672"></div>
+##     loss: 0.6049
+## accuracy: 0.78</code></pre>
+<div class="sourceCode" id="cb464"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="st">"iriskerasmodel"</span>, <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"keras (tanh activation)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-186-2.png" width="672"></div>
 </div>
 </div>
 <div id="circle-dataset" class="section level3" number="4.5.2">
@@ -1178,7 +1222,7 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 <span class="header-section-number">4.5.2</span> Circle Dataset<a class="anchor" aria-label="anchor" href="#circle-dataset"><i class="fas fa-link"></i></a>
 </h3>
 <p>This set is not linearly separable!</p>
-<div class="sourceCode" id="cb466"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb465"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>
 
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">mlbench</span><span class="op">)</span>
@@ -1190,7 +1234,7 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"class"</span><span class="op">)</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="va">x</span></code></pre></div>
-<pre><code>## # A tibble: 500 x 3
+<pre><code>## # A tibble: 500 × 3
 ##          x       y class
 ##      &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt;
 ##  1 -0.344   0.448  1    
@@ -1204,199 +1248,149 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 ##  9 -0.568  -0.281  1    
 ## 10 -0.488   0.638  2    
 ## # … with 490 more rows</code></pre>
-<div class="sourceCode" id="cb468"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, color <span class="op">=</span> <span class="va">class</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-186-1.png" width="672"></div>
+<div class="sourceCode" id="cb467"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, color <span class="op">=</span> <span class="va">class</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-187-1.png" width="672"></div>
 <div id="k-nearest-neighbors-classifier-1" class="section level4" number="4.5.2.1">
 <h4>
 <span class="header-section-number">4.5.2.1</span> K-Nearest Neighbors Classifier<a class="anchor" aria-label="anchor" href="#k-nearest-neighbors-classifier-1"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb469"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb468"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/topepo/caret/">caret</a></span><span class="op">)</span>
-<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/knn3.html">knn3</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, k <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"kNN (1 neighbor)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-187-1.png" width="672"></div>
-<div class="sourceCode" id="cb470"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/knn3.html">knn3</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, k <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"kNN (10 neighbor)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-187-2.png" width="672"></div>
+<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/knn3.html">knn3</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, k <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"kNN (1 neighbor)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-188-1.png" width="672"></div>
+<div class="sourceCode" id="cb469"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/knn3.html">knn3</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, k <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"kNN (10 neighbor)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-188-2.png" width="672"></div>
 </div>
 <div id="naive-bayes-classifier-1" class="section level4" number="4.5.2.2">
 <h4>
 <span class="header-section-number">4.5.2.2</span> Naive Bayes Classifier<a class="anchor" aria-label="anchor" href="#naive-bayes-classifier-1"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb471"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb470"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">e1071</span><span class="op">)</span>
-<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/naiveBayes.html">naiveBayes</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"naive Bayes"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-188-1.png" width="672"></div>
+<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/naiveBayes.html">naiveBayes</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span>, 
+  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"naive Bayes"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-189-1.png" width="672"></div>
 </div>
 <div id="linear-discriminant-analysis-1" class="section level4" number="4.5.2.3">
 <h4>
 <span class="header-section-number">4.5.2.3</span> Linear Discriminant Analysis<a class="anchor" aria-label="anchor" href="#linear-discriminant-analysis-1"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb472"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb471"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span>
-<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/lda.html">lda</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"LDA"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-189-1.png" width="672"></div>
+<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/lda.html">lda</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"LDA"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-190-1.png" width="672"></div>
 </div>
 <div id="multinomial-logistic-regression-implemented-in-nnet-1" class="section level4" number="4.5.2.4">
 <h4>
 <span class="header-section-number">4.5.2.4</span> Multinomial Logistic Regression (implemented in nnet)<a class="anchor" aria-label="anchor" href="#multinomial-logistic-regression-implemented-in-nnet-1"><i class="fas fa-link"></i></a>
 </h4>
-<p>Multinomial logistic regression is an extension of logistic regression to problems with more than two classes.</p>
-<div class="sourceCode" id="cb473"><pre class="downlit sourceCode r">
+<p>Multinomial logistic regression is an extension of logistic regression
+to problems with more than two classes.</p>
+<div class="sourceCode" id="cb472"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">nnet</a></span><span class="op">)</span>
-<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span></code></pre></div>
+<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span></code></pre></div>
 <pre><code>## # weights:  4 (3 variable)
 ## initial  value 346.573590 
 ## final  value 346.308371 
 ## converged</code></pre>
-<div class="sourceCode" id="cb475"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>titel <span class="op">=</span> <span class="st">"Multinomial Logistic Regression"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-190-1.png" width="672"></div>
+<div class="sourceCode" id="cb474"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>titel <span class="op">=</span> <span class="st">"Multinomial Logistic Regression"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-191-1.png" width="672"></div>
 </div>
 <div id="decision-trees-2" class="section level4" number="4.5.2.5">
 <h4>
 <span class="header-section-number">4.5.2.5</span> Decision Trees<a class="anchor" aria-label="anchor" href="#decision-trees-2"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb476"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb475"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/bethatkinson/rpart">"rpart"</a></span><span class="op">)</span>
-<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"CART"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-191-1.png" width="672"></div>
-<div class="sourceCode" id="cb477"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>,
+<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"CART"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-192-1.png" width="672"></div>
+<div class="sourceCode" id="cb476"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>,
   control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">rpart.control</a></span><span class="op">(</span>cp <span class="op">=</span> <span class="fl">0.001</span>, minsplit <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"CART (overfitting)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-191-2.png" width="672"></div>
-<div class="sourceCode" id="cb478"><pre class="downlit sourceCode r">
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"CART (overfitting)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-192-2.png" width="672"></div>
+<div class="sourceCode" id="cb477"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://topepo.github.io/C5.0/">C50</a></span><span class="op">)</span>
-<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://topepo.github.io/C5.0/reference/C5.0.html">C5.0</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"C5.0"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-191-3.png" width="672"></div>
-<div class="sourceCode" id="cb479"><pre class="downlit sourceCode r">
+<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://topepo.github.io/C5.0/reference/C5.0.html">C5.0</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"C5.0"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-192-3.png" width="672"></div>
+<div class="sourceCode" id="cb478"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests/">randomForest</a></span><span class="op">)</span>
-<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/randomForest/man/randomForest.html">randomForest</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Random Forest"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-191-4.png" width="672"></div>
+<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/randomForest/man/randomForest.html">randomForest</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Random Forest"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-192-4.png" width="672"></div>
 </div>
 <div id="svm-1" class="section level4" number="4.5.2.6">
 <h4>
 <span class="header-section-number">4.5.2.6</span> SVM<a class="anchor" aria-label="anchor" href="#svm-1"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb480"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb479"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">e1071</span><span class="op">)</span>
-<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, kernel <span class="op">=</span> <span class="st">"linear"</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (linear kernel)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-192-1.png" width="672"></div>
+<span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, kernel <span class="op">=</span> <span class="st">"linear"</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (linear kernel)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-193-1.png" width="672"></div>
+<div class="sourceCode" id="cb480"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, kernel <span class="op">=</span> <span class="st">"radial"</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (radial kernel)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-193-2.png" width="672"></div>
 <div class="sourceCode" id="cb481"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, kernel <span class="op">=</span> <span class="st">"radial"</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (radial kernel)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-192-2.png" width="672"></div>
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, kernel <span class="op">=</span> <span class="st">"polynomial"</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (polynomial kernel)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-193-3.png" width="672"></div>
 <div class="sourceCode" id="cb482"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, kernel <span class="op">=</span> <span class="st">"polynomial"</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (polynomial kernel)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-192-3.png" width="672"></div>
-<div class="sourceCode" id="cb483"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, kernel <span class="op">=</span> <span class="st">"sigmoid"</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (sigmoid kernel)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-192-4.png" width="672"></div>
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, kernel <span class="op">=</span> <span class="st">"sigmoid"</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (sigmoid kernel)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-193-4.png" width="672"></div>
 </div>
 <div id="single-layer-feed-forward-neural-networks-1" class="section level4" number="4.5.2.7">
 <h4>
 <span class="header-section-number">4.5.2.7</span> Single Layer Feed-forward Neural Networks<a class="anchor" aria-label="anchor" href="#single-layer-feed-forward-neural-networks-1"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb484"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb483"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">nnet</a></span><span class="op">)</span>
-<span class="va">model</span> <span class="op">&lt;-</span><span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, size <span class="op">=</span> <span class="fl">1</span>, maxit <span class="op">=</span> <span class="fl">1000</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"NN (1 neuron)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-193-1.png" width="672"></div>
+<span class="va">model</span> <span class="op">&lt;-</span><span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, size <span class="op">=</span> <span class="fl">1</span>, maxit <span class="op">=</span> <span class="fl">1000</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span>, 
+  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"NN (1 neuron)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-194-1.png" width="672"></div>
+<div class="sourceCode" id="cb484"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span><span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, size <span class="op">=</span> <span class="fl">2</span>, maxit <span class="op">=</span> <span class="fl">1000</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span>, 
+  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"NN (2 neurons)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-194-2.png" width="672"></div>
 <div class="sourceCode" id="cb485"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span><span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, size <span class="op">=</span> <span class="fl">2</span>, maxit <span class="op">=</span> <span class="fl">1000</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"NN (2 neurons)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-193-2.png" width="672"></div>
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span><span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, size <span class="op">=</span> <span class="fl">4</span>, maxit <span class="op">=</span> <span class="fl">1000</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span>, 
+  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"NN (4 neurons)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-194-3.png" width="672"></div>
 <div class="sourceCode" id="cb486"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span><span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, size <span class="op">=</span> <span class="fl">4</span>, maxit <span class="op">=</span> <span class="fl">1000</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"NN (4 neurons)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-193-3.png" width="672"></div>
-<div class="sourceCode" id="cb487"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span><span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, size <span class="op">=</span> <span class="fl">10</span>, maxit <span class="op">=</span> <span class="fl">1000</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"NN (10 neurons)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-193-4.png" width="672"></div>
-</div>
-<div id="deep-learning-with-keras-1" class="section level4" number="4.5.2.8">
-<h4>
-<span class="header-section-number">4.5.2.8</span> Deep Learning with keras<a class="anchor" aria-label="anchor" href="#deep-learning-with-keras-1"><i class="fas fa-link"></i></a>
-</h4>
-<div class="sourceCode" id="cb488"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://keras.rstudio.com">keras</a></span><span class="op">)</span></code></pre></div>
-<p>redefine predict so it works with decision plot</p>
-<div class="sourceCode" id="cb489"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">predict.keras.engine.training.Model</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">newdata</span>, <span class="va">...</span><span class="op">)</span>
-  <span class="fu"><a href="https://keras.rstudio.com/reference/predict_proba.html">predict_classes</a></span><span class="op">(</span><span class="va">object</span>, <span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">as.matrix</a></span><span class="op">(</span><span class="va">newdata</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>Choices are the activation function, number of layers, number of units per layer and the optimizer.
-A L2 regularizer is used for the dense layer weights to reduce overfitting. The output is a
-categorical class value, therefore the output layer uses the softmax activation function,
-the loss is categorical crossentropy, and the metric is accuracy.</p>
-<div class="sourceCode" id="cb490"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://keras.rstudio.com/reference/keras_model_sequential.html">keras_model_sequential</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://keras.rstudio.com/reference/layer_dense.html">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="fl">10</span>, activation <span class="op">=</span> <span class="st">'relu'</span>, input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>,
-    kernel_regularizer<span class="op">=</span><span class="fu"><a href="https://keras.rstudio.com/reference/regularizer_l1.html">regularizer_l2</a></span><span class="op">(</span>l <span class="op">=</span> <span class="fl">0.0001</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://keras.rstudio.com/reference/layer_dense.html">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="fl">3</span>, activation <span class="op">=</span> <span class="st">'softmax'</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://generics.r-lib.org/reference/compile.html">compile</a></span><span class="op">(</span>loss <span class="op">=</span> <span class="st">'categorical_crossentropy'</span>, optimizer <span class="op">=</span> <span class="st">'adam'</span>, metrics <span class="op">=</span> <span class="st">'accuracy'</span><span class="op">)</span>
-
-<span class="va">history</span> <span class="op">&lt;-</span> <span class="va">model</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">as.matrix</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,
-  <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu">pull</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">as.integer</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://keras.rstudio.com/reference/to_categorical.html">to_categorical</a></span><span class="op">(</span><span class="op">)</span>,
-  epochs <span class="op">=</span> <span class="fl">100</span>,
-  batch_size <span class="op">=</span> <span class="fl">10</span>
-<span class="op">)</span>
-
-<span class="va">history</span></code></pre></div>
-<pre><code>## 
-## Final epoch (plot to see history):
-##     loss: 0.1879
-## accuracy: 0.962</code></pre>
-<div class="sourceCode" id="cb492"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"keras (relu activation)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-196-1.png" width="672"></div>
-<div class="sourceCode" id="cb493"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://keras.rstudio.com/reference/keras_model_sequential.html">keras_model_sequential</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://keras.rstudio.com/reference/layer_dense.html">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="fl">10</span>, activation <span class="op">=</span> <span class="st">'tanh'</span>, input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>,
-    kernel_regularizer <span class="op">=</span> <span class="fu"><a href="https://keras.rstudio.com/reference/regularizer_l1.html">regularizer_l2</a></span><span class="op">(</span>l <span class="op">=</span> <span class="fl">0.0001</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://keras.rstudio.com/reference/layer_dense.html">layer_dense</a></span><span class="op">(</span>units <span class="op">=</span> <span class="fl">3</span>, activation <span class="op">=</span> <span class="st">'softmax'</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://generics.r-lib.org/reference/compile.html">compile</a></span><span class="op">(</span>loss <span class="op">=</span> <span class="st">'categorical_crossentropy'</span>, optimizer <span class="op">=</span> <span class="st">'adam'</span>, metrics <span class="op">=</span> <span class="st">'accuracy'</span><span class="op">)</span>
-
-<span class="va">history</span> <span class="op">&lt;-</span> <span class="va">model</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">as.matrix</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,
-  <span class="va">x</span> <span class="op">%&gt;%</span> <span class="fu">pull</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">as.integer</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://keras.rstudio.com/reference/to_categorical.html">to_categorical</a></span><span class="op">(</span><span class="op">)</span>,
-  epochs <span class="op">=</span> <span class="fl">100</span>,
-  batch_size <span class="op">=</span> <span class="fl">10</span>
-<span class="op">)</span>
-
-<span class="va">history</span></code></pre></div>
-<pre><code>## 
-## Final epoch (plot to see history):
-##     loss: 0.3245
-## accuracy: 0.948</code></pre>
-<div class="sourceCode" id="cb495"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, cl <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"keras (tanh activation)"</span><span class="op">)</span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-196-2.png" width="672"></div>
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span><span class="va">x</span> <span class="op"><a href="https://keras.rstudio.com/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, size <span class="op">=</span> <span class="fl">10</span>, maxit <span class="op">=</span> <span class="fl">1000</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span>, 
+  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/combine.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"NN (10 neurons)"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-194-4.png" width="672"></div>
 </div>
 </div>
 </div>
-<div id="more-information" class="section level2" number="4.6">
+<div id="more-information-on-classification-with-r" class="section level2" number="4.6">
 <h2>
-<span class="header-section-number">4.6</span> More Information<a class="anchor" aria-label="anchor" href="#more-information"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.6</span> More Information on Classification with R<a class="anchor" aria-label="anchor" href="#more-information-on-classification-with-r"><i class="fas fa-link"></i></a>
 </h2>
 <ul>
 <li>Package caret: <a href="http://topepo.github.io/caret/index.html" class="uri">http://topepo.github.io/caret/index.html</a>
 </li>
-<li>Tidymodels (machine learning with tidyverse): <a href="https://www.tidymodels.org/" class="uri">https://www.tidymodels.org/</a>
+<li>Tidymodels (machine learning with tidyverse):
+<a href="https://www.tidymodels.org/" class="uri">https://www.tidymodels.org/</a>
 </li>
-<li>R taskview on machine learning: <a href="http://cran.r-project.org/web/views/MachineLearning.html" class="uri">http://cran.r-project.org/web/views/MachineLearning.html</a>
+<li>R taskview on machine learning:
+<a href="http://cran.r-project.org/web/views/MachineLearning.html" class="uri">http://cran.r-project.org/web/views/MachineLearning.html</a>
 </li>
 </ul>
 </div>
@@ -1424,12 +1418,12 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 <li><a class="nav-link" href="#comparing-models"><span class="header-section-number">4.3</span> Comparing Models</a></li>
 <li><a class="nav-link" href="#applying-the-chosen-model-to-the-test-data"><span class="header-section-number">4.4</span> Applying the Chosen Model to the Test Data</a></li>
 <li>
-<a class="nav-link" href="#decision-boundaries"><span class="header-section-number">4.5</span> Decision Boundaries</a><ul class="nav navbar-nav">
+<a class="nav-link" href="#comparing-decision-boundaries-of-popular-classification-techniques"><span class="header-section-number">4.5</span> Comparing Decision Boundaries of Popular Classification Techniques</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#iris-dataset"><span class="header-section-number">4.5.1</span> Iris Dataset</a></li>
 <li><a class="nav-link" href="#circle-dataset"><span class="header-section-number">4.5.2</span> Circle Dataset</a></li>
 </ul>
 </li>
-<li><a class="nav-link" href="#more-information"><span class="header-section-number">4.6</span> More Information</a></li>
+<li><a class="nav-link" href="#more-information-on-classification-with-r"><span class="header-section-number">4.6</span> More Information on Classification with R</a></li>
 </ul>
 
       <div class="book-extra">
@@ -1447,7 +1441,7 @@ the loss is categorical crossentropy, and the metric is accuracy.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2021-07-15.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2021-11-30.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
