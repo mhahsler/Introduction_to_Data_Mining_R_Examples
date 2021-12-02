@@ -59,7 +59,8 @@ the data is ready for model learning.
 Zoo <- Zoo %>%
   modify_if(is.logical, factor, levels = c(TRUE, FALSE)) %>%
   modify_if(is.character, factor)
-Zoo %>% summary()
+
+summary(Zoo)
 ```
 
 ## Decision Trees
@@ -253,6 +254,7 @@ fit <- Zoo_train %>%
     control = rpart.control(minsplit = 2),
     trControl = trainControl(method = "cv", number = 10),
     tuneLength = 5)
+
 fit
 ```
 
@@ -282,6 +284,7 @@ Here is the variable importance without competing splits.
 ```{r }
 imp <- varImp(fit, compete = FALSE)
 imp
+
 ggplot(imp)
 ```
 
@@ -373,6 +376,7 @@ resamps <- resamples(list(
 		CART = rpartFit,
 		kNearestNeighbors = knnFit
 		))
+
 summary(resamps)
 ```
 
@@ -394,6 +398,7 @@ difference in accuracy is not zero).
 ```{r }
 difs <- diff(resamps)
 difs
+
 summary(difs)
 ```
 
@@ -426,6 +431,7 @@ used to derive a score.
 weights <- Zoo_train %>% chi.squared(type ~ ., data = .) %>%
   as_tibble(rownames = "feature") %>%
   arrange(desc(attr_importance))
+
 weights
 ```
 
@@ -534,8 +540,8 @@ extremely slow if a factor has many levels (different values) since the
 tree has to check all possible splits into two subsets. This situation
 should be avoided.
 
-Recode type as a set of 0-1 dummy variables using `class2ind`. See also
-`? dummyVars` in package `caret`.
+Convert type into a set of 0-1 dummy variables using `class2ind`. See
+also `? dummyVars` in package `caret`.
 
 ```{r }
 Zoo_train_dummy <- as_tibble(class2ind(Zoo_train$type)) %>% mutate_all(as.factor) %>%
@@ -614,6 +620,7 @@ that the test set has some samples of the rare reptile class.
 
 ```{r }
 set.seed(1234)
+
 inTrain <- createDataPartition(y = Zoo_reptile$type, p = .5, list = FALSE)
 training_reptile <- Zoo_reptile %>% slice(inTrain)
 testing_reptile <- Zoo_reptile %>% slice(-inTrain)
@@ -681,6 +688,7 @@ fit <- training_reptile_balanced %>% train(type ~ .,
   method = "rpart",
   trControl = trainControl(method = "cv"),
   control = rpart.control(minsplit = 5))
+
 fit
 rpart.plot(fit$finalModel, extra = 2)
 ```
@@ -806,7 +814,6 @@ cost <- matrix(c(
   100, 0
 ), byrow = TRUE, nrow = 2)
 cost
-
 
 fit <- training_reptile %>% train(type ~ .,
   data = .,

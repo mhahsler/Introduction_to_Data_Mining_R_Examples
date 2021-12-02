@@ -34,7 +34,7 @@ all_pkgs <- union(all_pkgs, pkgs)
 
 We will use tidyverse to prepare the data.
 
-```{r }
+```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 ```
 
@@ -65,12 +65,13 @@ make preparing training sets and building classification (and
 regression) models easier. A great cheat sheet can be found
 [here](https://ugoproto.github.io/ugo_r_doc/pdf/caret.pdf).
 
-```{r }
+```{r message=FALSE, warning=FALSE}
 library(caret)
 ```
 
-Use multi-core support for cross-validation. **Note:** It is commented
-out because it does not work with rJava used in RWeka below.
+Multi-core support can be used for cross-validation. **Note:** It is
+commented out here because it does not work with rJava used in RWeka
+below.
 
 ```{r }
 ##library(doMC, quietly = TRUE)
@@ -125,12 +126,6 @@ ctreeFit
 plot(ctreeFit$finalModel)
 ```
 
-The final model can be directly used for predict()
-
-```{r }
-predict(ctreeFit, head(Zoo_test))
-```
-
 ### C 4.5 Decision Tree
 
 ```{r }
@@ -160,6 +155,7 @@ knnFit <- Zoo_train %>% train(type ~ .,
   tuneGrid=data.frame(k = 1:10),
 	trControl = trainControl(method = "cv", indexOut = train_index))
 knnFit
+
 knnFit$finalModel
 ```
 
@@ -172,6 +168,7 @@ rulesFit <- Zoo_train %>% train(type ~ .,
   tuneLength = 5,
   trControl = trainControl(method = "cv", indexOut = train_index))
 rulesFit
+
 rulesFit$finalModel
 ```
 
@@ -184,6 +181,7 @@ svmFit <- Zoo_train %>% train(type ~.,
 	tuneLength = 5,
 	trControl = trainControl(method = "cv", indexOut = train_index))
 svmFit
+
 svmFit$finalModel
 ```
 
@@ -196,6 +194,7 @@ randomForestFit <- Zoo_train %>% train(type ~ .,
 	tuneLength = 5,
 	trControl = trainControl(method = "cv", indexOut = train_index))
 randomForestFit
+
 randomForestFit$finalModel
 ```
 
@@ -217,6 +216,7 @@ xgboostFit <- Zoo_train %>% train(type ~ .,
     subsample = .5
   ))
 xgboostFit
+
 xgboostFit$finalModel
 ```
 
@@ -230,6 +230,7 @@ nnetFit <- Zoo_train %>% train(type ~ .,
 	trControl = trainControl(method = "cv", indexOut = train_index),
   trace = FALSE)
 nnetFit
+
 nnetFit$finalModel
 ```
 
@@ -293,6 +294,90 @@ Calculate the confusion matrix for the held-out test data.
 confusionMatrix(pr, reference = Zoo_test$type)
 ```
 
+## Deep Learning with keras/tensorflow
+
+The keras package needs the packages `reticulate` and `tensorflow`. To
+install keras you need to
+
+1.  have a working Python installation,
+2.  install the keras R package `install.packages("keras")`, and
+3.  install the tensorflow/keras Python modules with
+    `library(keras); install_keras()`
+
+```{r message=FALSE, warning=FALSE}
+library(keras)
+```
+
+Prepare the data. All data needs to be in a matrix of all
+numeric/integer values. The class variable needs to be one-hot encodes
+with the `keras` function `to_categorical()`.
+
+```{r warning=FALSE}
+X <- Zoo_train %>% select(!type) %>% 
+  mutate(across(everything(), as.integer)) %>% as.matrix()
+head(X)
+
+y <- Zoo_train %>% pull("type") %>% as.integer() %>% `-`(1L) %>% to_categorical()
+head(y)
+
+X <- Zoo_train %>% select(!type) %>% 
+  mutate(across(everything(), as.integer)) %>% as.matrix()
+head(X)
+
+y <- Zoo_train %>% pull("type") %>% as.integer() %>% `-`(1L) %>% to_categorical()
+head(y)
+
+X_test <- Zoo_test %>% select(!type) %>% 
+  mutate(across(everything(), as.integer)) %>% as.matrix()
+y_test <- Zoo_test %>% pull("type") %>% as.integer() %>% `-`(1L) %>% to_categorical()
+```
+
+Deep learning uses a large set of hyper-parameters. Choices are the
+activation function, number of layers, number of units per layer and the
+optimizer. A L2 regularizer is used for the dense layer weights to
+reduce overfitting. The output is a categorical class value, therefore
+the output layer uses the softmax activation function, the loss is
+categorical cross-entropy, and the metric is accuracy.
+
+```{r message=FALSE, warning=FALSE}
+model <- keras_model_sequential() %>%
+  layer_dense(units = 10, activation = 'relu', input_shape = c(ncol(X)),
+    kernel_regularizer=regularizer_l2(l=0.01)) %>%
+  layer_dense(units = ncol(y), activation = 'softmax') %>%
+  compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
+```
+
+For model training, we need to specify the batch size and the number of
+training epochs. The fitting process can also use a fraction of the
+training data for validation to provide generalization loss/accuracy.
+
+```{r}
+history <- model %>% fit(
+  X, y,
+  batch_size = 10,
+  epochs = 100,
+  validation_split = .2
+)
+
+plot(history)
+```
+
+To create predictions from the model, we have to convert the one-hot
+encoding back to class labels.
+
+```{r}
+class_labels <- levels(Zoo_train %>% pull(type))
+
+pr <- predict(model, X_test) %>% apply(MARGIN = 1, FUN = which.max)
+pr <- factor(pr, labels = class_labels, levels = seq_along(class_labels))
+
+pr
+```
+
+```{r }
+confusionMatrix(pr, reference = Zoo_test$type)
+```
+
 ## Comparing Decision Boundaries of Popular Classification Techniques
 
 Classifiers create decision boundaries to discriminate between classes.
@@ -301,9 +386,10 @@ boundaries (e.g., some are strictly linear) and thus some classifiers
 may perform better for certain datasets. This page visualizes the
 decision boundaries found by several popular classification methods.
 
-The following plot adds the decision boundary by evaluating the
-classifier at evenly spaced grid points. Note that low resolution (to
-make evaluation faster) will make the decision boundary look like it has
+The following plot adds the decision boundary (black lines) and
+classification confidence (color intensity) by evaluating the classifier
+at evenly spaced grid points. Note that low resolution (to make
+evaluation faster) will make the decision boundary look like it has
 small steps even if it is a (straight) line.
 
 ```{r message=FALSE, warning=FALSE}
@@ -311,11 +397,10 @@ library(scales)
 library(tidyverse)
 library(ggplot2)
 library(caret)
-```
 
-```{r}
 decisionplot <- function(model, data, class_var, 
-  predict_type = c("class", "prob"), resolution = 200) {
+  predict_type = c("class", "prob"), resolution = 5 * 75) {
+  # resolution is set to 75 dpi if the image is rendered  5 inces wide. 
   
   y <- data %>% pull(class_var)
   x <- data %>% dplyr::select(-all_of(class_var))
@@ -359,16 +444,18 @@ decisionplot <- function(model, data, class_var,
   
   cl <- factor(cl, levels = levels(y))
   
-  g <- g %>% add_column(class = cl, probability = max_prob)
+  g <- g %>% add_column(prediction = cl, probability = max_prob)
   
   ggplot(g, mapping = aes_string(
     x = colnames(g)[1],
     y = colnames(g)[2])) +
-    geom_raster(mapping = aes(fill = class, alpha = probability)) +
+    geom_raster(mapping = aes(fill = prediction, alpha = probability)) +
+     geom_contour(mapping = aes(z = as.numeric(prediction)), 
+      bins = length(levels(cl)), size = .5, color = "black") +
     geom_point(data = data, mapping =  aes_string(
       x = colnames(data)[1],
       y = colnames(data)[2],
-      shape = class_var), alpha = .5) + 
+      shape = class_var), alpha = .7) + 
     scale_alpha_continuous(range = c(0,1), limits = c(0,1), guide = "none") +  
     labs(subtitle = paste("Training accuracy:", round(acc, 2)))
 }
@@ -410,7 +497,12 @@ model <- x %>% knn3(Species ~ ., data = ., k = 9)
 decisionplot(model, x, class_var = "Species") + labs(title = "kNN (9 neighbor)")
 ```
 
-Increasing the $k$ smooths the decision boundary.
+Increasing $k$ smooths the decision boundary. At $k=1$, we see white
+areas around points where flowers of two classes are in the same spot.
+Here, the algorithm randomly chooses a class during prediction resulting
+in the meandering decision boundary. The predictions in that area are
+not stable and every time we ask for a class, we may get a different
+class.
 
 #### Naive Bayes Classifier
 
@@ -497,78 +589,6 @@ decisionplot(model, x, class_var  = "Species",
   predict_type = c("class", "raw")) + labs(title = "NN (10 neurons)")
 ```
 
-#### Deep Learning with keras
-
-The keras package needs the packages `reticulate` and `tensorflow`. To
-install keras you need to
-
-1.  have a working Python installation,
-2.  install the keras R package `install.packages(keras)`, and
-3.  install the tensorflow/keras Python modules with
-    `library(keras); install_keras()`
-
-```{r message=FALSE, warning=FALSE}
-library(keras)
-```
-
-define predict so it works with decision plot
-
-```{r }
-predict.iriskerasmodel <- function(object, newdata, 
-  type = c("class", "prob"), ...){
-  class(object) <- tail(class(object), -1)
-  prob <- predict(object, as.matrix(newdata[,1:2])) 
-  if(type == "prob") return(prob)
-
-  prob %>% k_argmax() %>% as.array() %>% factor(labels = levels(iris$Species))
-}
-```
-
-Choices are the activation function, number of layers, number of units
-per layer and the optimizer. A L2 regularizer is used for the dense
-layer weights to reduce overfitting. The output is a categorical class
-value, therefore the output layer uses the softmax activation function,
-the loss is categorical crossentropy, and the metric is accuracy.
-
-```{r warning=FALSE}
-model <- keras_model_sequential() %>%
-  layer_dense(units = 10, activation = 'relu', input_shape = c(2),
-    kernel_regularizer=regularizer_l2(l=0.01)) %>%
-  layer_dense(units = 3, activation = 'softmax') %>%
-  compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
-
-history <- model %>% fit(
-  as.matrix(x[,1:2]),
-  x %>% pull(3) %>% as.integer() %>% `-`(1L) %>% to_categorical(),
-  epochs = 100,
-  batch_size = 10
-)
-
-history
-
-class(model) <- c("iriskerasmodel", class(model))
-decisionplot(model, x, class_var = "Species") + labs(title = "keras (relu activation)")
-
-
-model <- keras_model_sequential() %>%
-  layer_dense(units = 10, activation = 'tanh', input_shape = c(2),
-    kernel_regularizer = regularizer_l2(l = 0.01)) %>%
-  layer_dense(units = 3, activation = 'softmax') %>%
-  compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
-
-history <- model %>% fit(
-  as.matrix(x[,1:2]),
-  x %>% pull(3) %>% as.integer %>% `-`(1L) %>% to_categorical(),
-  epochs = 100,
-  batch_size = 10
-)
-
-history
-
-class(model) <- c("iriskerasmodel", class(model))
-decisionplot(model, x, class_var = "Species") + labs(title = "keras (tanh activation)")
-```
-
 ### Circle Dataset
 
 This set is not linearly separable!
@@ -612,6 +632,9 @@ decisionplot(model, x, class_var = "class",
 
 #### Linear Discriminant Analysis
 
+LDA cannot find a good model since the true decision boundary is not
+linear.
+
 ```{r }
 library(MASS)
 model <- x %>% lda(class ~ ., data = .)
@@ -621,7 +644,8 @@ decisionplot(model, x, class_var = "class") + labs(title = "LDA")
 #### Multinomial Logistic Regression (implemented in nnet)
 
 Multinomial logistic regression is an extension of logistic regression
-to problems with more than two classes.
+to problems with more than two classes. It also tries to find a linear
+decision boundary.
 
 ```{r }
 library(nnet)
@@ -650,6 +674,8 @@ decisionplot(model, x, class_var = "class") + labs(title = "Random Forest")
 ```
 
 #### SVM
+
+Linear SVM does not work for this data.
 
 ```{r }
 library(e1071)

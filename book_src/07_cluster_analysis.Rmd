@@ -803,10 +803,10 @@ removing outliers before clustering.
 The [Local Outlier
 Factor](https://en.wikipedia.org/wiki/Local_outlier_factor) is related
 to concepts of DBSCAN can help to identify potential outliers. Calculate
-the LOF (I choose a neighborhood size of 10 for density estimation),
+the LOF (I choose a local neighborhood size of 10 for density estimation),
 
 ```{r }
-lof <- lof(ruspini_scaled_outlier, k = 10)
+lof <- lof(ruspini_scaled_outlier, minPts= 10)
 lof
 
 ggplot(ruspini_scaled_outlier %>% add_column(lof = lof), aes(x, y, color = lof)) +
@@ -826,8 +826,11 @@ Choose a threshold above 1.
 ```{r }
 ggplot(ruspini_scaled_outlier %>% add_column(outlier = lof >= 2), aes(x, y, color = outlier)) +
   geom_point()
+```
 
-## Analyze the found outliers (they might be interesting data points) and then cluster the data without them.
+Analyze the found outliers (they might be interesting data points) and then cluster the data without them.
+
+```{r}
 ruspini_scaled_clean <- ruspini_scaled_outlier  %>% filter(lof < 2)
 
 km <- kmeans(ruspini_scaled_clean, centers = 4, nstart = 10)
@@ -873,8 +876,9 @@ algorithms like k-means.
 
 If the data has more than two features then you can use a pairs plot
 (scatterplot matrix) or look at a scatterplot of the first two principal
-components using PCA. #### Visual Analysis for Cluster Tendency
-Assessment (VAT)
+components using PCA. 
+
+#### Visual Analysis for Cluster Tendency Assessment (VAT)
 
 VAT reorders the objects to show potential clustering tendency as a
 block structure (dark blocks along the main diagonal). We scale the data

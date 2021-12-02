@@ -80,7 +80,7 @@ What is column 13?
 
 ```{r }
 summary(Zoo[13])
-ggplot(Zoo, aes(legs)) + geom_histogram()
+ggplot(Zoo, aes(legs)) + geom_bar()
 table(Zoo$legs)
 ```
 

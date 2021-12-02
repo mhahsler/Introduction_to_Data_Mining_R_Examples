@@ -81,6 +81,7 @@ gradient-boosted-decision-trees-xgboost
 artificial-neural-network
 comparing-models
 applying-the-chosen-model-to-the-test-data
+deep-learning-with-kerastensorflow
 comparing-decision-boundaries-of-popular-classification-techniques
 iris-dataset
 k-nearest-neighbors-classifier
@@ -90,7 +91,6 @@ multinomial-logistic-regression-implemented-in-nnet
 decision-trees-1
 svm
 single-layer-feed-forward-neural-networks
-deep-learning-with-keras
 circle-dataset
 k-nearest-neighbors-classifier-1
 naive-bayes-classifier-1
@@ -152,6 +152,7 @@ visual-inspection-of-the-data
 local-outlier-factor-lof
 clustering-tendency
 scatter-plots
+visual-analysis-for-cluster-tendency-assessment-vat
 hopkins-statistic
 data-without-clustering-tendency
 k-means-on-data-without-clustering-tendency
