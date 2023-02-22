@@ -779,7 +779,7 @@ fall in the range \[-3,3\] in normalized data).
 
 ```{r }
 library("GGally")
-ggpairs(ruspini_scaled_outlier)
+ggpairs(ruspini_scaled_outlier, progress = FALSE)
 ```
 
 The outlier is a problem for k-means

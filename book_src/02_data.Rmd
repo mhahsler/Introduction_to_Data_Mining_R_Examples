@@ -1,6 +1,6 @@
 ---
-editor_options: 
-  markdown: 
+editor_options:
+  markdown:
     wrap: 72
 ---
 
@@ -85,7 +85,7 @@ from the majority of other points).
 
 ```{r }
 library(GGally)
-ggpairs(iris, aes(color = Species))
+ggpairs(iris, aes(color = Species), progress = FALSE)
 ```
 
 See if you can spot the one red dot that is far away from all others.
@@ -153,7 +153,7 @@ results reproducible.
 set.seed(1000)
 
 s <- iris %>% slice_sample(n = 15)
-ggpairs(s, aes(color = Species))
+ggpairs(s, aes(color = Species), progress = FALSE)
 ```
 
 ### Stratified Sampling
@@ -176,7 +176,7 @@ id2 <- strata(iris, stratanames = "Species", size = c(5,5,5), method = "srswor")
 id2
 
 s2 <- iris %>% slice(id2$ID_unit)
-ggpairs(s2, aes(color = Species))
+ggpairs(s2, aes(color = Species), progress = FALSE)
 ```
 
 ## Features
@@ -339,8 +339,8 @@ functions `isoMDS()` and `sammon()`.
 
 Feature selection is the process of identifying the features that are
 used to create a model. We will talk about feature selection when we
-discuss classification models in Chapter 3 in \[Feature Selection and
-Feature Preparation\].
+discuss classification models in Chapter 3 in [Feature Selection and
+Feature Preparation].
 
 ### Discretize Features
 
@@ -421,7 +421,8 @@ summary(iris.scaled)
 ```
 
 The standardized feature has a mean of zero and most "normal" values
-will fall in the range \[-3,3\] (standard deviations).
+will fall in the range $[-3,3]$ and is measured in standard deviations from the average.
+Negative values mean smaller than the average and positive values mean larger than the average.
 
 ## Proximities: Similarities and Distances
 
@@ -639,7 +640,14 @@ that the 95% confidence interval does not span zero.
 
 Sepal.Length and Sepal.Width show little correlation:
 
-`{ r} ggplot(iris, aes(Sepal.Length, Sepal.Width)) + geom_point() +   geom_smooth(method = "lm") with(iris, cor(Sepal.Length, Sepal.Width)) with(iris, cor.test(Sepal.Length, Sepal.Width))`
+```{r } 
+ggplot(iris, aes(Sepal.Length, Sepal.Width)) + 
+  geom_point() +   
+  geom_smooth(method = "lm") 
+
+with(iris, cor(Sepal.Length, Sepal.Width)) 
+with(iris, cor.test(Sepal.Length, Sepal.Width))
+```
 
 ### Rank Correlation
 
@@ -997,7 +1005,7 @@ A scatter plot matrix show the relationship between several features
 
 ```{r }
 library("GGally")
-ggpairs(iris,  aes(color = Species))
+ggpairs(iris,  aes(color = Species), progress = FALSE)
 ```
 
 The implementation in package `GGally` also shows additional plots
