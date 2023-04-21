@@ -96,7 +96,10 @@ contain missing values (`NA`). To remove missing values and duplicates
 do this:
 
 ```{r }
-clean.data <- iris %>% drop_na() %>% unique()
+clean.data <- iris %>% 
+  drop_na() %>% 
+  unique()
+
 summary(clean.data)
 ```
 
@@ -172,10 +175,12 @@ select the sampled rows.
 
 ```{r }
 library(sampling)
-id2 <- strata(iris, stratanames = "Species", size = c(5,5,5), method = "srswor")
+id2 <- strata(iris, stratanames = "Species", 
+              size = c(5,5,5), method = "srswor")
 id2
 
 s2 <- iris %>% slice(id2$ID_unit)
+
 ggpairs(s2, aes(color = Species), progress = FALSE)
 ```
 
@@ -202,7 +207,8 @@ to visualize more than 3 dimensions.
 
 ```{r }
 # library(plotly) # I don't load the package because it's namespace clashes with select in dplyr.
-plotly::plot_ly(iris, x = ~Sepal.Length, y = ~Petal.Length, z = ~Sepal.Width,
+plotly::plot_ly(iris, 
+  x = ~Sepal.Length, y = ~Petal.Length, z = ~Sepal.Width,
   size = ~Petal.Width, color = ~Species, type="scatter3d")
 ```
 
@@ -245,6 +251,7 @@ two principal components.
 
 ```{r }
 iris_projected <- as_tibble(pc$x) %>% add_column(Species = iris$Species)
+
 ggplot(iris_projected, aes(x = PC1, y = PC2, color = Species)) + 
   geom_point()
 ```
@@ -372,27 +379,35 @@ intervals assigned to each discrete value.
 
 ```{r }
 library(arules)
-iris %>% pull(Petal.Width) %>% discretize(method = "interval", breaks = 3)
-iris %>% pull(Petal.Width) %>% discretize(method = "frequency", breaks = 3)
-iris %>% pull(Petal.Width) %>% discretize(method = "cluster", breaks = 3)
+iris %>% pull(Petal.Width) %>% 
+  discretize(method = "interval", breaks = 3)
+
+iris %>% pull(Petal.Width) %>% 
+  discretize(method = "frequency", breaks = 3)
+
+iris %>% pull(Petal.Width) %>% 
+  discretize(method = "cluster", breaks = 3)
 
 ggplot(iris, aes(Petal.Width)) + geom_histogram(binwidth = .2) +
-  geom_vline(xintercept =
-      iris %>% pull(Petal.Width) %>% discretize(method = "interval", breaks = 3, onlycuts = TRUE),
+  geom_vline(xintercept = iris %>% pull(Petal.Width) %>% 
+        discretize(method = "interval", breaks = 3, onlycuts = TRUE),
     color = "blue") +
-  labs(title = "Discretization: interval", subtitle = "Blue lines are boundaries")
+  labs(title = "Discretization: interval", 
+       subtitle = "Blue lines are boundaries")
 
 ggplot(iris, aes(Petal.Width)) + geom_histogram(binwidth = .2) +
-  geom_vline(xintercept =
-      iris %>% pull(Petal.Width) %>% discretize(method = "frequency", breaks = 3, onlycuts = TRUE),
+  geom_vline(xintercept = iris %>% pull(Petal.Width) %>% 
+        discretize(method = "frequency", breaks = 3, onlycuts = TRUE),
     color = "blue") +
-  labs(title = "Discretization: frequency", subtitle = "Blue lines are boundaries")
+  labs(title = "Discretization: frequency", 
+       subtitle = "Blue lines are boundaries")
 
 ggplot(iris, aes(Petal.Width)) + geom_histogram(binwidth = .2) +
-  geom_vline(xintercept =
-      iris %>% pull(Petal.Width) %>% discretize(method = "cluster", breaks = 3, onlycuts = TRUE),
+  geom_vline(xintercept = iris %>% pull(Petal.Width) %>% 
+               discretize(method = "cluster", breaks = 3, onlycuts = TRUE),
     color = "blue") +
-  labs(title = "Discretization: cluster", subtitle = "Blue lines are boundaries")
+  labs(title = "Discretization: cluster", 
+       subtitle = "Blue lines are boundaries")
 ```
 
 The user needs to decide on the number of intervals and the used method.
@@ -413,7 +428,9 @@ Negative standardized values indicate below-average values.
 make one that provides a wrapper for the standard scale function in R:
 
 ```{r }
-scale_numeric <- function(x) x %>% mutate_if(is.numeric, function(y) as.vector(scale(y)))
+scale_numeric <- function(x) 
+  x %>% 
+  mutate_if(is.numeric, function(y) as.vector(scale(y)))
 
 iris.scaled <- iris %>% scale_numeric()
 iris.scaled
@@ -657,8 +674,8 @@ the Iris dataset into ordered factors (ordinal) with three levels using
 the function `cut`.
 
 ```{r }
-iris_ord <- iris %>% mutate_if(is.numeric,
-  function(x) cut(x, 3, labels = c("short", "medium", "long"), ordered = TRUE))
+iris_ord <- iris %>% mutate_if(is.numeric, function(x) 
+  cut(x, 3, labels = c("short", "medium", "long"), ordered = TRUE))
 
 iris_ord
 summary(iris_ord)
@@ -672,7 +689,8 @@ Coefficient](https://en.wikipedia.org/wiki/Kendall_rank_correlation_coefficient)
 measures the agreement between two rankings (i.e., ordinal features).
 
 ```{r }
-iris_ord %>% select(-Species) %>% sapply(xtfrm) %>% cor(method = "kendall")
+iris_ord %>% select(-Species) %>% 
+  sapply(xtfrm) %>% cor(method = "kendall")
 ```
 
 **Note:** We have to use `xtfrm` to transform the ordered factors into
@@ -684,7 +702,8 @@ is equal to the Pearson correlation between the rank values of those two
 features.
 
 ```{r }
-iris_ord %>% select(-Species) %>% sapply(xtfrm) %>% cor(method = "spearman")
+iris_ord %>% select(-Species) %>% 
+  sapply(xtfrm) %>% cor(method = "spearman")
 ```
 
 Spearman's Rho is much faster to compute on large datasets then
@@ -695,7 +714,8 @@ the original data shows that they are very similar. This indicates that
 discretizing data does not result in the loss of too much information.
 
 ```{r }
-iris %>% select(-Species) %>% cor()
+iris %>% select(-Species) %>% 
+  cor()
 ```
 
 ## Density Estimation
@@ -807,7 +827,8 @@ features), tidyverse provides `summarize_if()`.
 iris %>% summarize_if(is.numeric, mean)
 iris %>% summarize_if(is.numeric, sd)
 
-iris %>% summarize_if(is.numeric, list(min = min, median = median, max = max))
+iris %>% summarize_if(is.numeric, 
+            list(min = min, median = median, max = max))
 ```
 
 The median absolute deviation (MAD) is another measure of dispersion.
@@ -858,8 +879,8 @@ In base R, this can be also done using `count(iris$Species)`.
 For the following examples, we discretize the data using cut.
 
 ```{r }
-iris_ord <- iris %>% mutate_if(is.numeric,
-  function(x) cut(x, 3, labels = c("short", "medium", "long"), ordered = TRUE))
+iris_ord <- iris %>% mutate_if(is.numeric, function(x) 
+  cut(x, 3, labels = c("short", "medium", "long"), ordered = TRUE))
 
 iris_ord
 summary(iris_ord)
@@ -934,7 +955,8 @@ against outliers. It is defined the length Q3 - Q2 which covers the 50%
 of the data in the middle.
 
 ```{r }
-iris %>% summarize(IQR = quantile(Petal.Length, probs = 0.75) - quantile(Petal.Length, probs = 0.25))
+iris %>% summarize(IQR = 
+  quantile(Petal.Length, probs = 0.75) - quantile(Petal.Length, probs = 0.25))
 ```
 
 ## Visualization
@@ -964,7 +986,8 @@ ggplot(iris, aes(Species, Sepal.Length)) +
 The group-wise medians can also be calculated directly.
 
 ```{r }
-iris %>% group_by(Species) %>% summarize_if(is.numeric, median)
+iris %>% group_by(Species) %>% 
+  summarize_if(is.numeric, median)
 ```
 
 To compare the distribution of the four features using a ggplot boxplot,
@@ -973,7 +996,10 @@ values are combined into a single column).
 
 ```{r }
 library(tidyr)
-iris_long <- iris %>% mutate(id = row_number()) %>% pivot_longer(1:4)
+iris_long <- iris %>% 
+  mutate(id = row_number()) %>% 
+  pivot_longer(1:4)
+
 ggplot(iris_long, aes(name, value)) + 
   geom_boxplot() +
   labs(y = "Original value")
@@ -984,7 +1010,10 @@ range. The data can be scaled first to compare the distributions.
 
 ```{r }
 library(tidyr)
-iris_long_scaled <- iris %>% scale_numeric() %>% mutate(id = row_number()) %>% pivot_longer(1:4)
+iris_long_scaled <- iris %>% 
+  scale_numeric() %>% 
+  mutate(id = row_number()) %>% pivot_longer(1:4)
+
 ggplot(iris_long_scaled, aes(name, value)) + 
   geom_boxplot() +
   labs(y = "Scaled value")
@@ -1023,7 +1052,10 @@ iris_matrix <- iris %>% select(-Species) %>% as.matrix()
 We need the long format for tidyverse.
 
 ```{r }
-iris_long <- as_tibble(iris_matrix) %>% mutate(id = row_number()) %>% pivot_longer(1:4)
+iris_long <- as_tibble(iris_matrix) %>% 
+  mutate(id = row_number()) %>% 
+  pivot_longer(1:4)
+
 head(iris_long)
 
 ggplot(iris_long,
