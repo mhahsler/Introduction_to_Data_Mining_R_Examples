@@ -6,15 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 2 Data | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
-<meta name="description" content="This chapter provides examples for cleaning and preparing data for data mining. Packages used for this chapter: arules (Hahsler et al. 2022), caret (Kuhn 2022), factoextra (Kassambara and Mundt...">
-<meta name="generator" content="bookdown 0.31 with bs4_book()">
+<meta name="description" content="This chapter provides examples for cleaning and preparing data for data mining. Packages used for this chapter: arules (Hahsler et al. 2023), caret (Kuhn 2023), factoextra (Kassambara and Mundt...">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
 <meta property="og:title" content="Chapter 2 Data | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
-<meta property="og:description" content="This chapter provides examples for cleaning and preparing data for data mining. Packages used for this chapter: arules (Hahsler et al. 2022), caret (Kuhn 2022), factoextra (Kassambara and Mundt...">
+<meta property="og:description" content="This chapter provides examples for cleaning and preparing data for data mining. Packages used for this chapter: arules (Hahsler et al. 2023), caret (Kuhn 2023), factoextra (Kassambara and Mundt...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 2 Data | An R Companion for Introduction to Data Mining">
-<meta name="twitter:description" content="This chapter provides examples for cleaning and preparing data for data mining. Packages used for this chapter: arules (Hahsler et al. 2022), caret (Kuhn 2022), factoextra (Kassambara and Mundt...">
+<meta name="twitter:description" content="This chapter provides examples for cleaning and preparing data for data mining. Packages used for this chapter: arules (Hahsler et al. 2023), caret (Kuhn 2023), factoextra (Kassambara and Mundt...">
 <meta name="twitter:image" content="/images/cover.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -96,7 +96,7 @@
 </h1>
 <p>This chapter provides examples for cleaning and preparing data for data
 mining.</p>
-<p><strong>Packages used for this chapter:</strong> <em>arules</em> <span class="citation">(<a href="references.html#ref-R-arules" role="doc-biblioref">Hahsler et al. 2022</a>)</span>, <em>caret</em> <span class="citation">(<a href="references.html#ref-R-caret" role="doc-biblioref">Kuhn 2022</a>)</span>, <em>factoextra</em> <span class="citation">(<a href="references.html#ref-R-factoextra" role="doc-biblioref">Kassambara and Mundt 2020</a>)</span>, <em>GGally</em> <span class="citation">(<a href="references.html#ref-R-GGally" role="doc-biblioref">Schloerke et al. 2021</a>)</span>, <em>plotly</em> <span class="citation">(<a href="references.html#ref-R-plotly" role="doc-biblioref">Sievert et al. 2022</a>)</span>, <em>proxy</em> <span class="citation">(<a href="references.html#ref-R-proxy" role="doc-biblioref">Meyer and Buchta 2022</a>)</span>, <em>sampling</em> <span class="citation">(<a href="references.html#ref-R-sampling" role="doc-biblioref">Tillé and Matei 2021</a>)</span>, <em>seriation</em> <span class="citation">(<a href="references.html#ref-R-seriation" role="doc-biblioref">Hahsler, Buchta, and Hornik 2022</a>)</span>, <em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2022c</a>)</span></p>
+<p><strong>Packages used for this chapter:</strong> <em>arules</em> <span class="citation">(<a href="references.html#ref-R-arules" role="doc-biblioref">Hahsler et al. 2023</a>)</span>, <em>caret</em> <span class="citation">(<a href="references.html#ref-R-caret" role="doc-biblioref">Kuhn 2023</a>)</span>, <em>factoextra</em> <span class="citation">(<a href="references.html#ref-R-factoextra" role="doc-biblioref">Kassambara and Mundt 2020</a>)</span>, <em>GGally</em> <span class="citation">(<a href="references.html#ref-R-GGally" role="doc-biblioref">Schloerke et al. 2021</a>)</span>, <em>ggcorrplot</em> <span class="citation">(<a href="references.html#ref-R-ggcorrplot" role="doc-biblioref">Kassambara 2022</a>)</span>, <em>plotly</em> <span class="citation">(<a href="references.html#ref-R-plotly" role="doc-biblioref">Sievert et al. 2022</a>)</span>, <em>proxy</em> <span class="citation">(<a href="references.html#ref-R-proxy" role="doc-biblioref">Meyer and Buchta 2022</a>)</span>, <em>sampling</em> <span class="citation">(<a href="references.html#ref-R-sampling" role="doc-biblioref">Tillé and Matei 2021</a>)</span>, <em>seriation</em> <span class="citation">(<a href="references.html#ref-R-seriation" role="doc-biblioref">Hahsler, Buchta, and Hornik 2023</a>)</span>, <em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2023b</a>)</span></p>
 <div id="the-iris-dataset" class="section level2" number="2.1">
 <h2>
 <span class="header-section-number">2.1</span> The Iris Dataset<a class="anchor" aria-label="anchor" href="#the-iris-dataset"><i class="fas fa-link"></i></a>
@@ -116,20 +116,20 @@ data.frame. We convert the data.frame into a tidyverse tibble.</p>
 <span><span class="va">iris</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
 <span><span class="va">iris</span></span></code></pre></div>
 <pre><code>## # A tibble: 150 × 5
-##    Sepal.Length Sepal.Width Petal.Len…¹ Petal…² Species
-##           &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt;  
-##  1          5.1         3.5         1.4     0.2 setosa 
-##  2          4.9         3           1.4     0.2 setosa 
-##  3          4.7         3.2         1.3     0.2 setosa 
-##  4          4.6         3.1         1.5     0.2 setosa 
-##  5          5           3.6         1.4     0.2 setosa 
-##  6          5.4         3.9         1.7     0.4 setosa 
-##  7          4.6         3.4         1.4     0.3 setosa 
-##  8          5           3.4         1.5     0.2 setosa 
-##  9          4.4         2.9         1.4     0.2 setosa 
-## 10          4.9         3.1         1.5     0.1 setosa 
-## # … with 140 more rows, and abbreviated variable names
-## #   ¹​Petal.Length, ²​Petal.Width</code></pre>
+##    Sepal.Length Sepal.Width Petal.Length Petal.Width
+##           &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
+##  1          5.1         3.5          1.4         0.2
+##  2          4.9         3            1.4         0.2
+##  3          4.7         3.2          1.3         0.2
+##  4          4.6         3.1          1.5         0.2
+##  5          5           3.6          1.4         0.2
+##  6          5.4         3.9          1.7         0.4
+##  7          4.6         3.4          1.4         0.3
+##  8          5           3.4          1.5         0.2
+##  9          4.4         2.9          1.4         0.2
+## 10          4.9         3.1          1.5         0.1
+## # ℹ 140 more rows
+## # ℹ 1 more variable: Species &lt;fct&gt;</code></pre>
 <p>We see that the data contains 150 rows (flowers) and 5 features. tibbles
 only show the first few rows and do not show all features, if they do
 not fit the screen width. We can call <code>print</code> and define how many rows
@@ -148,7 +148,7 @@ changing the <code>width</code> to infinity.</p>
 ## 1 setosa 
 ## 2 setosa 
 ## 3 setosa 
-## # … with 147 more rows</code></pre>
+## # ℹ 147 more rows</code></pre>
 </div>
 <div id="data-quality" class="section level2" number="2.2">
 <h2>
@@ -241,23 +241,21 @@ each group.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html">summarize_all</a></span><span class="op">(</span><span class="va">mean</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## # A tibble: 3 × 5
-##   Species    Sepal.Length Sepal.Width Petal.L…¹ Petal…²
-##   &lt;fct&gt;             &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-## 1 setosa             5.01        3.43      1.46   0.246
-## 2 versicolor         5.94        2.77      4.26   1.33 
-## 3 virginica          6.59        2.97      5.55   2.03 
-## # … with abbreviated variable names ¹​Petal.Length,
-## #   ²​Petal.Width</code></pre>
+##   Species    Sepal.Length Sepal.Width Petal.Length
+##   &lt;fct&gt;             &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;
+## 1 setosa             5.01        3.43         1.46
+## 2 versicolor         5.94        2.77         4.26
+## 3 virginica          6.59        2.97         5.55
+## # ℹ 1 more variable: Petal.Width &lt;dbl&gt;</code></pre>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html">summarize_all</a></span><span class="op">(</span><span class="va">median</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## # A tibble: 3 × 5
-##   Species    Sepal.Length Sepal.Width Petal.L…¹ Petal…²
-##   &lt;fct&gt;             &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-## 1 setosa              5           3.4      1.5      0.2
-## 2 versicolor          5.9         2.8      4.35     1.3
-## 3 virginica           6.5         3        5.55     2  
-## # … with abbreviated variable names ¹​Petal.Length,
-## #   ²​Petal.Width</code></pre>
+##   Species    Sepal.Length Sepal.Width Petal.Length
+##   &lt;fct&gt;             &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;
+## 1 setosa              5           3.4         1.5 
+## 2 versicolor          5.9         2.8         4.35
+## 3 virginica           6.5         3           5.55
+## # ℹ 1 more variable: Petal.Width &lt;dbl&gt;</code></pre>
 <p>Using this information, we can compare how features differ between
 groups.</p>
 </div>
@@ -276,7 +274,7 @@ visualization.</p>
 with replacement.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">10</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code>##  [1] "B" "A" "B" "C" "A" "A" "A" "B" "B" "B"</code></pre>
+<pre><code>##  [1] "A" "A" "C" "A" "A" "C" "A" "A" "B" "A"</code></pre>
 <p>We often want to sample rows from a dataset. This can be done by
 sampling without replacement from a vector with row indices (using the
 functions <code><a href="https://rdrr.io/r/base/seq.html">seq()</a></code> and <code><a href="https://rdrr.io/r/base/nrow.html">nrow()</a></code>). The sample vector is then used to
@@ -284,30 +282,29 @@ subset the rows of the dataset.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">take</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
 <span><span class="va">take</span></span></code></pre></div>
-<pre><code>##  [1]  53 129  87  83  86 105 127  93 138  52  36  32
-## [13]  76 100  71</code></pre>
+<pre><code>##  [1]  84   2   1 118  67  89  53 145  73 134   7  98
+## [13] 135 112 115</code></pre>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris</span><span class="op">[</span><span class="va">take</span>, <span class="op">]</span></span></code></pre></div>
 <pre><code>## # A tibble: 15 × 5
-##    Sepal.Length Sepal.Width Petal.Len…¹ Petal…² Species
-##           &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt;  
-##  1          6.9         3.1         4.9     1.5 versic…
-##  2          6.4         2.8         5.6     2.1 virgin…
-##  3          6.7         3.1         4.7     1.5 versic…
-##  4          5.8         2.7         3.9     1.2 versic…
-##  5          6           3.4         4.5     1.6 versic…
-##  6          6.5         3           5.8     2.2 virgin…
-##  7          6.2         2.8         4.8     1.8 virgin…
-##  8          5.8         2.6         4       1.2 versic…
-##  9          6.4         3.1         5.5     1.8 virgin…
-## 10          6.4         3.2         4.5     1.5 versic…
-## 11          5           3.2         1.2     0.2 setosa 
-## 12          5.4         3.4         1.5     0.4 setosa 
-## 13          6.6         3           4.4     1.4 versic…
-## 14          5.7         2.8         4.1     1.3 versic…
-## 15          5.9         3.2         4.8     1.8 versic…
-## # … with abbreviated variable names ¹​Petal.Length,
-## #   ²​Petal.Width</code></pre>
+##    Sepal.Length Sepal.Width Petal.Length Petal.Width
+##           &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
+##  1          6           2.7          5.1         1.6
+##  2          4.9         3            1.4         0.2
+##  3          5.1         3.5          1.4         0.2
+##  4          7.7         3.8          6.7         2.2
+##  5          5.6         3            4.5         1.5
+##  6          5.6         3            4.1         1.3
+##  7          6.9         3.1          4.9         1.5
+##  8          6.7         3.3          5.7         2.5
+##  9          6.3         2.5          4.9         1.5
+## 10          6.3         2.8          5.1         1.5
+## 11          4.6         3.4          1.4         0.3
+## 12          6.2         2.9          4.3         1.3
+## 13          6.1         2.6          5.6         1.4
+## 14          6.4         2.7          5.3         1.9
+## 15          5.8         2.8          5.1         2.4
+## # ℹ 1 more variable: Species &lt;fct&gt;</code></pre>
 <p><code>dplyr</code> from tidyverse lets us sample rows from tibbles directly using
 <code><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_sample()</a></code>. I set the random number generator seed to make the
 results reproducible.</p>
@@ -415,7 +412,7 @@ to visualize more than 3 dimensions.</p>
 ## Warning: `line.width` does not currently support
 ## multiple values.</code></pre>
 <div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-1545c60f9b87a294716c" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-1545c60f9b87a294716c">{"x":{"visdat":{"50d172902750c":["function () ","plotlyVisDat"]},"cur_data":"50d172902750c","attrs":{"50d172902750c":{"x":{},"y":{},"z":{},"color":{},"size":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"Sepal.Length"},"yaxis":{"title":"Petal.Length"},"zaxis":{"title":"Sepal.Width"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9,5.4,4.8,4.8,4.3,5.8,5.7,5.4,5.1,5.7,5.1,5.4,5.1,4.6,5.1,4.8,5,5,5.2,5.2,4.7,4.8,5.4,5.2,5.5,4.9,5,5.5,4.9,4.4,5.1,5,4.5,4.4,5,5.1,4.8,5.1,4.6,5.3,5],"y":[1.4,1.4,1.3,1.5,1.4,1.7,1.4,1.5,1.4,1.5,1.5,1.6,1.4,1.1,1.2,1.5,1.3,1.4,1.7,1.5,1.7,1.5,1,1.7,1.9,1.6,1.6,1.5,1.4,1.6,1.6,1.5,1.5,1.4,1.5,1.2,1.3,1.4,1.3,1.5,1.3,1.3,1.3,1.6,1.9,1.4,1.6,1.4,1.5,1.4],"z":[3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1,3.7,3.4,3,3,4,4.4,3.9,3.5,3.8,3.8,3.4,3.7,3.6,3.3,3.4,3,3.4,3.5,3.4,3.2,3.1,3.4,4.1,4.2,3.1,3.2,3.5,3.6,3,3.4,3.5,2.3,3.2,3.5,3.8,3,3.8,3.2,3.7,3.3],"type":"scatter3d","mode":"markers","name":"setosa","marker":{"color":"rgba(102,194,165,1)","size":[13.75,13.75,13.75,13.75,13.75,21.25,17.5,13.75,13.75,10,13.75,13.75,10,10,13.75,21.25,21.25,17.5,17.5,17.5,13.75,21.25,13.75,25,13.75,13.75,21.25,13.75,13.75,13.75,13.75,21.25,10,13.75,13.75,13.75,13.75,10,13.75,13.75,17.5,17.5,13.75,28.75,21.25,17.5,13.75,13.75,13.75,13.75],"sizemode":"area","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)","size":[13.75,13.75,13.75,13.75,13.75,21.25,17.5,13.75,13.75,10,13.75,13.75,10,10,13.75,21.25,21.25,17.5,17.5,17.5,13.75,21.25,13.75,25,13.75,13.75,21.25,13.75,13.75,13.75,13.75,21.25,10,13.75,13.75,13.75,13.75,10,13.75,13.75,17.5,17.5,13.75,28.75,21.25,17.5,13.75,13.75,13.75,13.75]},"error_y":{"color":"rgba(102,194,165,1)","width":[]},"error_x":{"color":"rgba(102,194,165,1)","width":[]},"line":{"color":"rgba(102,194,165,1)"},"frame":null},{"x":[7,6.4,6.9,5.5,6.5,5.7,6.3,4.9,6.6,5.2,5,5.9,6,6.1,5.6,6.7,5.6,5.8,6.2,5.6,5.9,6.1,6.3,6.1,6.4,6.6,6.8,6.7,6,5.7,5.5,5.5,5.8,6,5.4,6,6.7,6.3,5.6,5.5,5.5,6.1,5.8,5,5.6,5.7,5.7,6.2,5.1,5.7],"y":[4.7,4.5,4.9,4,4.6,4.5,4.7,3.3,4.6,3.9,3.5,4.2,4,4.7,3.6,4.4,4.5,4.1,4.5,3.9,4.8,4,4.9,4.7,4.3,4.4,4.8,5,4.5,3.5,3.8,3.7,3.9,5.1,4.5,4.5,4.7,4.4,4.1,4,4.4,4.6,4,3.3,4.2,4.2,4.2,4.3,3,4.1],"z":[3.2,3.2,3.1,2.3,2.8,2.8,3.3,2.4,2.9,2.7,2,3,2.2,2.9,2.9,3.1,3,2.7,2.2,2.5,3.2,2.8,2.5,2.8,2.9,3,2.8,3,2.9,2.6,2.4,2.4,2.7,2.7,3,3.4,3.1,2.3,3,2.5,2.6,3,2.6,2.3,2.7,3,2.9,2.9,2.5,2.8],"type":"scatter3d","mode":"markers","name":"versicolor","marker":{"color":"rgba(252,141,98,1)","size":[58.75,62.5,62.5,55,62.5,55,66.25,43.75,55,58.75,43.75,62.5,43.75,58.75,55,58.75,62.5,43.75,62.5,47.5,73.75,55,62.5,51.25,55,58.75,58.75,70,62.5,43.75,47.5,43.75,51.25,66.25,62.5,66.25,62.5,55,55,55,51.25,58.75,51.25,43.75,55,51.25,55,55,47.5,55],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[58.75,62.5,62.5,55,62.5,55,66.25,43.75,55,58.75,43.75,62.5,43.75,58.75,55,58.75,62.5,43.75,62.5,47.5,73.75,55,62.5,51.25,55,58.75,58.75,70,62.5,43.75,47.5,43.75,51.25,66.25,62.5,66.25,62.5,55,55,55,51.25,58.75,51.25,43.75,55,51.25,55,55,47.5,55]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"frame":null},{"x":[6.3,5.8,7.1,6.3,6.5,7.6,4.9,7.3,6.7,7.2,6.5,6.4,6.8,5.7,5.8,6.4,6.5,7.7,7.7,6,6.9,5.6,7.7,6.3,6.7,7.2,6.2,6.1,6.4,7.2,7.4,7.9,6.4,6.3,6.1,7.7,6.3,6.4,6,6.9,6.7,6.9,5.8,6.8,6.7,6.7,6.3,6.5,6.2,5.9],"y":[6,5.1,5.9,5.6,5.8,6.6,4.5,6.3,5.8,6.1,5.1,5.3,5.5,5,5.1,5.3,5.5,6.7,6.9,5,5.7,4.9,6.7,4.9,5.7,6,4.8,4.9,5.6,5.8,6.1,6.4,5.6,5.1,5.6,6.1,5.6,5.5,4.8,5.4,5.6,5.1,5.1,5.9,5.7,5.2,5,5.2,5.4,5.1],"z":[3.3,2.7,3,2.9,3,3,2.5,2.9,2.5,3.6,3.2,2.7,3,2.5,2.8,3.2,3,3.8,2.6,2.2,3.2,2.8,2.8,2.7,3.3,3.2,2.8,3,2.8,3,2.8,3.8,2.8,2.8,2.6,3,3.4,3.1,3,3.1,3.1,3.1,2.7,3.2,3.3,3,2.5,3,3.4,3],"type":"scatter3d","mode":"markers","name":"virginica","marker":{"color":"rgba(141,160,203,1)","size":[100,77.5,85,73.75,88.75,85,70,73.75,73.75,100,81.25,77.5,85,81.25,96.25,92.5,73.75,88.75,92.5,62.5,92.5,81.25,81.25,73.75,85,73.75,73.75,73.75,85,66.25,77.5,81.25,88.75,62.5,58.75,92.5,96.25,73.75,73.75,85,96.25,92.5,77.5,92.5,100,92.5,77.5,81.25,92.5,73.75],"sizemode":"area","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)","size":[100,77.5,85,73.75,88.75,85,70,73.75,73.75,100,81.25,77.5,85,81.25,96.25,92.5,73.75,88.75,92.5,62.5,92.5,81.25,81.25,73.75,85,73.75,73.75,73.75,85,66.25,77.5,81.25,88.75,62.5,58.75,92.5,96.25,73.75,73.75,85,96.25,92.5,77.5,92.5,100,92.5,77.5,81.25,92.5,73.75]},"error_y":{"color":"rgba(141,160,203,1)","width":[]},"error_x":{"color":"rgba(141,160,203,1)","width":[]},"line":{"color":"rgba(141,160,203,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script><p>The principal components can be calculated from a matrix using the
+<script type="application/json" data-for="htmlwidget-1545c60f9b87a294716c">{"x":{"visdat":{"b57b414a30cce":["function () ","plotlyVisDat"]},"cur_data":"b57b414a30cce","attrs":{"b57b414a30cce":{"x":{},"y":{},"z":{},"color":{},"size":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"Sepal.Length"},"yaxis":{"title":"Petal.Length"},"zaxis":{"title":"Sepal.Width"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9,5.4,4.8,4.8,4.3,5.8,5.7,5.4,5.1,5.7,5.1,5.4,5.1,4.6,5.1,4.8,5,5,5.2,5.2,4.7,4.8,5.4,5.2,5.5,4.9,5,5.5,4.9,4.4,5.1,5,4.5,4.4,5,5.1,4.8,5.1,4.6,5.3,5],"y":[1.4,1.4,1.3,1.5,1.4,1.7,1.4,1.5,1.4,1.5,1.5,1.6,1.4,1.1,1.2,1.5,1.3,1.4,1.7,1.5,1.7,1.5,1,1.7,1.9,1.6,1.6,1.5,1.4,1.6,1.6,1.5,1.5,1.4,1.5,1.2,1.3,1.4,1.3,1.5,1.3,1.3,1.3,1.6,1.9,1.4,1.6,1.4,1.5,1.4],"z":[3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1,3.7,3.4,3,3,4,4.4,3.9,3.5,3.8,3.8,3.4,3.7,3.6,3.3,3.4,3,3.4,3.5,3.4,3.2,3.1,3.4,4.1,4.2,3.1,3.2,3.5,3.6,3,3.4,3.5,2.3,3.2,3.5,3.8,3,3.8,3.2,3.7,3.3],"type":"scatter3d","mode":"markers","name":"setosa","marker":{"color":"rgba(102,194,165,1)","size":[13.75,13.75,13.75,13.75,13.75,21.25,17.5,13.75,13.75,10,13.75,13.75,10,10,13.75,21.25,21.25,17.5,17.5,17.5,13.75,21.25,13.75,25,13.75,13.75,21.25,13.75,13.75,13.75,13.75,21.25,10,13.75,13.75,13.75,13.75,10,13.75,13.75,17.5,17.5,13.75,28.75,21.25,17.5,13.75,13.75,13.75,13.75],"sizemode":"area","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)","size":[13.75,13.75,13.75,13.75,13.75,21.25,17.5,13.75,13.75,10,13.75,13.75,10,10,13.75,21.25,21.25,17.5,17.5,17.5,13.75,21.25,13.75,25,13.75,13.75,21.25,13.75,13.75,13.75,13.75,21.25,10,13.75,13.75,13.75,13.75,10,13.75,13.75,17.5,17.5,13.75,28.75,21.25,17.5,13.75,13.75,13.75,13.75]},"error_y":{"color":"rgba(102,194,165,1)","width":[]},"error_x":{"color":"rgba(102,194,165,1)","width":[]},"line":{"color":"rgba(102,194,165,1)"},"frame":null},{"x":[7,6.4,6.9,5.5,6.5,5.7,6.3,4.9,6.6,5.2,5,5.9,6,6.1,5.6,6.7,5.6,5.8,6.2,5.6,5.9,6.1,6.3,6.1,6.4,6.6,6.8,6.7,6,5.7,5.5,5.5,5.8,6,5.4,6,6.7,6.3,5.6,5.5,5.5,6.1,5.8,5,5.6,5.7,5.7,6.2,5.1,5.7],"y":[4.7,4.5,4.9,4,4.6,4.5,4.7,3.3,4.6,3.9,3.5,4.2,4,4.7,3.6,4.4,4.5,4.1,4.5,3.9,4.8,4,4.9,4.7,4.3,4.4,4.8,5,4.5,3.5,3.8,3.7,3.9,5.1,4.5,4.5,4.7,4.4,4.1,4,4.4,4.6,4,3.3,4.2,4.2,4.2,4.3,3,4.1],"z":[3.2,3.2,3.1,2.3,2.8,2.8,3.3,2.4,2.9,2.7,2,3,2.2,2.9,2.9,3.1,3,2.7,2.2,2.5,3.2,2.8,2.5,2.8,2.9,3,2.8,3,2.9,2.6,2.4,2.4,2.7,2.7,3,3.4,3.1,2.3,3,2.5,2.6,3,2.6,2.3,2.7,3,2.9,2.9,2.5,2.8],"type":"scatter3d","mode":"markers","name":"versicolor","marker":{"color":"rgba(252,141,98,1)","size":[58.75,62.5,62.5,55,62.5,55,66.25,43.75,55,58.75,43.75,62.5,43.75,58.75,55,58.75,62.5,43.75,62.5,47.5,73.75,55,62.5,51.25,55,58.75,58.75,70,62.5,43.75,47.5,43.75,51.25,66.25,62.5,66.25,62.5,55,55,55,51.25,58.75,51.25,43.75,55,51.25,55,55,47.5,55],"sizemode":"area","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)","size":[58.75,62.5,62.5,55,62.5,55,66.25,43.75,55,58.75,43.75,62.5,43.75,58.75,55,58.75,62.5,43.75,62.5,47.5,73.75,55,62.5,51.25,55,58.75,58.75,70,62.5,43.75,47.5,43.75,51.25,66.25,62.5,66.25,62.5,55,55,55,51.25,58.75,51.25,43.75,55,51.25,55,55,47.5,55]},"error_y":{"color":"rgba(252,141,98,1)","width":[]},"error_x":{"color":"rgba(252,141,98,1)","width":[]},"line":{"color":"rgba(252,141,98,1)"},"frame":null},{"x":[6.3,5.8,7.1,6.3,6.5,7.6,4.9,7.3,6.7,7.2,6.5,6.4,6.8,5.7,5.8,6.4,6.5,7.7,7.7,6,6.9,5.6,7.7,6.3,6.7,7.2,6.2,6.1,6.4,7.2,7.4,7.9,6.4,6.3,6.1,7.7,6.3,6.4,6,6.9,6.7,6.9,5.8,6.8,6.7,6.7,6.3,6.5,6.2,5.9],"y":[6,5.1,5.9,5.6,5.8,6.6,4.5,6.3,5.8,6.1,5.1,5.3,5.5,5,5.1,5.3,5.5,6.7,6.9,5,5.7,4.9,6.7,4.9,5.7,6,4.8,4.9,5.6,5.8,6.1,6.4,5.6,5.1,5.6,6.1,5.6,5.5,4.8,5.4,5.6,5.1,5.1,5.9,5.7,5.2,5,5.2,5.4,5.1],"z":[3.3,2.7,3,2.9,3,3,2.5,2.9,2.5,3.6,3.2,2.7,3,2.5,2.8,3.2,3,3.8,2.6,2.2,3.2,2.8,2.8,2.7,3.3,3.2,2.8,3,2.8,3,2.8,3.8,2.8,2.8,2.6,3,3.4,3.1,3,3.1,3.1,3.1,2.7,3.2,3.3,3,2.5,3,3.4,3],"type":"scatter3d","mode":"markers","name":"virginica","marker":{"color":"rgba(141,160,203,1)","size":[100,77.5,85,73.75,88.75,85,70,73.75,73.75,100,81.25,77.5,85,81.25,96.25,92.5,73.75,88.75,92.5,62.5,92.5,81.25,81.25,73.75,85,73.75,73.75,73.75,85,66.25,77.5,81.25,88.75,62.5,58.75,92.5,96.25,73.75,73.75,85,96.25,92.5,77.5,92.5,100,92.5,77.5,81.25,92.5,73.75],"sizemode":"area","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)","size":[100,77.5,85,73.75,88.75,85,70,73.75,73.75,100,81.25,77.5,85,81.25,96.25,92.5,73.75,88.75,92.5,62.5,92.5,81.25,81.25,73.75,85,73.75,73.75,73.75,85,66.25,77.5,81.25,88.75,62.5,58.75,92.5,96.25,73.75,73.75,85,96.25,92.5,77.5,92.5,100,92.5,77.5,81.25,92.5,73.75]},"error_y":{"color":"rgba(141,160,203,1)","width":[]},"error_x":{"color":"rgba(141,160,203,1)","width":[]},"line":{"color":"rgba(141,160,203,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script><p>The principal components can be calculated from a matrix using the
 function <code><a href="https://rdrr.io/r/stats/prcomp.html">prcomp()</a></code>. We select all numeric columns (by unselecting the
 species column) and convert the tibble into a matrix before the
 calculation.</p>
@@ -808,20 +805,20 @@ make one that provides a wrapper for the standard scale function in R:</p>
 <span><span class="va">iris.scaled</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">scale_numeric</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">iris.scaled</span></span></code></pre></div>
 <pre><code>## # A tibble: 150 × 5
-##    Sepal.Length Sepal.Width Petal.Len…¹ Petal…² Species
-##           &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt;  
-##  1       -0.898      1.02         -1.34   -1.31 setosa 
-##  2       -1.14      -0.132        -1.34   -1.31 setosa 
-##  3       -1.38       0.327        -1.39   -1.31 setosa 
-##  4       -1.50       0.0979       -1.28   -1.31 setosa 
-##  5       -1.02       1.25         -1.34   -1.31 setosa 
-##  6       -0.535      1.93         -1.17   -1.05 setosa 
-##  7       -1.50       0.786        -1.34   -1.18 setosa 
-##  8       -1.02       0.786        -1.28   -1.31 setosa 
-##  9       -1.74      -0.361        -1.34   -1.31 setosa 
-## 10       -1.14       0.0979       -1.28   -1.44 setosa 
-## # … with 140 more rows, and abbreviated variable names
-## #   ¹​Petal.Length, ²​Petal.Width</code></pre>
+##    Sepal.Length Sepal.Width Petal.Length Petal.Width
+##           &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
+##  1       -0.898      1.02          -1.34       -1.31
+##  2       -1.14      -0.132         -1.34       -1.31
+##  3       -1.38       0.327         -1.39       -1.31
+##  4       -1.50       0.0979        -1.28       -1.31
+##  5       -1.02       1.25          -1.34       -1.31
+##  6       -0.535      1.93          -1.17       -1.05
+##  7       -1.50       0.786         -1.34       -1.18
+##  8       -1.02       0.786         -1.28       -1.31
+##  9       -1.74      -0.361         -1.34       -1.31
+## 10       -1.14       0.0979        -1.28       -1.44
+## # ℹ 140 more rows
+## # ℹ 1 more variable: Species &lt;fct&gt;</code></pre>
 <div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">iris.scaled</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##   Sepal.Length     Sepal.Width      Petal.Length   
@@ -1212,20 +1209,20 @@ the function <code>cut</code>.</p>
 <span></span>
 <span><span class="va">iris_ord</span></span></code></pre></div>
 <pre><code>## # A tibble: 150 × 5
-##    Sepal.Length Sepal.Width Petal.Len…¹ Petal…² Species
-##    &lt;ord&gt;        &lt;ord&gt;       &lt;ord&gt;       &lt;ord&gt;   &lt;fct&gt;  
-##  1 short        medium      short       short   setosa 
-##  2 short        medium      short       short   setosa 
-##  3 short        medium      short       short   setosa 
-##  4 short        medium      short       short   setosa 
-##  5 short        medium      short       short   setosa 
-##  6 short        long        short       short   setosa 
-##  7 short        medium      short       short   setosa 
-##  8 short        medium      short       short   setosa 
-##  9 short        medium      short       short   setosa 
-## 10 short        medium      short       short   setosa 
-## # … with 140 more rows, and abbreviated variable names
-## #   ¹​Petal.Length, ²​Petal.Width</code></pre>
+##    Sepal.Length Sepal.Width Petal.Length Petal.Width
+##    &lt;ord&gt;        &lt;ord&gt;       &lt;ord&gt;        &lt;ord&gt;      
+##  1 short        medium      short        short      
+##  2 short        medium      short        short      
+##  3 short        medium      short        short      
+##  4 short        medium      short        short      
+##  5 short        medium      short        short      
+##  6 short        long        short        short      
+##  7 short        medium      short        short      
+##  8 short        medium      short        short      
+##  9 short        medium      short        short      
+## 10 short        medium      short        short      
+## # ℹ 140 more rows
+## # ℹ 1 more variable: Species &lt;fct&gt;</code></pre>
 <div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">iris_ord</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##  Sepal.Length Sepal.Width Petal.Length Petal.Width
@@ -1352,6 +1349,10 @@ hexagonal bins.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">iris</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">Sepal.Length</span>, <span class="va">Sepal.Width</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_hex.html">geom_hex</a></span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html">geom_jitter</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## Warning: Computation failed in `stat_binhex()`
+## Caused by error in `compute_group()`:
+## ! The package "hexbin" is required for
+##   `stat_binhex()`</code></pre>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-57-2.png" width="672"></div>
 </div>
 <div id="kernel-density-estimate-kde" class="section level3" number="2.8.2">
@@ -1366,13 +1367,13 @@ a Gaussian) and then adding them up. The result is an estimated
 probability density function that looks like a smoothed version of the
 histogram. The bandwidth (<code>bw</code>) of the kernel controls the amount of
 smoothing.</p>
-<div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">iris</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">Petal.Length</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html">geom_density</a></span><span class="op">(</span>bw <span class="op">=</span> <span class="fl">.2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_rug.html">geom_rug</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-58-1.png" width="672"></div>
 <p>Kernel density estimates can also be done in two dimensions.</p>
-<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">iris</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">Sepal.Length</span>, <span class="va">Sepal.Width</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density_2d.html">geom_density_2d_filled</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html">geom_jitter</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -1388,7 +1389,7 @@ smoothing.</p>
 <span class="header-section-number">2.9.1</span> Basic statistics<a class="anchor" aria-label="anchor" href="#basic-statistics"><i class="fas fa-link"></i></a>
 </h3>
 <p>Get summary statistics (using base R)</p>
-<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##   Sepal.Length   Sepal.Width    Petal.Length 
 ##  Min.   :4.30   Min.   :2.00   Min.   :1.00  
@@ -1405,61 +1406,61 @@ smoothing.</p>
 ##  3rd Qu.:1.8                  
 ##  Max.   :2.5</code></pre>
 <p>Get mean and standard deviation for sepal length</p>
-<div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">Sepal.Length</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## [1] 5.84</code></pre>
-<div class="sourceCode" id="cb158"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">Sepal.Length</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## [1] 0.828</code></pre>
 <p>Data with missing values will result in statistics of <code>NA</code>. Adding the
 parameter <code>na.rm = TRUE</code> can be used in most statistics functions to
 ignore missing values.</p>
-<div class="sourceCode" id="cb160"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="cn">NA</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## [1] NA</code></pre>
-<div class="sourceCode" id="cb162"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="cn">NA</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>,  na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## [1] 3</code></pre>
 <p>Outliers are typically the smallest or the largest values of a feature.
 To make the mean more robust to outliers, we can trim 10% of
 observations from each end of the distribution.</p>
-<div class="sourceCode" id="cb164"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb165"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">Sepal.Length</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## [1] 5.84</code></pre>
-<div class="sourceCode" id="cb166"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">Sepal.Length</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span>trim <span class="op">=</span> <span class="fl">.1</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## [1] 5.81</code></pre>
 <p>Sepal length does not have outliers, so the trimmed mean is almost
 identical.</p>
 <p>To calculate a summary for a set of features (e.g., all numeric
 features), tidyverse provides <code><a href="https://dplyr.tidyverse.org/reference/summarise_all.html">summarize_if()</a></code>.</p>
-<div class="sourceCode" id="cb168"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html">summarize_if</a></span><span class="op">(</span><span class="va">is.numeric</span>, <span class="va">mean</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## # A tibble: 1 × 4
 ##   Sepal.Length Sepal.Width Petal.Length Petal.Width
 ##          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
 ## 1         5.84        3.06         3.76        1.20</code></pre>
-<div class="sourceCode" id="cb170"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb171"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html">summarize_if</a></span><span class="op">(</span><span class="va">is.numeric</span>, <span class="va">sd</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## # A tibble: 1 × 4
 ##   Sepal.Length Sepal.Width Petal.Length Petal.Width
 ##          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;
 ## 1        0.828       0.436         1.77       0.762</code></pre>
-<div class="sourceCode" id="cb172"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb173"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html">summarize_if</a></span><span class="op">(</span><span class="va">is.numeric</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>min <span class="op">=</span> <span class="va">min</span>, median <span class="op">=</span> <span class="va">median</span>, max <span class="op">=</span> <span class="va">max</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## # A tibble: 1 × 12
-##   Sepal.Lengt…¹ Sepal…² Petal…³ Petal…⁴ Sepal…⁵ Sepal…⁶
-##           &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-## 1           4.3       2       1     0.1     5.8       3
-## # … with 6 more variables: Petal.Length_median &lt;dbl&gt;,
+##   Sepal.Length_min Sepal.Width_min Petal.Length_min
+##              &lt;dbl&gt;           &lt;dbl&gt;            &lt;dbl&gt;
+## 1              4.3               2                1
+## # ℹ 9 more variables: Petal.Width_min &lt;dbl&gt;,
+## #   Sepal.Length_median &lt;dbl&gt;,
+## #   Sepal.Width_median &lt;dbl&gt;,
+## #   Petal.Length_median &lt;dbl&gt;,
 ## #   Petal.Width_median &lt;dbl&gt;, Sepal.Length_max &lt;dbl&gt;,
 ## #   Sepal.Width_max &lt;dbl&gt;, Petal.Length_max &lt;dbl&gt;,
-## #   Petal.Width_max &lt;dbl&gt;, and abbreviated variable
-## #   names ¹​Sepal.Length_min, ²​Sepal.Width_min,
-## #   ³​Petal.Length_min, ⁴​Petal.Width_min,
-## #   ⁵​Sepal.Length_median, ⁶​Sepal.Width_median</code></pre>
+## #   Petal.Width_max &lt;dbl&gt;</code></pre>
 <p>The median absolute deviation (MAD) is another measure of dispersion.</p>
-<div class="sourceCode" id="cb174"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html">summarize_if</a></span><span class="op">(</span><span class="va">is.numeric</span>, <span class="va">mad</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## # A tibble: 1 × 4
 ##   Sepal.Length Sepal.Width Petal.Length Petal.Width
@@ -1473,7 +1474,7 @@ features), tidyverse provides <code><a href="https://dplyr.tidyverse.org/referen
 <p>We can use the nominal feature to form groups and then calculate
 group-wise statistics for the continuous features. We often use
 group-wise averages to see if they differ between groups.</p>
-<div class="sourceCode" id="cb176"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="va">Sepal.Length</span>, <span class="va">mean</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## # A tibble: 3 × 2
 ##   Species    Sepal.Length
@@ -1481,22 +1482,21 @@ group-wise averages to see if they differ between groups.</p>
 ## 1 setosa             5.01
 ## 2 versicolor         5.94
 ## 3 virginica          6.59</code></pre>
-<div class="sourceCode" id="cb178"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html">summarize_all</a></span><span class="op">(</span><span class="va">mean</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## # A tibble: 3 × 5
-##   Species    Sepal.Length Sepal.Width Petal.L…¹ Petal…²
-##   &lt;fct&gt;             &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-## 1 setosa             5.01        3.43      1.46   0.246
-## 2 versicolor         5.94        2.77      4.26   1.33 
-## 3 virginica          6.59        2.97      5.55   2.03 
-## # … with abbreviated variable names ¹​Petal.Length,
-## #   ²​Petal.Width</code></pre>
+##   Species    Sepal.Length Sepal.Width Petal.Length
+##   &lt;fct&gt;             &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;
+## 1 setosa             5.01        3.43         1.46
+## 2 versicolor         5.94        2.77         4.26
+## 3 virginica          6.59        2.97         5.55
+## # ℹ 1 more variable: Petal.Width &lt;dbl&gt;</code></pre>
 <p>We see that the species Virginica has the highest average for all, but
 Sepal.Width.</p>
 <p>The statistical difference between the groups can be tested using <a href="http://www.sthda.com/english/wiki/one-way-anova-test-in-r">ANOVA
 (analysis of
 variance)</a>.</p>
-<div class="sourceCode" id="cb180"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb181"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res.aov</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">Sepal.Length</span> <span class="op">~</span> <span class="va">Species</span>, data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">res.aov</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##              Df Sum Sq Mean Sq F value Pr(&gt;F)    
@@ -1505,7 +1505,7 @@ variance)</a>.</p>
 ## ---
 ## Signif. codes:  
 ## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
-<div class="sourceCode" id="cb182"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/TukeyHSD.html">TukeyHSD</a></span><span class="op">(</span><span class="va">res.aov</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##   Tukey multiple comparisons of means
 ##     95% family-wise confidence level
@@ -1527,7 +1527,7 @@ If the data only contains two groups, the <code>t.test</code> can be used.</p>
 <span class="header-section-number">2.9.3</span> Tabulate data<a class="anchor" aria-label="anchor" href="#tabulate-data"><i class="fas fa-link"></i></a>
 </h3>
 <p>We can count the number of flowers for each species.</p>
-<div class="sourceCode" id="cb184"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb185"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## # A tibble: 3 × 2
 ##   Species    `n()`
@@ -1537,27 +1537,27 @@ If the data only contains two groups, the <code>t.test</code> can be used.</p>
 ## 3 virginica     50</code></pre>
 <p>In base R, this can be also done using <code>count(iris$Species)</code>.</p>
 <p>For the following examples, we discretize the data using cut.</p>
-<div class="sourceCode" id="cb186"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb187"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris_ord</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_if</a></span><span class="op">(</span><span class="va">is.numeric</span>,</span>
 <span>  <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">3</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"short"</span>, <span class="st">"medium"</span>, <span class="st">"long"</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">iris_ord</span></span></code></pre></div>
 <pre><code>## # A tibble: 150 × 5
-##    Sepal.Length Sepal.Width Petal.Len…¹ Petal…² Species
-##    &lt;ord&gt;        &lt;ord&gt;       &lt;ord&gt;       &lt;ord&gt;   &lt;fct&gt;  
-##  1 short        medium      short       short   setosa 
-##  2 short        medium      short       short   setosa 
-##  3 short        medium      short       short   setosa 
-##  4 short        medium      short       short   setosa 
-##  5 short        medium      short       short   setosa 
-##  6 short        long        short       short   setosa 
-##  7 short        medium      short       short   setosa 
-##  8 short        medium      short       short   setosa 
-##  9 short        medium      short       short   setosa 
-## 10 short        medium      short       short   setosa 
-## # … with 140 more rows, and abbreviated variable names
-## #   ¹​Petal.Length, ²​Petal.Width</code></pre>
-<div class="sourceCode" id="cb188"><pre class="downlit sourceCode r">
+##    Sepal.Length Sepal.Width Petal.Length Petal.Width
+##    &lt;ord&gt;        &lt;ord&gt;       &lt;ord&gt;        &lt;ord&gt;      
+##  1 short        medium      short        short      
+##  2 short        medium      short        short      
+##  3 short        medium      short        short      
+##  4 short        medium      short        short      
+##  5 short        medium      short        short      
+##  6 short        long        short        short      
+##  7 short        medium      short        short      
+##  8 short        medium      short        short      
+##  9 short        medium      short        short      
+## 10 short        medium      short        short      
+## # ℹ 140 more rows
+## # ℹ 1 more variable: Species &lt;fct&gt;</code></pre>
+<div class="sourceCode" id="cb189"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">iris_ord</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##  Sepal.Length Sepal.Width Petal.Length Petal.Width
 ##  short :59    short :47   short :50    short :50  
@@ -1569,7 +1569,7 @@ If the data only contains two groups, the <code>t.test</code> can be used.</p>
 ##  virginica :50</code></pre>
 <p>Cross tabulation is used to find out if two discrete features are
 related.</p>
-<div class="sourceCode" id="cb190"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb191"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="va">iris_ord</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Sepal.Length</span>, <span class="va">Species</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">tbl</span></span></code></pre></div>
 <pre><code>##             Species
@@ -1585,7 +1585,7 @@ relationship. For the iris data, we see that species Setosa has mostly a
 short Sepal.Length, while Versicolor and Virginica have longer sepals.</p>
 <p>Creating a cross table with tidyverse is a little more involved and uses
 pivot operations and grouping.</p>
-<div class="sourceCode" id="cb192"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb193"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris_ord</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Species</span>, <span class="va">Sepal.Length</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span><span class="co">### Relationship Between Nominal and Ordinal Features</span></span>
@@ -1605,7 +1605,7 @@ is performed with the null hypothesis that the joint distribution of the
 cell counts in a 2-dimensional contingency table is the product of the
 row and column marginals. The null hypothesis h0 is independence between
 rows and columns.</p>
-<div class="sourceCode" id="cb194"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb195"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/chisq.test.html">chisq.test</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## 
 ##  Pearson's Chi-squared test
@@ -1616,7 +1616,7 @@ rows and columns.</p>
 needs to be rejected. For small counts (cells with counts &lt;5),
 <a href="https://en.wikipedia.org/wiki/Fisher%27s_exact_test">Fisher’s exact
 test</a> is better.</p>
-<div class="sourceCode" id="cb196"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb197"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/fisher.test.html">fisher.test</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## 
 ##  Fisher's Exact Test for Count Data
@@ -1637,14 +1637,14 @@ observations being smaller than the median and the other 50% being
 larger than the median.</p>
 <p>By default quartiles are calculated. 25% is typically called Q1, 50% is
 called Q2 or the median and 75% is called Q3.</p>
-<div class="sourceCode" id="cb198"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb199"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">Petal.Length</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##   0%  25%  50%  75% 100% 
 ## 1.00 1.60 4.35 5.10 6.90</code></pre>
 <p>The interquartile range is a measure for variability that is robust
 against outliers. It is defined the length Q3 - Q2 which covers the 50%
 of the data in the middle.</p>
-<div class="sourceCode" id="cb200"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb201"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>IQR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">Petal.Length</span>, probs <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">Petal.Length</span>, probs <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## # A tibble: 1 × 1
 ##     IQR
@@ -1661,7 +1661,7 @@ of the data in the middle.</p>
 <span class="header-section-number">2.10.1</span> Histogram<a class="anchor" aria-label="anchor" href="#histogram"><i class="fas fa-link"></i></a>
 </h3>
 <p>Histograms show the distribution of a single continuous feature.</p>
-<div class="sourceCode" id="cb202"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb203"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">iris</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">Petal.Width</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-76-1.png" width="672"></div>
 </div>
@@ -1675,36 +1675,35 @@ group-wise medians, the boxes span the interquartile range. The whiskers
 (vertical lines) span typically 1.4 times the interquartile range.
 Points that fall outside that range are typically outliers shown as
 dots.</p>
-<div class="sourceCode" id="cb203"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb204"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">iris</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">Species</span>, <span class="va">Sepal.Length</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-77-1.png" width="672"></div>
 <p>The group-wise medians can also be calculated directly.</p>
-<div class="sourceCode" id="cb204"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb205"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Species</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html">summarize_if</a></span><span class="op">(</span><span class="va">is.numeric</span>, <span class="va">median</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## # A tibble: 3 × 5
-##   Species    Sepal.Length Sepal.Width Petal.L…¹ Petal…²
-##   &lt;fct&gt;             &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-## 1 setosa              5           3.4      1.5      0.2
-## 2 versicolor          5.9         2.8      4.35     1.3
-## 3 virginica           6.5         3        5.55     2  
-## # … with abbreviated variable names ¹​Petal.Length,
-## #   ²​Petal.Width</code></pre>
+##   Species    Sepal.Length Sepal.Width Petal.Length
+##   &lt;fct&gt;             &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;
+## 1 setosa              5           3.4         1.5 
+## 2 versicolor          5.9         2.8         4.35
+## 3 virginica           6.5         3           5.55
+## # ℹ 1 more variable: Petal.Width &lt;dbl&gt;</code></pre>
 <p>To compare the distribution of the four features using a ggplot boxplot,
 we first have to transform the data into long format (i.e., all feature
 values are combined into a single column).</p>
-<div class="sourceCode" id="cb206"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb207"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span></span>
-<span><span class="va">iris_long</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">row_number</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
+<span><span class="va">iris_long</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/row_number.html">row_number</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">iris_long</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Original value"</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-79-1.png" width="672"></div>
 <p>This visualization is only useful if all features have roughly the same
 range. The data can be scaled first to compare the distributions.</p>
-<div class="sourceCode" id="cb207"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb208"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span></span>
-<span><span class="va">iris_long_scaled</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">scale_numeric</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">row_number</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
+<span><span class="va">iris_long_scaled</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">scale_numeric</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/row_number.html">row_number</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">iris_long_scaled</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Scaled value"</span><span class="op">)</span></span></code></pre></div>
@@ -1715,7 +1714,7 @@ range. The data can be scaled first to compare the distributions.</p>
 <span class="header-section-number">2.10.3</span> Scatter plot<a class="anchor" aria-label="anchor" href="#scatter-plot"><i class="fas fa-link"></i></a>
 </h3>
 <p>Scatter plots show the relationship between two continuous features.</p>
-<div class="sourceCode" id="cb208"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb209"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">iris</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Petal.Length</span>, y <span class="op">=</span> <span class="va">Petal.Width</span>, color <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-81-1.png" width="672"></div>
@@ -1725,7 +1724,7 @@ range. The data can be scaled first to compare the distributions.</p>
 <span class="header-section-number">2.10.4</span> Scatter Plot Matrix<a class="anchor" aria-label="anchor" href="#scatter-plot-matrix"><i class="fas fa-link"></i></a>
 </h3>
 <p>A scatter plot matrix show the relationship between several features</p>
-<div class="sourceCode" id="cb209"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb210"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://ggobi.github.io/ggally/">"GGally"</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs</a></span><span class="op">(</span><span class="va">iris</span>,  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">Species</span><span class="op">)</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with
@@ -1746,11 +1745,11 @@ coefficients.</p>
 <span class="header-section-number">2.10.5</span> Data Matrix Visualization<a class="anchor" aria-label="anchor" href="#data-matrix-visualization"><i class="fas fa-link"></i></a>
 </h3>
 <p>Matrix visualization shows the values in the matrix using a color scale.</p>
-<div class="sourceCode" id="cb211"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb212"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris_matrix</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">Species</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">as.matrix</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>We need the long format for tidyverse.</p>
-<div class="sourceCode" id="cb212"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">iris_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">iris_matrix</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">row_number</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb213"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">iris_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">iris_matrix</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/row_number.html">row_number</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">iris_long</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## # A tibble: 6 × 3
 ##      id name         value
@@ -1761,13 +1760,13 @@ coefficients.</p>
 ## 4     1 Petal.Width    0.2
 ## 5     2 Sepal.Length   4.9
 ## 6     2 Sepal.Width    3</code></pre>
-<div class="sourceCode" id="cb214"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb215"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">iris_long</span>,</span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">name</span>, y <span class="op">=</span> <span class="va">id</span>, fill <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_tile</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-84-1.png" width="672"></div>
 <p>Smaller values are darker. Package <code>seriation</code> provides a simpler
 plotting function.</p>
-<div class="sourceCode" id="cb215"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb216"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mhahsler/seriation">seriation</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Registered S3 methods overwritten by 'registry':
 ##   method               from 
@@ -1778,11 +1777,11 @@ plotting function.</p>
 <pre><code>## The following object is masked from 'package:lattice':
 ## 
 ##     panel.lines</code></pre>
-<div class="sourceCode" id="cb219"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb220"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/pimage.html">ggpimage</a></span><span class="op">(</span><span class="va">iris_matrix</span>, prop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-85-1.png" width="672"></div>
 <p>We can scale the features to z-scores to make them better comparable.</p>
-<div class="sourceCode" id="cb220"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb221"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">iris_scaled</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">iris_matrix</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/pimage.html">ggpimage</a></span><span class="op">(</span><span class="va">iris_scaled</span>, prop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-86-1.png" width="672"></div>
@@ -1794,7 +1793,7 @@ larger for most features.</p>
 <p>Often, reordering data matrices help with visualization. A reordering
 technique is called seriation. Ir reorders rows and columns to place
 more similar points closer together.</p>
-<div class="sourceCode" id="cb221"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb222"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/pimage.html">ggpimage</a></span><span class="op">(</span><span class="va">iris_scaled</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/seriate.html">seriate</a></span><span class="op">(</span><span class="va">iris_scaled</span><span class="op">)</span>, prop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-87-1.png" width="672"></div>
 <p>We see that the rows (flowers) are organized from very blue to very red
@@ -1806,7 +1805,7 @@ right because it is very different from the other features.</p>
 <span class="header-section-number">2.10.6</span> Correlation Matrix<a class="anchor" aria-label="anchor" href="#correlation-matrix"><i class="fas fa-link"></i></a>
 </h3>
 <p>A correlation matrix contains the correlation between features.</p>
-<div class="sourceCode" id="cb222"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb223"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cm1</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">Species</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="va">as.matrix</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">cm1</span></span></code></pre></div>
 <pre><code>##              Sepal.Length Sepal.Width Petal.Length
@@ -1820,18 +1819,18 @@ right because it is very different from the other features.</p>
 ## Petal.Length       0.963
 ## Petal.Width        1.000</code></pre>
 <p>Package <code>ggcorrplot</code> provides a visualization for correlation matrices.</p>
-<div class="sourceCode" id="cb224"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb225"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.sthda.com/english/wiki/ggcorrplot-visualization-of-a-correlation-matrix-using-ggplot2">ggcorrplot</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/ggcorrplot/man/ggcorrplot.html">ggcorrplot</a></span><span class="op">(</span><span class="va">cm1</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-89-1.png" width="672"></div>
 <p>Package <code>seriation</code> provides a reordered version for this plot using a
 heatmap.</p>
-<div class="sourceCode" id="cb225"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb226"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/hmap.html">gghmap</a></span><span class="op">(</span><span class="va">cm1</span>, prop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-90-1.png" width="672"></div>
 <p>Correlations can also be calculates between objects by transposing the
 data matrix.</p>
-<div class="sourceCode" id="cb226"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb227"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cm2</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">Species</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">as.matrix</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/ggcorrplot/man/ggcorrplot.html">ggcorrplot</a></span><span class="op">(</span><span class="va">cm2</span><span class="op">)</span></span></code></pre></div>
@@ -1845,18 +1844,18 @@ The dark red blocks indicate different species.</p>
 </h3>
 <p>Parallel coordinate plots can visualize several features in a single
 plot. Lines connect the values for each object (flower).</p>
-<div class="sourceCode" id="cb227"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb228"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggobi.github.io/ggally/">GGally</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggparcoord.html">ggparcoord</a></span><span class="op">(</span><span class="va">iris</span>, columns <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, groupColumn <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-92-1.png" width="672"></div>
 <p>The plot can be improved by reordering the variables to place correlated
 features next to each other.</p>
-<div class="sourceCode" id="cb228"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb229"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/seriate.html">seriate</a></span><span class="op">(</span><span class="fu">as.dist</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, method <span class="op">=</span> <span class="st">"BBURCG"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/get_order.html">get_order</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Petal.Length  Petal.Width Sepal.Length  Sepal.Width 
 ##            3            4            1            2</code></pre>
-<div class="sourceCode" id="cb230"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb231"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggparcoord.html">ggparcoord</a></span><span class="op">(</span><span class="va">iris</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/get_order.html">get_order</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span>, groupColumn <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-93-1.png" width="672"></div>
 </div>
@@ -1951,7 +1950,7 @@ features next to each other.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2023-02-22.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2023-04-21.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

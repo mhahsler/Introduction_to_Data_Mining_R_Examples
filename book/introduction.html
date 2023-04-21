@@ -6,15 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 1 Introduction | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
-<meta name="description" content="Packages used for this chapter: ggplot2 (Wickham, Chang, et al. 2022), tidyverse (Wickham 2022c)  1.1 Used Software This companion book assumes that you have R and RStudio Desktop installed and...">
-<meta name="generator" content="bookdown 0.31 with bs4_book()">
+<meta name="description" content="Packages used for this chapter: ggplot2 (Wickham, Chang, et al. 2023), tidyverse (Wickham 2023b)  1.1 Used Software This companion book assumes that you have R and RStudio Desktop installed and...">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
 <meta property="og:title" content="Chapter 1 Introduction | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
-<meta property="og:description" content="Packages used for this chapter: ggplot2 (Wickham, Chang, et al. 2022), tidyverse (Wickham 2022c)  1.1 Used Software This companion book assumes that you have R and RStudio Desktop installed and...">
+<meta property="og:description" content="Packages used for this chapter: ggplot2 (Wickham, Chang, et al. 2023), tidyverse (Wickham 2023b)  1.1 Used Software This companion book assumes that you have R and RStudio Desktop installed and...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 1 Introduction | An R Companion for Introduction to Data Mining">
-<meta name="twitter:description" content="Packages used for this chapter: ggplot2 (Wickham, Chang, et al. 2022), tidyverse (Wickham 2022c)  1.1 Used Software This companion book assumes that you have R and RStudio Desktop installed and...">
+<meta name="twitter:description" content="Packages used for this chapter: ggplot2 (Wickham, Chang, et al. 2023), tidyverse (Wickham 2023b)  1.1 Used Software This companion book assumes that you have R and RStudio Desktop installed and...">
 <meta name="twitter:image" content="/images/cover.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -94,7 +94,7 @@
 <h1>
 <span class="header-section-number">1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction"><i class="fas fa-link"></i></a>
 </h1>
-<p><strong>Packages used for this chapter:</strong> <em>ggplot2</em> <span class="citation">(<a href="references.html#ref-R-ggplot2" role="doc-biblioref">Wickham, Chang, et al. 2022</a>)</span>, <em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2022c</a>)</span></p>
+<p><strong>Packages used for this chapter:</strong> <em>ggplot2</em> <span class="citation">(<a href="references.html#ref-R-ggplot2" role="doc-biblioref">Wickham, Chang, et al. 2023</a>)</span>, <em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2023b</a>)</span></p>
 <div id="used-software" class="section level2" number="1.1">
 <h2>
 <span class="header-section-number">1.1</span> Used Software<a class="anchor" aria-label="anchor" href="#used-software"><i class="fas fa-link"></i></a>
@@ -121,17 +121,19 @@ Science</a> by <span class="citation">Wickham and Grolemund (<a href="references
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span></code></pre></div>
-<pre><code>## ── Attaching packages ────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.4.0      ✔ purrr   1.0.1 
-## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
-## ✔ tidyr   1.3.0      ✔ stringr 1.5.0 
-## ✔ readr   2.1.3      ✔ forcats 0.5.2 
+<pre><code>## ── Attaching core tidyverse packages ──────────────────
+## ✔ dplyr     1.1.2     ✔ readr     2.1.4
+## ✔ forcats   1.0.0     ✔ stringr   1.5.0
+## ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+## ✔ purrr     1.0.1     
 ## ── Conflicts ───────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
-<p><code>tidyverse</code> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2022c</a>)</span> is a collection of many very useful packages
+## ✖ dplyr::lag()    masks stats::lag()
+## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<p><code>tidyverse</code> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2023b</a>)</span> is a collection of many very useful packages
 that work well together by sharing design principles and data
-structures. <code>tidyverse</code> also includes <code>ggplot2</code> <span class="citation">(<a href="references.html#ref-R-ggplot2" role="doc-biblioref">Wickham, Chang, et al. 2022</a>)</span> for
+structures. <code>tidyverse</code> also includes <code>ggplot2</code> <span class="citation">(<a href="references.html#ref-R-ggplot2" role="doc-biblioref">Wickham, Chang, et al. 2023</a>)</span> for
 visualization.</p>
 <p>In this book, we will use</p>
 <ul>
@@ -249,7 +251,7 @@ we specify the identity statistic.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2023-02-22.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2023-04-21.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

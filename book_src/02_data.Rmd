@@ -10,7 +10,7 @@ This chapter provides examples for cleaning and preparing data for data
 mining.
 
 ```{r setup_02, include=FALSE}
-pkgs <- sort(c('tidyverse', 'GGally', 'plotly', 'factoextra', 'arules', 
+pkgs <- sort(c('tidyverse', 'GGally', 'ggcorrplot', 'plotly', 'factoextra', 'arules', 
   'seriation', 'sampling', 'caret', 'proxy'))
 
 lapply(pkgs, function(pkg) {

@@ -6,15 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 7 Clustering Analysis | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
-<meta name="description" content="Packages used for this chapter: cluster (Maechler et al. 2022), dbscan (Hahsler and Piekenbrock 2022), e1071 (Meyer et al. 2022), factoextra (Kassambara and Mundt 2020), fpc (Hennig 2020), GGally...">
-<meta name="generator" content="bookdown 0.31 with bs4_book()">
+<meta name="description" content="Packages used for this chapter: cluster (Maechler et al. 2022), dbscan (Hahsler and Piekenbrock 2022), e1071 (Meyer et al. 2023), factoextra (Kassambara and Mundt 2020), fpc (Hennig 2023), GGally...">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
 <meta property="og:title" content="Chapter 7 Clustering Analysis | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
-<meta property="og:description" content="Packages used for this chapter: cluster (Maechler et al. 2022), dbscan (Hahsler and Piekenbrock 2022), e1071 (Meyer et al. 2022), factoextra (Kassambara and Mundt 2020), fpc (Hennig 2020), GGally...">
+<meta property="og:description" content="Packages used for this chapter: cluster (Maechler et al. 2022), dbscan (Hahsler and Piekenbrock 2022), e1071 (Meyer et al. 2023), factoextra (Kassambara and Mundt 2020), fpc (Hennig 2023), GGally...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 7 Clustering Analysis | An R Companion for Introduction to Data Mining">
-<meta name="twitter:description" content="Packages used for this chapter: cluster (Maechler et al. 2022), dbscan (Hahsler and Piekenbrock 2022), e1071 (Meyer et al. 2022), factoextra (Kassambara and Mundt 2020), fpc (Hennig 2020), GGally...">
+<meta name="twitter:description" content="Packages used for this chapter: cluster (Maechler et al. 2022), dbscan (Hahsler and Piekenbrock 2022), e1071 (Meyer et al. 2023), factoextra (Kassambara and Mundt 2020), fpc (Hennig 2023), GGally...">
 <meta name="twitter:image" content="/images/cover.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -94,7 +94,7 @@
 <h1>
 <span class="header-section-number">7</span> Clustering Analysis<a class="anchor" aria-label="anchor" href="#clustering-analysis"><i class="fas fa-link"></i></a>
 </h1>
-<p><strong>Packages used for this chapter:</strong> <em>cluster</em> <span class="citation">(<a href="references.html#ref-R-cluster" role="doc-biblioref">Maechler et al. 2022</a>)</span>, <em>dbscan</em> <span class="citation">(<a href="references.html#ref-R-dbscan" role="doc-biblioref">Hahsler and Piekenbrock 2022</a>)</span>, <em>e1071</em> <span class="citation">(<a href="references.html#ref-R-e1071" role="doc-biblioref">Meyer et al. 2022</a>)</span>, <em>factoextra</em> <span class="citation">(<a href="references.html#ref-R-factoextra" role="doc-biblioref">Kassambara and Mundt 2020</a>)</span>, <em>fpc</em> <span class="citation">(<a href="references.html#ref-R-fpc" role="doc-biblioref">Hennig 2020</a>)</span>, <em>GGally</em> <span class="citation">(<a href="references.html#ref-R-GGally" role="doc-biblioref">Schloerke et al. 2021</a>)</span>, <em>kernlab</em> <span class="citation">(<a href="references.html#ref-R-kernlab" role="doc-biblioref">Karatzoglou, Smola, and Hornik 2022</a>)</span>, <em>mclust</em> <span class="citation">(<a href="references.html#ref-R-mclust" role="doc-biblioref">Fraley, Raftery, and Scrucca 2022</a>)</span>, <em>mlbench</em> <span class="citation">(<a href="references.html#ref-R-mlbench" role="doc-biblioref">Leisch and Dimitriadou. 2021</a>)</span>, <em>scatterpie</em> <span class="citation">(<a href="references.html#ref-R-scatterpie" role="doc-biblioref">Yu 2022</a>)</span>, <em>seriation</em> <span class="citation">(<a href="references.html#ref-R-seriation" role="doc-biblioref">Hahsler, Buchta, and Hornik 2022</a>)</span>, <em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2022c</a>)</span></p>
+<p><strong>Packages used for this chapter:</strong> <em>cluster</em> <span class="citation">(<a href="references.html#ref-R-cluster" role="doc-biblioref">Maechler et al. 2022</a>)</span>, <em>dbscan</em> <span class="citation">(<a href="references.html#ref-R-dbscan" role="doc-biblioref">Hahsler and Piekenbrock 2022</a>)</span>, <em>e1071</em> <span class="citation">(<a href="references.html#ref-R-e1071" role="doc-biblioref">Meyer et al. 2023</a>)</span>, <em>factoextra</em> <span class="citation">(<a href="references.html#ref-R-factoextra" role="doc-biblioref">Kassambara and Mundt 2020</a>)</span>, <em>fpc</em> <span class="citation">(<a href="references.html#ref-R-fpc" role="doc-biblioref">Hennig 2023</a>)</span>, <em>GGally</em> <span class="citation">(<a href="references.html#ref-R-GGally" role="doc-biblioref">Schloerke et al. 2021</a>)</span>, <em>kernlab</em> <span class="citation">(<a href="references.html#ref-R-kernlab" role="doc-biblioref">Karatzoglou, Smola, and Hornik 2023</a>)</span>, <em>mclust</em> <span class="citation">(<a href="references.html#ref-R-mclust" role="doc-biblioref">Fraley, Raftery, and Scrucca 2022</a>)</span>, <em>mlbench</em> <span class="citation">(<a href="references.html#ref-R-mlbench" role="doc-biblioref">Leisch and Dimitriadou. 2021</a>)</span>, <em>scatterpie</em> <span class="citation">(<a href="references.html#ref-R-scatterpie" role="doc-biblioref">Yu 2022</a>)</span>, <em>seriation</em> <span class="citation">(<a href="references.html#ref-R-seriation" role="doc-biblioref">Hahsler, Buchta, and Hornik 2023</a>)</span>, <em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2023b</a>)</span></p>
 <p>You can read the free sample chapter from the textbook <span class="citation">(<a href="references.html#ref-Tan2005" role="doc-biblioref">Tan, Steinbach, and Kumar 2005</a>)</span>:
 <a href="https://www-users.cs.umn.edu/~kumar001/dmbook/ch7_clustering.pdf">Chapter 7. Cluster Analysis: Basic Concepts and
 Algorithms</a></p>
@@ -102,42 +102,42 @@ Algorithms</a></p>
 <h2>
 <span class="header-section-number">7.1</span> Data Preparation<a class="anchor" aria-label="anchor" href="#data-preparation"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb640"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb641"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span></code></pre></div>
 <p>We will use here a small and very clean dataset called Ruspini which is
 included in the R package <strong>cluster</strong>.</p>
-<div class="sourceCode" id="cb641"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb642"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ruspini</span>, package <span class="op">=</span> <span class="st">"cluster"</span><span class="op">)</span></span></code></pre></div>
 <p>The Ruspini data set, consisting of 75 points in four groups that is
 popular for illustrating clustering techniques. It is a very simple data
 set with well separated clusters. The original dataset has the points
 ordered by group. We can shuffle the data (rows) using <code>sample_frac</code>
 which samples by default 100%.</p>
-<div class="sourceCode" id="cb642"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb643"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ruspini</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">ruspini</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html">sample_frac</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">ruspini</span></span></code></pre></div>
 <pre><code>## # A tibble: 75 × 2
 ##        x     y
 ##    &lt;int&gt; &lt;int&gt;
-##  1    22    74
-##  2    47   149
-##  3    15    75
-##  4    54   124
-##  5    55   155
-##  6    58    13
-##  7    50   142
-##  8    18    61
-##  9    44   143
-## 10    52   152
-## # … with 65 more rows</code></pre>
+##  1   115   117
+##  2    35   153
+##  3   108   111
+##  4    52   152
+##  5     9    77
+##  6    47   149
+##  7    97   122
+##  8    34   141
+##  9    13    69
+## 10    70     4
+## # ℹ 65 more rows</code></pre>
 <div id="data-cleaning" class="section level3" number="7.1.1">
 <h3>
 <span class="header-section-number">7.1.1</span> Data cleaning<a class="anchor" aria-label="anchor" href="#data-cleaning"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb644"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ruspini</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-244-1.png" width="672"></div>
 <div class="sourceCode" id="cb645"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ruspini</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-245-1.png" width="672"></div>
+<div class="sourceCode" id="cb646"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ruspini</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##        x               y        
 ##  Min.   :  4.0   Min.   :  4.0  
@@ -163,7 +163,7 @@ each column in the data to zero mean and unit standard deviation
 (z-scores). <em>Note:</em> The standard <code><a href="https://rdrr.io/r/base/scale.html">scale()</a></code> function scales a whole data
 matrix so we implement a function for a single vector and apply it to
 all numeric columns.</p>
-<div class="sourceCode" id="cb647"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb648"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## I use this till tidyverse implements a scale function</span></span>
 <span><span class="va">scale_numeric</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_if</a></span><span class="op">(</span><span class="va">is.numeric</span>, <span class="kw">function</span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -193,25 +193,25 @@ average.</p>
 assumes Euclidean distances. We use <span class="math inline">\(k = 4\)</span> clusters and run the
 algorithm 10 times with random initialized centroids. The best result is
 returned.</p>
-<div class="sourceCode" id="cb649"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb650"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">km</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">ruspini_scaled</span>, centers <span class="op">=</span> <span class="fl">4</span>, nstart <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">km</span></span></code></pre></div>
-<pre><code>## K-means clustering with 4 clusters of sizes 23, 20, 17, 15
+<pre><code>## K-means clustering with 4 clusters of sizes 17, 15, 20, 23
 ## 
 ## Cluster means:
 ##        x      y
-## 1 -0.360  1.109
-## 2 -1.139 -0.556
-## 3  1.419  0.469
-## 4  0.461 -1.491
+## 1  1.419  0.469
+## 2  0.461 -1.491
+## 3 -1.139 -0.556
+## 4 -0.360  1.109
 ## 
 ## Clustering vector:
-##  [1] 2 1 2 1 1 4 1 2 1 1 3 4 1 2 1 4 1 2 1 3 3 4 4 1 4
-## [26] 3 3 2 4 1 2 4 1 2 3 4 1 3 3 2 1 2 2 2 3 2 3 3 4 3
-## [51] 3 4 2 2 1 1 4 1 3 3 3 2 1 1 1 3 4 1 4 1 2 2 4 2 2
+##  [1] 1 4 1 4 3 4 1 4 3 2 1 1 3 2 2 1 3 3 3 2 4 3 3 2 2
+## [26] 4 4 2 1 4 4 1 4 3 3 3 4 4 4 2 1 1 3 4 1 4 2 2 1 4
+## [51] 2 3 1 2 1 4 4 4 3 1 1 2 4 3 4 3 2 4 3 3 2 3 1 3 4
 ## 
 ## Within cluster sum of squares by cluster:
-## [1] 2.66 2.71 3.64 1.08
+## [1] 3.64 1.08 2.71 2.66
 ##  (between_SS / total_SS =  93.2 %)
 ## 
 ## Available components:
@@ -223,46 +223,46 @@ returned.</p>
 contains the cluster assignment for each data row and can be accessed
 using <code>km$cluster</code>. I add the cluster assignment as a column to the
 scaled dataset (I make it a factor since it represents a nominal label).</p>
-<div class="sourceCode" id="cb651"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb652"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ruspini_clustered</span> <span class="op">&lt;-</span> <span class="va">ruspini_scaled</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/add_column.html">add_column</a></span><span class="op">(</span>cluster <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">km</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">ruspini_clustered</span></span></code></pre></div>
 <pre><code>## # A tibble: 75 × 3
-##           x      y cluster
-##       &lt;dbl&gt;  &lt;dbl&gt; &lt;fct&gt;  
-##  1 -1.08    -0.370 2      
-##  2 -0.258    1.17  1      
-##  3 -1.31    -0.350 2      
-##  4 -0.0289   0.657 1      
-##  5  0.00393  1.29  1      
-##  6  0.102   -1.62  4      
-##  7 -0.160    1.03  1      
-##  8 -1.21    -0.637 2      
-##  9 -0.357    1.05  1      
-## 10 -0.0944   1.23  1      
-## # … with 65 more rows</code></pre>
-<div class="sourceCode" id="cb653"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ruspini_clustered</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-247-1.png" width="672"></div>
-<p>Add the centroids to the plot.</p>
+##          x      y cluster
+##      &lt;dbl&gt;  &lt;dbl&gt; &lt;fct&gt;  
+##  1  1.97    0.513 1      
+##  2 -0.652   1.25  4      
+##  3  1.74    0.390 1      
+##  4 -0.0944  1.23  4      
+##  5 -1.50   -0.309 3      
+##  6 -0.258   1.17  4      
+##  7  1.38    0.615 1      
+##  8 -0.685   1.01  4      
+##  9 -1.37   -0.473 3      
+## 10  0.496  -1.81  2      
+## # ℹ 65 more rows</code></pre>
 <div class="sourceCode" id="cb654"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ruspini_clustered</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-248-1.png" width="672"></div>
+<p>Add the centroids to the plot.</p>
+<div class="sourceCode" id="cb655"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">centroids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">km</span><span class="op">$</span><span class="va">centers</span>, rownames <span class="op">=</span> <span class="st">"cluster"</span><span class="op">)</span></span>
 <span><span class="va">centroids</span></span></code></pre></div>
 <pre><code>## # A tibble: 4 × 3
 ##   cluster      x      y
 ##   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;
-## 1 1       -0.360  1.11 
-## 2 2       -1.14  -0.556
-## 3 3        1.42   0.469
-## 4 4        0.461 -1.49</code></pre>
-<div class="sourceCode" id="cb656"><pre class="downlit sourceCode r">
+## 1 1        1.42   0.469
+## 2 2        0.461 -1.49 
+## 3 3       -1.14  -0.556
+## 4 4       -0.360  1.11</code></pre>
+<div class="sourceCode" id="cb657"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ruspini_clustered</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">centroids</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span>, shape <span class="op">=</span> <span class="fl">3</span>, size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-248-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-249-1.png" width="672"></div>
 <p>Use the <code>factoextra</code> package for visualization</p>
-<div class="sourceCode" id="cb657"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb658"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.sthda.com/english/rpkgs/factoextra">factoextra</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/factoextra/man/fviz_cluster.html">fviz_cluster</a></span><span class="op">(</span><span class="va">km</span>, data <span class="op">=</span> <span class="va">ruspini_scaled</span>, centroids <span class="op">=</span> <span class="cn">TRUE</span>, repel <span class="op">=</span> <span class="cn">TRUE</span>, ellipse.type <span class="op">=</span> <span class="st">"norm"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-249-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-250-1.png" width="672"></div>
 <div id="inspect-clusters" class="section level4" number="7.2.1.1">
 <h4>
 <span class="header-section-number">7.2.1.1</span> Inspect clusters<a class="anchor" aria-label="anchor" href="#inspect-clusters"><i class="fas fa-link"></i></a>
@@ -277,12 +277,12 @@ following code can be adapted to be used for other clustering methods.</p>
 To group the plots by cluster, we have to change the data format to the
 “long”-format using a pivot operation. I use colors to match the
 clusters in the scatter plots.</p>
-<div class="sourceCode" id="cb658"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb659"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="va">centroids</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>, names_to <span class="op">=</span> <span class="st">"feature"</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">value</span>, y <span class="op">=</span> <span class="va">feature</span>, fill <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span><span class="op">(</span>rows <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="va">cluster</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-250-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-251-1.png" width="672"></div>
 </div>
 <div id="extract-a-single-cluster" class="section level5" number="7.2.1.1.2">
 <h5>
@@ -291,41 +291,48 @@ clusters in the scatter plots.</p>
 <p>You need is to filter the rows corresponding to the cluster index. The
 next example calculates summary statistics and then plots all data
 points of cluster 1.</p>
-<div class="sourceCode" id="cb659"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb660"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cluster1</span> <span class="op">&lt;-</span> <span class="va">ruspini_clustered</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">cluster</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">cluster1</span></span></code></pre></div>
-<pre><code>## # A tibble: 23 × 3
-##           x     y cluster
-##       &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;  
-##  1 -0.258   1.17  1      
-##  2 -0.0289  0.657 1      
-##  3  0.00393 1.29  1      
-##  4 -0.160   1.03  1      
-##  5 -0.357   1.05  1      
-##  6 -0.0944  1.23  1      
-##  7  0.266   0.964 1      
-##  8 -0.455   1.19  1      
-##  9 -0.750   1.17  1      
-## 10 -0.685   1.01  1      
-## # … with 13 more rows</code></pre>
-<div class="sourceCode" id="cb661"><pre class="downlit sourceCode r">
+<pre><code>## # A tibble: 17 × 3
+##        x      y cluster
+##    &lt;dbl&gt;  &lt;dbl&gt; &lt;fct&gt;  
+##  1 1.97  0.513  1      
+##  2 1.74  0.390  1      
+##  3 1.38  0.615  1      
+##  4 0.627 0.0816 1      
+##  5 1.41  0.657  1      
+##  6 1.51  0.472  1      
+##  7 1.84  0.698  1      
+##  8 0.758 0.0405 1      
+##  9 1.45  0.554  1      
+## 10 1.41  0.492  1      
+## 11 1.74  0.492  1      
+## 12 2.04  0.472  1      
+## 13 1.81  0.390  1      
+## 14 0.987 0.472  1      
+## 15 1.02  0.821  1      
+## 16 0.987 0.0816 1      
+## 17 1.45  0.739  1</code></pre>
+<div class="sourceCode" id="cb662"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">cluster1</span><span class="op">)</span></span></code></pre></div>
-<pre><code>##        x                y         cluster
-##  Min.   :-0.881   Min.   :0.657   1:23   
-##  1st Qu.:-0.603   1st Qu.:1.036   2: 0   
-##  Median :-0.357   Median :1.129   3: 0   
-##  Mean   :-0.360   Mean   :1.109   4: 0   
-##  3rd Qu.:-0.127   3rd Qu.:1.221          
-##  Max.   : 0.266   Max.   :1.314</code></pre>
-<div class="sourceCode" id="cb663"><pre class="downlit sourceCode r">
+<pre><code>##        x               y         cluster
+##  Min.   :0.627   Min.   :0.041   1:17   
+##  1st Qu.:1.020   1st Qu.:0.390   2: 0   
+##  Median :1.446   Median :0.492   3: 0   
+##  Mean   :1.419   Mean   :0.469   4: 0   
+##  3rd Qu.:1.741   3rd Qu.:0.615          
+##  Max.   :2.037   Max.   :0.821</code></pre>
+<div class="sourceCode" id="cb664"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">cluster1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-251-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-252-1.png" width="672"></div>
 <p>What happens if we try to cluster with 8 centers?</p>
-<div class="sourceCode" id="cb664"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb665"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/factoextra/man/fviz_cluster.html">fviz_cluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">ruspini_scaled</span>, centers <span class="op">=</span> <span class="fl">8</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">ruspini_scaled</span>,</span>
 <span>  centroids <span class="op">=</span> <span class="cn">TRUE</span>,  geom <span class="op">=</span> <span class="st">"point"</span>, ellipse.type <span class="op">=</span> <span class="st">"norm"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-252-1.png" width="672"></div>
+<pre><code>## Too few points to calculate an ellipse</code></pre>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-253-1.png" width="672"></div>
 </div>
 </div>
 </div>
@@ -339,75 +346,78 @@ quickly (size and time complexity is <span class="math inline">\(O(n^2)\)</span>
 data points). It is only possible to calculate and store the matrix for
 small data sets (maybe a few hundred thousand data points) in main
 memory. If your data is too large then you can use sampling.</p>
-<div class="sourceCode" id="cb665"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb667"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html">dist</a></span><span class="op">(</span><span class="va">ruspini_scaled</span><span class="op">)</span></span></code></pre></div>
 <p><code><a href="https://rdrr.io/r/stats/hclust.html">hclust()</a></code> implements <a href="https://en.wikipedia.org/wiki/Hierarchical_clustering">agglomerative hierarchical
 clustering</a>. We
 cluster using complete link.</p>
-<div class="sourceCode" id="cb666"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb668"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html">hclust</a></span><span class="op">(</span><span class="va">d</span>, method <span class="op">=</span> <span class="st">"complete"</span><span class="op">)</span></span></code></pre></div>
 <p>Hierarchical clustering does not return cluster assignments but a
 dendrogram. The standard plot function plots the dendrogram.</p>
-<div class="sourceCode" id="cb667"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb669"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">hc</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-255-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-256-1.png" width="672"></div>
 <p>Use <code>factoextra</code> (ggplot version). We can specify the number of clusters
 to visualize how the dendrogram will be cut into clusters.</p>
-<div class="sourceCode" id="cb668"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb670"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/factoextra/man/fviz_dend.html">fviz_dend</a></span><span class="op">(</span><span class="va">hc</span>, k <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Warning: The `&lt;scale&gt;` argument of `guides()` cannot be
 ## `FALSE`. Use "none" instead as of ggplot2 3.3.4.
 ## ℹ The deprecated feature was likely used in the
 ##   factoextra package.
 ##   Please report the issue at
-##   &lt; ]8;;https://github.com/kassambara/factoextra/issueshttps://github.com/kassambara/factoextra/issues ]8;;&gt;.</code></pre>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-256-1.png" width="672"></div>
+##   &lt;https://github.com/kassambara/factoextra/issues&gt;.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see
+## where this warning was generated.</code></pre>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-257-1.png" width="672"></div>
 <p>More plotting options for dendrograms, including plotting parts of large
 dendrograms can be found <a href="https://rpubs.com/gaston/dendrograms">here.</a></p>
 <p>Extract cluster assignments by cutting the dendrogram into four parts
 and add the cluster id to the data.</p>
-<div class="sourceCode" id="cb670"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb672"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">clusters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cutree.html">cutree</a></span><span class="op">(</span><span class="va">hc</span>, k <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">cluster_complete</span> <span class="op">&lt;-</span> <span class="va">ruspini_scaled</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/add_column.html">add_column</a></span><span class="op">(</span>cluster <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">clusters</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">cluster_complete</span></span></code></pre></div>
 <pre><code>## # A tibble: 75 × 3
-##           x      y cluster
-##       &lt;dbl&gt;  &lt;dbl&gt; &lt;fct&gt;  
-##  1 -1.08    -0.370 1      
-##  2 -0.258    1.17  2      
-##  3 -1.31    -0.350 1      
-##  4 -0.0289   0.657 2      
-##  5  0.00393  1.29  2      
-##  6  0.102   -1.62  3      
-##  7 -0.160    1.03  2      
-##  8 -1.21    -0.637 1      
-##  9 -0.357    1.05  2      
-## 10 -0.0944   1.23  2      
-## # … with 65 more rows</code></pre>
-<div class="sourceCode" id="cb672"><pre class="downlit sourceCode r">
+##          x      y cluster
+##      &lt;dbl&gt;  &lt;dbl&gt; &lt;fct&gt;  
+##  1  1.97    0.513 1      
+##  2 -0.652   1.25  2      
+##  3  1.74    0.390 1      
+##  4 -0.0944  1.23  2      
+##  5 -1.50   -0.309 3      
+##  6 -0.258   1.17  2      
+##  7  1.38    0.615 1      
+##  8 -0.685   1.01  2      
+##  9 -1.37   -0.473 3      
+## 10  0.496  -1.81  4      
+## # ℹ 65 more rows</code></pre>
+<div class="sourceCode" id="cb674"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">cluster_complete</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-257-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-258-1.png" width="672"></div>
 <p>Try 8 clusters (Note: <code>fviz_cluster</code> needs a list with data and the
 cluster labels for hclust)</p>
-<div class="sourceCode" id="cb673"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb675"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/factoextra/man/fviz_cluster.html">fviz_cluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ruspini_scaled</span>, cluster <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/cutree.html">cutree</a></span><span class="op">(</span><span class="va">hc</span>, k <span class="op">=</span> <span class="fl">8</span><span class="op">)</span><span class="op">)</span>, geom <span class="op">=</span> <span class="st">"point"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-258-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-259-1.png" width="672"></div>
 <p>Clustering with single link</p>
-<div class="sourceCode" id="cb674"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb676"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hc_single</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html">hclust</a></span><span class="op">(</span><span class="va">d</span>, method <span class="op">=</span> <span class="st">"single"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/factoextra/man/fviz_dend.html">fviz_dend</a></span><span class="op">(</span><span class="va">hc_single</span>, k <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-259-1.png" width="672"></div>
-<div class="sourceCode" id="cb675"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-260-1.png" width="672"></div>
+<div class="sourceCode" id="cb677"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/factoextra/man/fviz_cluster.html">fviz_cluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ruspini_scaled</span>, cluster <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/cutree.html">cutree</a></span><span class="op">(</span><span class="va">hc_single</span>, k <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span>, geom <span class="op">=</span> <span class="st">"point"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-259-2.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-260-2.png" width="672"></div>
 </div>
 <div id="density-based-clustering-with-dbscan" class="section level3" number="7.2.3">
 <h3>
 <span class="header-section-number">7.2.3</span> Density-based clustering with DBSCAN<a class="anchor" aria-label="anchor" href="#density-based-clustering-with-dbscan"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb676"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb678"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mhahsler/dbscan">dbscan</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code>## 
 ## Attaching package: 'dbscan'</code></pre>
@@ -425,12 +435,12 @@ as a smoothing parameter. I use here minPts = 4.</p>
 Note that minPts contains the point itself, while the k-nearest neighbor
 does not. We therefore have to use k = minPts - 1! The knee is around
 eps = .32.</p>
-<div class="sourceCode" id="cb679"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb681"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/dbscan/man/kNNdist.html">kNNdistplot</a></span><span class="op">(</span><span class="va">ruspini_scaled</span>, k <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">.32</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-261-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-262-1.png" width="672"></div>
 <p>run dbscan</p>
-<div class="sourceCode" id="cb680"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb682"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dbscan/man/dbscan.html">dbscan</a></span><span class="op">(</span><span class="va">ruspini_scaled</span>, eps <span class="op">=</span> <span class="fl">.32</span>, minPts <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">db</span></span></code></pre></div>
 <pre><code>## DBSCAN clustering for 75 objects.
@@ -439,27 +449,27 @@ eps = .32.</p>
 ## The clustering contains 4 cluster(s) and 5 noise points.
 ## 
 ##  0  1  2  3  4 
-##  5 20 23 15 12 
+##  5 12 23 20 15 
 ## 
 ## Available fields: cluster, eps, minPts, dist,
 ##                   borderPoints</code></pre>
-<div class="sourceCode" id="cb682"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb684"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">db</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## List of 5
-##  $ cluster     : int [1:75] 1 2 1 2 2 3 2 1 2 2 ...
+##  $ cluster     : int [1:75] 1 2 1 2 3 2 1 2 3 4 ...
 ##  $ eps         : num 0.32
 ##  $ minPts      : num 4
 ##  $ dist        : chr "euclidean"
 ##  $ borderPoints: logi TRUE
 ##  - attr(*, "class")= chr [1:2] "dbscan_fast" "dbscan"</code></pre>
-<div class="sourceCode" id="cb684"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb686"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ruspini_scaled</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/add_column.html">add_column</a></span><span class="op">(</span>cluster <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">db</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-262-1.png" width="672"></div>
-<p><strong>Note:</strong> Cluster 0 represents outliers).</p>
-<div class="sourceCode" id="cb685"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/factoextra/man/fviz_cluster.html">fviz_cluster</a></span><span class="op">(</span><span class="va">db</span>, <span class="va">ruspini_scaled</span>, geom <span class="op">=</span> <span class="st">"point"</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-263-1.png" width="672"></div>
+<p><strong>Note:</strong> Cluster 0 represents outliers).</p>
+<div class="sourceCode" id="cb687"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/factoextra/man/fviz_cluster.html">fviz_cluster</a></span><span class="op">(</span><span class="va">db</span>, <span class="va">ruspini_scaled</span>, geom <span class="op">=</span> <span class="st">"point"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-264-1.png" width="672"></div>
 <p>Play with eps (neighborhood size) and MinPts (minimum of points needed
 for core cluster)</p>
 </div>
@@ -474,35 +484,35 @@ clustering, it typically works with precomputed distance matrix. An
 advantage is that you can use any distance metric not just Euclidean
 distances. <strong>Note:</strong> The medoid is the most central data point in the
 middle of the cluster.</p>
-<div class="sourceCode" id="cb686"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb688"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/cluster/">cluster</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code>## 
 ## Attaching package: 'cluster'</code></pre>
 <pre><code>## The following object is masked _by_ '.GlobalEnv':
 ## 
 ##     ruspini</code></pre>
-<div class="sourceCode" id="cb689"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb691"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html">dist</a></span><span class="op">(</span><span class="va">ruspini_scaled</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span></code></pre></div>
-<pre><code>##  'dist' num [1:2775] 1.74 0.23 1.47 1.98 1.72 ...
+<pre><code>##  'dist' num [1:2775] 2.72 0.26 2.19 3.57 2.32 ...
 ##  - attr(*, "Size")= int 75
 ##  - attr(*, "Diag")= logi FALSE
 ##  - attr(*, "Upper")= logi FALSE
 ##  - attr(*, "method")= chr "Euclidean"
 ##  - attr(*, "call")= language dist(x = ruspini_scaled)</code></pre>
-<div class="sourceCode" id="cb691"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb693"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/cluster/man/pam.html">pam</a></span><span class="op">(</span><span class="va">d</span>, k <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">p</span></span></code></pre></div>
 <pre><code>## Medoids:
 ##      ID   
-## [1,] 34 34
-## [2,] 30 30
-## [3,] 12 12
-## [4,] 26 26
+## [1,] 41 41
+## [2,] 63 63
+## [3,] 72 72
+## [4,] 25 25
 ## Clustering vector:
-##  [1] 1 2 1 2 2 3 2 1 2 2 4 3 2 1 2 3 2 1 2 4 4 3 3 2 3
-## [26] 4 4 1 3 2 1 3 2 1 4 3 2 4 4 1 2 1 1 1 4 1 4 4 3 4
-## [51] 4 3 1 1 2 2 3 2 4 4 4 1 2 2 2 4 3 2 3 2 1 1 3 1 1
+##  [1] 1 2 1 2 3 2 1 2 3 4 1 1 3 4 4 1 3 3 3 4 2 3 3 4 4
+## [26] 2 2 4 1 2 2 1 2 3 3 3 2 2 2 4 1 1 3 2 1 2 4 4 1 2
+## [51] 4 3 1 4 1 2 2 2 3 1 1 4 2 3 2 3 4 2 3 3 4 3 1 3 2
 ## Objective function:
 ## build  swap 
 ## 0.442 0.319 
@@ -511,7 +521,7 @@ middle of the cluster.</p>
 ## [1] "medoids"    "id.med"     "clustering" "objective" 
 ## [5] "isolation"  "clusinfo"   "silinfo"    "diss"      
 ## [9] "call"</code></pre>
-<div class="sourceCode" id="cb693"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb695"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ruspini_clustered</span> <span class="op">&lt;-</span> <span class="va">ruspini_scaled</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/add_column.html">add_column</a></span><span class="op">(</span>cluster <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">medoids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">ruspini_scaled</span><span class="op">[</span><span class="va">p</span><span class="op">$</span><span class="va">medoids</span>, <span class="op">]</span>, rownames <span class="op">=</span> <span class="st">"cluster"</span><span class="op">)</span></span>
@@ -519,24 +529,24 @@ middle of the cluster.</p>
 <pre><code>## # A tibble: 4 × 3
 ##   cluster      x      y
 ##   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;
-## 1 1       -1.18  -0.555
+## 1 1        1.45   0.554
 ## 2 2       -0.357  1.17 
-## 3 3        0.463 -1.46 
-## 4 4        1.45   0.554</code></pre>
-<div class="sourceCode" id="cb695"><pre class="downlit sourceCode r">
+## 3 3       -1.18  -0.555
+## 4 4        0.463 -1.46</code></pre>
+<div class="sourceCode" id="cb697"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ruspini_clustered</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">medoids</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span>, shape <span class="op">=</span> <span class="fl">3</span>, size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-264-1.png" width="672"></div>
-<div class="sourceCode" id="cb696"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-265-1.png" width="672"></div>
+<div class="sourceCode" id="cb698"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## __Note:__ `fviz_cluster` needs the original data.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/factoextra/man/fviz_cluster.html">fviz_cluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">p</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ruspini_scaled</span><span class="op">)</span><span class="op">)</span>, geom <span class="op">=</span> <span class="st">"point"</span>, ellipse.type <span class="op">=</span> <span class="st">"norm"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-264-2.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-265-2.png" width="672"></div>
 </div>
 <div id="gaussian-mixture-models" class="section level3" number="7.2.5">
 <h3>
 <span class="header-section-number">7.2.5</span> Gaussian Mixture Models<a class="anchor" aria-label="anchor" href="#gaussian-mixture-models"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb697"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb699"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mclust-org.github.io/mclust/">mclust</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code>##                    __           __ 
 ##    ____ ___  _____/ /_  _______/ /_
@@ -558,7 +568,7 @@ distributions and thus can be used to find clusters. <code><a href="https://mclu
 Bayesian Information Criterion (BIC) to find the number of clusters
 (model selection). BIC uses the likelihood and a penalty term to guard
 against overfitting.</p>
-<div class="sourceCode" id="cb701"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb703"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mclust-org.github.io/mclust/reference/Mclust.html">Mclust</a></span><span class="op">(</span><span class="va">ruspini_scaled</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## fitting ...
 ## 
@@ -782,7 +792,7 @@ against overfitting.</p>
   |=============================================|  99%
   |                                                   
   |=============================================| 100%</code></pre>
-<div class="sourceCode" id="cb703"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb705"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## ---------------------------------------------------- 
 ## Gaussian finite mixture model fitted by EM algorithm 
@@ -796,12 +806,12 @@ against overfitting.</p>
 ## 
 ## Clustering table:
 ##  1  2  3  4  5 
-## 20 23 15  3 14</code></pre>
-<div class="sourceCode" id="cb705"><pre class="downlit sourceCode r">
+## 14 23 20 15  3</code></pre>
+<div class="sourceCode" id="cb707"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">m</span>, what <span class="op">=</span> <span class="st">"classification"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-266-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-267-1.png" width="672"></div>
 <p>Rerun with a fixed number of 4 clusters</p>
-<div class="sourceCode" id="cb706"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb708"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mclust-org.github.io/mclust/reference/Mclust.html">Mclust</a></span><span class="op">(</span><span class="va">ruspini_scaled</span>, G<span class="op">=</span><span class="fl">4</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## fitting ...
 ## 
@@ -837,7 +847,7 @@ against overfitting.</p>
   |==========================================   |  93%
   |                                                   
   |=============================================| 100%</code></pre>
-<div class="sourceCode" id="cb708"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb710"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## ---------------------------------------------------- 
 ## Gaussian finite mixture model fitted by EM algorithm 
@@ -851,10 +861,10 @@ against overfitting.</p>
 ## 
 ## Clustering table:
 ##  1  2  3  4 
-## 20 23 15 17</code></pre>
-<div class="sourceCode" id="cb710"><pre class="downlit sourceCode r">
+## 17 23 20 15</code></pre>
+<div class="sourceCode" id="cb712"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">m</span>, what <span class="op">=</span> <span class="st">"classification"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-267-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-268-1.png" width="672"></div>
 </div>
 <div id="spectral-clustering" class="section level3" number="7.2.6">
 <h3>
@@ -864,7 +874,7 @@ against overfitting.</p>
 works by embedding the data points of the partitioning problem into the
 subspace of the k largest eigenvectors of a normalized affinity/kernel
 matrix. Then uses a simple clustering method like k-means.</p>
-<div class="sourceCode" id="cb711"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb713"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"kernlab"</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## 
 ## Attaching package: 'kernlab'</code></pre>
@@ -880,34 +890,34 @@ matrix. Then uses a simple clustering method like k-means.</p>
 <pre><code>## The following object is masked from 'package:ggplot2':
 ## 
 ##     alpha</code></pre>
-<div class="sourceCode" id="cb717"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb719"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cluster_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/kernlab/man/specc.html">specc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">as.matrix</a></span><span class="op">(</span><span class="va">ruspini_scaled</span><span class="op">)</span>, centers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">cluster_spec</span></span></code></pre></div>
 <pre><code>## Spectral Clustering object of class "specc" 
 ## 
 ##  Cluster memberships: 
 ##  
-## 3 2 3 2 2 1 2 3 2 2 4 1 2 3 2 1 2 3 2 4 4 1 1 2 1 4 4 3 1 2 3 1 2 3 4 1 2 4 4 3 2 3 3 3 4 3 4 4 1 4 4 1 3 3 2 2 1 2 4 4 4 3 2 2 2 4 1 2 1 2 3 3 1 3 3 
+## 4 1 4 1 2 1 4 1 2 1 4 4 3 1 1 4 2 2 2 1 1 3 3 1 1 1 1 1 4 1 1 4 1 2 3 3 1 1 1 1 4 4 3 1 4 1 1 1 4 1 1 2 4 1 4 1 1 1 3 4 4 1 1 3 1 3 1 1 3 2 1 2 4 2 1 
 ##  
 ## Gaussian Radial Basis kernel function. 
-##  Hyperparameter : sigma =  9.26541103603588 
+##  Hyperparameter : sigma =  45.2704818907988 
 ## 
 ## Centers:  
-##        [,1]   [,2]
-## [1,]  0.461 -1.491
-## [2,] -0.360  1.109
-## [3,] -1.139 -0.556
-## [4,]  1.419  0.469
+##         [,1]    [,2]
+## [1,] -0.0358  0.0827
+## [2,] -1.4123 -0.5365
+## [3,] -0.8648 -0.5755
+## [4,]  1.4194  0.4693
 ## 
 ## Cluster size:  
-## [1] 15 23 20 17
+## [1] 38 10 10 17
 ## 
 ## Within-cluster sum of squares:  
-## [1] 57.99 50.75  7.49 16.72</code></pre>
-<div class="sourceCode" id="cb719"><pre class="downlit sourceCode r">
+## [1] 71.6 10.5  1.3 18.0</code></pre>
+<div class="sourceCode" id="cb721"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ruspini_scaled</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/add_column.html">add_column</a></span><span class="op">(</span>cluster <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cluster_spec</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-268-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-269-1.png" width="672"></div>
 </div>
 <div id="fuzzy-c-means-clustering" class="section level3" number="7.2.7">
 <h3>
@@ -916,7 +926,7 @@ matrix. Then uses a simple clustering method like k-means.</p>
 <p>The <a href="https://en.wikipedia.org/wiki/Fuzzy_clustering">fuzzy clustering</a>
 version of the k-means clustering problem. Each data point has a degree
 of membership to for each cluster.</p>
-<div class="sourceCode" id="cb720"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb722"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"e1071"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">cluster_cmeans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/e1071/man/cmeans.html">cmeans</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">as.matrix</a></span><span class="op">(</span><span class="va">ruspini_scaled</span><span class="op">)</span>, centers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
@@ -925,105 +935,105 @@ of membership to for each cluster.</p>
 ## 
 ## Cluster centers:
 ##        x      y
-## 1  1.505  0.516
+## 1 -0.376  1.114
 ## 2  0.455 -1.476
-## 3 -1.137 -0.555
-## 4 -0.376  1.114
+## 3  1.505  0.516
+## 4 -1.137 -0.555
 ## 
 ## Memberships:
 ##              1        2        3        4
-##  [1,] 4.91e-03 0.010238 0.971283 1.36e-02
-##  [2,] 4.75e-03 0.002237 0.004484 9.89e-01
-##  [3,] 7.84e-03 0.015521 0.954072 2.26e-02
-##  [4,] 1.05e-01 0.051906 0.092068 7.51e-01
-##  [5,] 5.51e-02 0.019994 0.033363 8.92e-01
-##  [6,] 2.04e-02 0.912542 0.049812 1.73e-02
-##  [7,] 1.73e-02 0.007890 0.015164 9.60e-01
-##  [8,] 1.36e-03 0.003403 0.992094 3.14e-03
-##  [9,] 1.32e-03 0.000705 0.001560 9.96e-01
-## [10,] 2.85e-02 0.011470 0.020461 9.40e-01
-## [11,] 7.88e-01 0.046129 0.039418 1.27e-01
-## [12,] 7.42e-05 0.999766 0.000110 5.05e-05
-## [13,] 1.76e-01 0.050971 0.071389 7.02e-01
-## [14,] 1.01e-02 0.029083 0.939773 2.10e-02
-## [15,] 2.77e-03 0.001497 0.003385 9.92e-01
-## [16,] 1.34e-02 0.952362 0.024151 1.01e-02
-## [17,] 2.38e-02 0.015519 0.041983 9.19e-01
-## [18,] 1.83e-02 0.054960 0.890097 3.66e-02
-## [19,] 1.97e-02 0.013313 0.037605 9.29e-01
-## [20,] 9.65e-01 0.013539 0.007574 1.39e-02
-## [21,] 9.51e-01 0.019236 0.010680 1.93e-02
-## [22,] 1.78e-02 0.953744 0.018343 1.02e-02
-## [23,] 1.45e-02 0.959100 0.017339 9.02e-03
-## [24,] 9.54e-03 0.004635 0.009541 9.76e-01
-## [25,] 4.59e-02 0.892180 0.038484 2.34e-02
-## [26,] 9.97e-01 0.000944 0.000609 1.32e-03
-## [27,] 9.95e-01 0.001840 0.001160 2.46e-03
-## [28,] 1.15e-02 0.027262 0.934341 2.69e-02
-## [29,] 2.03e-03 0.993497 0.003079 1.40e-03
-## [30,] 8.88e-04 0.000451 0.000964 9.98e-01
-## [31,] 6.49e-03 0.013810 0.962604 1.71e-02
-## [32,] 1.19e-02 0.953143 0.025463 9.53e-03
-## [33,] 1.33e-01 0.044822 0.067224 7.55e-01
-## [34,] 1.84e-04 0.000437 0.998932 4.47e-04
-## [35,] 9.40e-01 0.020544 0.013080 2.68e-02
-## [36,] 2.30e-03 0.992177 0.003861 1.66e-03
-## [37,] 4.27e-03 0.002182 0.004627 9.89e-01
-## [38,] 9.73e-01 0.009962 0.005869 1.13e-02
-## [39,] 5.41e-01 0.177389 0.107509 1.74e-01
-## [40,] 2.00e-02 0.043110 0.887727 4.92e-02
-## [41,] 6.88e-03 0.004135 0.010326 9.79e-01
-## [42,] 4.14e-02 0.097120 0.768391 9.31e-02
-## [43,] 1.14e-02 0.035818 0.930269 2.25e-02
-## [44,] 4.51e-03 0.012774 0.973170 9.54e-03
-## [45,] 8.11e-01 0.053621 0.039262 9.62e-02
-## [46,] 2.50e-02 0.059385 0.860423 5.52e-02
-## [47,] 9.85e-01 0.004748 0.003221 7.44e-03
-## [48,] 8.96e-01 0.040522 0.022923 4.09e-02
-## [49,] 1.93e-02 0.949234 0.020387 1.11e-02
-## [50,] 9.70e-01 0.008725 0.006153 1.48e-02
-## [51,] 9.99e-01 0.000411 0.000250 5.07e-04
-## [52,] 1.85e-03 0.993633 0.003167 1.35e-03
-## [53,] 9.90e-03 0.022071 0.942653 2.54e-02
-## [54,] 1.46e-02 0.040506 0.914868 3.00e-02
-## [55,] 3.63e-02 0.025668 0.075851 8.62e-01
-## [56,] 7.76e-03 0.004750 0.012065 9.75e-01
-## [57,] 1.82e-02 0.950362 0.020593 1.09e-02
-## [58,] 1.35e-02 0.005928 0.011252 9.69e-01
-## [59,] 4.70e-01 0.183757 0.128308 2.18e-01
-## [60,] 7.06e-01 0.118860 0.065467 1.10e-01
-## [61,] 9.83e-01 0.005042 0.003456 8.07e-03
-## [62,] 1.64e-02 0.033977 0.904508 4.51e-02
-## [63,] 2.37e-02 0.014629 0.037153 9.25e-01
-## [64,] 2.45e-02 0.016805 0.048384 9.10e-01
-## [65,] 3.40e-02 0.013940 0.024784 9.27e-01
-## [66,] 9.16e-01 0.031838 0.018432 3.39e-02
-## [67,] 1.34e-02 0.947018 0.028739 1.08e-02
-## [68,] 8.41e-03 0.004817 0.011470 9.75e-01
-## [69,] 4.42e-03 0.983990 0.008241 3.35e-03
-## [70,] 1.73e-02 0.010355 0.025639 9.47e-01
-## [71,] 2.11e-02 0.074030 0.866516 3.84e-02
-## [72,] 2.13e-02 0.063341 0.872767 4.26e-02
-## [73,] 1.65e-02 0.947252 0.024935 1.14e-02
-## [74,] 1.80e-02 0.033635 0.895310 5.31e-02
-## [75,] 2.77e-02 0.045277 0.828834 9.82e-02
+##  [1,] 3.39e-02 0.031840 9.16e-01 0.018433
+##  [2,] 9.47e-01 0.010355 1.73e-02 0.025638
+##  [3,] 1.39e-02 0.013540 9.65e-01 0.007575
+##  [4,] 9.40e-01 0.011470 2.85e-02 0.020462
+##  [5,] 5.31e-02 0.033634 1.80e-02 0.895313
+##  [6,] 9.89e-01 0.002238 4.75e-03 0.004484
+##  [7,] 7.44e-03 0.004747 9.85e-01 0.003221
+##  [8,] 9.29e-01 0.013313 1.97e-02 0.037605
+##  [9,] 1.71e-02 0.013809 6.49e-03 0.962606
+## [10,] 1.14e-02 0.947252 1.65e-02 0.024935
+## [11,] 2.18e-01 0.183755 4.70e-01 0.128306
+## [12,] 8.07e-03 0.005041 9.83e-01 0.003456
+## [13,] 2.54e-02 0.022072 9.90e-03 0.942650
+## [14,] 1.73e-02 0.912543 2.04e-02 0.049812
+## [15,] 1.08e-02 0.947019 1.34e-02 0.028739
+## [16,] 5.07e-04 0.000411 9.99e-01 0.000250
+## [17,] 2.26e-02 0.015520 7.84e-03 0.954074
+## [18,] 2.69e-02 0.027261 1.15e-02 0.934344
+## [19,] 3.14e-03 0.003403 1.36e-03 0.992095
+## [20,] 1.09e-02 0.950362 1.82e-02 0.020593
+## [21,] 9.10e-01 0.016805 2.45e-02 0.048384
+## [22,] 4.26e-02 0.063343 2.13e-02 0.872761
+## [23,] 2.10e-02 0.029085 1.01e-02 0.939769
+## [24,] 1.11e-02 0.949234 1.93e-02 0.020387
+## [25,] 5.05e-05 0.999766 7.43e-05 0.000110
+## [26,] 9.69e-01 0.005928 1.35e-02 0.011252
+## [27,] 8.92e-01 0.019994 5.51e-02 0.033363
+## [28,] 1.35e-03 0.993633 1.85e-03 0.003167
+## [29,] 2.68e-02 0.020545 9.40e-01 0.013081
+## [30,] 9.76e-01 0.004635 9.54e-03 0.009541
+## [31,] 9.27e-01 0.013940 3.40e-02 0.024785
+## [32,] 1.74e-01 0.177387 5.41e-01 0.107507
+## [33,] 7.55e-01 0.044822 1.33e-01 0.067224
+## [34,] 3.00e-02 0.040505 1.46e-02 0.914869
+## [35,] 3.66e-02 0.054962 1.83e-02 0.890092
+## [36,] 4.51e-02 0.033978 1.64e-02 0.904504
+## [37,] 9.19e-01 0.015518 2.38e-02 0.041982
+## [38,] 9.25e-01 0.014629 2.37e-02 0.037153
+## [39,] 9.92e-01 0.001497 2.77e-03 0.003385
+## [40,] 1.40e-03 0.993497 2.03e-03 0.003079
+## [41,] 1.32e-03 0.000943 9.97e-01 0.000609
+## [42,] 2.46e-03 0.001840 9.95e-01 0.001160
+## [43,] 9.55e-03 0.012775 4.51e-03 0.973168
+## [44,] 9.75e-01 0.004750 7.76e-03 0.012064
+## [45,] 1.13e-02 0.009963 9.73e-01 0.005870
+## [46,] 9.89e-01 0.002182 4.27e-03 0.004627
+## [47,] 9.02e-03 0.959100 1.45e-02 0.017339
+## [48,] 9.53e-03 0.953143 1.19e-02 0.025463
+## [49,] 4.09e-02 0.040524 8.96e-01 0.022924
+## [50,] 7.51e-01 0.051906 1.05e-01 0.092068
+## [51,] 2.34e-02 0.892180 4.59e-02 0.038484
+## [52,] 9.82e-02 0.045276 2.77e-02 0.828837
+## [53,] 1.93e-02 0.019237 9.51e-01 0.010680
+## [54,] 1.01e-02 0.952362 1.34e-02 0.024150
+## [55,] 9.62e-02 0.053619 8.11e-01 0.039260
+## [56,] 8.62e-01 0.025668 3.63e-02 0.075850
+## [57,] 9.60e-01 0.007890 1.73e-02 0.015164
+## [58,] 9.96e-01 0.000705 1.32e-03 0.001560
+## [59,] 1.36e-02 0.010238 4.91e-03 0.971283
+## [60,] 1.27e-01 0.046127 7.88e-01 0.039416
+## [61,] 1.10e-01 0.118857 7.06e-01 0.065465
+## [62,] 3.35e-03 0.983990 4.42e-03 0.008241
+## [63,] 9.98e-01 0.000451 8.88e-04 0.000964
+## [64,] 2.25e-02 0.035819 1.14e-02 0.930266
+## [65,] 9.79e-01 0.004135 6.88e-03 0.010326
+## [66,] 3.84e-02 0.074033 2.11e-02 0.866512
+## [67,] 1.66e-03 0.992177 2.30e-03 0.003861
+## [68,] 7.02e-01 0.050971 1.76e-01 0.071388
+## [69,] 9.31e-02 0.097122 4.14e-02 0.768384
+## [70,] 5.52e-02 0.059384 2.50e-02 0.860427
+## [71,] 1.02e-02 0.953743 1.78e-02 0.018343
+## [72,] 4.47e-04 0.000437 1.84e-04 0.998932
+## [73,] 1.48e-02 0.008725 9.70e-01 0.006153
+## [74,] 4.92e-02 0.043109 2.00e-02 0.887731
+## [75,] 9.75e-01 0.004817 8.41e-03 0.011470
 ## 
 ## Closest hard clustering:
-##  [1] 3 4 3 4 4 2 4 3 4 4 1 2 4 3 4 2 4 3 4 1 1 2 2 4 2
-## [26] 1 1 3 2 4 3 2 4 3 1 2 4 1 1 3 4 3 3 3 1 3 1 1 2 1
-## [51] 1 2 3 3 4 4 2 4 1 1 1 3 4 4 4 1 2 4 2 4 3 3 2 3 3
+##  [1] 3 1 3 1 4 1 3 1 4 2 3 3 4 2 2 3 4 4 4 2 1 4 4 2 2
+## [26] 1 1 2 3 1 1 3 1 4 4 4 1 1 1 2 3 3 4 1 3 1 2 2 3 1
+## [51] 2 4 3 2 3 1 1 1 4 3 3 2 1 4 1 4 2 1 4 4 2 4 3 4 1
 ## 
 ## Available components:
 ## [1] "centers"     "size"        "cluster"    
 ## [4] "membership"  "iter"        "withinerror"
 ## [7] "call"</code></pre>
 <p>Plot membership (shown as small pie charts)</p>
-<div class="sourceCode" id="cb722"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb724"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"scatterpie"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span>  <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/scatterpie/man/geom_scatterpie.html">geom_scatterpie</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">ruspini_scaled</span>, <span class="va">cluster_cmeans</span><span class="op">$</span><span class="va">membership</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">cluster_cmeans</span><span class="op">$</span><span class="va">membership</span><span class="op">)</span>, legend_name <span class="op">=</span> <span class="st">"Membership"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_fixed.html">coord_equal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-270-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-271-1.png" width="672"></div>
 </div>
 </div>
 <div id="internal-cluster-validation" class="section level2" number="7.3">
@@ -1040,13 +1050,13 @@ squares (WCSS) used by
 <a href="https://en.wikipedia.org/wiki/Silhouette_(clustering)">average silhouette
 width</a>. Look at
 <code>within.cluster.ss</code> and <code>avg.silwidth</code> below.</p>
-<div class="sourceCode" id="cb723"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb725"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">##library(fpc)</span></span></code></pre></div>
 <p>Notes: * I do not load fpc since the NAMESPACE overwrites dbscan. *
 The clustering (second argument below) has to be supplied as a vector
 with numbers (cluster IDs) and cannot be a factor (use <code><a href="https://rdrr.io/r/base/integer.html">as.integer()</a></code> to
 convert the factor to an ID).</p>
-<div class="sourceCode" id="cb724"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb726"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">fpc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/fpc/man/cluster.stats.html">cluster.stats</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">km</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## $n
 ## [1] 75
@@ -1055,7 +1065,7 @@ convert the factor to an ID).</p>
 ## [1] 4
 ## 
 ## $cluster.size
-## [1] 23 20 17 15
+## [1] 17 15 20 23
 ## 
 ## $min.cluster.size
 ## [1] 15
@@ -1064,33 +1074,33 @@ convert the factor to an ID).</p>
 ## [1] 0
 ## 
 ## $diameter
-## [1] 1.159 1.119 1.463 0.836
+## [1] 1.463 0.836 1.119 1.159
 ## 
 ## $average.distance
-## [1] 0.429 0.482 0.581 0.356
+## [1] 0.581 0.356 0.482 0.429
 ## 
 ## $median.distance
-## [1] 0.393 0.449 0.502 0.338
+## [1] 0.502 0.338 0.449 0.393
 ## 
 ## $separation
-## [1] 0.768 1.158 0.768 1.158
+## [1] 0.768 1.158 1.158 0.768
 ## 
 ## $average.toother
-## [1] 2.15 2.16 2.29 2.31
+## [1] 2.29 2.31 2.16 2.15
 ## 
 ## $separation.matrix
-##       [,1] [,2]  [,3] [,4]
-## [1,] 0.000 1.22 0.768 1.96
-## [2,] 1.220 0.00 1.340 1.16
-## [3,] 0.768 1.34 0.000 1.31
-## [4,] 1.958 1.16 1.308 0.00
+##       [,1] [,2] [,3]  [,4]
+## [1,] 0.000 1.31 1.34 0.768
+## [2,] 1.308 0.00 1.16 1.958
+## [3,] 1.340 1.16 0.00 1.220
+## [4,] 0.768 1.96 1.22 0.000
 ## 
 ## $ave.between.matrix
 ##      [,1] [,2] [,3] [,4]
-## [1,] 0.00 1.89 1.92 2.75
-## [2,] 1.89 0.00 2.77 1.87
-## [3,] 1.92 2.77 0.00 2.22
-## [4,] 2.75 1.87 2.22 0.00
+## [1,] 0.00 2.22 2.77 1.92
+## [2,] 2.22 0.00 1.87 2.75
+## [3,] 2.77 1.87 0.00 1.89
+## [4,] 1.92 2.75 1.89 0.00
 ## 
 ## $average.between
 ## [1] 2.22
@@ -1115,7 +1125,7 @@ convert the factor to an ID).</p>
 ## 
 ## $clus.avg.silwidths
 ##     1     2     3     4 
-## 0.745 0.721 0.681 0.807 
+## 0.681 0.807 0.721 0.745 
 ## 
 ## $avg.silwidth
 ## [1] 0.737
@@ -1145,7 +1155,7 @@ convert the factor to an ID).</p>
 ## [1] 324
 ## 
 ## $cwidegap
-## [1] 0.315 0.261 0.415 0.235
+## [1] 0.415 0.235 0.261 0.315
 ## 
 ## $widestgap
 ## [1] 0.415
@@ -1159,7 +1169,7 @@ convert the factor to an ID).</p>
 ## $vi
 ## NULL</code></pre>
 <p>Read <code>? cluster.stats</code> for an explanation of all the available indices.</p>
-<div class="sourceCode" id="cb726"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb728"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
 <span>    km <span class="op">=</span> <span class="va">km</span><span class="op">$</span><span class="va">cluster</span>,</span>
@@ -1176,31 +1186,31 @@ convert the factor to an ID).</p>
 <h3>
 <span class="header-section-number">7.3.2</span> Silhouette plot<a class="anchor" aria-label="anchor" href="#silhouette-plot"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb728"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb730"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/cluster/">cluster</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/cluster/man/silhouette.html">silhouette</a></span><span class="op">(</span><span class="va">km</span><span class="op">$</span><span class="va">cluster</span>, <span class="va">d</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-274-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-275-1.png" width="672"></div>
 <p><strong>Note:</strong> The silhouette plot does not show correctly in R Studio if you
 have too many objects (bars are missing). I will work when you open a
 new plotting device with <code>windows()</code>, <code><a href="https://rdrr.io/r/grDevices/x11.html">x11()</a></code> or <code><a href="https://rdrr.io/r/grDevices/quartz.html">quartz()</a></code>.</p>
 <p>ggplot visualization using <code>factoextra</code></p>
-<div class="sourceCode" id="cb729"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb731"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/factoextra/man/fviz_silhouette.html">fviz_silhouette</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/cluster/man/silhouette.html">silhouette</a></span><span class="op">(</span><span class="va">km</span><span class="op">$</span><span class="va">cluster</span>, <span class="va">d</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##   cluster size ave.sil.width
-## 1       1   23          0.75
-## 2       2   20          0.72
-## 3       3   17          0.68
-## 4       4   15          0.81</code></pre>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-275-1.png" width="672"></div>
+## 1       1   17          0.68
+## 2       2   15          0.81
+## 3       3   20          0.72
+## 4       4   23          0.75</code></pre>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-276-1.png" width="672"></div>
 </div>
 <div id="find-optimal-number-of-clusters-for-k-means" class="section level3" number="7.3.3">
 <h3>
 <span class="header-section-number">7.3.3</span> Find Optimal Number of Clusters for k-means<a class="anchor" aria-label="anchor" href="#find-optimal-number-of-clusters-for-k-means"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb731"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb733"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ruspini_scaled</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-276-1.png" width="672"></div>
-<div class="sourceCode" id="cb732"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-277-1.png" width="672"></div>
+<div class="sourceCode" id="cb734"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## We will use different methods and try 1-10 clusters.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
 <span><span class="va">ks</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">:</span><span class="fl">10</span></span></code></pre></div>
@@ -1213,14 +1223,14 @@ clusters and look for the <a href="https://en.wikipedia.org/wiki/Elbow_method_(c
 elbow</a> in the
 plot. (<code>nstart = 5</code> just repeats k-means 5 times and returns the best
 solution)</p>
-<div class="sourceCode" id="cb733"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb735"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">WCSS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">ks</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">k</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">ruspini_scaled</span>, centers <span class="op">=</span> <span class="va">k</span>, nstart <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">$</span><span class="va">tot.withinss</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">WCSS</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">WCSS</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">WCSS</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">WCSS</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">4</span>, color <span class="op">=</span> <span class="st">"red"</span>, linetype <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-277-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-278-1.png" width="672"></div>
 </div>
 <div id="average-silhouette-width" class="section level4" number="7.3.3.2">
 <h4>
@@ -1228,7 +1238,7 @@ solution)</p>
 </h4>
 <p>Plot the average silhouette width for different number of clusters and
 look for the maximum in the plot.</p>
-<div class="sourceCode" id="cb734"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb736"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ASW</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">ks</span>, FUN<span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">k</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu">fpc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/fpc/man/cluster.stats.html">cluster.stats</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">ruspini_scaled</span>, centers<span class="op">=</span><span class="va">k</span>, nstart <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span><span class="op">$</span><span class="va">avg.silwidth</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
@@ -1236,10 +1246,10 @@ look for the maximum in the plot.</p>
 <span><span class="va">best_k</span> <span class="op">&lt;-</span> <span class="va">ks</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span><span class="op">(</span><span class="va">ASW</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">best_k</span></span></code></pre></div>
 <pre><code>## [1] 4</code></pre>
-<div class="sourceCode" id="cb736"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">ASW</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">ASW</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb738"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">ASW</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">ASW</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">best_k</span>, color <span class="op">=</span> <span class="st">"red"</span>, linetype <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-278-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-279-1.png" width="672"></div>
 </div>
 <div id="dunn-index" class="section level4" number="7.3.3.3">
 <h4>
@@ -1247,15 +1257,15 @@ look for the maximum in the plot.</p>
 </h4>
 <p>Use <a href="https://en.wikipedia.org/wiki/Dunn_index">Dunn index</a> (another
 internal measure given by min. separation/ max. diameter)</p>
-<div class="sourceCode" id="cb737"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb739"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">DI</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">ks</span>, FUN<span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">k</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu">fpc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/fpc/man/cluster.stats.html">cluster.stats</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">ruspini_scaled</span>, centers<span class="op">=</span><span class="va">k</span>, nstart<span class="op">=</span><span class="fl">5</span><span class="op">)</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span><span class="op">$</span><span class="va">dunn</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">best_k</span> <span class="op">&lt;-</span> <span class="va">ks</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span><span class="op">(</span><span class="va">DI</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">DI</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">DI</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">DI</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">DI</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">best_k</span>, color <span class="op">=</span> <span class="st">"red"</span>, linetype <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-279-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-280-1.png" width="672"></div>
 </div>
 <div id="gap-statistic" class="section level4" number="7.3.3.4">
 <h4>
@@ -1265,14 +1275,14 @@ internal measure given by min. separation/ max. diameter)</p>
 a null model (see <code><a href="https://rdrr.io/pkg/cluster/man/clusGap.html">? clusGap</a></code>). The default method is to choose the
 smallest k such that its value Gap(k) is not more than 1 standard error
 away from the first local maximum.</p>
-<div class="sourceCode" id="cb738"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb740"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/cluster/">cluster</a></span><span class="op">)</span></span>
 <span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/cluster/man/clusGap.html">clusGap</a></span><span class="op">(</span><span class="va">ruspini_scaled</span>, FUN <span class="op">=</span> <span class="va">kmeans</span>,  nstart <span class="op">=</span> <span class="fl">10</span>, K.max <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Clustering k = 1,2,..., K.max (= 10): .. done
 ## Bootstrapping, b = 1,2,..., B (= 100)  [one "." per sample]:
 ## .................................................. 50 
 ## .................................................. 100</code></pre>
-<div class="sourceCode" id="cb740"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb742"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">k</span></span></code></pre></div>
 <pre><code>## Clustering Gap statistic ["clusGap"] from call:
 ## clusGap(x = ruspini_scaled, FUNcluster = kmeans, K.max = 10, nstart = 10)
@@ -1285,13 +1295,13 @@ away from the first local maximum.</p>
 ##  [4,] 2.11   2.70  0.5971 0.0363
 ##  [5,] 1.99   2.57  0.5827 0.0347
 ##  [6,] 1.86   2.45  0.5871 0.0365
-##  [7,] 1.78   2.35  0.5638 0.0395
+##  [7,] 1.73   2.35  0.6156 0.0395
 ##  [8,] 1.64   2.26  0.6157 0.0413
-##  [9,] 1.56   2.17  0.6138 0.0409
-## [10,] 1.51   2.09  0.5836 0.0393</code></pre>
-<div class="sourceCode" id="cb742"><pre class="downlit sourceCode r">
+##  [9,] 1.61   2.17  0.5655 0.0409
+## [10,] 1.52   2.09  0.5683 0.0393</code></pre>
+<div class="sourceCode" id="cb744"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">k</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-280-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-281-1.png" width="672"></div>
 <p><strong>Note:</strong> these methods can also be used for hierarchical clustering.</p>
 <p>There have been many other methods and indices proposed to determine the
 number of clusters. See, e.g., package
@@ -1302,26 +1312,26 @@ number of clusters. See, e.g., package
 <h3>
 <span class="header-section-number">7.3.4</span> Visualizing the Distance Matrix<a class="anchor" aria-label="anchor" href="#visualizing-the-distance-matrix"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb743"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb745"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ruspini_scaled</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">km</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-281-1.png" width="672"></div>
-<div class="sourceCode" id="cb744"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-282-1.png" width="672"></div>
+<div class="sourceCode" id="cb746"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html">dist</a></span><span class="op">(</span><span class="va">ruspini_scaled</span><span class="op">)</span></span></code></pre></div>
 <p>Inspect the distance matrix between the first 5 objects.</p>
-<div class="sourceCode" id="cb745"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb747"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">as.matrix</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></code></pre></div>
-<pre><code>##      1     2    3     4     5
-## 1 0.00 1.744 0.23 1.468 1.984
-## 2 1.74 0.000 1.85 0.562 0.290
-## 3 0.23 1.846 0.00 1.627 2.102
-## 4 1.47 0.562 1.63 0.000 0.637
-## 5 1.98 0.290 2.10 0.637 0.000</code></pre>
+<pre><code>##      1     2    3     4    5
+## 1 0.00 2.725 0.26 2.187 3.57
+## 2 2.72 0.000 2.54 0.558 1.78
+## 3 0.26 2.544 0.00 2.020 3.32
+## 4 2.19 0.558 2.02 0.000 2.09
+## 5 3.57 1.778 3.32 2.088 0.00</code></pre>
 <p>A false-color image visualizes each value in the matrix as a pixel with
 the color representing the value.</p>
-<div class="sourceCode" id="cb747"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb749"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mhahsler/seriation">seriation</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/pimage.html">pimage</a></span><span class="op">(</span><span class="va">d</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/palette.html">bluered</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-283-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-284-1.png" width="672"></div>
 <p>Rows and columns are the objects as they are ordered in the data set.
 The diagonal represents the distance between an object and itself and
 has by definition a distance of 0 (dark line). Visualizing the unordered
@@ -1329,29 +1339,29 @@ distance matrix does not show much structure, but we can reorder the
 matrix (rows and columns) using the k-means cluster labels from cluster
 1 to 4. A clear block structure representing the clusters becomes
 visible.</p>
-<div class="sourceCode" id="cb748"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb750"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/pimage.html">pimage</a></span><span class="op">(</span><span class="va">d</span>, order<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">km</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/palette.html">bluered</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-284-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-285-1.png" width="672"></div>
 <p>Plot function <code>dissplot</code> in package <strong>seriation</strong> rearranges the matrix
 and adds lines and cluster labels. In the lower half of the plot, it
 shows average dissimilarities between clusters. The function organizes
 the objects by cluster and then reorders clusters and objects within
 clusters so that more similar objects are closer together.</p>
-<div class="sourceCode" id="cb749"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb751"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/dissplot.html">dissplot</a></span><span class="op">(</span><span class="va">d</span>, labels <span class="op">=</span> <span class="va">km</span><span class="op">$</span><span class="va">cluster</span>, options<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>main<span class="op">=</span><span class="st">"k-means with k=4"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-285-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-286-1.png" width="672"></div>
 <p>The reordering by <code>dissplot</code> makes the misspecification of k visible as
 blocks.</p>
-<div class="sourceCode" id="cb750"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/dissplot.html">dissplot</a></span><span class="op">(</span><span class="va">d</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">ruspini_scaled</span>, centers <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">$</span><span class="va">cluster</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/palette.html">bluered</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-286-1.png" width="672"></div>
-<div class="sourceCode" id="cb751"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/dissplot.html">dissplot</a></span><span class="op">(</span><span class="va">d</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">ruspini_scaled</span>, centers <span class="op">=</span> <span class="fl">9</span><span class="op">)</span><span class="op">$</span><span class="va">cluster</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/palette.html">bluered</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-286-2.png" width="672"></div>
-<p>Using <code>factoextra</code></p>
 <div class="sourceCode" id="cb752"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/factoextra/man/dist.html">fviz_dist</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/dissplot.html">dissplot</a></span><span class="op">(</span><span class="va">d</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">ruspini_scaled</span>, centers <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">$</span><span class="va">cluster</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/palette.html">bluered</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-287-1.png" width="672"></div>
+<div class="sourceCode" id="cb753"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/dissplot.html">dissplot</a></span><span class="op">(</span><span class="va">d</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">ruspini_scaled</span>, centers <span class="op">=</span> <span class="fl">9</span><span class="op">)</span><span class="op">$</span><span class="va">cluster</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/palette.html">bluered</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-287-2.png" width="672"></div>
+<p>Using <code>factoextra</code></p>
+<div class="sourceCode" id="cb754"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/factoextra/man/dist.html">fviz_dist</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-288-1.png" width="672"></div>
 </div>
 </div>
 <div id="external-cluster-validation" class="section level2" number="7.4">
@@ -1362,59 +1372,59 @@ blocks.</p>
 user has an idea how the data should be grouped. This could be a known
 class label not provided to the clustering algorithm.</p>
 <p>We use an artificial data set with known groups.</p>
-<div class="sourceCode" id="cb753"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb755"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">mlbench</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
 <span><span class="va">shapes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mlbench/man/mlbench.smiley.html">mlbench.smiley</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">500</span>, sd1 <span class="op">=</span> <span class="fl">0.1</span>, sd2 <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">shapes</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-288-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-289-1.png" width="672"></div>
 <p>Prepare data</p>
-<div class="sourceCode" id="cb754"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb756"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">truth</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">shapes</span><span class="op">$</span><span class="va">class</span><span class="op">)</span></span>
 <span><span class="va">shapes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">shapes</span><span class="op">$</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">shapes</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span></span>
 <span><span class="va">shapes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">shapes</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">shapes</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-289-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-290-1.png" width="672"></div>
 <p>Find optimal number of Clusters for k-means</p>
-<div class="sourceCode" id="cb755"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb757"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ks</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">:</span><span class="fl">20</span></span></code></pre></div>
 <p>Use within sum of squares (look for the knee)</p>
-<div class="sourceCode" id="cb756"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb758"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">WCSS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">ks</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">k</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">shapes</span>, centers <span class="op">=</span> <span class="va">k</span>, nstart <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">$</span><span class="va">tot.withinss</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">WCSS</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">WCSS</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-291-1.png" width="672"></div>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">WCSS</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">WCSS</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-292-1.png" width="672"></div>
 <p>Looks like it could be 7 clusters</p>
-<div class="sourceCode" id="cb757"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb759"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">km</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">shapes</span>, centers <span class="op">=</span> <span class="fl">7</span>, nstart <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">shapes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/add_column.html">add_column</a></span><span class="op">(</span>cluster <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">km</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-292-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-293-1.png" width="672"></div>
 <p>Hierarchical clustering: We use single-link because of the mouth is
 non-convex and chaining may help.</p>
-<div class="sourceCode" id="cb758"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb760"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html">dist</a></span><span class="op">(</span><span class="va">shapes</span><span class="op">)</span></span>
 <span><span class="va">hc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html">hclust</a></span><span class="op">(</span><span class="va">d</span>, method <span class="op">=</span> <span class="st">"single"</span><span class="op">)</span></span></code></pre></div>
 <p>Find optimal number of clusters</p>
-<div class="sourceCode" id="cb759"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb761"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ASW</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">ks</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">k</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu">fpc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/fpc/man/cluster.stats.html">cluster.stats</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu"><a href="https://rdrr.io/r/stats/cutree.html">cutree</a></span><span class="op">(</span><span class="va">hc</span>, <span class="va">k</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">avg.silwidth</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">ASW</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">ASW</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-294-1.png" width="672"></div>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">ASW</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">ks</span>, <span class="va">ASW</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-295-1.png" width="672"></div>
 <p>The maximum is clearly at 4 clusters.</p>
-<div class="sourceCode" id="cb760"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb762"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hc_4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cutree.html">cutree</a></span><span class="op">(</span><span class="va">hc</span>, <span class="fl">4</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">shapes</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/add_column.html">add_column</a></span><span class="op">(</span>cluster <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">hc_4</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-295-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-296-1.png" width="672"></div>
 <p>Compare with ground truth with the <a href="https://en.wikipedia.org/wiki/Rand_index#Adjusted_Rand_index">corrected (=adjusted) Rand index
 (ARI)</a>,
 the <a href="https://en.wikipedia.org/wiki/Variation_of_information">variation of information (VI)
@@ -1424,7 +1434,7 @@ and
 <a href="https://en.wikipedia.org/wiki/Cluster_analysis#External_evaluation">purity</a>.</p>
 <p><code>cluster_stats</code> computes ARI and VI as comparative measures. I define
 functions for entropy and purity here:</p>
-<div class="sourceCode" id="cb761"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb763"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">entropy</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">cluster</span>, <span class="va">truth</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">k</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">cluster</span>, <span class="va">truth</span><span class="op">)</span></span>
 <span>  <span class="va">cluster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cluster</span>, levels <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">k</span><span class="op">)</span></span>
@@ -1453,7 +1463,7 @@ functions for entropy and purity here:</p>
 <span><span class="op">}</span></span></code></pre></div>
 <p>calculate measures (for comparison we also use random “clusterings” with
 4 and 6 clusters)</p>
-<div class="sourceCode" id="cb762"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb764"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">random_4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">shapes</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">random_6</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">shapes</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -1513,11 +1523,11 @@ Factor). It is related to dbscan and compares the density around a point
 with the densities around its neighbors (you have to specify the
 neighborhood size <span class="math inline">\(k\)</span>). The LOF value for a regular data point is 1. The
 larger the LOF value gets, the more likely the point is an outlier.</p>
-<div class="sourceCode" id="cb764"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb766"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mhahsler/dbscan">dbscan</a></span><span class="op">)</span></span></code></pre></div>
 <p>Add a clear outlier to the scaled Ruspini dataset that is 10 standard
 deviations above the average for the x axis.</p>
-<div class="sourceCode" id="cb765"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb767"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ruspini_scaled_outlier</span> <span class="op">&lt;-</span> <span class="va">ruspini_scaled</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/add_row.html">add_case</a></span><span class="op">(</span>x<span class="op">=</span><span class="fl">10</span>,y<span class="op">=</span><span class="fl">0</span><span class="op">)</span></span></code></pre></div>
 <div id="visual-inspection-of-the-data" class="section level4" number="7.5.1.1">
 <h4>
@@ -1529,12 +1539,12 @@ scatterplots (pairs plots), and boxplots, etc. We use here a pairs plot
 the single separate point in the scatter plot and as the long tail of
 the smoothed histogram for <code>x</code> (we would expect most observations to
 fall in the range <span class="math display">\[-3,3\]</span> in normalized data).</p>
-<div class="sourceCode" id="cb766"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb768"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://ggobi.github.io/ggally/">"GGally"</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs</a></span><span class="op">(</span><span class="va">ruspini_scaled_outlier</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-300-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-301-1.png" width="672"></div>
 <p>The outlier is a problem for k-means</p>
-<div class="sourceCode" id="cb767"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb769"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">km</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">ruspini_scaled_outlier</span>, centers <span class="op">=</span> <span class="fl">4</span>, nstart <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">ruspini_scaled_outlier_km</span> <span class="op">&lt;-</span> <span class="va">ruspini_scaled_outlier</span><span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/add_column.html">add_column</a></span><span class="op">(</span>cluster <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">km</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span><span class="op">)</span></span>
@@ -1542,7 +1552,7 @@ fall in the range <span class="math display">\[-3,3\]</span> in normalized data)
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ruspini_scaled_outlier_km</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">centroids</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span>, shape <span class="op">=</span> <span class="fl">3</span>, size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-301-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-302-1.png" width="672"></div>
 <p>This problem can be fixed by increasing the number of clusters and
 removing small clusters in a post-processing step or by identifying and
 removing outliers before clustering.</p>
@@ -1555,37 +1565,37 @@ removing outliers before clustering.</p>
 Factor</a> is related
 to concepts of DBSCAN can help to identify potential outliers. Calculate
 the LOF (I choose a local neighborhood size of 10 for density estimation),</p>
-<div class="sourceCode" id="cb768"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb770"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lof</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dbscan/man/lof.html">lof</a></span><span class="op">(</span><span class="va">ruspini_scaled_outlier</span>, minPts<span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">lof</span></span></code></pre></div>
-<pre><code>##  [1]  0.918  1.019  1.020  1.626  1.209  1.021  1.041
-##  [8]  0.983  0.934  1.070  1.143  0.994  1.494  0.977
-## [15]  0.943  0.963  1.034  1.020  1.034  1.006  1.004
-## [22]  1.026  0.976  0.985  1.252  0.933  0.938  1.051
-## [29]  0.986  0.932  1.039  0.996  1.397  0.941  1.006
-## [36]  0.997  0.972  1.021  1.572  1.085  0.990  1.083
-## [43]  0.954  0.978  1.160  1.209  1.002  1.138  1.059
-## [50]  0.998  0.939  1.015  1.013  1.083  1.175  0.982
-## [57]  1.071  1.051  1.598  1.368  0.992  1.001  1.068
-## [64]  1.040  1.104  1.084  0.981  0.965  0.993  1.021
-## [71]  1.041  1.023  1.024  1.088  1.212 17.899</code></pre>
-<div class="sourceCode" id="cb770"><pre class="downlit sourceCode r">
+<pre><code>##  [1]  1.084  1.021  1.006  1.070  1.088  1.019  1.002
+##  [8]  1.034  1.039  1.024  1.598  0.992  1.013  1.021
+## [15]  0.981  0.939  1.020  1.051  0.983  1.071  1.040
+## [22]  1.023  0.977  1.059  0.994  1.051  1.209  1.015
+## [29]  1.006  0.985  1.104  1.572  1.397  1.083  1.020
+## [36]  1.001  1.034  1.068  0.943  0.986  0.933  0.938
+## [43]  0.978  0.982  1.021  0.972  0.976  0.996  1.138
+## [50]  1.626  1.252  1.212  1.004  0.963  1.160  1.175
+## [57]  1.041  0.934  0.918  1.143  1.368  0.993  0.932
+## [64]  0.954  0.990  1.041  0.997  1.494  1.083  1.209
+## [71]  1.026  0.941  0.998  1.085  0.965 17.899</code></pre>
+<div class="sourceCode" id="cb772"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ruspini_scaled_outlier</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/add_column.html">add_column</a></span><span class="op">(</span>lof <span class="op">=</span> <span class="va">lof</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, color <span class="op">=</span> <span class="va">lof</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_color_gradient</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"gray"</span>, high <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-302-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-303-1.png" width="672"></div>
 <p>Plot the points sorted by increasing LOF and look for a knee.</p>
-<div class="sourceCode" id="cb771"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb773"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">lof</span><span class="op">)</span><span class="op">)</span>, lof <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/sort.html">sort</a></span><span class="op">(</span><span class="va">lof</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">index</span>, <span class="va">lof</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">1</span>, color <span class="op">=</span> <span class="st">"red"</span>, linetype <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-303-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-304-1.png" width="672"></div>
 <p>Choose a threshold above 1.</p>
-<div class="sourceCode" id="cb772"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb774"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ruspini_scaled_outlier</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/add_column.html">add_column</a></span><span class="op">(</span>outlier <span class="op">=</span> <span class="va">lof</span> <span class="op">&gt;=</span> <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, color <span class="op">=</span> <span class="va">outlier</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-304-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-305-1.png" width="672"></div>
 <p>Analyze the found outliers (they might be interesting data points) and then cluster the data without them.</p>
-<div class="sourceCode" id="cb773"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb775"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ruspini_scaled_clean</span> <span class="op">&lt;-</span> <span class="va">ruspini_scaled_outlier</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">lof</span> <span class="op">&lt;</span> <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">km</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">ruspini_scaled_clean</span>, centers <span class="op">=</span> <span class="fl">4</span>, nstart <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
@@ -1595,7 +1605,7 @@ the LOF (I choose a local neighborhood size of 10 for density estimation),</p>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ruspini_scaled_clean_km</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">centroids</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span>, shape <span class="op">=</span> <span class="fl">3</span>, size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-305-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-306-1.png" width="672"></div>
 <p>There are many other outlier removal strategies available. See, e.g.,
 package <a href="https://cran.r-project.org/package=outliers">outliers</a>.</p>
 </div>
@@ -1608,7 +1618,7 @@ package <a href="https://cran.r-project.org/package=outliers">outliers</a>.</p>
 data does not contain a cluster structure. It is typically good to check
 cluster tendency before attempting to cluster the data.</p>
 <p>We use again the smiley data.</p>
-<div class="sourceCode" id="cb774"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb776"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">mlbench</span><span class="op">)</span></span>
 <span><span class="va">shapes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mlbench/man/mlbench.smiley.html">mlbench.smiley</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">500</span>, sd1 <span class="op">=</span> <span class="fl">0.1</span>, sd2 <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span><span class="op">$</span><span class="va">x</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">shapes</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span></span>
@@ -1618,9 +1628,9 @@ cluster tendency before attempting to cluster the data.</p>
 <span class="header-section-number">7.5.2.1</span> Scatter plots<a class="anchor" aria-label="anchor" href="#scatter-plots"><i class="fas fa-link"></i></a>
 </h4>
 <p>The first step is visual inspection using scatter plots.</p>
-<div class="sourceCode" id="cb775"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb777"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">shapes</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-307-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-308-1.png" width="672"></div>
 <p>Cluster tendency is typically indicated by several separated point
 clouds. Often an appropriate number of clusters can also be visually
 obtained by counting the number of point clouds. We see four clusters,
@@ -1637,18 +1647,18 @@ components using PCA.</p>
 <p>VAT reorders the objects to show potential clustering tendency as a
 block structure (dark blocks along the main diagonal). We scale the data
 before using Euclidean distance.</p>
-<div class="sourceCode" id="cb776"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb778"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mhahsler/seriation">seriation</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">d_shapes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html">dist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">shapes</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/VAT.html">VAT</a></span><span class="op">(</span><span class="va">d_shapes</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/palette.html">bluered</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-308-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-309-1.png" width="672"></div>
 <p>iVAT uses the largest distances for all possible paths between two
 objects instead of the direct distances to make the block structure
 better visible.</p>
-<div class="sourceCode" id="cb777"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb779"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/VAT.html">iVAT</a></span><span class="op">(</span><span class="va">d_shapes</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/palette.html">bluered</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-309-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-310-1.png" width="672"></div>
 </div>
 <div id="hopkins-statistic" class="section level4" number="7.5.2.3">
 <h4>
@@ -1662,32 +1672,32 @@ with a simulated dataset drawn from a random uniform distribution (see
 <a href="https://www.datanovia.com/en/lessons/assessing-clustering-tendency/#statistical-methods">detailed
 explanation</a>).
 A values &gt;.5 indicates usually a clustering tendency.</p>
-<div class="sourceCode" id="cb778"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb780"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/factoextra/man/get_clust_tendency.html">get_clust_tendency</a></span><span class="op">(</span><span class="va">shapes</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## $hopkins_stat
 ## [1] 0.907
 ## 
 ## $plot</code></pre>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-310-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-311-1.png" width="672"></div>
 <p>Both plots show a strong cluster structure with 4 clusters.</p>
 </div>
 <div id="data-without-clustering-tendency" class="section level4" number="7.5.2.4">
 <h4>
 <span class="header-section-number">7.5.2.4</span> Data Without Clustering Tendency<a class="anchor" aria-label="anchor" href="#data-without-clustering-tendency"><i class="fas fa-link"></i></a>
 </h4>
-<div class="sourceCode" id="cb780"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb782"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_random</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">500</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">500</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">data_random</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-311-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-312-1.png" width="672"></div>
 <p>No point clouds are visible, just noise.</p>
-<div class="sourceCode" id="cb781"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb783"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_random</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html">dist</a></span><span class="op">(</span><span class="va">data_random</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/VAT.html">VAT</a></span><span class="op">(</span><span class="va">d_random</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/palette.html">bluered</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-312-1.png" width="672"></div>
-<div class="sourceCode" id="cb782"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-313-1.png" width="672"></div>
+<div class="sourceCode" id="cb784"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/seriation/man/VAT.html">iVAT</a></span><span class="op">(</span><span class="va">d_random</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/seriation/man/palette.html">bluered</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-312-2.png" width="672"></div>
-<div class="sourceCode" id="cb783"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-313-2.png" width="672"></div>
+<div class="sourceCode" id="cb785"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/factoextra/man/get_clust_tendency.html">get_clust_tendency</a></span><span class="op">(</span><span class="va">data_random</span>, n <span class="op">=</span> <span class="fl">10</span>, graph <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## $hopkins_stat
 ## [1] 0.464
@@ -1706,11 +1716,11 @@ discretization of the space.</p>
 </h4>
 <p>What happens if we perform k-means on data that has no inherent
 clustering structure?</p>
-<div class="sourceCode" id="cb785"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb787"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">km</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">data_random</span>, centers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">random_clustered</span><span class="op">&lt;-</span> <span class="va">data_random</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/add_column.html">add_column</a></span><span class="op">(</span>cluster <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">km</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">random_clustered</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-313-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-314-1.png" width="672"></div>
 <p>k-means discretizes the space into similarly sized regions.</p>
 
 </div>
@@ -1773,7 +1783,7 @@ clustering structure?</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2023-02-22.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2023-04-21.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

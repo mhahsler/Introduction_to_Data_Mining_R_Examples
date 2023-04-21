@@ -6,15 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 3 Classification: Basic Concepts and Techniques | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
-<meta name="description" content="Packages used for this chapter: caret (Kuhn 2022), FSelector (Romanski, Kotthoff, and Schratz 2021), lattice (Sarkar 2021), mlbench (Leisch and Dimitriadou. 2021), pROC (Robin et al. 2021), rpart...">
-<meta name="generator" content="bookdown 0.31 with bs4_book()">
+<meta name="description" content="Packages used for this chapter: caret (Kuhn 2023), FSelector (Romanski, Kotthoff, and Schratz 2021), lattice (Sarkar 2021), mlbench (Leisch and Dimitriadou. 2021), pROC (Robin et al. 2021), rpart...">
+<meta name="generator" content="bookdown 0.33 with bs4_book()">
 <meta property="og:title" content="Chapter 3 Classification: Basic Concepts and Techniques | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
-<meta property="og:description" content="Packages used for this chapter: caret (Kuhn 2022), FSelector (Romanski, Kotthoff, and Schratz 2021), lattice (Sarkar 2021), mlbench (Leisch and Dimitriadou. 2021), pROC (Robin et al. 2021), rpart...">
+<meta property="og:description" content="Packages used for this chapter: caret (Kuhn 2023), FSelector (Romanski, Kotthoff, and Schratz 2021), lattice (Sarkar 2021), mlbench (Leisch and Dimitriadou. 2021), pROC (Robin et al. 2021), rpart...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 3 Classification: Basic Concepts and Techniques | An R Companion for Introduction to Data Mining">
-<meta name="twitter:description" content="Packages used for this chapter: caret (Kuhn 2022), FSelector (Romanski, Kotthoff, and Schratz 2021), lattice (Sarkar 2021), mlbench (Leisch and Dimitriadou. 2021), pROC (Robin et al. 2021), rpart...">
+<meta name="twitter:description" content="Packages used for this chapter: caret (Kuhn 2023), FSelector (Romanski, Kotthoff, and Schratz 2021), lattice (Sarkar 2021), mlbench (Leisch and Dimitriadou. 2021), pROC (Robin et al. 2021), rpart...">
 <meta name="twitter:image" content="/images/cover.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -94,7 +94,7 @@
 <h1>
 <span class="header-section-number">3</span> Classification: Basic Concepts and Techniques<a class="anchor" aria-label="anchor" href="#classification-basic-concepts-and-techniques"><i class="fas fa-link"></i></a>
 </h1>
-<p><strong>Packages used for this chapter:</strong> <em>caret</em> <span class="citation">(<a href="references.html#ref-R-caret" role="doc-biblioref">Kuhn 2022</a>)</span>, <em>FSelector</em> <span class="citation">(<a href="references.html#ref-R-FSelector" role="doc-biblioref">Romanski, Kotthoff, and Schratz 2021</a>)</span>, <em>lattice</em> <span class="citation">(<a href="references.html#ref-R-lattice" role="doc-biblioref">Sarkar 2021</a>)</span>, <em>mlbench</em> <span class="citation">(<a href="references.html#ref-R-mlbench" role="doc-biblioref">Leisch and Dimitriadou. 2021</a>)</span>, <em>pROC</em> <span class="citation">(<a href="references.html#ref-R-pROC" role="doc-biblioref">Robin et al. 2021</a>)</span>, <em>rpart</em> <span class="citation">(<a href="references.html#ref-R-rpart" role="doc-biblioref">Therneau and Atkinson 2022</a>)</span>, <em>rpart.plot</em> <span class="citation">(<a href="references.html#ref-R-rpart.plot" role="doc-biblioref">Milborrow 2022</a>)</span>, <em>sampling</em> <span class="citation">(<a href="references.html#ref-R-sampling" role="doc-biblioref">Tillé and Matei 2021</a>)</span>, <em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2022c</a>)</span></p>
+<p><strong>Packages used for this chapter:</strong> <em>caret</em> <span class="citation">(<a href="references.html#ref-R-caret" role="doc-biblioref">Kuhn 2023</a>)</span>, <em>FSelector</em> <span class="citation">(<a href="references.html#ref-R-FSelector" role="doc-biblioref">Romanski, Kotthoff, and Schratz 2021</a>)</span>, <em>lattice</em> <span class="citation">(<a href="references.html#ref-R-lattice" role="doc-biblioref">Sarkar 2021</a>)</span>, <em>mlbench</em> <span class="citation">(<a href="references.html#ref-R-mlbench" role="doc-biblioref">Leisch and Dimitriadou. 2021</a>)</span>, <em>pROC</em> <span class="citation">(<a href="references.html#ref-R-pROC" role="doc-biblioref">Robin et al. 2021</a>)</span>, <em>rpart</em> <span class="citation">(<a href="references.html#ref-R-rpart" role="doc-biblioref">Therneau and Atkinson 2022</a>)</span>, <em>rpart.plot</em> <span class="citation">(<a href="references.html#ref-R-rpart.plot" role="doc-biblioref">Milborrow 2022</a>)</span>, <em>sampling</em> <span class="citation">(<a href="references.html#ref-R-sampling" role="doc-biblioref">Tillé and Matei 2021</a>)</span>, <em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2023b</a>)</span></p>
 <p>You can read the free sample chapter from the textbook <span class="citation">(<a href="references.html#ref-Tan2005" role="doc-biblioref">Tan, Steinbach, and Kumar 2005</a>)</span>:
 <a href="https://www-users.cs.umn.edu/~kumar001/dmbook/ch3_classification.pdf">Chapter 3. Classification: Basic Concepts and
 Techniques</a></p>
@@ -109,7 +109,7 @@ Techniques</a></p>
 toothed, backbone, breathes, venomous, fins, legs, tail, domestic,
 catsize, type). We convert the data frame into a tidyverse tibble
 (optional).</p>
-<div class="sourceCode" id="cb231"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb232"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">Zoo</span>, package<span class="op">=</span><span class="st">"mlbench"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Zoo</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##           hair feathers  eggs  milk airborne aquatic
@@ -137,7 +137,7 @@ catsize, type). We convert the data frame into a tidyverse tibble
 animal name as the row names. tibbles from <code>tidyverse</code> do not support
 row names. To keep the animal name you can add a column with the animal
 name.</p>
-<div class="sourceCode" id="cb233"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb234"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">Zoo</span>, rownames <span class="op">=</span> <span class="st">"animal"</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## # A tibble: 101 × 18
@@ -153,17 +153,17 @@ name.</p>
 ##  8 carp     FALSE FALSE    TRUE  FALSE FALSE    TRUE   
 ##  9 catfish  FALSE FALSE    TRUE  FALSE FALSE    TRUE   
 ## 10 cavy     TRUE  FALSE    FALSE TRUE  FALSE    FALSE  
-## # … with 91 more rows, and 11 more variables:
-## #   predator &lt;lgl&gt;, toothed &lt;lgl&gt;, backbone &lt;lgl&gt;,
-## #   breathes &lt;lgl&gt;, venomous &lt;lgl&gt;, fins &lt;lgl&gt;,
-## #   legs &lt;int&gt;, tail &lt;lgl&gt;, domestic &lt;lgl&gt;,
-## #   catsize &lt;lgl&gt;, type &lt;fct&gt;</code></pre>
+## # ℹ 91 more rows
+## # ℹ 11 more variables: predator &lt;lgl&gt;, toothed &lt;lgl&gt;,
+## #   backbone &lt;lgl&gt;, breathes &lt;lgl&gt;, venomous &lt;lgl&gt;,
+## #   fins &lt;lgl&gt;, legs &lt;int&gt;, tail &lt;lgl&gt;,
+## #   domestic &lt;lgl&gt;, catsize &lt;lgl&gt;, type &lt;fct&gt;</code></pre>
 <p>You will have to remove the animal column before learning a model! In
 the following I use the data.frame.</p>
 <p>I translate all the TRUE/FALSE values into factors (nominal). This is
 often needed for building models. Always check <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> to make sure
 the data is ready for model learning.</p>
-<div class="sourceCode" id="cb235"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb236"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Zoo</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://purrr.tidyverse.org/reference/modify.html">modify_if</a></span><span class="op">(</span><span class="va">is.logical</span>, <span class="va">factor</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://purrr.tidyverse.org/reference/modify.html">modify_if</a></span><span class="op">(</span><span class="va">is.character</span>, <span class="va">factor</span><span class="op">)</span></span>
@@ -216,13 +216,13 @@ the data is ready for model learning.</p>
 </h2>
 <p>Recursive Partitioning (similar to CART) uses the Gini index to make
 splitting decisions and early stopping (pre-pruning).</p>
-<div class="sourceCode" id="cb237"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb238"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bethatkinson/rpart">rpart</a></span><span class="op">)</span></span></code></pre></div>
 <div id="create-tree-with-default-settings-uses-pre-pruning" class="section level3" number="3.2.1">
 <h3>
 <span class="header-section-number">3.2.1</span> Create Tree With Default Settings (uses pre-pruning)<a class="anchor" aria-label="anchor" href="#create-tree-with-default-settings-uses-pre-pruning"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb238"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb239"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tree_default</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span></span>
 <span><span class="va">tree_default</span></span></code></pre></div>
 <pre><code>## n= 101 
@@ -252,7 +252,7 @@ regression tree instead of a decision tree. Use <code><a href="https://rdrr.io/r
 necessary.</li>
 </ul>
 <p>Plotting</p>
-<div class="sourceCode" id="cb240"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb241"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">tree_default</span>, extra <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Warning: Cannot retrieve the data used to build the model (so cannot determine roundint and is.binary for the variables).
@@ -272,12 +272,12 @@ training data falling into that node (correct/total).</p>
 even if it does not improve the tree) and we set the minimum number of
 observations in a node needed to split to the smallest value of 2 (see:
 <code><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">?rpart.control</a></code>). <em>Note:</em> full trees overfit the training data!</p>
-<div class="sourceCode" id="cb242"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb243"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tree_full</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">rpart.control</a></span><span class="op">(</span>minsplit <span class="op">=</span> <span class="fl">2</span>, cp <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">tree_full</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint<span class="op">=</span><span class="cn">FALSE</span>,</span>
 <span>  box.palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"Gy"</span>, <span class="st">"Gn"</span>, <span class="st">"Bu"</span>, <span class="st">"Bn"</span>, <span class="st">"Or"</span>, <span class="st">"Rd"</span>, <span class="st">"Pu"</span><span class="op">)</span><span class="op">)</span> <span class="co"># specify 7 colors</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-100-1.png" width="672"></div>
-<div class="sourceCode" id="cb243"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb244"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tree_full</span></span></code></pre></div>
 <pre><code>## n= 101 
 ## 
@@ -304,7 +304,7 @@ observations in a node needed to split to the smallest value of 2 (see:
 ##               253) legs&lt; 3 2  0 mollusc.et.al (0 0 0 0 0 0 1) *
 ##             127) predator=TRUE 8  0 mollusc.et.al (0 0 0 0 0 0 1) *</code></pre>
 <p>Training error on tree with pre-pruning</p>
-<div class="sourceCode" id="cb245"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb246"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">tree_default</span>, <span class="va">Zoo</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span> <span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##   mammal bird reptile fish amphibian insect
 ## 1      1    0       0    0         0      0
@@ -320,13 +320,13 @@ observations in a node needed to split to the smallest value of 2 (see:
 ## 4             0
 ## 5             0
 ## 6             0</code></pre>
-<div class="sourceCode" id="cb247"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb248"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">tree_default</span>, <span class="va">Zoo</span>, type<span class="op">=</span><span class="st">"class"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">pred</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##      1      2      3      4      5      6 
 ## mammal mammal   fish mammal mammal mammal 
 ## 7 Levels: mammal bird reptile fish ... mollusc.et.al</code></pre>
-<div class="sourceCode" id="cb249"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb250"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">confusion_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">Zoo</span>, <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">type</span>, <span class="va">pred</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">confusion_table</span></span></code></pre></div>
 <pre><code>##                pred
@@ -347,20 +347,20 @@ observations in a node needed to split to the smallest value of 2 (see:
 ##   amphibian          0             0
 ##   insect             0             8
 ##   mollusc.et.al      0            10</code></pre>
-<div class="sourceCode" id="cb251"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb252"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">correct</span> <span class="op">&lt;-</span> <span class="va">confusion_table</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">correct</span></span></code></pre></div>
 <pre><code>## [1] 89</code></pre>
-<div class="sourceCode" id="cb253"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb254"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">error</span> <span class="op">&lt;-</span> <span class="va">confusion_table</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="va">correct</span></span>
 <span><span class="va">error</span></span></code></pre></div>
 <pre><code>## [1] 12</code></pre>
-<div class="sourceCode" id="cb255"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb256"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">accuracy</span> <span class="op">&lt;-</span> <span class="va">correct</span> <span class="op">/</span> <span class="op">(</span><span class="va">correct</span> <span class="op">+</span> <span class="va">error</span><span class="op">)</span></span>
 <span><span class="va">accuracy</span></span></code></pre></div>
 <pre><code>## [1] 0.881</code></pre>
 <p>Use a function for accuracy</p>
-<div class="sourceCode" id="cb257"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb258"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">accuracy</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">truth</span>, <span class="va">prediction</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">truth</span>, <span class="va">prediction</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span></span>
@@ -369,11 +369,11 @@ observations in a node needed to split to the smallest value of 2 (see:
 <span><span class="fu">accuracy</span><span class="op">(</span><span class="va">Zoo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">type</span><span class="op">)</span>, <span class="va">pred</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## [1] 0.881</code></pre>
 <p>Training error of the full tree</p>
-<div class="sourceCode" id="cb259"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb260"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">accuracy</span><span class="op">(</span><span class="va">Zoo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">type</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">tree_full</span>, <span class="va">Zoo</span>, type<span class="op">=</span><span class="st">"class"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## [1] 1</code></pre>
 <p>Get a confusion table with more statistics (using caret)</p>
-<div class="sourceCode" id="cb261"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb262"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/topepo/caret/">caret</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pred</span>, reference <span class="op">=</span> <span class="va">Zoo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">type</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Confusion Matrix and Statistics
@@ -452,26 +452,26 @@ observations in a node needed to split to the smallest value of 2 (see:
 <span class="header-section-number">3.2.3</span> Make Predictions for New Data<a class="anchor" aria-label="anchor" href="#make-predictions-for-new-data"><i class="fas fa-link"></i></a>
 </h3>
 <p>Make up my own animal: A lion with feathered wings</p>
-<div class="sourceCode" id="cb263"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb264"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_animal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>hair <span class="op">=</span> <span class="cn">TRUE</span>, feathers <span class="op">=</span> <span class="cn">TRUE</span>, eggs <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  milk <span class="op">=</span> <span class="cn">TRUE</span>, airborne <span class="op">=</span> <span class="cn">TRUE</span>, aquatic <span class="op">=</span> <span class="cn">FALSE</span>, predator <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  toothed <span class="op">=</span> <span class="cn">TRUE</span>, backbone <span class="op">=</span> <span class="cn">TRUE</span>, breathes <span class="op">=</span> <span class="cn">TRUE</span>, venomous <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  fins <span class="op">=</span> <span class="cn">FALSE</span>, legs <span class="op">=</span> <span class="fl">4</span>, tail <span class="op">=</span> <span class="cn">TRUE</span>, domestic <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  catsize <span class="op">=</span> <span class="cn">FALSE</span>, type <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
 <p>Fix columns to be factors like in the training set.</p>
-<div class="sourceCode" id="cb264"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb265"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_animal</span> <span class="op">&lt;-</span> <span class="va">my_animal</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/modify.html">modify_if</a></span><span class="op">(</span><span class="va">is.logical</span>, <span class="va">factor</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">my_animal</span></span></code></pre></div>
 <pre><code>## # A tibble: 1 × 17
 ##   hair  feathers eggs  milk  airborne aquatic predator
 ##   &lt;fct&gt; &lt;fct&gt;    &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;    &lt;fct&gt;   &lt;fct&gt;   
 ## 1 TRUE  TRUE     FALSE TRUE  TRUE     FALSE   TRUE    
-## # … with 10 more variables: toothed &lt;fct&gt;,
-## #   backbone &lt;fct&gt;, breathes &lt;fct&gt;, venomous &lt;fct&gt;,
-## #   fins &lt;fct&gt;, legs &lt;dbl&gt;, tail &lt;fct&gt;,
-## #   domestic &lt;fct&gt;, catsize &lt;fct&gt;, type &lt;fct&gt;</code></pre>
+## # ℹ 10 more variables: toothed &lt;fct&gt;, backbone &lt;fct&gt;,
+## #   breathes &lt;fct&gt;, venomous &lt;fct&gt;, fins &lt;fct&gt;,
+## #   legs &lt;dbl&gt;, tail &lt;fct&gt;, domestic &lt;fct&gt;,
+## #   catsize &lt;fct&gt;, type &lt;fct&gt;</code></pre>
 <p>Make a prediction using the default tree</p>
-<div class="sourceCode" id="cb266"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb267"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">tree_default</span> , <span class="va">my_animal</span>, type <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##      1 
 ## mammal 
@@ -486,14 +486,14 @@ observations in a node needed to split to the smallest value of 2 (see:
 training sets, building classification (and regression) models and
 evaluation easier. A great cheat sheet can be found
 <a href="https://ugoproto.github.io/ugo_r_doc/pdf/caret.pdf">here</a>.</p>
-<div class="sourceCode" id="cb268"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb269"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/topepo/caret/">caret</a></span><span class="op">)</span></span></code></pre></div>
 <p>Cross-validation runs are independent and can be done faster in
 parallel. To enable multi-core support, <code>caret</code> uses the package
 <code>foreach</code> and you need to load a <code>do</code> backend. For Linux, you can use
 <code>doMC</code> with 4 cores. Windows needs different backend like <code>doParallel</code>
 (see <code>caret</code> cheat sheet above).</p>
-<div class="sourceCode" id="cb269"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb270"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Linux backend</span></span>
 <span><span class="co"># library(doMC)</span></span>
 <span><span class="co"># registerDoMC(cores = 4)</span></span>
@@ -504,7 +504,7 @@ parallel. To enable multi-core support, <code>caret</code> uses the package
 <span><span class="co"># cl &lt;- makeCluster(4, type="SOCK")</span></span>
 <span><span class="co"># registerDoParallel(cl)</span></span></code></pre></div>
 <p>Set random number generator seed to make results reproducible</p>
-<div class="sourceCode" id="cb270"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb271"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span></span></code></pre></div>
 <div id="hold-out-test-data" class="section level3" number="3.3.1">
 <h3>
@@ -513,10 +513,16 @@ parallel. To enable multi-core support, <code>caret</code> uses the package
 <p>Test data is not used in the model building process and set aside purely
 for testing the model. Here, we partition data the 80% training and 20%
 testing.</p>
-<div class="sourceCode" id="cb271"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb272"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">inTrain</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/createDataPartition.html">createDataPartition</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">Zoo</span><span class="op">$</span><span class="va">type</span>, p <span class="op">=</span> <span class="fl">.8</span>, list <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">Zoo_train</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="va">inTrain</span><span class="op">)</span></span>
-<span><span class="va">Zoo_test</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="va">inTrain</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">Zoo_train</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="va">inTrain</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## Warning: Slicing with a 1-column matrix was deprecated in dplyr
+## 1.1.0.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see
+## where this warning was generated.</code></pre>
+<div class="sourceCode" id="cb274"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Zoo_test</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="va">inTrain</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div id="learn-a-model-and-tune-hyperparameters-on-the-training-data" class="section level3" number="3.3.2">
 <h3>
@@ -532,7 +538,7 @@ using accuracy to chose the best model. I set <code>minsplit</code> to 2 since w
 have not much data. <strong>Note:</strong> Parameters used for tuning (in this case
 <code>cp</code>) need to be set using a data.frame in the argument <code>tuneGrid</code>!
 Setting it in control will be ignored.</p>
-<div class="sourceCode" id="cb272"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb275"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,</span>
 <span>    data <span class="op">=</span> <span class="va">.</span> ,</span>
@@ -568,7 +574,7 @@ value of <code>cp</code> and the reported values for accuracy and Kappa are the
 averages on the validation folds.</p>
 <p>A model using the best tuning parameters and using all the data supplied
 to <code><a href="https://rdrr.io/pkg/caret/man/train.html">train()</a></code> is available as <code>fit$finalModel</code>.</p>
-<div class="sourceCode" id="cb274"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb277"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">finalModel</span>, extra <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  box.palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"Gy"</span>, <span class="st">"Gn"</span>, <span class="st">"Bu"</span>, <span class="st">"Bn"</span>, <span class="st">"Or"</span>, <span class="st">"Rd"</span>, <span class="st">"Pu"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-113-1.png" width="672"></div>
@@ -576,7 +582,7 @@ to <code><a href="https://rdrr.io/pkg/caret/man/train.html">train()</a></code> i
 splits (splits which would be runners up, but do not get chosen by the
 tree) for rpart models (see <code><a href="https://rdrr.io/pkg/caret/man/varImp.html">? varImp</a></code>). Toothed is the runner up for
 many splits, but it never gets chosen!</p>
-<div class="sourceCode" id="cb275"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb278"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/varImp.html">varImp</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## rpart variable importance
 ## 
@@ -598,7 +604,7 @@ many splits, but it never gets chosen!</p>
 ## catsizeFALSE     0.00
 ## domesticFALSE    0.00</code></pre>
 <p>Here is the variable importance without competing splits.</p>
-<div class="sourceCode" id="cb277"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb280"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">imp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/varImp.html">varImp</a></span><span class="op">(</span><span class="va">fit</span>, compete <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">imp</span></span></code></pre></div>
 <pre><code>## rpart variable importance
@@ -620,7 +626,7 @@ many splits, but it never gets chosen!</p>
 ## hairFALSE        0.00
 ## backboneFALSE    0.00
 ## venomousFALSE    0.00</code></pre>
-<div class="sourceCode" id="cb279"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb282"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">imp</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-115-1.png" width="672"></div>
 <p><strong>Note:</strong> Not all models provide a variable importance function. In this
@@ -633,7 +639,7 @@ the model (see <code><a href="https://rdrr.io/pkg/caret/man/varImp.html">? varIm
 <span class="header-section-number">3.4</span> Testing: Confusion Matrix and Confidence Interval for Accuracy<a class="anchor" aria-label="anchor" href="#testing-confusion-matrix-and-confidence-interval-for-accuracy"><i class="fas fa-link"></i></a>
 </h2>
 <p>Use the best model on the test data</p>
-<div class="sourceCode" id="cb280"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb283"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, newdata <span class="op">=</span> <span class="va">Zoo_test</span><span class="op">)</span></span>
 <span><span class="va">pred</span></span></code></pre></div>
 <pre><code>##  [1] mammal        mammal        mollusc.et.al
@@ -647,7 +653,7 @@ the model (see <code><a href="https://rdrr.io/pkg/caret/man/varImp.html">? varIm
 intervals, kappa and many more evaluation metrics. You need to use
 separate test data to create a confusion matrix based on the
 generalization error.</p>
-<div class="sourceCode" id="cb282"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb285"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pred</span>, ref <span class="op">=</span> <span class="va">Zoo_test</span><span class="op">$</span><span class="va">type</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Confusion Matrix and Statistics
 ## 
@@ -751,10 +757,10 @@ one very rare value. You may have to remove the variable.</li>
 classifier. We will create fixed sampling scheme (10-folds) so we
 compare the different models using exactly the same folds. It is
 specified as <code>trControl</code> during training.</p>
-<div class="sourceCode" id="cb284"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb287"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">train_index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/createDataPartition.html">createFolds</a></span><span class="op">(</span><span class="va">Zoo_train</span><span class="op">$</span><span class="va">type</span>, k <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <p>Build models</p>
-<div class="sourceCode" id="cb285"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb288"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rpartFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">.</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"rpart"</span>,</span>
@@ -764,7 +770,7 @@ specified as <code>trControl</code> during training.</p>
 <p><strong>Note:</strong> for kNN we ask <code>train</code> to scale the data using
 <code>preProcess = "scale"</code>. Logicals will be used as 0-1 variables in
 Euclidean distance calculation.</p>
-<div class="sourceCode" id="cb286"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb289"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">knnFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">.</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"knn"</span>,</span>
@@ -773,7 +779,7 @@ Euclidean distance calculation.</p>
 <span>    trControl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/trainControl.html">trainControl</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"cv"</span>, indexOut <span class="op">=</span> <span class="va">train_index</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p>Compare accuracy over all folds.</p>
-<div class="sourceCode" id="cb287"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb290"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">resamps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/resamples.html">resamples</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
 <span>        CART <span class="op">=</span> <span class="va">rpartFit</span>,</span>
 <span>        kNearestNeighbors <span class="op">=</span> <span class="va">knnFit</span></span>
@@ -805,7 +811,7 @@ Euclidean distance calculation.</p>
 <p><code>caret</code> provides some visualizations using the package <code>lattice</code>. For
 example, a boxplot to compare the accuracy and kappa distribution (over
 the 10 folds).</p>
-<div class="sourceCode" id="cb289"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb292"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://lattice.r-forge.r-project.org/">lattice</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/xyplot.html">bwplot</a></span><span class="op">(</span><span class="va">resamps</span>, layout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-122-1.png" width="672"></div>
@@ -813,7 +819,7 @@ the 10 folds).</p>
 (except for some outlier folds).</p>
 <p>Find out if one models is statistically better than the other (is the
 difference in accuracy is not zero).</p>
-<div class="sourceCode" id="cb290"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb293"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">difs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span><span class="op">(</span><span class="va">resamps</span><span class="op">)</span></span>
 <span><span class="va">difs</span></span></code></pre></div>
 <pre><code>## 
@@ -824,7 +830,7 @@ difference in accuracy is not zero).</p>
 ## Metrics: Accuracy, Kappa 
 ## Number of differences: 1 
 ## p-value adjustment: bonferroni</code></pre>
-<div class="sourceCode" id="cb292"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb295"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">difs</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## 
 ## Call:
@@ -856,7 +862,7 @@ do not perform statistically differently.</p>
 </h2>
 <p>Decision trees implicitly select features for splitting, but we can also
 select features manually.</p>
-<div class="sourceCode" id="cb294"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb297"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/larskotthoff/fselector">FSelector</a></span><span class="op">)</span></span></code></pre></div>
 <p>see:
 <a href="http://en.wikibooks.org/wiki/Data_Mining_Algorithms_In_R/Dimensionality_Reduction/Feature_Selection#The_Feature_Ranking_Approach" class="uri">http://en.wikibooks.org/wiki/Data_Mining_Algorithms_In_R/Dimensionality_Reduction/Feature_Selection#The_Feature_Ranking_Approach</a></p>
@@ -867,7 +873,7 @@ select features manually.</p>
 <p>These scores measure how related each feature is to the class variable.
 For discrete features (as in our case), the chi-square statistic can be
 used to derive a score.</p>
-<div class="sourceCode" id="cb295"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb298"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/chi.squared.html">chi.squared</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"feature"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">attr_importance</span><span class="op">)</span><span class="op">)</span></span>
@@ -894,26 +900,26 @@ used to derive a score.</p>
 ## 16 domestic           0.231</code></pre>
 <p>plot importance in descending order (using <code>reorder</code> to order factor
 levels used by <code>ggplot</code>).</p>
-<div class="sourceCode" id="cb297"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb300"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">weights</span>,</span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">attr_importance</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">feature</span>, <span class="va">attr_importance</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Importance score"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"Feature"</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-126-1.png" width="672"></div>
 <p>Get the 5 best features</p>
-<div class="sourceCode" id="cb298"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb301"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/cutoff.html">cutoff.k</a></span><span class="op">(</span><span class="va">weights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">column_to_rownames</a></span><span class="op">(</span><span class="st">"feature"</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">subset</span></span></code></pre></div>
 <pre><code>## [1] "feathers" "milk"     "backbone" "toothed" 
 ## [5] "eggs"</code></pre>
 <p>Use only the best 5 features to build a model (<code>Fselector</code> provides
 <code>as.simple.formula</code>)</p>
-<div class="sourceCode" id="cb300"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb303"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/as.simple.formula.html">as.simple.formula</a></span><span class="op">(</span><span class="va">subset</span>, <span class="st">"type"</span><span class="op">)</span></span>
 <span><span class="va">f</span></span></code></pre></div>
 <pre><code>## type ~ feathers + milk + backbone + toothed + eggs
-## &lt;environment: 0x555bad924c20&gt;</code></pre>
-<div class="sourceCode" id="cb302"><pre class="downlit sourceCode r">
+## &lt;environment: 0x5612639e24c0&gt;</code></pre>
+<div class="sourceCode" id="cb305"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">m</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-128-1.png" width="672"></div>
@@ -921,7 +927,7 @@ levels used by <code>ggplot</code>).</p>
 scores (see package FSelector). Some of them (also) work for continuous
 features. One example is the information gain ratio based on entropy as
 used in decision tree induction.</p>
-<div class="sourceCode" id="cb303"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb306"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/information.gain.html">gain.ratio</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"feature"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">attr_importance</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -952,7 +958,7 @@ used in decision tree induction.</p>
 <p>Often features are related and calculating importance for each feature
 independently is not optimal. We can use greedy search heuristics. For
 example <code>cfs</code> uses correlation/entropy with best first search.</p>
-<div class="sourceCode" id="cb305"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb308"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/cfs.html">cfs</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##  [1] "hair"     "feathers" "eggs"     "milk"    
 ##  [5] "toothed"  "backbone" "breathes" "fins"    
@@ -963,7 +969,7 @@ function that builds a model given a subset of features and calculates a
 quality score. We use here the average for 5 bootstrap samples
 (<code>method = "cv"</code> can also be used instead), no tuning (to be faster),
 and the average accuracy as the score.</p>
-<div class="sourceCode" id="cb307"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb310"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">evaluator</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">subset</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">model</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/as.simple.formula.html">as.simple.formula</a></span><span class="op">(</span><span class="va">subset</span>, <span class="st">"type"</span><span class="op">)</span>,</span>
 <span>    data <span class="op">=</span> <span class="va">.</span>,</span>
@@ -977,11 +983,11 @@ and the average accuracy as the score.</p>
 <span>  <span class="va">m</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>Start with all features (but not the class variable <code>type</code>)</p>
-<div class="sourceCode" id="cb308"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb311"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">features</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html">setdiff</a></span><span class="op">(</span><span class="st">"type"</span><span class="op">)</span></span></code></pre></div>
 <p>There are several (greedy) search strategies available. These run for a
 while!</p>
-<div class="sourceCode" id="cb309"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb312"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">##subset &lt;- backward.search(features, evaluator)</span></span>
 <span><span class="co">##subset &lt;- forward.search(features, evaluator)</span></span>
 <span><span class="co">##subset &lt;- best.first.search(features, evaluator)</span></span>
@@ -996,7 +1002,7 @@ while!</p>
 variables. For example, let us try to predict if an animal is a predator
 given the type. First we use the original encoding of type as a factor
 with several values.</p>
-<div class="sourceCode" id="cb310"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb313"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tree_predator</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">predator</span> <span class="op">~</span> <span class="va">type</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">tree_predator</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-134-1.png" width="672"></div>
@@ -1006,27 +1012,27 @@ tree has to check all possible splits into two subsets. This situation
 should be avoided.</p>
 <p>Convert type into a set of 0-1 dummy variables using <code>class2ind</code>. See
 also <code><a href="https://rdrr.io/pkg/caret/man/dummyVars.html">? dummyVars</a></code> in package <code>caret</code>.</p>
-<div class="sourceCode" id="cb311"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb314"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Zoo_train_dummy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/dummyVars.html">class2ind</a></span><span class="op">(</span><span class="va">Zoo_train</span><span class="op">$</span><span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_all</a></span><span class="op">(</span><span class="va">as.factor</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/add_column.html">add_column</a></span><span class="op">(</span>predator <span class="op">=</span> <span class="va">Zoo_train</span><span class="op">$</span><span class="va">predator</span><span class="op">)</span></span>
 <span><span class="va">Zoo_train_dummy</span></span></code></pre></div>
 <pre><code>## # A tibble: 83 × 8
-##    mammal bird  reptile fish  amphibian insect mollus…¹
-##    &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt; &lt;fct&gt;     &lt;fct&gt;  &lt;fct&gt;   
-##  1 1      0     0       0     0         0      0       
-##  2 1      0     0       0     0         0      0       
-##  3 0      0     0       1     0         0      0       
-##  4 1      0     0       0     0         0      0       
-##  5 1      0     0       0     0         0      0       
-##  6 1      0     0       0     0         0      0       
-##  7 0      0     0       1     0         0      0       
-##  8 0      0     0       1     0         0      0       
-##  9 1      0     0       0     0         0      0       
-## 10 0      1     0       0     0         0      0       
-## # … with 73 more rows, 1 more variable:
-## #   predator &lt;fct&gt;, and abbreviated variable name
-## #   ¹​mollusc.et.al</code></pre>
-<div class="sourceCode" id="cb313"><pre class="downlit sourceCode r">
+##    mammal bird  reptile fish  amphibian insect
+##    &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt; &lt;fct&gt;     &lt;fct&gt; 
+##  1 1      0     0       0     0         0     
+##  2 1      0     0       0     0         0     
+##  3 0      0     0       1     0         0     
+##  4 1      0     0       0     0         0     
+##  5 1      0     0       0     0         0     
+##  6 1      0     0       0     0         0     
+##  7 0      0     0       1     0         0     
+##  8 0      0     0       1     0         0     
+##  9 1      0     0       0     0         0     
+## 10 0      1     0       0     0         0     
+## # ℹ 73 more rows
+## # ℹ 2 more variables: mollusc.et.al &lt;fct&gt;,
+## #   predator &lt;fct&gt;</code></pre>
+<div class="sourceCode" id="cb316"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tree_predator</span> <span class="op">&lt;-</span> <span class="va">Zoo_train_dummy</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">predator</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">.</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">rpart.control</a></span><span class="op">(</span>minsplit <span class="op">=</span> <span class="fl">2</span>, cp <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">tree_predator</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
@@ -1035,7 +1041,7 @@ also <code><a href="https://rdrr.io/pkg/caret/man/dummyVars.html">? dummyVars</a
 factors (here type) into 0-1 dummy variables (e.g., <code>typeinsect = 0</code>).
 The reason is that some models cannot directly use factors and <code>caret</code>
 tries to consistently work with all of them.</p>
-<div class="sourceCode" id="cb314"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb317"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">predator</span> <span class="op">~</span> <span class="va">type</span>, data <span class="op">=</span> <span class="va">.</span>, method <span class="op">=</span> <span class="st">"rpart"</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">rpart.control</a></span><span class="op">(</span>minsplit <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  tuneGrid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>cp <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
@@ -1056,7 +1062,7 @@ tries to consistently work with all of them.</p>
 ## 
 ## Tuning parameter 'cp' was held constant at a value
 ##  of 0.01</code></pre>
-<div class="sourceCode" id="cb316"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb319"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">finalModel</span>, extra <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-136-1.png" width="672"></div>
 <p><em>Note:</em> To use a fixed value for the tuning parameter <code>cp</code>, we have to
@@ -1072,25 +1078,25 @@ observations for one class (called the majority class). This is called
 the class imbalance problem.</p>
 <p>Here is a very good <a href="http://www.kdnuggets.com/2016/08/learning-from-imbalanced-classes.html">article about the problem and
 solutions.</a></p>
-<div class="sourceCode" id="cb317"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb320"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bethatkinson/rpart">rpart</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">Zoo</span>, package<span class="op">=</span><span class="st">"mlbench"</span><span class="op">)</span></span></code></pre></div>
 <p>Class distribution</p>
-<div class="sourceCode" id="cb318"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb321"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">Zoo</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-138-1.png" width="672"></div>
 <p>To create an imbalanced problem, we want to decide if an animal is an
 reptile. First, we change the class variable to make it into a binary
 reptile/no reptile classification problem. <strong>Note:</strong> We use here the
 training data for testing. You should use a separate testing data set!</p>
-<div class="sourceCode" id="cb319"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb322"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Zoo_reptile</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
 <span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">Zoo</span><span class="op">$</span><span class="va">type</span> <span class="op">==</span> <span class="st">"reptile"</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"nonreptile"</span>, <span class="st">"reptile"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Do not forget to make the class variable a factor (a nominal variable)
 or you will get a regression tree instead of a classification tree.</p>
-<div class="sourceCode" id="cb320"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb323"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">Zoo_reptile</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##     hair          feathers          eggs        
 ##  Mode :logical   Mode :logical   Mode :logical  
@@ -1135,12 +1141,12 @@ or you will get a regression tree instead of a classification tree.</p>
 ##                                 
 ## </code></pre>
 <p>See if we have a class imbalance problem.</p>
-<div class="sourceCode" id="cb322"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb325"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">Zoo_reptile</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-141-1.png" width="672"></div>
 <p>Create test and training data. I use here a 50/50 split to make sure
 that the test set has some samples of the rare reptile class.</p>
-<div class="sourceCode" id="cb323"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb326"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">inTrain</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/createDataPartition.html">createDataPartition</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">Zoo_reptile</span><span class="op">$</span><span class="va">type</span>, p <span class="op">=</span> <span class="fl">.5</span>, list <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -1152,7 +1158,7 @@ building a tree!</p>
 <h3>
 <span class="header-section-number">3.7.1</span> Option 1: Use the Data As Is and Hope For The Best<a class="anchor" aria-label="anchor" href="#option-1-use-the-data-as-is-and-hope-for-the-best"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb324"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb327"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">training_reptile</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">.</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"rpart"</span>,</span>
@@ -1163,7 +1169,7 @@ building a tree!</p>
 <p><strong>Warnings:</strong> “There were missing values in resampled performance
 measures.” means that some test folds did not contain examples of both
 classes. This is very likely with class imbalance and small datasets.</p>
-<div class="sourceCode" id="cb326"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb329"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span></span></code></pre></div>
 <pre><code>## CART 
 ## 
@@ -1180,12 +1186,12 @@ classes. This is very likely with class imbalance and small datasets.</p>
 ##   0.947     0    
 ## 
 ## Tuning parameter 'cp' was held constant at a value of 0</code></pre>
-<div class="sourceCode" id="cb328"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb331"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">finalModel</span>, extra <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-144-1.png" width="672"></div>
 <p>the tree predicts everything as non-reptile. Have a look at the error on
 the test set.</p>
-<div class="sourceCode" id="cb329"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb332"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">testing_reptile</span><span class="op">)</span>,</span>
 <span>  ref <span class="op">=</span> <span class="va">testing_reptile</span><span class="op">$</span><span class="va">type</span>, positive <span class="op">=</span> <span class="st">"reptile"</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Confusion Matrix and Statistics
@@ -1235,7 +1241,7 @@ minority/positive class). You could also use SMOTE (in package <strong>DMwR</str
 or other sampling strategies (e.g., from package <strong>unbalanced</strong>). We use
 50+50 observations here (<strong>Note:</strong> many samples will be chosen several
 times).</p>
-<div class="sourceCode" id="cb331"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb334"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">sampling</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span> <span class="co"># for repeatability</span></span>
 <span></span>
@@ -1245,7 +1251,7 @@ times).</p>
 <pre><code>## 
 ## nonreptile    reptile 
 ##         50         50</code></pre>
-<div class="sourceCode" id="cb333"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb336"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">training_reptile_balanced</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">.</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"rpart"</span>,</span>
@@ -1272,11 +1278,11 @@ times).</p>
 ## Accuracy was used to select the optimal model
 ##  using the largest value.
 ## The final value used for the model was cp = 0.18.</code></pre>
-<div class="sourceCode" id="cb335"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb338"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">finalModel</span>, extra <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-146-1.png" width="672"></div>
 <p>Check on the unbalanced testing data.</p>
-<div class="sourceCode" id="cb336"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb339"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">testing_reptile</span><span class="op">)</span>,</span>
 <span>  ref <span class="op">=</span> <span class="va">testing_reptile</span><span class="op">$</span><span class="va">type</span>, positive <span class="op">=</span> <span class="st">"reptile"</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Confusion Matrix and Statistics
@@ -1314,14 +1320,14 @@ identified animals are really reptiles) The tradeoff can be controlled
 using the sample proportions. We can sample more reptiles to increase
 sensitivity at the cost of lower specificity (this effect cannot be seen
 in the data since the test set has only a few reptiles).</p>
-<div class="sourceCode" id="cb338"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb341"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sampling/man/strata.html">strata</a></span><span class="op">(</span><span class="va">training_reptile</span>, stratanames <span class="op">=</span> <span class="st">"type"</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">100</span><span class="op">)</span>, method <span class="op">=</span> <span class="st">"srswr"</span><span class="op">)</span></span>
 <span><span class="va">training_reptile_balanced</span> <span class="op">&lt;-</span> <span class="va">training_reptile</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="va">id</span><span class="op">$</span><span class="va">ID_unit</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">training_reptile_balanced</span><span class="op">$</span><span class="va">type</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## 
 ## nonreptile    reptile 
 ##         50        100</code></pre>
-<div class="sourceCode" id="cb340"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb343"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">training_reptile_balanced</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">.</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"rpart"</span>,</span>
@@ -1367,7 +1373,7 @@ also use AUC (area under the ROC) as the tuning metric. You need to
 specify the two class summary function. Note that the tree still trying
 to improve accuracy on the data and not AUC! I also enable class
 probabilities since I want to predict probabilities later.</p>
-<div class="sourceCode" id="cb342"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb345"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">training_reptile</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">.</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"rpart"</span>,</span>
@@ -1380,7 +1386,7 @@ probabilities since I want to predict probabilities later.</p>
 <pre><code>## Warning in nominalTrainWorkflow(x = x, y = y, wts =
 ## weights, info = trainInfo, : There were missing values
 ## in resampled performance measures.</code></pre>
-<div class="sourceCode" id="cb344"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb347"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span></span></code></pre></div>
 <pre><code>## CART 
 ## 
@@ -1397,10 +1403,10 @@ probabilities since I want to predict probabilities later.</p>
 ##   0.358  0.975  0   
 ## 
 ## Tuning parameter 'cp' was held constant at a value of 0</code></pre>
-<div class="sourceCode" id="cb346"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb349"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">finalModel</span>, extra <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-149-1.png" width="672"></div>
-<div class="sourceCode" id="cb347"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb350"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">testing_reptile</span><span class="op">)</span>,</span>
 <span>  ref <span class="op">=</span> <span class="va">testing_reptile</span><span class="op">$</span><span class="va">type</span>, positive <span class="op">=</span> <span class="st">"reptile"</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Confusion Matrix and Statistics
@@ -1445,7 +1451,7 @@ node. For a binary classification problem that means a probability of
 means that if the new observation ends up in a leaf node with 1% or more
 reptiles from training then the observation will be classified as a
 reptile. The data set is small and this works better with more data.</p>
-<div class="sourceCode" id="cb349"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb352"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">testing_reptile</span>, type <span class="op">=</span> <span class="st">"prob"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">prob</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##      nonreptile reptile
@@ -1455,7 +1461,7 @@ reptile. The data set is small and this works better with more data.</p>
 ## wolf      0.962  0.0385
 ## worm      1.000  0.0000
 ## wren      0.962  0.0385</code></pre>
-<div class="sourceCode" id="cb351"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb354"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">prob</span><span class="op">[</span>,<span class="st">"reptile"</span><span class="op">]</span><span class="op">&gt;=</span><span class="fl">0.01</span>, <span class="st">"reptile"</span>, <span class="st">"nonreptile"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pred</span>,</span>
@@ -1504,7 +1510,7 @@ curve. For the ROC curve all different cutoff thresholds for the
 probability are used and then connected with a line. The area under the
 curve represents a single number for how well the classifier works (the
 closer to one, the better).</p>
-<div class="sourceCode" id="cb353"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb356"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="http://expasy.org/tools/pROC/">"pROC"</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Type 'citation("pROC")' for a citation.</code></pre>
 <pre><code>## 
@@ -1512,11 +1518,11 @@ closer to one, the better).</p>
 <pre><code>## The following objects are masked from 'package:stats':
 ## 
 ##     cov, smooth, var</code></pre>
-<div class="sourceCode" id="cb357"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb360"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/pROC/man/roc.html">roc</a></span><span class="op">(</span><span class="va">testing_reptile</span><span class="op">$</span><span class="va">type</span> <span class="op">==</span> <span class="st">"reptile"</span>, <span class="va">prob</span><span class="op">[</span>,<span class="st">"reptile"</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Setting levels: control = FALSE, case = TRUE</code></pre>
 <pre><code>## Setting direction: controls &lt; cases</code></pre>
-<div class="sourceCode" id="cb360"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb363"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">r</span></span></code></pre></div>
 <pre><code>## 
 ## Call:
@@ -1524,7 +1530,7 @@ closer to one, the better).</p>
 ## 
 ## Data: prob[, "reptile"] in 48 controls (testing_reptile$type == "reptile" FALSE) &lt; 2 cases (testing_reptile$type == "reptile" TRUE).
 ## Area under the curve: 0.766</code></pre>
-<div class="sourceCode" id="cb362"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb365"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/pROC/man/ggroc.html">ggroc</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_abline</a></span><span class="op">(</span>intercept <span class="op">=</span> <span class="fl">1</span>, slope <span class="op">=</span> <span class="fl">1</span>, color <span class="op">=</span> <span class="st">"darkgrey"</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-151-1.png" width="672"></div>
 </div>
@@ -1537,7 +1543,7 @@ closer to one, the better).</p>
 splitting decisions (as parameter <code>loss</code>). The matrix has the form</p>
 <p>TP FP FN TN</p>
 <p>TP and TN have to be 0. We make FN very expensive (100).</p>
-<div class="sourceCode" id="cb363"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb366"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cost</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
 <span>  <span class="fl">0</span>,   <span class="fl">1</span>,</span>
 <span>  <span class="fl">100</span>, <span class="fl">0</span></span>
@@ -1546,7 +1552,7 @@ splitting decisions (as parameter <code>loss</code>). The matrix has the form</p
 <pre><code>##      [,1] [,2]
 ## [1,]    0    1
 ## [2,]  100    0</code></pre>
-<div class="sourceCode" id="cb365"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb368"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">training_reptile</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">.</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"rpart"</span>,</span>
@@ -1556,7 +1562,7 @@ splitting decisions (as parameter <code>loss</code>). The matrix has the form</p
 measures” means that some folds did not contain any reptiles (because of
 the class imbalance) and thus the performance measures could not be
 calculates.</p>
-<div class="sourceCode" id="cb366"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb369"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span></span></code></pre></div>
 <pre><code>## CART 
 ## 
@@ -1573,10 +1579,10 @@ calculates.</p>
 ##   0.477     -0.0304
 ## 
 ## Tuning parameter 'cp' was held constant at a value of 0</code></pre>
-<div class="sourceCode" id="cb368"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb371"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">finalModel</span>, extra <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-153-1.png" width="672"></div>
-<div class="sourceCode" id="cb369"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb372"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">testing_reptile</span><span class="op">)</span>,</span>
 <span>  ref <span class="op">=</span> <span class="va">testing_reptile</span><span class="op">$</span><span class="va">type</span>, positive <span class="op">=</span> <span class="st">"reptile"</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Confusion Matrix and Statistics
@@ -1671,7 +1677,7 @@ cost.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2023-02-22.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2023-04-21.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

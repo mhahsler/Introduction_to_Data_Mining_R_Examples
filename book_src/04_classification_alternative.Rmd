@@ -84,7 +84,7 @@ aside purely for testing the model after it is completely built. Here I
 use 80% for training.
 
 ```{r }
-inTrain <- createDataPartition(y = Zoo$type, p = .8, list = FALSE)
+inTrain <- createDataPartition(y = Zoo$type, p = .8)[[1]]
 Zoo_train <- Zoo %>% slice(inTrain)
 Zoo_test <- Zoo %>% slice(-inTrain)
 ```
@@ -320,31 +320,38 @@ head(X)
 y <- Zoo_train %>% pull("type") %>% as.integer() %>% `-`(1L) %>% to_categorical()
 head(y)
 
-X <- Zoo_train %>% select(!type) %>% 
-  mutate(across(everything(), as.integer)) %>% as.matrix()
-head(X)
-
-y <- Zoo_train %>% pull("type") %>% as.integer() %>% `-`(1L) %>% to_categorical()
-head(y)
-
 X_test <- Zoo_test %>% select(!type) %>% 
   mutate(across(everything(), as.integer)) %>% as.matrix()
 y_test <- Zoo_test %>% pull("type") %>% as.integer() %>% `-`(1L) %>% to_categorical()
 ```
 
 Deep learning uses a large set of hyper-parameters. Choices are the
-activation function, number of layers, number of units per layer and the
-optimizer. A L2 regularizer is used for the dense layer weights to
-reduce overfitting. The output is a categorical class value, therefore
-the output layer uses the softmax activation function, the loss is
-categorical cross-entropy, and the metric is accuracy.
+activation function, number of layers, number of units per layer, the
+optimizer, and the type of regularization used. 
+
+We define here a simple network with a single dense hidden layer.
+Note that in keras, we have to specify the input size in this first dense layer. 
+The output of the classifier is a categorical class value, therefore
+we use for the output layer the softmax activation function, and for
+training we specify 
+categorical cross-entropy as the loss function, and accuracy
+as an additional metric.
+Also, L2 regularization is used for the weights of the hidden layer to
+reduce overfitting. 
 
 ```{r message=FALSE, warning=FALSE}
-model <- keras_model_sequential() %>%
-  layer_dense(units = 10, activation = 'relu', input_shape = c(ncol(X)),
-    kernel_regularizer=regularizer_l2(l=0.01)) %>%
-  layer_dense(units = ncol(y), activation = 'softmax') %>%
-  compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = 'accuracy')
+model <- keras_model_sequential(input_shape = c(ncol(X)), name = "single_hidden_layer_classifier") %>%
+  layer_dense(units = 10, activation = 'relu', kernel_regularizer=regularizer_l2(l=0.01), name = "hidden1") %>%
+  layer_dense(units = ncol(y), activation = 'softmax', name = "output")
+
+model
+```
+
+
+```{r message=FALSE, warning=FALSE}
+model <- model %>%  compile(loss = 'categorical_crossentropy', 
+          optimizer = 'adam', 
+          metrics = 'accuracy')
 ```
 
 For model training, we need to specify the batch size and the number of

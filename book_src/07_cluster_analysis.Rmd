@@ -468,7 +468,7 @@ WCSS <- sapply(ks, FUN = function(k) {
   kmeans(ruspini_scaled, centers = k, nstart = 5)$tot.withinss
   })
 
-ggplot(as_tibble(ks, WCSS), aes(ks, WCSS)) + geom_line() +
+ggplot(tibble(ks, WCSS), aes(ks, WCSS)) + geom_line() +
   geom_vline(xintercept = 4, color = "red", linetype = 2)
 ```
 
@@ -485,7 +485,7 @@ ASW <- sapply(ks, FUN=function(k) {
 best_k <- ks[which.max(ASW)]
 best_k
 
-ggplot(as_tibble(ks, ASW), aes(ks, ASW)) + geom_line() +
+ggplot(tibble(ks, ASW), aes(ks, ASW)) + geom_line() +
   geom_vline(xintercept = best_k, color = "red", linetype = 2)
 ```
 
@@ -500,7 +500,7 @@ DI <- sapply(ks, FUN=function(k) {
 })
 
 best_k <- ks[which.max(DI)]
-ggplot(as_tibble(ks, DI), aes(ks, DI)) + geom_line() +
+ggplot(tibble(ks, DI), aes(ks, DI)) + geom_line() +
   geom_vline(xintercept = best_k, color = "red", linetype = 2)
 ```
 
@@ -621,7 +621,7 @@ WCSS <- sapply(ks, FUN = function(k) {
   kmeans(shapes, centers = k, nstart = 10)$tot.withinss
 })
 
-ggplot(as_tibble(ks, WCSS), aes(ks, WCSS)) + geom_line()
+ggplot(tibble(ks, WCSS), aes(ks, WCSS)) + geom_line()
 ```
 
 Looks like it could be 7 clusters
@@ -648,7 +648,7 @@ ASW <- sapply(ks, FUN = function(k) {
   fpc::cluster.stats(d, cutree(hc, k))$avg.silwidth
 })
 
-ggplot(as_tibble(ks, ASW), aes(ks, ASW)) + geom_line()
+ggplot(tibble(ks, ASW), aes(ks, ASW)) + geom_line()
 ```
 
 The maximum is clearly at 4 clusters.
