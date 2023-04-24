@@ -140,21 +140,13 @@ ggplot(fruit, aes(x = price, y = vitamin_c)) +
 ```
 
 
-Alternatively, we can visualize the vitamin C content of each fruit
+Alternatively, we can visualize the vitamin C content per dollar of each fruit
 using a bar chart.
 
 ```{r }
 ggplot(fruit, aes(x = name, y = vitamin_c)) + 
   geom_bar(stat = "identity")
 ```
-Using an additional geom, we can easily add a smoothing layer with a
-regression line (`"lm"` stands for linear model).
-```{r }
-ggplot(fruit, aes(x = name, y = vitamin_c)) + 
-  geom_bar(stat = "identity") +
-  geom_smooth(method = "lm")
-```
-
 
 Note that `geom_bar` by default uses the `stat_count` statistics to 
 aggregate data by counting, but
