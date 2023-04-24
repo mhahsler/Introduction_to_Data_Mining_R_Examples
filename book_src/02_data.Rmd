@@ -9,18 +9,22 @@ editor_options:
 This chapter provides examples for cleaning and preparing data for data
 mining.
 
-```{r setup_02, include=FALSE}
-pkgs <- sort(c('tidyverse', 'GGally', 'ggcorrplot', 'plotly', 'factoextra', 'arules', 
-  'seriation', 'sampling', 'caret', 'proxy'))
+Install the packages used in this chapter:
 
-lapply(pkgs, function(pkg) {
-  if (system.file(package = pkg) == '') install.packages(pkg)
-})
+```{r setup_02}
+pkgs <- sort(c('tidyverse', 'GGally', 'ggcorrplot', 
+    'plotly', 'factoextra', 'arules', 'seriation', 
+    'sampling', 'caret', 'proxy'))
 
-all_pkgs <- union(all_pkgs, pkgs)
+pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
+if(length(pkgs_install)) install.packages(pkgs_install)
 ```
 
-**Packages used for this chapter:** `r format_pkgs(pkgs)`
+The packages used for this chapter are: `r format_pkgs(pkgs)`
+
+```{r setup_02-2, include=FALSE}
+all_pkgs <- union(all_pkgs, pkgs)
+```
 
 ## The Iris Dataset
 
@@ -207,9 +211,8 @@ to visualize more than 3 dimensions.
 
 ```{r }
 # library(plotly) # I don't load the package because it's namespace clashes with select in dplyr.
-plotly::plot_ly(iris, 
-  x = ~Sepal.Length, y = ~Petal.Length, z = ~Sepal.Width,
-  size = ~Petal.Width, color = ~Species, type="scatter3d")
+plotly::plot_ly(iris, x = ~Sepal.Length, y = ~Petal.Length, z = ~Sepal.Width, 
+      color = ~Species, size = 1) %>% plotly::add_markers()
 ```
 
 The principal components can be calculated from a matrix using the

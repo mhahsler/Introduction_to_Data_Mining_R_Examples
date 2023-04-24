@@ -6,15 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 1 Introduction | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
-<meta name="description" content="Packages used for this chapter: ggplot2 (Wickham, Chang, et al. 2023), tidyverse (Wickham 2023b)  1.1 Used Software This companion book assumes that you have R and RStudio Desktop installed and...">
+<meta name="description" content="1.1 Used Software This companion book assumes that you have R and RStudio Desktop installed and that you are familiar with the basics of R, how to run R code and install packages. If you are new...">
 <meta name="generator" content="bookdown 0.33 with bs4_book()">
 <meta property="og:title" content="Chapter 1 Introduction | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
-<meta property="og:description" content="Packages used for this chapter: ggplot2 (Wickham, Chang, et al. 2023), tidyverse (Wickham 2023b)  1.1 Used Software This companion book assumes that you have R and RStudio Desktop installed and...">
+<meta property="og:description" content="1.1 Used Software This companion book assumes that you have R and RStudio Desktop installed and that you are familiar with the basics of R, how to run R code and install packages. If you are new...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 1 Introduction | An R Companion for Introduction to Data Mining">
-<meta name="twitter:description" content="Packages used for this chapter: ggplot2 (Wickham, Chang, et al. 2023), tidyverse (Wickham 2023b)  1.1 Used Software This companion book assumes that you have R and RStudio Desktop installed and...">
+<meta name="twitter:description" content="1.1 Used Software This companion book assumes that you have R and RStudio Desktop installed and that you are familiar with the basics of R, how to run R code and install packages. If you are new...">
 <meta name="twitter:image" content="/images/cover.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -94,7 +94,6 @@
 <h1>
 <span class="header-section-number">1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction"><i class="fas fa-link"></i></a>
 </h1>
-<p><strong>Packages used for this chapter:</strong> <em>ggplot2</em> <span class="citation">(<a href="references.html#ref-R-ggplot2" role="doc-biblioref">Wickham, Chang, et al. 2023</a>)</span>, <em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2023b</a>)</span></p>
 <div id="used-software" class="section level2" number="1.1">
 <h2>
 <span class="header-section-number">1.1</span> Used Software<a class="anchor" aria-label="anchor" href="#used-software"><i class="fas fa-link"></i></a>
@@ -110,6 +109,15 @@ R</a>
 <span class="citation">(<a href="references.html#ref-RCore2021" role="doc-biblioref">Venables, Smith, and the R Core Team 2021</a>)</span> will get you started. There are many introduction videos
 for RStudio and a basic video that shows you how to run code and how to
 install packages will suffice.</p>
+<p>Each book chapter will use a set of packages which need to be installed.
+The installation code can be found at the beginning of each chapter.
+Here is the code to install the packages used in this chapter:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'tidyverse'</span>, <span class="st">'ggplot2'</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pkgs_install</span> <span class="op">&lt;-</span> <span class="va">pkgs</span><span class="op">[</span><span class="op">!</span><span class="op">(</span><span class="va">pkgs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span>,<span class="st">"Package"</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">pkgs_install</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="va">pkgs_install</span><span class="op">)</span></span></code></pre></div>
+<p>The packages used for this chapter are: <em>ggplot2</em> <span class="citation">(<a href="references.html#ref-R-ggplot2" role="doc-biblioref">Wickham, Chang, et al. 2023</a>)</span>, <em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2023b</a>)</span></p>
 <p>The code in this book uses <code>tidyverse</code> to manipulate data and <code>ggplot2</code>
 for visualization. A great introduction to these very useful tools can
 be found in the freely available web book <a href="https://r4ds.had.co.nz">R for Data
@@ -119,7 +127,7 @@ Science</a> by <span class="citation">Wickham and Grolemund (<a href="references
 <h2>
 <span class="header-section-number">1.2</span> Tidyverse<a class="anchor" aria-label="anchor" href="#tidyverse"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code>## ── Attaching core tidyverse packages ──────────────────
 ## ✔ dplyr     1.1.2     ✔ readr     2.1.4
@@ -151,7 +159,7 @@ Sheet</a>.</p>
 <p>Here is a short example. We create a tibble with the price in dollars
 per pound and the vitamin C content in milligrams (mg) per pound for
 three fruit.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fruit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"orange"</span><span class="op">)</span>, </span>
 <span>  price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2.5</span>, <span class="fl">2.0</span>, <span class="fl">3.5</span><span class="op">)</span>, </span>
@@ -166,7 +174,7 @@ three fruit.</p>
 <p>Now we add a column with the vitamin C (in mg) that a dollar buys you,
 filter only fruit that provides more than 20 mg and then order (arrange)
 the data by the vitamin C per dollar from largest to smallest.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">affordable_vitamin_c_sources</span> <span class="op">&lt;-</span> <span class="va">fruit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>vitamin_c_per_dollar <span class="op">=</span> <span class="va">vitamin_c</span> <span class="op">/</span> <span class="va">price</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">vitamin_c_per_dollar</span> <span class="op">&gt;</span> <span class="fl">20</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
@@ -210,19 +218,37 @@ Visualization</a>
 <span class="citation">(<a href="references.html#ref-Wickham2017" role="doc-biblioref">Wickham and Grolemund 2017</a>)</span>, and very useful is <a href="https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf">RStudio’s Data Visualization Cheat
 Sheet</a>.</p>
 <p>We can visualize our fruit data as a scatter plot.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">price</span>, y <span class="op">=</span> <span class="va">vitamin_c</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-6-1.png" width="672"></div>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-6-1.png" width="672">
+It is easy to add more geoms. For example, we can add a regression line
+using <code>geom_smooth</code> with the method <code>"lm"</code> (linear model). We suppress the
+confidence interval since we only have 3 data points.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">price</span>, y <span class="op">=</span> <span class="va">vitamin_c</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, se <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## `geom_smooth()` using formula = 'y ~ x'</code></pre>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-7-1.png" width="672"></div>
 <p>Alternatively, we can visualize the vitamin C content of each fruit
-using bars.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+using a bar chart.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">name</span>, y <span class="op">=</span> <span class="va">vitamin_c</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-7-1.png" width="672"></div>
-<p>Note that <code>geom_bar</code> by default tries to aggregate data by counting, but
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-8-1.png" width="672">
+Using an additional geom, we can easily add a smoothing layer with a
+regression line (<code>"lm"</code> stands for linear model).</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">name</span>, y <span class="op">=</span> <span class="va">vitamin_c</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## `geom_smooth()` using formula = 'y ~ x'</code></pre>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-9-1.png" width="672"></div>
+<p>Note that <code>geom_bar</code> by default uses the <code>stat_count</code> statistics to
+aggregate data by counting, but
 we just want to visualize the value already available in the tibble, so
-we specify the identity statistic.</p>
+we specify the identity statistic instead.</p>
 
 </div>
 </div>
@@ -253,7 +279,7 @@ we specify the identity statistic.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2023-04-21.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2023-04-23.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

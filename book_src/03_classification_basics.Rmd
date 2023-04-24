@@ -6,18 +6,21 @@ editor_options:
 
 # Classification: Basic Concepts and Techniques
 
-```{r setup_03, include=FALSE}
+Install the packages used in this chapter:
+
+```{r setup_03}
 pkgs <- sort(c('tidyverse', 'rpart', 'rpart.plot', 'caret', 
   'lattice', 'FSelector', 'sampling', 'pROC', 'mlbench'))
 
-lapply(pkgs, function(pkg) {
-  if (system.file(package = pkg) == '') install.packages(pkg)
-})
-
-all_pkgs <- union(all_pkgs, pkgs)
+pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
+if(length(pkgs_install)) install.packages(pkgs_install)
 ```
 
-**Packages used for this chapter:** `r format_pkgs(pkgs)`
+The packages used for this chapter are: `r format_pkgs(pkgs)`
+
+```{r setup_03-2, include=FALSE}
+all_pkgs <- union(all_pkgs, pkgs)
+```
 
 You can read the free sample chapter from the textbook [@Tan2005]:
 [Chapter 3. Classification: Basic Concepts and

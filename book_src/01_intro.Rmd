@@ -6,18 +6,6 @@ editor_options:
 
 # Introduction
 
-```{r setup_01, include=FALSE}
-pkgs <- sort(c('tidyverse', 'ggplot2'))
-
-lapply(pkgs, function(pkg) {
-  if (system.file(package = pkg) == '') install.packages(pkg)
-})
-
-all_pkgs <- union(all_pkgs, pkgs)
-```
-
-**Packages used for this chapter:** `r format_pkgs(pkgs)`
-
 ## Used Software
 
 This companion book assumes that you have
@@ -32,6 +20,23 @@ R](https://cran.r-project.org/doc/manuals/r-release/R-intro.html)
 [@RCore2021] will get you started. There are many introduction videos
 for RStudio and a basic video that shows you how to run code and how to
 install packages will suffice.
+
+Each book chapter will use a set of packages which need to be installed. 
+The installation code can be found at the beginning of each chapter. 
+Here is the code to install the packages used in this chapter:
+
+```{r setup_01, message=FALSE}
+pkgs <- sort(c('tidyverse', 'ggplot2'))
+
+pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
+if(length(pkgs_install)) install.packages(pkgs_install)
+```
+
+The packages used for this chapter are: `r format_pkgs(pkgs)`
+
+```{r setup_01-2, include=FALSE}
+all_pkgs <- union(all_pkgs, pkgs)
+```
 
 The code in this book uses `tidyverse` to manipulate data and `ggplot2`
 for visualization. A great introduction to these very useful tools can
@@ -124,15 +129,34 @@ We can visualize our fruit data as a scatter plot.
 ggplot(fruit, aes(x = price, y = vitamin_c)) + 
   geom_point()
 ```
+It is easy to add more geoms. For example, we can add a regression line
+using `geom_smooth` with the method `"lm"` (linear model). We suppress the
+confidence interval since we only have 3 data points.
+
+```{r }
+ggplot(fruit, aes(x = price, y = vitamin_c)) + 
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
 
 Alternatively, we can visualize the vitamin C content of each fruit
-using bars.
+using a bar chart.
 
 ```{r }
 ggplot(fruit, aes(x = name, y = vitamin_c)) + 
   geom_bar(stat = "identity")
 ```
+Using an additional geom, we can easily add a smoothing layer with a
+regression line (`"lm"` stands for linear model).
+```{r }
+ggplot(fruit, aes(x = name, y = vitamin_c)) + 
+  geom_bar(stat = "identity") +
+  geom_smooth(method = "lm")
+```
 
-Note that `geom_bar` by default tries to aggregate data by counting, but
+
+Note that `geom_bar` by default uses the `stat_count` statistics to 
+aggregate data by counting, but
 we just want to visualize the value already available in the tibble, so
-we specify the identity statistic.
+we specify the identity statistic instead.

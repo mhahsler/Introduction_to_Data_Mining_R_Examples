@@ -95,7 +95,7 @@ circle-dataset
 k-nearest-neighbors-classifier-1
 naive-bayes-classifier-1
 linear-discriminant-analysis-1
-multinomial-logistic-regression-implemented-in-nnet-1
+logistic-regression-implemented-in-nnet
 decision-trees-2
 svm-1
 single-layer-feed-forward-neural-networks-1

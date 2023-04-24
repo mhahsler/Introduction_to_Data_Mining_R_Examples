@@ -6,30 +6,20 @@ editor_options:
 
 # Clustering Analysis
 
-```{r setup_07, include=FALSE}
-pkgs <- sort(c(
-'tidyverse',
-'factoextra',
-'dbscan',
-'cluster',
-'mclust',
-'kernlab',
-'e1071',
-'scatterpie',
-'fpc',
-'seriation',
-'mlbench',
-'GGally'
+```{r setup_07}
+pkgs <- sort(c('tidyverse', 'factoextra', 'dbscan', 'cluster', 'mclust', 
+  'kernlab', 'e1071', 'scatterpie', 'fpc', 'seriation', 'mlbench', 'GGally'
 ))
   
-lapply(pkgs, function(pkg) {
-  if (system.file(package = pkg) == '') install.packages(pkg)
-})
-
-all_pkgs <- union(all_pkgs, pkgs)
+pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
+if(length(pkgs_install)) install.packages(pkgs_install)
 ```
 
-**Packages used for this chapter:** `r format_pkgs(pkgs)`
+The packages used for this chapter are: `r format_pkgs(pkgs)`
+
+```{r setup_07-2, include=FALSE}
+all_pkgs <- union(all_pkgs, pkgs)
+```
 
 You can read the free sample chapter from the textbook [@Tan2005]:
 [Chapter 7. Cluster Analysis: Basic Concepts and
