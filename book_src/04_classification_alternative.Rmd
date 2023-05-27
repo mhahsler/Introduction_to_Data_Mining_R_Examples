@@ -77,8 +77,8 @@ use 80% for training.
 
 ```{r }
 inTrain <- createDataPartition(y = Zoo$type, p = .8)[[1]]
-Zoo_train <- Zoo %>% slice(inTrain)
-Zoo_test <- Zoo %>% slice(-inTrain)
+Zoo_train <- Zoo |> slice(inTrain)
+Zoo_test <- Zoo |> slice(-inTrain)
 ```
 
 ## Fitting Different Classification Models to the Training Data
@@ -109,9 +109,9 @@ understand error message.
 ### Conditional Inference Tree (Decision Tree)
 
 ```{r }
-ctreeFit <- Zoo_train %>% train(type ~ .,
+ctreeFit <- Zoo_train |> train(type ~ .,
   method = "ctree",
-  data = .,
+  data = _,
 	tuneLength = 5,
 	trControl = trainControl(method = "cv", indexOut = train_index))
 ctreeFit
@@ -121,9 +121,9 @@ plot(ctreeFit$finalModel)
 ### C 4.5 Decision Tree
 
 ```{r }
-C45Fit <- Zoo_train %>% train(type ~ .,
+C45Fit <- Zoo_train |> train(type ~ .,
   method = "J48",
-  data = .,
+  data = _,
 	tuneLength = 5,
 	trControl = trainControl(method = "cv", indexOut = train_index))
 C45Fit
@@ -138,9 +138,9 @@ variables are between 0 and 1. Scaling can be directly performed as
 preprocessing in `train` using the parameter `preProcess = "scale"`.
 
 ```{r }
-knnFit <- Zoo_train %>% train(type ~ .,
+knnFit <- Zoo_train |> train(type ~ .,
   method = "knn",
-  data = .,
+  data = _,
   preProcess = "scale",
 	tuneLength = 5,
   tuneGrid=data.frame(k = 1:10),
@@ -153,9 +153,9 @@ knnFit$finalModel
 ### PART (Rule-based classifier)
 
 ```{r }
-rulesFit <- Zoo_train %>% train(type ~ .,
+rulesFit <- Zoo_train |> train(type ~ .,
   method = "PART",
-  data = .,
+  data = _,
   tuneLength = 5,
   trControl = trainControl(method = "cv", indexOut = train_index))
 rulesFit
@@ -166,9 +166,9 @@ rulesFit$finalModel
 ### Linear Support Vector Machines
 
 ```{r }
-svmFit <- Zoo_train %>% train(type ~.,
+svmFit <- Zoo_train |> train(type ~.,
   method = "svmLinear",
-  data = .,
+  data = _,
 	tuneLength = 5,
 	trControl = trainControl(method = "cv", indexOut = train_index))
 svmFit
@@ -179,9 +179,9 @@ svmFit$finalModel
 ### Random Forest
 
 ```{r }
-randomForestFit <- Zoo_train %>% train(type ~ .,
+randomForestFit <- Zoo_train |> train(type ~ .,
   method = "rf",
-  data = .,
+  data = _,
 	tuneLength = 5,
 	trControl = trainControl(method = "cv", indexOut = train_index))
 randomForestFit
@@ -192,9 +192,9 @@ randomForestFit$finalModel
 ### Gradient Boosted Decision Trees (xgboost)
 
 ```{r }
-xgboostFit <- Zoo_train %>% train(type ~ .,
+xgboostFit <- Zoo_train |> train(type ~ .,
   method = "xgbTree",
-  data = .,
+  data = _,
   tuneLength = 5,
   trControl = trainControl(method = "cv", indexOut = train_index),
   tuneGrid = expand.grid(
@@ -214,9 +214,9 @@ xgboostFit$finalModel
 ### Artificial Neural Network
 
 ```{r }
-nnetFit <- Zoo_train %>% train(type ~ .,
+nnetFit <- Zoo_train |> train(type ~ .,
   method = "nnet",
-  data = .,
+  data = _,
 	tuneLength = 5,
 	trControl = trainControl(method = "cv", indexOut = train_index),
   trace = FALSE)
@@ -304,25 +304,27 @@ numeric/integer values. The class variable needs to be one-hot encodes
 with the `keras` function `to_categorical()`.
 
 ```{r warning=FALSE}
-X <- Zoo_train %>% 
-  select(!type) %>% 
-  mutate(across(everything(), as.integer)) %>% 
+X <- Zoo_train |> 
+  select(!type) |> 
+  mutate(across(everything(), as.integer)) |> 
   as.matrix()
 head(X)
 
-y <- Zoo_train %>% 
-  pull("type") %>% 
-  as.integer() %>% `-`(1L) %>% 
+y <- Zoo_train |> 
+  pull("type") |> 
+  as.integer() |> 
+  {\(x)(x - 1L)}() |> 
   to_categorical()
 head(y)
 
-X_test <- Zoo_test %>% 
-  select(!type) %>% 
-  mutate(across(everything(), as.integer)) %>% 
+X_test <- Zoo_test |> 
+  select(!type) |> 
+  mutate(across(everything(), as.integer)) |> 
   as.matrix()
-y_test <- Zoo_test %>% 
-  pull("type") %>% 
-  as.integer() %>% `-`(1L) %>% 
+y_test <- Zoo_test |> 
+  pull("type") |> 
+  as.integer() |> 
+  {\(x)(x - 1L)}() |>
   to_categorical()
 ```
 
@@ -342,9 +344,9 @@ reduce overfitting.
 
 ```{r message=FALSE, warning=FALSE}
 model <- keras_model_sequential(input_shape = c(ncol(X)), 
-              name = "single_hidden_layer_classifier") %>%
+              name = "single_hidden_layer_classifier") |>
   layer_dense(units = 10, activation = 'relu', 
-              kernel_regularizer=regularizer_l2(l=0.01), name = "hidden1") %>%
+              kernel_regularizer=regularizer_l2(l=0.01), name = "hidden1") |>
   layer_dense(units = ncol(y), activation = 'softmax', name = "output")
 
 model
@@ -352,7 +354,7 @@ model
 
 
 ```{r message=FALSE, warning=FALSE}
-model <- model %>%  
+model <- model |>  
   compile(loss = 'categorical_crossentropy', 
           optimizer = 'adam', 
           metrics = 'accuracy')
@@ -363,7 +365,7 @@ training epochs. The fitting process can also use a fraction of the
 training data for validation to provide generalization loss/accuracy.
 
 ```{r}
-history <- model %>%
+history <- model |>
   fit(
     X, y,
     batch_size = 10,
@@ -378,9 +380,9 @@ To create predictions from the model, we have to convert the one-hot
 encoding back to class labels.
 
 ```{r}
-class_labels <- levels(Zoo_train %>% pull(type))
+class_labels <- levels(Zoo_train |> pull(type))
 
-pr <- predict(model, X_test) %>% apply(MARGIN = 1, FUN = which.max)
+pr <- predict(model, X_test) |> apply(MARGIN = 1, FUN = which.max)
 pr <- factor(pr, labels = class_labels, levels = seq_along(class_labels))
 
 pr
@@ -414,8 +416,8 @@ decisionplot <- function(model, data, class_var,
   predict_type = c("class", "prob"), resolution = 3 * 72) {
   # resolution is set to 72 dpi if the image is rendered  3 inches wide. 
   
-  y <- data %>% pull(class_var)
-  x <- data %>% dplyr::select(-all_of(class_var))
+  y <- data |> pull(class_var)
+  x <- data |> dplyr::select(-all_of(class_var))
   
   # resubstitution accuracy
   prediction <- predict(model, x, type = predict_type[1])
@@ -459,7 +461,7 @@ decisionplot <- function(model, data, class_var,
   
   cl <- factor(cl, levels = levels(y))
   
-  g <- g %>% add_column(prediction = cl, probability = max_prob)
+  g <- g |> add_column(prediction = cl, probability = max_prob)
   
   ggplot(g, mapping = aes(
     x = .data[[colnames(g)[1]]], y = .data[[colnames(g)[2]]])) +
@@ -486,7 +488,7 @@ data(iris)
 iris <- as_tibble(iris)
 
 ### Three classes (MASS also has a select function)
-x <- iris %>% dplyr::select(Sepal.Length, Sepal.Width, Species)
+x <- iris |> dplyr::select(Sepal.Length, Sepal.Width, Species)
 x
 
 ggplot(x, aes(x = Sepal.Length, y = Sepal.Width, fill = Species)) +  
@@ -500,15 +502,15 @@ instead of `geom_point()`.
 #### K-Nearest Neighbors Classifier
 
 ```{r }
-model <- x %>% caret::knn3(Species ~ ., data = ., k = 1)
+model <- x |> caret::knn3(Species ~ ., data = _, k = 1)
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "kNN (1 neighbor)")
 
-model <- x %>% caret::knn3(Species ~ ., data = ., k = 3)
+model <- x |> caret::knn3(Species ~ ., data = _, k = 3)
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "kNN (3 neighbor)")
 
-model <- x %>% caret::knn3(Species ~ ., data = ., k = 9)
+model <- x |> caret::knn3(Species ~ ., data = _, k = 9)
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "kNN (9 neighbor)")
 ```
@@ -523,7 +525,7 @@ class.
 #### Naive Bayes Classifier
 
 ```{r }
-model <- x %>% e1071::naiveBayes(Species ~ ., data = .)
+model <- x |> e1071::naiveBayes(Species ~ ., data = _)
 decisionplot(model, x, class_var = "Species", 
              predict_type = c("class", "raw")) + 
   labs(title = "Naive Bayes")
@@ -532,7 +534,7 @@ decisionplot(model, x, class_var = "Species",
 #### Linear Discriminant Analysis
 
 ```{r }
-model <- x %>% MASS::lda(Species ~ ., data = .)
+model <- x |> MASS::lda(Species ~ ., data = _)
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "LDA")
 ```
@@ -543,7 +545,7 @@ Multinomial logistic regression is an extension of logistic regression
 to problems with more than two classes.
 
 ```{r }
-model <- x %>% nnet::multinom(Species ~., data = .)
+model <- x |> nnet::multinom(Species ~., data = _)
 decisionplot(model, x, class_var = "Species") + 
   labs(titel = "Multinomial Logistic Regression")
 ```
@@ -551,20 +553,20 @@ decisionplot(model, x, class_var = "Species") +
 #### Decision Trees
 
 ```{r }
-model <- x %>% rpart::rpart(Species ~ ., data = .)
+model <- x |> rpart::rpart(Species ~ ., data = _)
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "CART")
 
-model <- x %>% rpart::rpart(Species ~ ., data = .,
+model <- x |> rpart::rpart(Species ~ ., data = _,
   control = rpart.control(cp = 0.001, minsplit = 1))
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "CART (overfitting)")
 
-model <- x %>% C50::C5.0(Species ~ ., data = .)
+model <- x |> C50::C5.0(Species ~ ., data = _)
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "C5.0")
 
-model <- x %>% randomForest::randomForest(Species ~ ., data = .)
+model <- x |> randomForest::randomForest(Species ~ ., data = _)
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "Random Forest")
 ```
@@ -572,19 +574,19 @@ decisionplot(model, x, class_var = "Species") +
 #### SVM
 
 ```{r }
-model <- x %>% e1071::svm(Species ~ ., data = ., kernel = "linear")
+model <- x |> e1071::svm(Species ~ ., data = _, kernel = "linear")
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "SVM (linear kernel)")
 
-model <- x %>% e1071::svm(Species ~ ., data = ., kernel = "radial")
+model <- x |> e1071::svm(Species ~ ., data = _, kernel = "radial")
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "SVM (radial kernel)")
 
-model <- x %>% e1071::svm(Species ~ ., data = ., kernel = "polynomial")
+model <- x |> e1071::svm(Species ~ ., data = _, kernel = "polynomial")
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "SVM (polynomial kernel)")
 
-model <- x %>% e1071::svm(Species ~ ., data = ., kernel = "sigmoid")
+model <- x |> e1071::svm(Species ~ ., data = _, kernel = "sigmoid")
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "SVM (sigmoid kernel)")
 ```
@@ -592,19 +594,19 @@ decisionplot(model, x, class_var = "Species") +
 #### Single Layer Feed-forward Neural Networks
 
 ```{r }
-model <-x %>% nnet::nnet(Species ~ ., data = ., size = 1, trace = FALSE)
+model <-x |> nnet::nnet(Species ~ ., data = _, size = 1, trace = FALSE)
 decisionplot(model, x, class_var  = "Species", 
   predict_type = c("class", "raw")) + labs(title = "NN (1 neuron)")
 
-model <-x %>% nnet::nnet(Species ~ ., data = ., size = 2, trace = FALSE)
+model <-x |> nnet::nnet(Species ~ ., data = _, size = 2, trace = FALSE)
 decisionplot(model, x, class_var  = "Species", 
   predict_type = c("class", "raw")) + labs(title = "NN (2 neurons)")
 
-model <-x %>% nnet::nnet(Species ~ ., data = ., size = 4, trace = FALSE)
+model <-x |> nnet::nnet(Species ~ ., data = _, size = 4, trace = FALSE)
 decisionplot(model, x, class_var  = "Species", 
   predict_type = c("class", "raw")) + labs(title = "NN (4 neurons)")
 
-model <-x %>% nnet::nnet(Species ~ ., data = ., size = 10, trace = FALSE)
+model <-x |> nnet::nnet(Species ~ ., data = _, size = 10, trace = FALSE)
 decisionplot(model, x, class_var  = "Species", 
   predict_type = c("class", "raw")) + labs(title = "NN (10 neurons)")
 ```
@@ -632,11 +634,11 @@ ggplot(x, aes(x = x, y = y, color = class)) +
 #### K-Nearest Neighbors Classifier
 
 ```{r }
-model <- x %>% caret::knn3(class ~ ., data = ., k = 1)
+model <- x |> caret::knn3(class ~ ., data = _, k = 1)
 decisionplot(model, x, class_var = "class") + 
   labs(title = "kNN (1 neighbor)")
 
-model <- x %>% caret::knn3(class ~ ., data = ., k = 10)
+model <- x |> caret::knn3(class ~ ., data = _, k = 10)
 decisionplot(model, x, class_var = "class") + 
   labs(title = "kNN (10 neighbor)")
 ```
@@ -644,7 +646,7 @@ decisionplot(model, x, class_var = "class") +
 #### Naive Bayes Classifier
 
 ```{r }
-model <- x %>% e1071::naiveBayes(class ~ ., data = .)
+model <- x |> e1071::naiveBayes(class ~ ., data = _)
 decisionplot(model, x, class_var = "class", 
   predict_type = c("class", "raw")) + 
   labs(title = "naive Bayes")
@@ -656,7 +658,7 @@ LDA cannot find a good model since the true decision boundary is not
 linear.
 
 ```{r }
-model <- x %>% MASS::lda(class ~ ., data = .)
+model <- x |> MASS::lda(class ~ ., data = _)
 decisionplot(model, x, class_var = "class") + labs(title = "LDA")
 ```
 
@@ -667,7 +669,7 @@ to problems with more than two classes. It also tries to find a linear
 decision boundary.
 
 ```{r }
-model <- x %>% nnet::multinom(class ~., data = .)
+model <- x |> nnet::multinom(class ~., data = _)
 decisionplot(model, x, class_var = "class") + 
   labs(titel = "Multinomial Logistic Regression")
 ```
@@ -675,21 +677,21 @@ decisionplot(model, x, class_var = "class") +
 #### Decision Trees
 
 ```{r }
-model <- x %>% rpart::rpart(class ~ ., data = .)
+model <- x |> rpart::rpart(class ~ ., data = _)
 decisionplot(model, x, class_var = "class") + 
   labs(title = "CART")
 
-model <- x %>% rpart::rpart(class ~ ., data = .,
+model <- x |> rpart::rpart(class ~ ., data = _,
   control = rpart.control(cp = 0.001, minsplit = 1))
 decisionplot(model, x, class_var = "class") + 
   labs(title = "CART (overfitting)")
 
-model <- x %>% C50::C5.0(class ~ ., data = .)
+model <- x |> C50::C5.0(class ~ ., data = _)
 decisionplot(model, x, class_var = "class") + 
   labs(title = "C5.0")
 
 library(randomForest)
-model <- x %>% randomForest(class ~ ., data = .)
+model <- x |> randomForest(class ~ ., data = _)
 decisionplot(model, x, class_var = "class") + 
   labs(title = "Random Forest")
 ```
@@ -699,19 +701,19 @@ decisionplot(model, x, class_var = "class") +
 Linear SVM does not work for this data.
 
 ```{r }
-model <- x %>% e1071::svm(class ~ ., data = ., kernel = "linear")
+model <- x |> e1071::svm(class ~ ., data = _, kernel = "linear")
 decisionplot(model, x, class_var = "class") + 
   labs(title = "SVM (linear kernel)")
 
-model <- x %>% e1071::svm(class ~ ., data = ., kernel = "radial")
+model <- x |> e1071::svm(class ~ ., data = _, kernel = "radial")
 decisionplot(model, x, class_var = "class") + 
   labs(title = "SVM (radial kernel)")
 
-model <- x %>% e1071::svm(class ~ ., data = ., kernel = "polynomial")
+model <- x |> e1071::svm(class ~ ., data = _, kernel = "polynomial")
 decisionplot(model, x, class_var = "class") + 
   labs(title = "SVM (polynomial kernel)")
 
-model <- x %>% e1071::svm(class ~ ., data = ., kernel = "sigmoid")
+model <- x |> e1071::svm(class ~ ., data = _, kernel = "sigmoid")
 decisionplot(model, x, class_var = "class") + 
   labs(title = "SVM (sigmoid kernel)")
 ```
@@ -719,19 +721,19 @@ decisionplot(model, x, class_var = "class") +
 #### Single Layer Feed-forward Neural Networks
 
 ```{r }
-model <-x %>% nnet::nnet(class ~ ., data = ., size = 1, trace = FALSE)
+model <-x |> nnet::nnet(class ~ ., data = _, size = 1, trace = FALSE)
 decisionplot(model, x, class_var = "class", 
   predict_type = c("class")) + labs(title = "NN (1 neuron)")
 
-model <-x %>% nnet::nnet(class ~ ., data = ., size = 2, trace = FALSE)
+model <-x |> nnet::nnet(class ~ ., data = _, size = 2, trace = FALSE)
 decisionplot(model, x, class_var = "class", 
   predict_type = c("class")) + labs(title = "NN (2 neurons)")
 
-model <-x %>% nnet::nnet(class ~ ., data = ., size = 4, trace = FALSE)
+model <-x |> nnet::nnet(class ~ ., data = _, size = 4, trace = FALSE)
 decisionplot(model, x, class_var = "class", 
   predict_type = c("class")) + labs(title = "NN (4 neurons)")
 
-model <-x %>% nnet::nnet(class ~ ., data = ., size = 10, trace = FALSE)
+model <-x |> nnet::nnet(class ~ ., data = _, size = 10, trace = FALSE)
 decisionplot(model, x, class_var = "class", 
   predict_type = c("class")) + labs(title = "NN (10 neurons)")
 ```

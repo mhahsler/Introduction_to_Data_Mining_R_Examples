@@ -59,9 +59,9 @@ often needed for building models. Always check `summary()` to make sure
 the data is ready for model learning.
 
 ```{r }
-Zoo <- Zoo %>%
-  modify_if(is.logical, factor, levels = c(TRUE, FALSE)) %>%
-  modify_if(is.character, factor)
+Zoo <- Zoo |>
+  mutate(across(where(is.logical), factor, levels = c(TRUE, FALSE))) |>
+  mutate(across(where(is.character), factor))
 
 summary(Zoo)
 ```
@@ -78,17 +78,20 @@ library(rpart)
 ### Create Tree With Default Settings (uses pre-pruning)
 
 ```{r }
-tree_default <- Zoo %>% rpart(type ~ ., data = .)
+tree_default <- Zoo |> 
+  rpart(type ~ ., data = _)
 tree_default
 ```
 
-**Notes:** - `%>%` supplies the data for `rpart`. Since `data` is not
-the first argument of `rpart`, the syntax `data = .` is used to specify
+**Notes:** 
+
+- `|>` supplies the data for `rpart`. Since `data` is not
+the first argument of `rpart`, the syntax `data = _` is used to specify
 where the data in `Zoo` goes. The call is equivalent to
-`tree_default <- rpart(type ~ ., data = Zoo)`. - The formula models the
-`type` variable by all other features represented by `.`. `data = .`
-means that the data provided by the pipe (`%>%`) will be passed to rpart
-as the argument `data`.
+`tree_default <- rpart(type ~ ., data = Zoo)`. 
+
+- The formula models the
+`type` variable by all other features is represented by `.`.
 
 -   the class variable needs a factor (nominal) or rpart will create a
     regression tree instead of a decision tree. Use `as.factor()` if
@@ -113,7 +116,9 @@ observations in a node needed to split to the smallest value of 2 (see:
 `?rpart.control`). *Note:* full trees overfit the training data!
 
 ```{r }
-tree_full <- Zoo %>% rpart(type ~., data = ., control = rpart.control(minsplit = 2, cp = 0))
+tree_full <- Zoo |> 
+  rpart(type ~ . , data = _, 
+        control = rpart.control(minsplit = 2, cp = 0))
 rpart.plot(tree_full, extra = 2, roundint=FALSE,
   box.palette = list("Gy", "Gn", "Bu", "Bn", "Or", "Rd", "Pu")) # specify 7 colors
 tree_full
@@ -122,7 +127,7 @@ tree_full
 Training error on tree with pre-pruning
 
 ```{r }
-predict(tree_default, Zoo) %>% head ()
+predict(tree_default, Zoo) |> head ()
 
 pred <- predict(tree_default, Zoo, type="class")
 head(pred)
@@ -130,9 +135,9 @@ head(pred)
 confusion_table <- with(Zoo, table(type, pred))
 confusion_table
 
-correct <- confusion_table %>% diag() %>% sum()
+correct <- confusion_table |> diag() |> sum()
 correct
-error <- confusion_table %>% sum() - correct
+error <- confusion_table |> sum() - correct
 error
 
 accuracy <- correct / (correct + error)
@@ -147,20 +152,20 @@ accuracy <- function(truth, prediction) {
     sum(diag(tbl))/sum(tbl)
 }
 
-accuracy(Zoo %>% pull(type), pred)
+accuracy(Zoo |> pull(type), pred)
 ```
 
 Training error of the full tree
 
 ```{r }
-accuracy(Zoo %>% pull(type), predict(tree_full, Zoo, type="class"))
+accuracy(Zoo |> pull(type), predict(tree_full, Zoo, type = "class"))
 ```
 
 Get a confusion table with more statistics (using caret)
 
 ```{r }
 library(caret)
-confusionMatrix(data = pred, reference = Zoo %>% pull(type))
+confusionMatrix(data = pred, reference = Zoo |> pull(type))
 ```
 
 ### Make Predictions for New Data
@@ -178,7 +183,8 @@ my_animal <- tibble(hair = TRUE, feathers = TRUE, eggs = FALSE,
 Fix columns to be factors like in the training set.
 
 ```{r }
-my_animal <- my_animal %>% modify_if(is.logical, factor, levels = c(TRUE, FALSE))
+my_animal <- my_animal |> 
+  mutate(across(where(is.logical), factor, levels = c(TRUE, FALSE)))
 my_animal
 ```
 
@@ -231,8 +237,8 @@ testing.
 
 ```{r }
 inTrain <- createDataPartition(y = Zoo$type, p = .8, list = FALSE)
-Zoo_train <- Zoo %>% slice(inTrain)
-Zoo_test <- Zoo %>% slice(-inTrain)
+Zoo_train <- Zoo |> slice(inTrain)
+Zoo_test <- Zoo |> slice(-inTrain)
 ```
 
 ### Learn a Model and Tune Hyperparameters on the Training Data
@@ -250,9 +256,9 @@ have not much data. **Note:** Parameters used for tuning (in this case
 Setting it in control will be ignored.
 
 ```{r }
-fit <- Zoo_train %>%
+fit <- Zoo_train |>
   train(type ~ .,
-    data = . ,
+    data = _ ,
     method = "rpart",
     control = rpart.control(minsplit = 2),
     trControl = trainControl(method = "cv", number = 10),
@@ -310,7 +316,7 @@ separate test data to create a confusion matrix based on the
 generalization error.
 
 ```{r }
-confusionMatrix(data = pred, ref = Zoo_test$type)
+confusionMatrix(data = pred, ref = Zoo_test |> pull(type))
 ```
 
 **Some notes**
@@ -350,8 +356,8 @@ train_index <- createFolds(Zoo_train$type, k = 10)
 Build models
 
 ```{r }
-rpartFit <- Zoo_train %>% train(type ~ .,
-  data = .,
+rpartFit <- Zoo_train |> train(type ~ .,
+  data = _,
   method = "rpart",
   tuneLength = 10,
   trControl = trainControl(method = "cv", indexOut = train_index)
@@ -363,8 +369,8 @@ rpartFit <- Zoo_train %>% train(type ~ .,
 Euclidean distance calculation.
 
 ```{r }
-knnFit <- Zoo_train %>% train(type ~ .,
-  data = .,
+knnFit <- Zoo_train |> train(type ~ .,
+  data = _,
   method = "knn",
   preProcess = "scale",
 	tuneLength = 10,
@@ -431,8 +437,9 @@ For discrete features (as in our case), the chi-square statistic can be
 used to derive a score.
 
 ```{r }
-weights <- Zoo_train %>% chi.squared(type ~ ., data = .) %>%
-  as_tibble(rownames = "feature") %>%
+weights <- Zoo_train |> 
+  chi.squared(type ~ ., data = _) |>
+  as_tibble(rownames = "feature") |>
   arrange(desc(attr_importance))
 
 weights
@@ -445,13 +452,15 @@ levels used by `ggplot`).
 ggplot(weights,
   aes(x = attr_importance, y = reorder(feature, attr_importance))) +
   geom_bar(stat = "identity") +
-  xlab("Importance score") + ylab("Feature")
+  xlab("Importance score") + 
+  ylab("Feature")
 ```
 
 Get the 5 best features
 
 ```{r }
-subset <- cutoff.k(weights %>% column_to_rownames("feature"), 5)
+subset <- cutoff.k(weights |> 
+                     column_to_rownames("feature"), 5)
 subset
 ```
 
@@ -462,7 +471,7 @@ Use only the best 5 features to build a model (`Fselector` provides
 f <- as.simple.formula(subset, "type")
 f
 
-m <- Zoo_train %>% rpart(f, data = .)
+m <- Zoo_train |> rpart(f, data = _)
 rpart.plot(m, extra = 2, roundint = FALSE)
 ```
 
@@ -472,8 +481,8 @@ features. One example is the information gain ratio based on entropy as
 used in decision tree induction.
 
 ```{r }
-Zoo_train %>% gain.ratio(type ~ ., data = .) %>%
-  as_tibble(rownames = "feature") %>%
+Zoo_train |> gain.ratio(type ~ ., data = _) |>
+  as_tibble(rownames = "feature") |>
   arrange(desc(attr_importance))
 ```
 
@@ -484,7 +493,7 @@ independently is not optimal. We can use greedy search heuristics. For
 example `cfs` uses correlation/entropy with best first search.
 
 ```{r }
-Zoo_train %>% cfs(type ~ ., data = .)
+Zoo_train |> cfs(type ~ ., data = _)
 ```
 
 Black-box feature selection uses an evaluator function (the black box)
@@ -496,8 +505,8 @@ and the average accuracy as the score.
 
 ```{r }
 evaluator <- function(subset) {
-  model <- Zoo_train %>% train(as.simple.formula(subset, "type"),
-    data = .,
+  model <- Zoo_train |> train(as.simple.formula(subset, "type"),
+    data = _,
     method = "rpart",
     trControl = trainControl(method = "boot", number = 5),
     tuneLength = 0)
@@ -512,7 +521,7 @@ evaluator <- function(subset) {
 Start with all features (but not the class variable `type`)
 
 ```{r }
-features <- Zoo_train %>% colnames() %>% setdiff("type")
+features <- Zoo_train |> colnames() |> setdiff("type")
 ```
 
 There are several (greedy) search strategies available. These run for a
@@ -534,7 +543,8 @@ given the type. First we use the original encoding of type as a factor
 with several values.
 
 ```{r }
-tree_predator <- Zoo_train %>% rpart(predator ~ type, data = .)
+tree_predator <- Zoo_train |> 
+  rpart(predator ~ type, data = _)
 rpart.plot(tree_predator, extra = 2, roundint = FALSE)
 ```
 
@@ -547,11 +557,12 @@ Convert type into a set of 0-1 dummy variables using `class2ind`. See
 also `? dummyVars` in package `caret`.
 
 ```{r }
-Zoo_train_dummy <- as_tibble(class2ind(Zoo_train$type)) %>% mutate_all(as.factor) %>%
+Zoo_train_dummy <- as_tibble(class2ind(Zoo_train$type)) |> 
+  mutate_all(as.factor) |>
   add_column(predator = Zoo_train$predator)
 Zoo_train_dummy
 
-tree_predator <- Zoo_train_dummy %>% rpart(predator ~ ., data = .,
+tree_predator <- Zoo_train_dummy |> rpart(predator ~ ., data = _,
   control = rpart.control(minsplit = 2, cp = 0.01))
 rpart.plot(tree_predator, roundint = FALSE)
 ```
@@ -562,7 +573,7 @@ The reason is that some models cannot directly use factors and `caret`
 tries to consistently work with all of them.
 
 ```{r }
-fit <- Zoo_train %>% train(predator ~ type, data = ., method = "rpart",
+fit <- Zoo_train |> train(predator ~ type, data = _, method = "rpart",
   control = rpart.control(minsplit = 2),
   tuneGrid = data.frame(cp = 0.01))
 fit
@@ -600,7 +611,7 @@ reptile/no reptile classification problem. **Note:** We use here the
 training data for testing. You should use a separate testing data set!
 
 ```{r }
-Zoo_reptile <- Zoo %>% mutate(
+Zoo_reptile <- Zoo |> mutate(
   type = factor(Zoo$type == "reptile", levels = c(FALSE, TRUE),
     labels = c("nonreptile", "reptile")))
 ```
@@ -625,8 +636,8 @@ that the test set has some samples of the rare reptile class.
 set.seed(1234)
 
 inTrain <- createDataPartition(y = Zoo_reptile$type, p = .5, list = FALSE)
-training_reptile <- Zoo_reptile %>% slice(inTrain)
-testing_reptile <- Zoo_reptile %>% slice(-inTrain)
+training_reptile <- Zoo_reptile |> slice(inTrain)
+testing_reptile <- Zoo_reptile |> slice(-inTrain)
 ```
 
 the new class variable is clearly not balanced. This is a problem for
@@ -635,8 +646,8 @@ building a tree!
 ### Option 1: Use the Data As Is and Hope For The Best
 
 ```{r }
-fit <- training_reptile %>% train(type ~ .,
-  data = .,
+fit <- training_reptile |> train(type ~ .,
+  data = _,
   method = "rpart",
   trControl = trainControl(method = "cv"))
 ```
@@ -683,11 +694,11 @@ library(sampling)
 set.seed(1000) # for repeatability
 
 id <- strata(training_reptile, stratanames = "type", size = c(50, 50), method = "srswr")
-training_reptile_balanced <- training_reptile %>% slice(id$ID_unit)
+training_reptile_balanced <- training_reptile |> slice(id$ID_unit)
 table(training_reptile_balanced$type)
 
-fit <- training_reptile_balanced %>% train(type ~ .,
-  data = .,
+fit <- training_reptile_balanced |> train(type ~ .,
+  data = _,
   method = "rpart",
   trControl = trainControl(method = "cv"),
   control = rpart.control(minsplit = 5))
@@ -715,11 +726,11 @@ in the data since the test set has only a few reptiles).
 
 ```{r }
 id <- strata(training_reptile, stratanames = "type", size = c(50, 100), method = "srswr")
-training_reptile_balanced <- training_reptile %>% slice(id$ID_unit)
+training_reptile_balanced <- training_reptile |> slice(id$ID_unit)
 table(training_reptile_balanced$type)
 
-fit <- training_reptile_balanced %>% train(type ~ .,
-  data = .,
+fit <- training_reptile_balanced |> train(type ~ .,
+  data = _,
   method = "rpart",
   trControl = trainControl(method = "cv"),
   control = rpart.control(minsplit = 5))
@@ -737,8 +748,8 @@ to improve accuracy on the data and not AUC! I also enable class
 probabilities since I want to predict probabilities later.
 
 ```{r }
-fit <- training_reptile %>% train(type ~ .,
-  data = .,
+fit <- training_reptile |> train(type ~ .,
+  data = _,
   method = "rpart",
   tuneLength = 10,
   trControl = trainControl(method = "cv",
@@ -818,11 +829,12 @@ cost <- matrix(c(
 ), byrow = TRUE, nrow = 2)
 cost
 
-fit <- training_reptile %>% train(type ~ .,
-  data = .,
-  method = "rpart",
-  parms = list(loss = cost),
-  trControl = trainControl(method = "cv"))
+fit <- training_reptile |> 
+  train(type ~ .,
+    data = _,
+    method = "rpart",
+    parms = list(loss = cost),
+    trControl = trainControl(method = "cv"))
 ```
 
 The warning "There were missing values in resampled performance

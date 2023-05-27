@@ -45,7 +45,8 @@ ordered by group. We can shuffle the data (rows) using `sample_frac`
 which samples by default 100%.
 
 ```{r }
-ruspini <- as_tibble(ruspini) %>% sample_frac()
+ruspini <- as_tibble(ruspini) |> 
+  sample_frac()
 ruspini
 ```
 
@@ -75,9 +76,10 @@ all numeric columns.
 
 ```{r }
 ## I use this till tidyverse implements a scale function
-scale_numeric <- function(x) x %>% mutate_if(is.numeric, function(y) as.vector(scale(y)))
+scale_numeric <- function(x) mutate_if(x, is.numeric, function(y) as.vector(scale(y)))
 
-ruspini_scaled <- ruspini %>% scale_numeric()
+ruspini_scaled <- ruspini |> 
+  scale_numeric()
 summary(ruspini_scaled)
 ```
 
@@ -105,7 +107,7 @@ using `km$cluster`. I add the cluster assignment as a column to the
 scaled dataset (I make it a factor since it represents a nominal label).
 
 ```{r }
-ruspini_clustered <- ruspini_scaled %>% add_column(cluster = factor(km$cluster))
+ruspini_clustered <- ruspini_scaled |> add_column(cluster = factor(km$cluster))
 ruspini_clustered
 
 ggplot(ruspini_clustered, aes(x = x, y = y, color = cluster)) + geom_point()
@@ -154,7 +156,8 @@ next example calculates summary statistics and then plots all data
 points of cluster 1.
 
 ```{r }
-cluster1 <- ruspini_clustered %>% filter(cluster == 1)
+cluster1 <- ruspini_clustered |> 
+  filter(cluster == 1)
 cluster1
 summary(cluster1)
 
@@ -212,7 +215,7 @@ and add the cluster id to the data.
 
 ```{r }
 clusters <- cutree(hc, k = 4)
-cluster_complete <- ruspini_scaled %>%
+cluster_complete <- ruspini_scaled |>
   add_column(cluster = factor(clusters))
 cluster_complete
 
@@ -268,7 +271,7 @@ db <- dbscan(ruspini_scaled, eps = .32, minPts = 4)
 db
 str(db)
 
-ggplot(ruspini_scaled %>% add_column(cluster = factor(db$cluster)),
+ggplot(ruspini_scaled |> add_column(cluster = factor(db$cluster)),
   aes(x, y, color = cluster)) + geom_point()
 ```
 
@@ -300,12 +303,14 @@ str(d)
 p <- pam(d, k = 4)
 p
 
-ruspini_clustered <- ruspini_scaled %>% add_column(cluster = factor(p$cluster))
+ruspini_clustered <- ruspini_scaled |> 
+  add_column(cluster = factor(p$cluster))
 
 medoids <- as_tibble(ruspini_scaled[p$medoids, ], rownames = "cluster")
 medoids
 
-ggplot(ruspini_clustered, aes(x = x, y = y, color = cluster)) + geom_point() +
+ggplot(ruspini_clustered, aes(x = x, y = y, color = cluster)) + 
+  geom_point() +
   geom_point(data = medoids, aes(x = x, y = y, color = cluster), shape = 3, size = 10)
 
 ## __Note:__ `fviz_cluster` needs the original data.
@@ -355,8 +360,10 @@ library("kernlab")
 cluster_spec <- specc(as.matrix(ruspini_scaled), centers = 4)
 cluster_spec
 
-ggplot(ruspini_scaled %>% add_column(cluster = factor(cluster_spec)),
-  aes(x, y, color = cluster)) + geom_point()
+ggplot(ruspini_scaled |> 
+         add_column(cluster = factor(cluster_spec)),
+  aes(x, y, color = cluster)) + 
+  geom_point()
 ```
 
 ### Fuzzy C-Means Clustering
@@ -555,7 +562,7 @@ the objects by cluster and then reorders clusters and objects within
 clusters so that more similar objects are closer together.
 
 ```{r }
-dissplot(d, labels = km$cluster, options=list(main="k-means with k=4"))
+dissplot(d, labels = km$cluster, options = list(main = "k-means with k=4"))
 ```
 
 The reordering by `dissplot` makes the misspecification of k visible as
@@ -591,9 +598,10 @@ Prepare data
 
 ```{r }
 truth <- as.integer(shapes$class)
-shapes <- scale(shapes$x)
+shapes <- shapes$x
 colnames(shapes) <- c("x", "y")
-shapes <- as_tibble(shapes)
+
+shapes <- shapes |> scale() |> as_tibble()
 
 ggplot(shapes, aes(x, y)) + geom_point()
 ```
@@ -619,7 +627,7 @@ Looks like it could be 7 clusters
 ```{r }
 km <- kmeans(shapes, centers = 7, nstart = 10)
 
-ggplot(shapes %>% add_column(cluster = factor(km$cluster)), aes(x, y, color = cluster)) +
+ggplot(shapes |> add_column(cluster = factor(km$cluster)), aes(x, y, color = cluster)) +
   geom_point()
 ```
 
@@ -646,7 +654,7 @@ The maximum is clearly at 4 clusters.
 ```{r }
 hc_4 <- cutree(hc, 4)
 
-ggplot(shapes %>% add_column(cluster = factor(hc_4)), aes(x, y, color = cluster)) +
+ggplot(shapes |> add_column(cluster = factor(hc_4)), aes(x, y, color = cluster)) +
   geom_point()
 ```
 
@@ -755,7 +763,7 @@ Add a clear outlier to the scaled Ruspini dataset that is 10 standard
 deviations above the average for the x axis.
 
 ```{r }
-ruspini_scaled_outlier <- ruspini_scaled %>% add_case(x=10,y=0)
+ruspini_scaled_outlier <- ruspini_scaled |> add_case(x=10,y=0)
 ```
 
 #### Visual inspection of the data
@@ -776,7 +784,7 @@ The outlier is a problem for k-means
 
 ```{r }
 km <- kmeans(ruspini_scaled_outlier, centers = 4, nstart = 10)
-ruspini_scaled_outlier_km <- ruspini_scaled_outlier%>%
+ruspini_scaled_outlier_km <- ruspini_scaled_outlier|>
   add_column(cluster = factor(km$cluster))
 centroids <- as_tibble(km$centers, rownames = "cluster")
 
@@ -799,7 +807,7 @@ the LOF (I choose a local neighborhood size of 10 for density estimation),
 lof <- lof(ruspini_scaled_outlier, minPts= 10)
 lof
 
-ggplot(ruspini_scaled_outlier %>% add_column(lof = lof), aes(x, y, color = lof)) +
+ggplot(ruspini_scaled_outlier |> add_column(lof = lof), aes(x, y, color = lof)) +
     geom_point() + scale_color_gradient(low = "gray", high = "red")
 ```
 
@@ -814,17 +822,17 @@ ggplot(tibble(index = seq_len(length(lof)), lof = sort(lof)), aes(index, lof)) +
 Choose a threshold above 1.
 
 ```{r }
-ggplot(ruspini_scaled_outlier %>% add_column(outlier = lof >= 2), aes(x, y, color = outlier)) +
+ggplot(ruspini_scaled_outlier |> add_column(outlier = lof >= 2), aes(x, y, color = outlier)) +
   geom_point()
 ```
 
 Analyze the found outliers (they might be interesting data points) and then cluster the data without them.
 
 ```{r}
-ruspini_scaled_clean <- ruspini_scaled_outlier  %>% filter(lof < 2)
+ruspini_scaled_clean <- ruspini_scaled_outlier  |> filter(lof < 2)
 
 km <- kmeans(ruspini_scaled_clean, centers = 4, nstart = 10)
-ruspini_scaled_clean_km <- ruspini_scaled_clean%>%
+ruspini_scaled_clean_km <- ruspini_scaled_clean|>
   add_column(cluster = factor(km$cluster))
 centroids <- as_tibble(km$centers, rownames = "cluster")
 
@@ -935,7 +943,7 @@ clustering structure?
 
 ```{r }
 km <- kmeans(data_random, centers = 4)
-random_clustered<- data_random %>% add_column(cluster = factor(km$cluster))
+random_clustered<- data_random |> add_column(cluster = factor(km$cluster))
 ggplot(random_clustered, aes(x = x, y = y, color = cluster)) + geom_point()
 ```
 

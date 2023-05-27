@@ -85,9 +85,9 @@ filter only fruit that provides more than 20 mg and then order (arrange)
 the data by the vitamin C per dollar from largest to smallest.
 
 ```{r }
-affordable_vitamin_c_sources <- fruit %>% 
-  mutate(vitamin_c_per_dollar = vitamin_c / price) %>% 
-  filter(vitamin_c_per_dollar > 20) %>% 
+affordable_vitamin_c_sources <- fruit |>
+  mutate(vitamin_c_per_dollar = vitamin_c / price) |> 
+  filter(vitamin_c_per_dollar > 20) |>
   arrange(desc(vitamin_c_per_dollar))
 
 affordable_vitamin_c_sources 

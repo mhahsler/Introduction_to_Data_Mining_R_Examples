@@ -90,7 +90,7 @@ table(Zoo$legs)
 Possible solution: Make legs into has/does not have legs
 
 ```{r }
-Zoo_has_legs <- Zoo %>% mutate(legs = legs > 0)
+Zoo_has_legs <- Zoo |> mutate(legs = legs > 0)
 ggplot(Zoo_has_legs, aes(legs)) + geom_bar()
 table(Zoo_has_legs$legs)
 ```
@@ -100,7 +100,7 @@ table(Zoo_has_legs$legs)
 -   use each unique value as an item:
 
 ```{r }
-Zoo_unique_leg_values <- Zoo %>% mutate(legs = factor(legs))
+Zoo_unique_leg_values <- Zoo |> mutate(legs = factor(legs))
 head(Zoo_unique_leg_values$legs)
 ```
 
@@ -110,7 +110,7 @@ head(Zoo_unique_leg_values$legs)
     2](chap2.html#discretize-features)):
 
 ```{r }
-Zoo_discretized_legs <- Zoo %>% mutate(
+Zoo_discretized_legs <- Zoo |> mutate(
   legs = discretize(legs, breaks = 2, method="interval")
 )
 table(Zoo_discretized_legs$legs)
@@ -179,7 +179,7 @@ ggplot(
 
 ```{r }
 sapply(Zoo_has_legs, class)
-Zoo_factors <- Zoo_has_legs %>% mutate_if(is.logical, factor)
+Zoo_factors <- Zoo_has_legs |> mutate_if(is.logical, factor)
 sapply(Zoo_factors, class)
 summary(Zoo_factors)
 

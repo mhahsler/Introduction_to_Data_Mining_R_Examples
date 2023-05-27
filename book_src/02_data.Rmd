@@ -74,7 +74,8 @@ You can also summarize specific columns using a statistic function like
 `mean()`.
 
 ```{r }
-iris %>% summarize_if(is.numeric, mean)
+iris |> 
+  summarize_if(is.numeric, mean)
 ```
 
 To find outliers or data problems, you need to look for very small
@@ -100,8 +101,8 @@ contain missing values (`NA`). To remove missing values and duplicates
 do this:
 
 ```{r }
-clean.data <- iris %>% 
-  drop_na() %>% 
+clean.data <- iris |> 
+  drop_na() |> 
   unique()
 
 summary(clean.data)
@@ -118,8 +119,13 @@ the iris dataset by species and then calculate a summary statistic for
 each group.
 
 ```{r }
-iris %>% group_by(Species) %>% summarize_all(mean)
-iris %>% group_by(Species) %>% summarize_all(median)
+iris |> 
+  group_by(Species) |> 
+  summarize_all(mean)
+
+iris |> 
+  group_by(Species) |> 
+  summarize_all(median)
 ```
 
 Using this information, we can compare how features differ between
@@ -159,7 +165,8 @@ results reproducible.
 ```{r }
 set.seed(1000)
 
-s <- iris %>% slice_sample(n = 15)
+s <- iris |> 
+  slice_sample(n = 15)
 ggpairs(s, aes(color = Species), progress = FALSE)
 ```
 
@@ -183,7 +190,8 @@ id2 <- strata(iris, stratanames = "Species",
               size = c(5,5,5), method = "srswor")
 id2
 
-s2 <- iris %>% slice(id2$ID_unit)
+s2 <- iris |> 
+  slice(id2$ID_unit)
 
 ggpairs(s2, aes(color = Species), progress = FALSE)
 ```
@@ -212,7 +220,8 @@ to visualize more than 3 dimensions.
 ```{r }
 # library(plotly) # I don't load the package because it's namespace clashes with select in dplyr.
 plotly::plot_ly(iris, x = ~Sepal.Length, y = ~Petal.Length, z = ~Sepal.Width, 
-      color = ~Species, size = 1) %>% plotly::add_markers()
+      color = ~Species, size = 1) |> 
+  plotly::add_markers()
 ```
 
 The principal components can be calculated from a matrix using the
@@ -221,7 +230,10 @@ species column) and convert the tibble into a matrix before the
 calculation.
 
 ```{r }
-pc <- iris %>% select(-Species) %>% as.matrix() %>% prcomp()
+pc <- iris |> 
+  select(-Species) |> 
+  as.matrix() |> 
+  prcomp()
 summary(pc)
 ```
 
@@ -253,7 +265,8 @@ are in the same order), and then display the data projected on the first
 two principal components.
 
 ```{r }
-iris_projected <- as_tibble(pc$x) %>% add_column(Species = iris$Species)
+iris_projected <- as_tibble(pc$x) |> 
+  add_column(Species = iris$Species)
 
 ggplot(iris_projected, aes(x = PC1, y = PC2, color = Species)) + 
   geom_point()
@@ -321,7 +334,9 @@ First, we calculate a distance matrix (Euclidean distances) from the 4-d
 space of the iris dataset.
 
 ```{r }
-d <- iris %>% select(-Species) %>% dist()
+d <- iris |> 
+  select(-Species) |> 
+  dist()
 ```
 
 Metric (classic) MDS tries to construct a space where points with lower
@@ -331,7 +346,8 @@ a distance matrix on `k = 2` dimensions.
 ```{r }
 fit <- cmdscale(d, k = 2)
 colnames(fit) <- c("comp1", "comp2")
-fit <- as_tibble(fit) %>% add_column(Species = iris$Species)
+fit <- as_tibble(fit) |> 
+  add_column(Species = iris$Species)
 
 ggplot(fit, aes(x = comp1, y = comp2, color = Species)) + geom_point()
 ```
@@ -371,7 +387,9 @@ width. The R function `cut()` performs equal interval width
 discretization.
 
 ```{r }
-iris %>% pull(Sepal.Width) %>% cut(breaks = 3)
+iris |> 
+  pull(Sepal.Width) |> 
+  cut(breaks = 3)
 ```
 
 Other discretization methods include equal frequency discretization or
@@ -382,31 +400,31 @@ intervals assigned to each discrete value.
 
 ```{r }
 library(arules)
-iris %>% pull(Petal.Width) %>% 
+iris |> pull(Petal.Width) |> 
   discretize(method = "interval", breaks = 3)
 
-iris %>% pull(Petal.Width) %>% 
+iris |> pull(Petal.Width) |> 
   discretize(method = "frequency", breaks = 3)
 
-iris %>% pull(Petal.Width) %>% 
+iris |> pull(Petal.Width) |> 
   discretize(method = "cluster", breaks = 3)
 
 ggplot(iris, aes(Petal.Width)) + geom_histogram(binwidth = .2) +
-  geom_vline(xintercept = iris %>% pull(Petal.Width) %>% 
+  geom_vline(xintercept = iris |> pull(Petal.Width) |> 
         discretize(method = "interval", breaks = 3, onlycuts = TRUE),
     color = "blue") +
   labs(title = "Discretization: interval", 
        subtitle = "Blue lines are boundaries")
 
 ggplot(iris, aes(Petal.Width)) + geom_histogram(binwidth = .2) +
-  geom_vline(xintercept = iris %>% pull(Petal.Width) %>% 
+  geom_vline(xintercept = iris |> pull(Petal.Width) |> 
         discretize(method = "frequency", breaks = 3, onlycuts = TRUE),
     color = "blue") +
   labs(title = "Discretization: frequency", 
        subtitle = "Blue lines are boundaries")
 
 ggplot(iris, aes(Petal.Width)) + geom_histogram(binwidth = .2) +
-  geom_vline(xintercept = iris %>% pull(Petal.Width) %>% 
+  geom_vline(xintercept = iris |> pull(Petal.Width) |> 
                discretize(method = "cluster", breaks = 3, onlycuts = TRUE),
     color = "blue") +
   labs(title = "Discretization: cluster", 
@@ -432,10 +450,11 @@ make one that provides a wrapper for the standard scale function in R:
 
 ```{r }
 scale_numeric <- function(x) 
-  x %>% 
-  mutate_if(is.numeric, function(y) as.vector(scale(y)))
+  x |> 
+  mutate(across(where(is.numeric), ~as.vector(scale(.))))
 
-iris.scaled <- iris %>% scale_numeric()
+iris.scaled <- iris |> 
+  scale_numeric()
 iris.scaled
 summary(iris.scaled)
 ```
@@ -461,7 +480,9 @@ one feature to dominate the distance calculation, scaled data is
 typically used. We select the first 5 flowers for this example.
 
 ```{r }
-iris_sample <- iris.scaled %>% select(-Species) %>% slice(1:5)
+iris_sample <- iris.scaled |> 
+  select(-Species) |> 
+  slice(1:5)
 iris_sample
 ```
 
@@ -533,7 +554,8 @@ It is important that nominal features are stored as factors and not
 character (`<chr>`).
 
 ```{r }
-people <- people %>% mutate_if(is.character, factor)
+people <- people |> 
+  mutate(across(where(is.character), factor))
 people
 ```
 
@@ -565,7 +587,8 @@ We use package `caret` to create dummy variables.
 
 ```{r }
 library(caret)
-data_dummy <- dummyVars(~., people) %>% predict(people)
+data_dummy <- dummyVars(~., people) |> 
+  predict(people)
 data_dummy
 ```
 
@@ -616,7 +639,9 @@ coefficient](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)
 between features (columns).
 
 ```{r }
-cc <- iris %>% select(-Species) %>% cor()
+cc <- iris |> 
+  select(-Species) |> 
+  cor()
 cc
 ```
 
@@ -677,12 +702,14 @@ the Iris dataset into ordered factors (ordinal) with three levels using
 the function `cut`.
 
 ```{r }
-iris_ord <- iris %>% mutate_if(is.numeric, function(x) 
-  cut(x, 3, labels = c("short", "medium", "long"), ordered = TRUE))
+iris_ord <- iris |> 
+  mutate(across(where(is.numeric), 
+  ~ cut(., 3, labels = c("short", "medium", "long"), ordered = TRUE)))
 
 iris_ord
 summary(iris_ord)
-iris_ord %>% pull(Sepal.Length)
+iris_ord |> 
+  pull(Sepal.Length)
 ```
 
 Two measures for rank correlation are Kendall's Tau and Spearman's Rho.
@@ -692,8 +719,10 @@ Coefficient](https://en.wikipedia.org/wiki/Kendall_rank_correlation_coefficient)
 measures the agreement between two rankings (i.e., ordinal features).
 
 ```{r }
-iris_ord %>% select(-Species) %>% 
-  sapply(xtfrm) %>% cor(method = "kendall")
+iris_ord |> 
+  select(-Species) |> 
+  sapply(xtfrm) |> 
+  cor(method = "kendall")
 ```
 
 **Note:** We have to use `xtfrm` to transform the ordered factors into
@@ -705,8 +734,10 @@ is equal to the Pearson correlation between the rank values of those two
 features.
 
 ```{r }
-iris_ord %>% select(-Species) %>% 
-  sapply(xtfrm) %>% cor(method = "spearman")
+iris_ord |> 
+  select(-Species) |> 
+  sapply(xtfrm) |> 
+  cor(method = "spearman")
 ```
 
 Spearman's Rho is much faster to compute on large datasets then
@@ -717,7 +748,8 @@ the original data shows that they are very similar. This indicates that
 discretizing data does not result in the loss of too much information.
 
 ```{r }
-iris %>% select(-Species) %>% 
+iris |> 
+  select(-Species) |> 
   cor()
 ```
 
@@ -798,8 +830,8 @@ summary(iris)
 Get mean and standard deviation for sepal length
 
 ```{r }
-iris %>% pull(Sepal.Length) %>% mean()
-iris %>% pull(Sepal.Length) %>% sd()
+iris |> 
+  summarize(avg_Sepal.Length = mean(Sepal.Length), sd_Sepal.Length = sd(Sepal.Length))
 ```
 
 Data with missing values will result in statistics of `NA`. Adding the
@@ -816,28 +848,29 @@ To make the mean more robust to outliers, we can trim 10% of
 observations from each end of the distribution.
 
 ```{r }
-iris %>% pull(Sepal.Length) %>% mean()
-iris %>% pull(Sepal.Length) %>% mean(trim = .1)
+iris |>
+  summarize(avg_Sepal.Length = mean(Sepal.Length),
+            trimmed_avg_Sepal.Length = mean(Sepal.Length, trim = .1))
 ```
 
 Sepal length does not have outliers, so the trimmed mean is almost
 identical.
 
 To calculate a summary for a set of features (e.g., all numeric
-features), tidyverse provides `summarize_if()`.
+features), tidyverse provides `across(where(is.numeric), fun)`.
 
 ```{r }
-iris %>% summarize_if(is.numeric, mean)
-iris %>% summarize_if(is.numeric, sd)
+iris |> summarize(across(where(is.numeric), mean))
+iris |> summarize(across(where(is.numeric), sd))
 
-iris %>% summarize_if(is.numeric, 
-            list(min = min, median = median, max = max))
+iris |> summarize(across(where(is.numeric), 
+            list(min = min, median = median, max = max)))
 ```
 
 The median absolute deviation (MAD) is another measure of dispersion.
 
 ```{r }
-iris %>% summarize_if(is.numeric, mad)
+iris |> summarize(across(where(is.numeric), mad))
 ```
 
 ### Grouping
@@ -847,8 +880,12 @@ group-wise statistics for the continuous features. We often use
 group-wise averages to see if they differ between groups.
 
 ```{r }
-iris %>% group_by(Species) %>% summarize(across(Sepal.Length, mean))
-iris %>% group_by(Species) %>% summarize_all(mean)
+iris |> 
+  group_by(Species) |> 
+  summarize(across(Sepal.Length, mean))
+iris |> 
+  group_by(Species) |> 
+  summarize(across(where(is.numeric), mean))
 ```
 
 We see that the species Virginica has the highest average for all, but
@@ -874,7 +911,9 @@ If the data only contains two groups, the `t.test` can be used.
 We can count the number of flowers for each species.
 
 ```{r }
-iris %>% group_by(Species) %>% summarize(n())
+iris |> 
+  group_by(Species) |> 
+  summarize(n())
 ```
 
 In base R, this can be also done using `count(iris$Species)`.
@@ -882,8 +921,8 @@ In base R, this can be also done using `count(iris$Species)`.
 For the following examples, we discretize the data using cut.
 
 ```{r }
-iris_ord <- iris %>% mutate_if(is.numeric, function(x) 
-  cut(x, 3, labels = c("short", "medium", "long"), ordered = TRUE))
+iris_ord <- iris |> mutate(across(where(is.numeric),  
+  ~ cut(., 3, labels = c("short", "medium", "long"), ordered = TRUE)))
 
 iris_ord
 summary(iris_ord)
@@ -893,7 +932,9 @@ Cross tabulation is used to find out if two discrete features are
 related.
 
 ```{r }
-tbl <- iris_ord %>% select(Sepal.Length, Species) %>% table()
+tbl <- iris_ord |> 
+  select(Sepal.Length, Species) |> 
+  table()
 tbl
 ```
 
@@ -908,11 +949,13 @@ Creating a cross table with tidyverse is a little more involved and uses
 pivot operations and grouping.
 
 ```{r }
-iris_ord %>%
-  select(Species, Sepal.Length) %>%
+iris_ord |>
+  select(Species, Sepal.Length) |>
 ### Relationship Between Nominal and Ordinal Features
-  pivot_longer(cols = Sepal.Length) %>%
-  group_by(Species, value) %>% count() %>% ungroup() %>%
+  pivot_longer(cols = Sepal.Length) |>
+  group_by(Species, value) |> 
+  count() |> 
+  ungroup() |>
   pivot_wider(names_from = Species, values_from = n)
 ```
 
@@ -925,7 +968,8 @@ row and column marginals. The null hypothesis h0 is independence between
 rows and columns.
 
 ```{r }
-tbl %>% chisq.test()
+tbl |> 
+  chisq.test()
 ```
 
 The small p-value indicates that the null hypothesis of independence
@@ -950,7 +994,9 @@ By default quartiles are calculated. 25% is typically called Q1, 50% is
 called Q2 or the median and 75% is called Q3.
 
 ```{r }
-iris %>% pull(Petal.Length) %>% quantile()
+iris |> 
+  pull(Petal.Length) |> 
+  quantile()
 ```
 
 The interquartile range is a measure for variability that is robust
@@ -958,7 +1004,8 @@ against outliers. It is defined the length Q3 - Q2 which covers the 50%
 of the data in the middle.
 
 ```{r }
-iris %>% summarize(IQR = 
+iris |> 
+  summarize(IQR = 
   quantile(Petal.Length, probs = 0.75) - quantile(Petal.Length, probs = 0.25))
 ```
 
@@ -989,8 +1036,8 @@ ggplot(iris, aes(Species, Sepal.Length)) +
 The group-wise medians can also be calculated directly.
 
 ```{r }
-iris %>% group_by(Species) %>% 
-  summarize_if(is.numeric, median)
+iris |> group_by(Species) |> 
+  summarize(across(where(is.numeric), median))
 ```
 
 To compare the distribution of the four features using a ggplot boxplot,
@@ -999,8 +1046,8 @@ values are combined into a single column).
 
 ```{r }
 library(tidyr)
-iris_long <- iris %>% 
-  mutate(id = row_number()) %>% 
+iris_long <- iris |> 
+  mutate(id = row_number()) |> 
   pivot_longer(1:4)
 
 ggplot(iris_long, aes(name, value)) + 
@@ -1013,9 +1060,9 @@ range. The data can be scaled first to compare the distributions.
 
 ```{r }
 library(tidyr)
-iris_long_scaled <- iris %>% 
-  scale_numeric() %>% 
-  mutate(id = row_number()) %>% pivot_longer(1:4)
+iris_long_scaled <- iris |> 
+  scale_numeric() |> 
+  mutate(id = row_number()) |> pivot_longer(1:4)
 
 ggplot(iris_long_scaled, aes(name, value)) + 
   geom_boxplot() +
@@ -1049,14 +1096,14 @@ coefficients.
 Matrix visualization shows the values in the matrix using a color scale.
 
 ```{r }
-iris_matrix <- iris %>% select(-Species) %>% as.matrix()
+iris_matrix <- iris |> select(-Species) |> as.matrix()
 ```
 
 We need the long format for tidyverse.
 
 ```{r }
-iris_long <- as_tibble(iris_matrix) %>% 
-  mutate(id = row_number()) %>% 
+iris_long <- as_tibble(iris_matrix) |> 
+  mutate(id = row_number()) |> 
   pivot_longer(1:4)
 
 head(iris_long)
@@ -1103,7 +1150,7 @@ right because it is very different from the other features.
 A correlation matrix contains the correlation between features.
 
 ```{r }
-cm1 <- iris %>% select(-Species) %>% as.matrix %>% cor()
+cm1 <- iris |> select(-Species) |> as.matrix() |> cor()
 cm1
 ```
 
@@ -1125,7 +1172,7 @@ Correlations can also be calculates between objects by transposing the
 data matrix.
 
 ```{r }
-cm2 <- iris %>% select(-Species) %>% as.matrix() %>% t() %>% cor()
+cm2 <- iris |> select(-Species) |> as.matrix() |> t() |> cor()
 
 ggcorrplot(cm2)
 ```
