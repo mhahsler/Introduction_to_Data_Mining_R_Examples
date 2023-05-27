@@ -558,7 +558,7 @@ also `? dummyVars` in package `caret`.
 
 ```{r }
 Zoo_train_dummy <- as_tibble(class2ind(Zoo_train$type)) |> 
-  mutate_all(as.factor) |>
+  mutate(across(everything(), as.factor)) |>
   add_column(predator = Zoo_train$predator)
 Zoo_train_dummy
 

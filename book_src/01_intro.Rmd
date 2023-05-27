@@ -57,7 +57,7 @@ visualization.
 In this book, we will use
 
 -   tidyverse tibbles to replace R's built-in data.frames,
--   the pipe operator `%>%` to chain functions together, and
+-   the pipe operator `|>` to chain functions together, and
 -   data transformation functions like `filter()`, `arrange()`,
     `select()`, `group_by()`, and `mutate()` provided by the tidyverse
     package `dplyr`.
@@ -93,7 +93,7 @@ affordable_vitamin_c_sources <- fruit |>
 affordable_vitamin_c_sources 
 ```
 
-The pipes operator `%>%` lets you compose a sequence of function calls
+The pipes operator `|>` lets you compose a sequence of function calls
 in a more readable way by passing the value to the left on as the first
 argument to the function to the right.
 

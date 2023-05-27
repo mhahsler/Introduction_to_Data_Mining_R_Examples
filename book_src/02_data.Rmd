@@ -70,12 +70,12 @@ identify outliers and missing values.
 summary(iris)
 ```
 
-You can also summarize specific columns using a statistic function like
+You can also summarize all numeric columns using a statistic function like
 `mean()`.
 
 ```{r }
 iris |> 
-  summarize_if(is.numeric, mean)
+  summarize(across(where(is.numeric), mean))
 ```
 
 To find outliers or data problems, you need to look for very small
@@ -121,11 +121,11 @@ each group.
 ```{r }
 iris |> 
   group_by(Species) |> 
-  summarize_all(mean)
+  summarize(across(everything(), mean))
 
 iris |> 
   group_by(Species) |> 
-  summarize_all(median)
+  summarize(across(everything(), median))
 ```
 
 Using this information, we can compare how features differ between
