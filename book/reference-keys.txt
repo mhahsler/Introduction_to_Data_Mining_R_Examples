@@ -3,6 +3,8 @@ used-software
 tidyverse
 ggplot2
 data
+introduction-1
+scale-of-measurement
 the-iris-dataset
 data-quality
 aggregation
@@ -47,6 +49,7 @@ correlation-matrix
 parallel-coordinates-plot
 more-visualizations
 classification-basic-concepts-and-techniques
+introduction-2
 the-zoo-dataset
 decision-trees
 create-tree-with-default-settings-uses-pre-pruning
@@ -69,6 +72,7 @@ create-a-biased-classifier
 plot-the-roc-curve
 option-4-use-a-cost-sensitive-classifier
 classification-alternative-techniques
+introduction-3
 training-and-test-data
 fitting-different-classification-models-to-the-training-data
 conditional-inference-tree-decision-tree
@@ -101,6 +105,7 @@ svm-1
 single-layer-feed-forward-neural-networks-1
 more-information-on-classification-with-r
 association-analysis-basic-concepts-and-algorithms
+introduciton
 the-arules-package
 transactions
 create-transactions
@@ -122,6 +127,7 @@ visualization-as-graph
 interactive-rule-explorer
 association-analysis-advanced-concepts
 clustering-analysis
+introduction-4
 data-preparation
 data-cleaning
 scale-data

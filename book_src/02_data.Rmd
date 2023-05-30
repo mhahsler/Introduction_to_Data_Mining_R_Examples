@@ -25,17 +25,59 @@ The packages used for this chapter are: `r format_pkgs(pkgs)`
 ```{r setup_02-2, include=FALSE}
 all_pkgs <- union(all_pkgs, pkgs)
 ```
+## Introduction
 
-## The Iris Dataset
 
 ```{r include=FALSE}
 options(digits = 3)
 ```
 
+
+Data mining has the goal to find patterns in large data sets. In this chapter,
+we will talk about data its characteristics, and how it is prepared for
+data mining.
+
+Data for data mining is typically organized in tabular form with rows containing
+the objects of interest and columns representing features describing the objects.
+We will discuss topics like data quality, sampling, feature selection,
+and how to measure similarities between objects and features. 
+The second part of this chapter deals with data exploration and visualization. 
+
+
+## Scale of Measurement
+
+Features can be measured on several scales ranging from simple labels all the way to
+numbers. The important scales are
+
+| Scale Name | Description | Operations | Statistics | R |
+| ---------- | ------------| --------- | -------| ------- |
+| Nominal | just a label (e.g., red, green) | $==, !=$ | counts | `factor` |
+| Ordinal | label with order (e.g., small, med., large) | $<, >$ | median | `ordered` | 
+| Interval | difference between two values is meaningful (regular number) | $+, -$ | mean, sd | `numeric` |
+| Ratio | has a natural zero (e.g., count, distance) | $/, *$ | percent | `numeric` |
+
+We often do not differentiate between interval and ratio scale because we rarely 
+not need to calculate percentages or other statistics that require a meaningful zero value.
+The following code gives example vectors with nominal, ordinal (`levels` defines the order) 
+and interval scale.  
+
+```{r}
+factor(c("red", "green", "green", "blue"))
+
+factor("S", "L", "M", "S", levels = c("S", "M", "L"), ordered = TRUE)
+
+c(1, 2, 3, 4, 3)
+```
+
+
+
+## The Iris Dataset
+
 We will use a toy dataset that comes with R. [Fisher's iris
 dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set) gives the
 measurements in centimeters of the variables sepal length, sepal width
-petal length, and petal width for 150 flowers. The dataset contains 50
+petal length, and petal width representing the features for 150 flowers (the objects). 
+The dataset contains 50
 flowers from each of 3 species of iris. The species are Iris Setosa,
 Iris Versicolor, and Iris Virginica. For more details see `? iris`.
 

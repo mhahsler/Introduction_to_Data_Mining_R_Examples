@@ -21,6 +21,14 @@ The packages used for this chapter are: `r format_pkgs(pkgs)`
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
+## Introduction
+
+Cluster analysis or clustering is the task of grouping a set of objects in such a way that objects in the same group (called a cluster) are more similar (in some sense) to each other than to those in other groups (clusters).
+
+Clustering is also called unsupervised learning, because it tries to directly learns the structure of the data
+and does not rely on the availability of a correct answer or class label as supervised learning does.
+Clustering is often used for exploratory analysis or to preprocess data by grouping.   
+
 You can read the free sample chapter from the textbook [@Tan2005]:
 [Chapter 7. Cluster Analysis: Basic Concepts and
 Algorithms](https://www-users.cs.umn.edu/~kumar001/dmbook/ch7_clustering.pdf)
@@ -31,7 +39,7 @@ Algorithms](https://www-users.cs.umn.edu/~kumar001/dmbook/ch7_clustering.pdf)
 library(tidyverse)
 ```
 
-We will use here a small and very clean dataset called Ruspini which is
+We will use here a small and very clean toy dataset called Ruspini which is
 included in the R package **cluster**.
 
 ```{r }

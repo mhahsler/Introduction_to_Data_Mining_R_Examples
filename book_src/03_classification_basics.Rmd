@@ -22,18 +22,44 @@ The packages used for this chapter are: `r format_pkgs(pkgs)`
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
+
+## Introduction
+
+Classification is a machine learning task with the goal to learn a predictive 
+function of the form 
+
+$$y = f(\mathbf{x})$$, 
+
+where $\mathbf{x}$ is called the attribute set and $y$ the class label. The attribute set
+consists of feature which describe an object. These features can be measured using any scale 
+(i.e., nominal, interval, ...). The class label is a nominal attribute. It it is a binary 
+attribute, then the problem is called a binary classification problem.
+
+Classification learns the classification model from training data where both the features and 
+the correct class label are available. This is why it is called a supervised learning problem.
+
+A related supervised learning problem is regression, where $y$ is a number instead of a label.
+Linear regression is a very popular supervised learning model, however, we will not talk about it here
+since it is taught in almost any introductory statistics course.
+
+This chapter will introduce decision trees, model evaluation and comparison, feature selection,
+and then explore methods to handle the class imbalance problem.
+
 You can read the free sample chapter from the textbook [@Tan2005]:
 [Chapter 3. Classification: Basic Concepts and
 Techniques](https://www-users.cs.umn.edu/~kumar001/dmbook/ch3_classification.pdf)
 
 ## The Zoo Dataset
 
-We will use the Zoo dataset which is included in the R package
+To demonstrate classification, we will use the Zoo dataset which is included in the R package
 **mlbench** (you may have to install it). The Zoo dataset containing 17
-(mostly logical) variables on different 101 animals as a data frame with
+(mostly logical) variables for 101 animals as a data frame with
 17 columns (hair, feathers, eggs, milk, airborne, aquatic, predator,
 toothed, backbone, breathes, venomous, fins, legs, tail, domestic,
-catsize, type). We convert the data frame into a tidyverse tibble
+catsize, type). 
+The first 16 columns represent the feature vector $\mathbf{x}$ and the last column
+called type is the class label $y$.
+We convert the data frame into a tidyverse tibble
 (optional).
 
 ```{r }

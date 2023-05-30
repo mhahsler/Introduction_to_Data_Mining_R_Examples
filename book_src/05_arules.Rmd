@@ -21,6 +21,26 @@ The packages used for this chapter are: `r format_pkgs(pkgs)`
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
+
+## Introduciton
+
+Association rule mining plays a vital role in discovering hidden patterns and relationships within large
+transactional datasets. Applications range from exploratory data analysis in marketing to building rule-based
+classifiers.
+@arules:Agrawal+Imielinski+Swami:1993 introduced the problem
+of mining association rules from transaction data as follows (the definition is taken from @arules:Hahsler+Gruen+Hornik:2005b):
+
+Let $I = \{i_1,i_2,...,i_n\}$ be a set of $n$ binary attributes called items. Let $D = \{t_1,t_2,...,t_m\}$ be
+a set of transactions called the database. Each transaction in $D$ has a unique transaction ID and
+contains a subset of the items in $I$. A rule is defined as an implication of the form $X \Rightarrow Y$ where
+$X,Y \subseteq I$ and $X \cup Y = \emptyset$ are called itemsets. On itemsets and rules several quality measures can
+be defined. The most important measures are support and confidence. The support $supp(X)$ of
+an itemset $X$ is defined as the proportion of transactions in the data set which contain the itemset.
+Itemsets with a support which surpasses a user-defined threshold $\sigma$ are called frequent itemsets. The
+confidence of a rule is defined as $conf(X \Rightarrow Y) = supp(X \cup Y)/supp(X)$. Association rules are rules
+with $supp(X \cup Y) \ge \sigma$ and $conf(X) \ge \delta$ where $\sigma$ and $\delta$ are user-defined thresholds.
+The found set of association rules is then used reason about the data.
+
 You can read the free sample chapter from the textbook [@Tan2005]:
 [Chapter 5. Association Analysis: Basic Concepts and
 Algorithms](https://www-users.cs.umn.edu/~kumar001/dmbook/ch5_association_analysis.pdf)
