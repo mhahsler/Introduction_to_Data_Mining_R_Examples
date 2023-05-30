@@ -50,12 +50,16 @@ book can be used with either edition: 1st edition [@Tan2005] or 2nd
 edition [@Tan2018].
 
 The code examples collected in this book were developed for the course
-[CS 7331 - Data Mining](http://michael.hahsler.net/SMU/EMIS7331) taught
+[CS 7331 - Data Mining](http://michael.hahsler.net/SMU/CS7331) taught
 at [SMU](http://www.smu.edu) since Spring 2013 and will be regularly
-updated and improved. The latest update includes the use of the popular
+updated and improved. 
+The latest update includes the use of the popular
 packages in the meta-package `tidyverse` [@R-tidyverse] including
 `ggplot2` [@R-ggplot2] for data wrangling and visualization along with
 `caret` [@R-caret] for model building.
+
+Instructor resources are available on the
+[books GitHub page.](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples)
 
 Please use the edit function within this book or visit the [book's
 GitHub project
