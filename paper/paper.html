@@ -380,87 +380,107 @@ Mining</h1>
 
 <div id="summary" class="section level1">
 <h1>Summary</h1>
-<p>The forces on stars, galaxies, and dark matter under external
-gravitational fields lead to the dynamical evolution of structures in
-the universe. The orbits of these bodies are therefore key to
-understanding the formation, history, and future state of galaxies. The
-field of “galactic dynamics,” which aims to model the gravitating
-components of galaxies to study their structure and evolution, is now
-well-established, commonly taught, and frequently used in astronomy.
-Aside from toy problems and demonstrations, the majority of problems
-require efficient numerical tools, many of which require the same base
-code (e.g., for performing numerical orbit integration).</p>
-<p><code>Gala</code> is an Astropy-affiliated Python package for
-galactic dynamics. Python enables wrapping low-level languages (e.g., C)
-for speed without losing flexibility or ease-of-use in the
-user-interface. The API for <code>Gala</code> was designed to provide a
-class-based and user-friendly interface to fast (C or Cython-optimized)
-implementations of common operations such as gravitational potential and
-force evaluation, orbit integration, dynamical transformations, and
-chaos indicators for nonlinear dynamics. <code>Gala</code> also relies
-heavily on and interfaces well with the implementations of physical
-units and astronomical coordinate systems in the <code>Astropy</code>
-package <span class="citation">(Astropy Collaboration 2013)</span>
-(<code>astropy.units</code> and <code>astropy.coordinates</code>).</p>
-<p><code>Gala</code> was designed to be used by both astronomical
-researchers and by students in courses on gravitational dynamics or
-astronomy. It has already been used in a number of scientific
-publications <span class="citation">(Pearson, Price-Whelan, and Johnston
-2017)</span> and has also been used in graduate courses on Galactic
-dynamics to, e.g., provide interactive visualizations of textbook
-material <span class="citation">(Binney and Tremaine 2008)</span>. The
-combination of speed, design, and support for Astropy functionality in
-<code>Gala</code> will enable exciting scientific explorations of
-forthcoming data releases from the <em>Gaia</em> mission <span class="citation">(Gaia Collaboration 2016)</span> by students and
-experts alike.</p>
+<p>An R Companion for Introduction to Data Mining is an open-source
+learning and teaching resource for an introductory course in data
+mining. It can be used to accompany the popular data mining textbook
+Introduction to Data Mining <span class="citation">(Tan et al.
+2017)</span> or as a stand-alone resource to study the basic data mining
+concepts including data preparation, classification, clustering, and
+association analysis. The resource uses complete annotated examples to
+teach how the basic concepts are translated into R code.</p>
+<p>The materials have been made publicly available at: <a href="https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/" class="uri">https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/</a>
+and licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)
+License</a>.</p>
 </div>
-<div id="mathematics" class="section level1">
-<h1>Mathematics</h1>
-<p>Single dollars ($) are required for inline mathematics e.g. <span class="math inline">\(f(x) = e^{\pi/x}\)</span></p>
-<p>Double dollars make self-standing equations:</p>
-<p><span class="math display">\[\Theta(x) = \left\{\begin{array}{l}
-0\textrm{ if } x &lt; 0\cr
-1\textrm{ else}
-\end{array}\right.\]</span></p>
+<div id="statement-of-need" class="section level1">
+<h1>Statement of Need</h1>
+<p>The textbook Introduction to Data Mining has been one of the most
+popular choices to learn data mining concepts. Several of the key
+chapters have been made available for free by the authors <span class="citation">(Tan et al. 2017)</span>. One of the authors also
+provides Python Jupyter notebooks with examples, but complete R code
+examples were missing. Given the R community’s interest in data
+analysis, data science, and machine learning, and the wide support of R
+packages for data mining, there was clearly a gap that needed to be
+filled.</p>
+<p>During many years of teaching data mining with R, I developed the
+Companion for Introduction to Data Mining resource mainly based on the
+popular tidyverse package collection <span class="citation">(Wickham et
+al. 2019)</span>, caret <span class="citation">(Kuhn and Max
+2008)</span>, and a set of packages developed with students to better
+support different data mining tasks (arules <span class="citation">(Hahsler, Grün, and Hornik 2005)</span>, seriation
+<span class="citation">(Hahsler, Hornik, and Buchta 2008)</span>
+arulesViz <span class="citation">(Hahsler 2017)</span>, and dbscan <span class="citation">(Hahsler, Piekenbrock, and Doran 2019)</span>).</p>
 </div>
-<div id="citations" class="section level1">
-<h1>Citations</h1>
-<p>Citations to entries in paper.bib should be in <a href="http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html">rMarkdown</a>
-format.</p>
-<p>For a quick reference, the following citation commands can be used: -
-<code>@author:2001</code> -&gt; “Author et al. (2001)” -
-<code>[@author:2001]</code> -&gt; “(Author et al., 2001)” -
-<code>[@author1:2001; @author2:2001]</code> -&gt; “(Author1 et al.,
-2001; Author2 et al., 2002)”</p>
-</div>
-<div id="figures" class="section level1">
-<h1>Figures</h1>
-<p>Figures can be included like this: <img src="figure.png" alt="Example figure." /></p>
-</div>
-<div id="acknowledgements" class="section level1">
-<h1>Acknowledgements</h1>
-<p>We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and
-Semyeong Oh, and support from Kathryn Johnston during the genesis of
-this project.</p>
+<div id="instructional-design" class="section level1">
+<h1>Instructional Design</h1>
+<p>The resources borrow the structure of the textbook to introduce the
+learner to</p>
+<ol style="list-style-type: decimal">
+<li>data preparation and exploratory analysis,</li>
+<li>classification,</li>
+<li>association rule mining, and</li>
+<li>clustering.</li>
+</ol>
+<p>The goal is to provide self-contained and annotated code examples
+that the learner can copy-and-paste into an R markdown notebook to
+experiment with the provided example data and then modify the code to
+work on their own data sets. This learning-by-doing approach has worked
+very well in preparing students to work with more complex real-world
+datasets by relieving them from the dealing with too many implementation
+details while exploring the concepts.</p>
+<p>For instructors, complete presentation slide sets are provided on the
+book’s GitHub page. The slides are organized in the same way as the
+companion book. A direct connection between the slides and the book is
+provided by the R symbol on slides where example code is available. This
+direct connection makes it easier for learners and instructors to switch
+between the concepts on the slides and the corresponding code in the
+companion.</p>
+<p>The companion has been used successfully by several instructors to
+deliver courses in in-person and distance education settings. It is also
+actively maintained by faculty at the department of Computer Science at
+Southern Methodist University.</p>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
 <div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-astropy" class="csl-entry">
-Astropy Collaboration. 2013. <span>“<span class="nocase">Astropy: A
-community Python package for astronomy</span>”</span> 558 (October). <a href="https://doi.org/10.1051/0004-6361/201322068">https://doi.org/10.1051/0004-6361/201322068</a>.
+<div id="ref-arulesViz2017" class="csl-entry">
+Hahsler, Michael. 2017. <span>“Arules<span>V</span>iz:
+<span>I</span>nteractive Visualization of Association Rules with
+<span>R</span>.”</span> <em>R Journal</em> 9 (2): 163–75. <a href="https://doi.org/10.32614/RJ-2017-047">https://doi.org/10.32614/RJ-2017-047</a>.
 </div>
-<div id="ref-Binney:2008" class="csl-entry">
-Binney, J., and S. Tremaine. 2008. <em><span>Galactic Dynamics: Second
-Edition</span></em>. Princeton University Press.
+<div id="ref-arules2005" class="csl-entry">
+Hahsler, Michael, Bettina Grün, and Kurt Hornik. 2005. <span>“Arules –
+<span>A</span> Computational Environment for Mining Association Rules
+and Frequent Item Sets.”</span> <em>Journal of Statistical Software</em>
+14 (15): 1–25. <a href="http://www.jstatsoft.org/v14/i15/">http://www.jstatsoft.org/v14/i15/</a>.
 </div>
-<div id="ref-gaia" class="csl-entry">
-Gaia Collaboration. 2016. <span>“<span class="nocase">The Gaia
-mission</span>”</span> 595 (November). <a href="https://doi.org/10.1051/0004-6361/201629272">https://doi.org/10.1051/0004-6361/201629272</a>.
+<div id="ref-seriation2008" class="csl-entry">
+Hahsler, Michael, Kurt Hornik, and Christian Buchta. 2008.
+<span>“Getting Things in Order: <span>A</span>n Introduction to the
+<span>R</span> Package Seriation.”</span> <em>Journal of Statistical
+Software</em> 25 (3): 1–34. <a href="https://doi.org/10.18637/jss.v025.i03">https://doi.org/10.18637/jss.v025.i03</a>.
 </div>
-<div id="ref-Pearson:2017" class="csl-entry">
-Pearson, S., A. M. Price-Whelan, and K. V. Johnston. 2017. <span>“<span class="nocase">Gaps in Globular Cluster Streams: Pal 5 and the Galactic
-Bar</span>.”</span> <em>ArXiv e-Prints</em>, March. <a href="https://arxiv.org/abs/1703.04627">https://arxiv.org/abs/1703.04627</a>.
+<div id="ref-dbscan2019" class="csl-entry">
+Hahsler, Michael, Matthew Piekenbrock, and Derek Doran. 2019.
+<span>“<span class="nocase">dbscan</span>: Fast Density-Based Clustering
+with <span>R</span>.”</span> <em>Journal of Statistical Software</em> 91
+(1): 1–30. <a href="https://doi.org/10.18637/jss.v091.i01">https://doi.org/10.18637/jss.v091.i01</a>.
+</div>
+<div id="ref-caret2008" class="csl-entry">
+Kuhn, and Max. 2008. <span>“Building Predictive Models in <span>R</span>
+Using the Caret Package.”</span> <em>Journal of Statistical
+Software</em> 28 (5): 1–26. <a href="https://doi.org/10.18637/jss.v028.i05">https://doi.org/10.18637/jss.v028.i05</a>.
+</div>
+<div id="ref-Tan2018" class="csl-entry">
+Tan, Pang-Ning, Michael S. Steinbach, Anuj Karpatne, and Vipin Kumar.
+2017. <em>Introduction to Data Mining</em>. 2nd Edition. Pearson. <a href="https://www-users.cs.umn.edu/~kumar001/dmbook">https://www-users.cs.umn.edu/~kumar001/dmbook</a>.
+</div>
+<div id="ref-tidyverse2019" class="csl-entry">
+Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy
+D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019.
+<span>“Welcome to the <span class="nocase">tidyverse</span>.”</span>
+<em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
 </div>
 </div>
 </div>
