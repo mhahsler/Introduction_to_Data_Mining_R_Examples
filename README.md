@@ -18,7 +18,7 @@ for corrections or to suggest improvements.
 ## Covered Chapters
 
 
-| Chapter | Slides | R Code | Sample Book Chapters|  
+| Chapter | Slides | R Code Companion | Sample Textbook Chapters|  
 | :--------| :---: | :----: | :--: |
 | 1. Introduction | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap1_intro.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/introduction.html) | |
 | 2. Data | Slides: [Data](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap2_data.pdf), [Exploration](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap2_exploration.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/data.html) | |
