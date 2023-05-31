@@ -33,21 +33,17 @@ options(digits = 3)
 ```
 
 
-Data mining has the goal to find patterns in large data sets. In this chapter,
-we will talk about data its characteristics, and how it is prepared for
-data mining.
-
-Data for data mining is typically organized in tabular form with rows containing
+Data for data mining is typically organized in tabular form, with rows containing
 the objects of interest and columns representing features describing the objects.
 We will discuss topics like data quality, sampling, feature selection,
 and how to measure similarities between objects and features. 
 The second part of this chapter deals with data exploration and visualization. 
 
-
 ## Scale of Measurement
 
-Features can be measured on several scales ranging from simple labels all the way to
-numbers. The important scales are
+The values of features can be measured on [several scales](https://en.wikipedia.org/wiki/Level_of_measurement) 
+ranging from 
+simple labels all the way to numbers. The scales come in four levels.
 
 | Scale Name | Description | Operations | Statistics | R |
 | ---------- | ------------| --------- | -------| ------- |
@@ -56,6 +52,8 @@ numbers. The important scales are
 | Interval | difference between two values is meaningful (regular number) | $+, -$ | mean, sd | `numeric` |
 | Ratio | has a natural zero (e.g., count, distance) | $/, *$ | percent | `numeric` |
 
+The scales build on each other meaning that an ordinal variable also has the characteristics of 
+a nominal variable with the added order information.
 We often do not differentiate between interval and ratio scale because we rarely 
 not need to calculate percentages or other statistics that require a meaningful zero value.
 The following code gives example vectors with nominal, ordinal (`levels` defines the order) 
@@ -240,7 +238,17 @@ ggpairs(s2, aes(color = Species), progress = FALSE)
 
 ## Features
 
-### Dimensionality Reduction
+The number of features is often called the dimensional of the data following the 
+idea that each feature (at least the numeric features) can be seen as an axis of the data.
+
+Common feature preprocessing includes 
+[dimensionality reduction](https://en.wikipedia.org/wiki/Dimensionality_reduction)
+which tries to represent high-dimensional data in a low-dimensional space so that the 
+low-dimensional representation retains some meaningful properties (e.g., information about
+similarity or distances) of the original data. A special case is feature selection.
+
+Other important feature preprocessing includes discretization and feature scaling.
+
 
 #### Principal Components Analysis (PCA)
 
@@ -506,6 +514,12 @@ will fall in the range $[-3,3]$ and is measured in standard deviations from the 
 Negative values mean smaller than the average and positive values mean larger than the average.
 
 ## Proximities: Similarities and Distances
+
+Proximities help with quantifying how similar two objects are. 
+[Similariy](https://en.wikipedia.org/wiki/Similarity_(geometry)) is a concept from geometry.
+The best-known 
+way to define similarity is Euclidean distance, but proximities can be measured in
+different ways depending on the information we have about the objects.
 
 R stores proximity as dissimilarities/distances matrices. Similarities
 are first converted to dissimilarities. Distances are symmetric, i.e.,

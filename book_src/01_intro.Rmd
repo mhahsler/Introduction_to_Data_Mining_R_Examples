@@ -6,22 +6,35 @@ editor_options:
 
 # Introduction
 
+[Data mining](https://en.wikipedia.org/wiki/Data_mining) has the goal of finding patterns in large data sets. 
+In this chapter, we will talk about data its characteristics and how it is prepared for
+data mining.
+
+This book is organized following the main data mining tasks:
+
+1. Data preparation and exploratory data analysis (Chapter 2)
+2. Classification (Chapters 3 and 4)
+3. Association analysis (Chapters 5 and 6)
+4. Clustering (Chapter 7)
+
+First, we need to talk about the needed software.
+
 ## Used Software
 
 This companion book assumes that you have
 [R](https://cran.r-project.org/) and [RStudio
-Desktop](https://www.rstudio.com/products/rstudio/) installed and that
-you are familiar with the basics of R, how to run R code and install
+Desktop](https://www.rstudio.com/products/rstudio/) installed and
+are familiar with the basics of R, how to run R code, and install
 packages.
 
-If you are new to R, then working through the official R manual [An
+If you are new to R, working through the official R manual [An
 Introduction to
 R](https://cran.r-project.org/doc/manuals/r-release/R-intro.html)
 [@RCore2021] will get you started. There are many introduction videos
-for RStudio and a basic video that shows you how to run code and how to
+for RStudio available, and a basic video that shows how to run code and how to
 install packages will suffice.
 
-Each book chapter will use a set of packages which need to be installed. 
+Each book chapter will use a set of packages that must be installed. 
 The installation code can be found at the beginning of each chapter. 
 Here is the code to install the packages used in this chapter:
 
@@ -39,7 +52,7 @@ all_pkgs <- union(all_pkgs, pkgs)
 ```
 
 The code in this book uses `tidyverse` to manipulate data and `ggplot2`
-for visualization. A great introduction to these very useful tools can
+for visualization. A great introduction to these useful tools can
 be found in the freely available web book [R for Data
 Science](https://r4ds.had.co.nz) by @Wickham2017.
 
@@ -49,14 +62,14 @@ Science](https://r4ds.had.co.nz) by @Wickham2017.
 library(tidyverse)
 ```
 
-`tidyverse` [@R-tidyverse] is a collection of many very useful packages
+`tidyverse` [@R-tidyverse] is a collection of many useful packages
 that work well together by sharing design principles and data
 structures. `tidyverse` also includes `ggplot2` [@R-ggplot2] for
 visualization.
 
 In this book, we will use
 
--   tidyverse tibbles to replace R's built-in data.frames,
+-   often tidyverse tibbles to replace R's built-in data.frames,
 -   the pipe operator `|>` to chain functions together, and
 -   data transformation functions like `filter()`, `arrange()`,
     `select()`, `group_by()`, and `mutate()` provided by the tidyverse
@@ -64,11 +77,12 @@ In this book, we will use
 
 A good introduction can be found in the [Section on Data
 Wrangling](https://r4ds.had.co.nz/wrangle-intro.html) [@Wickham2017],
-and a very useful reference resource is the [RStudio Data Transformation
+and a useful reference resource is the [RStudio Data Transformation
 Cheat
 Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf).
 
-Here is a short example. We create a tibble with the price in dollars
+Here is a short example that will get you familiar with the basic syntax. 
+We create a tibble with the price in dollars
 per pound and the vitamin C content in milligrams (mg) per pound for
 three fruit.
 
@@ -81,7 +95,7 @@ fruit
 ```
 
 Now we add a column with the vitamin C (in mg) that a dollar buys you,
-filter only fruit that provides more than 20 mg and then order (arrange)
+filter only fruit that provides more than 20 mg, and then order (arrange)
 the data by the vitamin C per dollar from largest to smallest.
 
 ```{r }
@@ -94,13 +108,13 @@ affordable_vitamin_c_sources
 ```
 
 The pipes operator `|>` lets you compose a sequence of function calls
-in a more readable way by passing the value to the left on as the first
+more readably by passing the value to the left on as the first
 argument to the function to the right.
 
 ## ggplot2
 
 For visualization, we will use mainly `ggplot2`. The *gg* in `ggplot2`
-stands for **The Grammar of Graphics** introduced in @Wilkinson2005. The
+stands for **The Grammar of Graphics** introduced by @Wilkinson2005. The
 main idea is that every graph is built from the same basic components:
 
 -   the data,
@@ -140,7 +154,7 @@ ggplot(fruit, aes(x = price, y = vitamin_c)) +
 ```
 
 
-Alternatively, we can visualize the vitamin C content per dollar of each fruit
+Alternatively, we can visualize each fruit's vitamin C content per dollar 
 using a bar chart.
 
 ```{r }

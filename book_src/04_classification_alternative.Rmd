@@ -38,7 +38,8 @@ options(digits=3)
 
 ## Introduction
 
-Many different classification methods have been proposed in the literature. 
+Many different [classification algorithms](https://en.wikipedia.org/wiki/Supervised_learning) 
+have been proposed in the literature. 
 In this chapter, we will apply some of the more popular methods.
 
 ## Training and Test Data

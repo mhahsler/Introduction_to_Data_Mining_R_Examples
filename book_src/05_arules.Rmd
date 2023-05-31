@@ -21,10 +21,10 @@ The packages used for this chapter are: `r format_pkgs(pkgs)`
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
-
 ## Introduciton
 
-Association rule mining plays a vital role in discovering hidden patterns and relationships within large
+[Association rule mining](https://en.wikipedia.org/wiki/Association_rule_learning) 
+plays a vital role in discovering hidden patterns and relationships within large
 transactional datasets. Applications range from exploratory data analysis in marketing to building rule-based
 classifiers.
 @arules:Agrawal+Imielinski+Swami:1993 introduced the problem

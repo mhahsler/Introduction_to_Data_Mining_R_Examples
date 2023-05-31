@@ -53,14 +53,18 @@ The code examples collected in this book were developed for the course
 [CS 7331 - Data Mining](http://michael.hahsler.net/SMU/CS7331) taught
 at [SMU](http://www.smu.edu) since Spring 2013 and will be regularly
 updated and improved. 
+The learning method used in this book is learning-by-doing. 
+The code examples in throughout this book are
+written in a self-contained manner so you can copy-and-paste a portion of the code,
+try it out on the provided dataset and then apply it directly to your own 
+data.
+
 The latest update includes the use of the popular
 packages in the meta-package `tidyverse` [@R-tidyverse] including
 `ggplot2` [@R-ggplot2] for data wrangling and visualization along with
-`caret` [@R-caret] for model building.
-
-Instructor resources are available on the
-[books GitHub page.](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples)
-
+`caret` [@R-caret] for model building and evaluation. 
+Presentation slides and other instructor resources are available on the
+[book's GitHub page.](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples)
 Please use the edit function within this book or visit the [book's
 GitHub project
 page](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples)

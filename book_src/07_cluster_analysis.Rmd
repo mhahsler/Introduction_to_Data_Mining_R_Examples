@@ -23,7 +23,8 @@ all_pkgs <- union(all_pkgs, pkgs)
 
 ## Introduction
 
-Cluster analysis or clustering is the task of grouping a set of objects in such a way that objects in the same group (called a cluster) are more similar (in some sense) to each other than to those in other groups (clusters).
+[Cluster analysis or clustering](https://en.wikipedia.org/wiki/Cluster_analysis) 
+is the task of grouping a set of objects in such a way that objects in the same group (called a cluster) are more similar (in some sense) to each other than to those in other groups (clusters).
 
 Clustering is also called unsupervised learning, because it tries to directly learns the structure of the data
 and does not rely on the availability of a correct answer or class label as supervised learning does.
@@ -78,7 +79,8 @@ number range will dominate distance calculation. The summary above shows
 that this is not an issue for the Ruspini dataset with both, x and y,
 being roughly between 0 and 150. Most data analysts will still scale
 each column in the data to zero mean and unit standard deviation
-(z-scores). *Note:* The standard `scale()` function scales a whole data
+([z-scores](https://en.wikipedia.org/wiki/Standard_score)). 
+*Note:* The standard `scale()` function scales a whole data
 matrix so we implement a function for a single vector and apply it to
 all numeric columns.
 

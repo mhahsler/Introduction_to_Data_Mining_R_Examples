@@ -28,7 +28,7 @@ all_pkgs <- union(all_pkgs, pkgs)
 Classification is a machine learning task with the goal to learn a predictive 
 function of the form 
 
-$$y = f(\mathbf{x})$$, 
+$$y = f(\mathbf{x}),$$ 
 
 where $\mathbf{x}$ is called the attribute set and $y$ the class label. The attribute set
 consists of feature which describe an object. These features can be measured using any scale 
@@ -36,9 +36,10 @@ consists of feature which describe an object. These features can be measured usi
 attribute, then the problem is called a binary classification problem.
 
 Classification learns the classification model from training data where both the features and 
-the correct class label are available. This is why it is called a supervised learning problem.
+the correct class label are available. This is why it is called a [supervised learning problem](https://en.wikipedia.org/wiki/Supervised_learning).
 
-A related supervised learning problem is regression, where $y$ is a number instead of a label.
+A related supervised learning problem is [regression](https://en.wikipedia.org/wiki/Linear_regression), 
+where $y$ is a number instead of a label.
 Linear regression is a very popular supervised learning model, however, we will not talk about it here
 since it is taught in almost any introductory statistics course.
 

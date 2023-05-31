@@ -12,7 +12,6 @@ sampling
 random-sampling
 stratified-sampling
 features
-dimensionality-reduction
 principal-components-analysis-pca
 multi-dimensional-scaling-mds
 non-parametric-multidimensional-scaling
