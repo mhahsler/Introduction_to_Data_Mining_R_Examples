@@ -27,8 +27,13 @@ for corrections or to suggest improvements.
 | 5. Association Analysis: Basic Concepts and Algorithms | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap5_basic_association_analysis.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/association-analysis-basic-concepts-and-algorithms.html) | [Read Chapter 5](https://www-users.cs.umn.edu/~kumar001/dmbook/ch5_association_analysis.pdf) |
 | 7. Cluster Analysis: Basic Concepts and Algorithms | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap7_basic_cluster_analysis.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/clustering-analysis.html) | [Read Chapter 7](https://www-users.cs.umn.edu/~kumar001/dmbook/ch7_clustering.pdf) |
 
-The Powerpoint presentation files can be found in the repository directory [slides](slides). 
+## Instructor Resources
+
+* Powerpoint presentation files for a data mining course can be found in the repository directory [slides](slides). 
 The slides have an R symbol at the bottom whenever there are R code examples available.
+* Datasets for projects: Datasets can be found at https://www.kaggle.com/datasets
+* More instructional material can be found on the course web site of [CS 7331 - Data Mining](http://michael.hahsler.net/SMU/CS7331) 
+
 
 ## License
 ![Creative Commons License](https://i.creativecommons.org/l/by-nc/4.0/88x31.png)
