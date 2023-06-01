@@ -1,5 +1,5 @@
 ---
-title: 'An R Companion for Introduction to Data Mining'
+title: "An R Companion for Introduction to Data Mining"
 tags:
   - R
   - data mining
@@ -8,7 +8,7 @@ authors:
     orcid: 0000-0003-2716-1405
     affiliation: "1"
 affiliations:
- - name: Michael Hahsler, Clinical Associate Professor, Southern Methodist University
+ - name: Southern Methodist University
    index: 1
 date: 30 May 2023
 bibliography: paper.bib

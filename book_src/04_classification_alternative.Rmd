@@ -306,8 +306,9 @@ library(keras)
 ```
 
 Prepare the data. All data needs to be in a matrix of all
-numeric/integer values. The class variable needs to be one-hot encodes
-with the `keras` function `to_categorical()`.
+numeric/integer values. The class variable needs to be one-hot encoded and the
+the `keras` function `to_categorical()` expects a class index starting with 0 
+instead of 1.
 
 ```{r warning=FALSE}
 X <- Zoo_train |> 
@@ -318,8 +319,7 @@ head(X)
 
 y <- Zoo_train |> 
   pull("type") |> 
-  as.integer() |> 
-  {\(x)(x - 1L)}() |> 
+  {\(x)(as.integer(x) - 1L)}() |>   ## make index start with 0
   to_categorical()
 head(y)
 
@@ -329,8 +329,7 @@ X_test <- Zoo_test |>
   as.matrix()
 y_test <- Zoo_test |> 
   pull("type") |> 
-  as.integer() |> 
-  {\(x)(x - 1L)}() |>
+  {\(x)(as.integer(x) - 1L)}() |>
   to_categorical()
 ```
 
@@ -373,7 +372,8 @@ training data for validation to provide generalization loss/accuracy.
 ```{r}
 history <- model |>
   fit(
-    X, y,
+    X, 
+    y,
     batch_size = 10,
     epochs = 100,
     validation_split = .2
@@ -388,14 +388,16 @@ encoding back to class labels.
 ```{r}
 class_labels <- levels(Zoo_train |> pull(type))
 
-pr <- predict(model, X_test) |> apply(MARGIN = 1, FUN = which.max)
+pr <- predict(model, X_test) |> 
+  apply(MARGIN = 1, FUN = which.max)
 pr <- factor(pr, labels = class_labels, levels = seq_along(class_labels))
 
 pr
 ```
 
 ```{r }
-confusionMatrix(pr, reference = Zoo_test$type)
+confusionMatrix(data = pr, 
+                reference = Zoo_test$type)
 ```
 
 ## Comparing Decision Boundaries of Popular Classification Techniques
@@ -431,7 +433,8 @@ decisionplot <- function(model, data, class_var,
   if(is.list(prediction)) prediction <- prediction$class
   prediction <- factor(prediction, levels = levels(y))
   
-  cm <- confusionMatrix(data = prediction, reference = y)
+  cm <- confusionMatrix(data = prediction, 
+                        reference = y)
   acc <- cm$overall["Accuracy"]
   
   # evaluate model on a grid
@@ -493,7 +496,8 @@ set.seed(1000)
 data(iris)
 iris <- as_tibble(iris)
 
-### Three classes (MASS also has a select function)
+### Three classes 
+### (note: MASS also has a select function which hides dplyr's select)
 x <- iris |> dplyr::select(Sepal.Length, Sepal.Width, Species)
 x
 

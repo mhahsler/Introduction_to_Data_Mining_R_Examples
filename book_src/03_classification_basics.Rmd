@@ -146,8 +146,10 @@ observations in a node needed to split to the smallest value of 2 (see:
 tree_full <- Zoo |> 
   rpart(type ~ . , data = _, 
         control = rpart.control(minsplit = 2, cp = 0))
-rpart.plot(tree_full, extra = 2, roundint=FALSE,
-  box.palette = list("Gy", "Gn", "Bu", "Bn", "Or", "Rd", "Pu")) # specify 7 colors
+rpart.plot(tree_full, extra = 2, 
+           roundint=FALSE,
+            box.palette = list("Gy", "Gn", "Bu", "Bn", 
+                               "Or", "Rd", "Pu")) # specify 7 colors
 tree_full
 ```
 
@@ -185,14 +187,16 @@ accuracy(Zoo |> pull(type), pred)
 Training error of the full tree
 
 ```{r }
-accuracy(Zoo |> pull(type), predict(tree_full, Zoo, type = "class"))
+accuracy(Zoo |> pull(type), 
+         predict(tree_full, Zoo, type = "class"))
 ```
 
 Get a confusion table with more statistics (using caret)
 
 ```{r }
 library(caret)
-confusionMatrix(data = pred, reference = Zoo |> pull(type))
+confusionMatrix(data = pred, 
+                reference = Zoo |> pull(type))
 ```
 
 ### Make Predictions for New Data
@@ -343,7 +347,8 @@ separate test data to create a confusion matrix based on the
 generalization error.
 
 ```{r }
-confusionMatrix(data = pred, ref = Zoo_test |> pull(type))
+confusionMatrix(data = pred, 
+                ref = Zoo_test |> pull(type))
 ```
 
 **Some notes**
@@ -383,11 +388,12 @@ train_index <- createFolds(Zoo_train$type, k = 10)
 Build models
 
 ```{r }
-rpartFit <- Zoo_train |> train(type ~ .,
-  data = _,
-  method = "rpart",
-  tuneLength = 10,
-  trControl = trainControl(method = "cv", indexOut = train_index)
+rpartFit <- Zoo_train |> 
+  train(type ~ .,
+        data = _,
+        method = "rpart",
+        tuneLength = 10,
+        trControl = trainControl(method = "cv", indexOut = train_index)
   )
 ```
 
@@ -396,12 +402,13 @@ rpartFit <- Zoo_train |> train(type ~ .,
 Euclidean distance calculation.
 
 ```{r }
-knnFit <- Zoo_train |> train(type ~ .,
-  data = _,
-  method = "knn",
-  preProcess = "scale",
-	tuneLength = 10,
-	trControl = trainControl(method = "cv", indexOut = train_index)
+knnFit <- Zoo_train |> 
+  train(type ~ .,
+        data = _,
+        method = "knn",
+        preProcess = "scale",
+	      tuneLength = 10,
+	      trControl = trainControl(method = "cv", indexOut = train_index)
   )
 ```
 
@@ -487,7 +494,7 @@ Get the 5 best features
 
 ```{r }
 subset <- cutoff.k(weights |> 
-                     column_to_rownames("feature"), 5)
+                   column_to_rownames("feature"), 5)
 subset
 ```
 
@@ -508,7 +515,8 @@ features. One example is the information gain ratio based on entropy as
 used in decision tree induction.
 
 ```{r }
-Zoo_train |> gain.ratio(type ~ ., data = _) |>
+Zoo_train |> 
+  gain.ratio(type ~ ., data = _) |>
   as_tibble(rownames = "feature") |>
   arrange(desc(attr_importance))
 ```
@@ -520,7 +528,8 @@ independently is not optimal. We can use greedy search heuristics. For
 example `cfs` uses correlation/entropy with best first search.
 
 ```{r }
-Zoo_train |> cfs(type ~ ., data = _)
+Zoo_train |> 
+  cfs(type ~ ., data = _)
 ```
 
 Black-box feature selection uses an evaluator function (the black box)
@@ -532,11 +541,12 @@ and the average accuracy as the score.
 
 ```{r }
 evaluator <- function(subset) {
-  model <- Zoo_train |> train(as.simple.formula(subset, "type"),
-    data = _,
-    method = "rpart",
-    trControl = trainControl(method = "boot", number = 5),
-    tuneLength = 0)
+  model <- Zoo_train |> 
+    train(as.simple.formula(subset, "type"),
+          data = _,
+          method = "rpart",
+          trControl = trainControl(method = "boot", number = 5),
+          tuneLength = 0)
   results <- model$resample$Accuracy
   cat("Trying features:", paste(subset, collapse = " + "), "\n")
   m <- mean(results)
@@ -589,8 +599,10 @@ Zoo_train_dummy <- as_tibble(class2ind(Zoo_train$type)) |>
   add_column(predator = Zoo_train$predator)
 Zoo_train_dummy
 
-tree_predator <- Zoo_train_dummy |> rpart(predator ~ ., data = _,
-  control = rpart.control(minsplit = 2, cp = 0.01))
+tree_predator <- Zoo_train_dummy |> 
+  rpart(predator ~ ., 
+        data = _,
+        control = rpart.control(minsplit = 2, cp = 0.01))
 rpart.plot(tree_predator, roundint = FALSE)
 ```
 
@@ -600,9 +612,12 @@ The reason is that some models cannot directly use factors and `caret`
 tries to consistently work with all of them.
 
 ```{r }
-fit <- Zoo_train |> train(predator ~ type, data = _, method = "rpart",
-  control = rpart.control(minsplit = 2),
-  tuneGrid = data.frame(cp = 0.01))
+fit <- Zoo_train |> 
+  train(predator ~ type, 
+        data = _, 
+        method = "rpart",
+        control = rpart.control(minsplit = 2),
+        tuneGrid = data.frame(cp = 0.01))
 fit
 
 rpart.plot(fit$finalModel, extra = 2)
@@ -638,9 +653,10 @@ reptile/no reptile classification problem. **Note:** We use here the
 training data for testing. You should use a separate testing data set!
 
 ```{r }
-Zoo_reptile <- Zoo |> mutate(
-  type = factor(Zoo$type == "reptile", levels = c(FALSE, TRUE),
-    labels = c("nonreptile", "reptile")))
+Zoo_reptile <- Zoo |> 
+  mutate(type = factor(Zoo$type == "reptile", 
+                       levels = c(FALSE, TRUE),
+                       labels = c("nonreptile", "reptile")))
 ```
 
 Do not forget to make the class variable a factor (a nominal variable)
@@ -673,10 +689,11 @@ building a tree!
 ### Option 1: Use the Data As Is and Hope For The Best
 
 ```{r }
-fit <- training_reptile |> train(type ~ .,
-  data = _,
-  method = "rpart",
-  trControl = trainControl(method = "cv"))
+fit <- training_reptile |> 
+  train(type ~ .,
+        data = _,
+        method = "rpart",
+        trControl = trainControl(method = "cv"))
 ```
 
 **Warnings:** "There were missing values in resampled performance
@@ -693,7 +710,7 @@ the test set.
 
 ```{r }
 confusionMatrix(data = predict(fit, testing_reptile),
-  ref = testing_reptile$type, positive = "reptile")
+                ref = testing_reptile$type, positive = "reptile")
 ```
 
 Accuracy is high, but it is exactly the same as the no-information rate
@@ -721,14 +738,16 @@ library(sampling)
 set.seed(1000) # for repeatability
 
 id <- strata(training_reptile, stratanames = "type", size = c(50, 50), method = "srswr")
-training_reptile_balanced <- training_reptile |> slice(id$ID_unit)
+training_reptile_balanced <- training_reptile |> 
+  slice(id$ID_unit)
 table(training_reptile_balanced$type)
 
-fit <- training_reptile_balanced |> train(type ~ .,
-  data = _,
-  method = "rpart",
-  trControl = trainControl(method = "cv"),
-  control = rpart.control(minsplit = 5))
+fit <- training_reptile_balanced |> 
+  train(type ~ .,
+        data = _,
+        method = "rpart",
+        trControl = trainControl(method = "cv"),
+        control = rpart.control(minsplit = 5))
 
 fit
 rpart.plot(fit$finalModel, extra = 2)
@@ -738,7 +757,7 @@ Check on the unbalanced testing data.
 
 ```{r }
 confusionMatrix(data = predict(fit, testing_reptile),
-  ref = testing_reptile$type, positive = "reptile")
+                ref = testing_reptile$type, positive = "reptile")
 ```
 
 **Note** that the accuracy is below the no information rate! However,
@@ -753,17 +772,19 @@ in the data since the test set has only a few reptiles).
 
 ```{r }
 id <- strata(training_reptile, stratanames = "type", size = c(50, 100), method = "srswr")
-training_reptile_balanced <- training_reptile |> slice(id$ID_unit)
+training_reptile_balanced <- training_reptile |> 
+  slice(id$ID_unit)
 table(training_reptile_balanced$type)
 
-fit <- training_reptile_balanced |> train(type ~ .,
-  data = _,
-  method = "rpart",
-  trControl = trainControl(method = "cv"),
-  control = rpart.control(minsplit = 5))
+fit <- training_reptile_balanced |> 
+  train(type ~ .,
+        data = _,
+        method = "rpart",
+        trControl = trainControl(method = "cv"),
+        control = rpart.control(minsplit = 5))
 
 confusionMatrix(data = predict(fit, testing_reptile),
-  ref = testing_reptile$type, positive = "reptile")
+                ref = testing_reptile$type, positive = "reptile")
 ```
 
 ### Option 3: Build A Larger Tree and use Predicted Probabilities
@@ -775,21 +796,22 @@ to improve accuracy on the data and not AUC! I also enable class
 probabilities since I want to predict probabilities later.
 
 ```{r }
-fit <- training_reptile |> train(type ~ .,
-  data = _,
-  method = "rpart",
-  tuneLength = 10,
-  trControl = trainControl(method = "cv",
-    classProbs = TRUE,                 ## necessary for predict with type="prob"
-    summaryFunction=twoClassSummary),  ## necessary for ROC
-  metric = "ROC",
-  control = rpart.control(minsplit = 3))
+fit <- training_reptile |> 
+  train(type ~ .,
+        data = _,
+        method = "rpart",
+        tuneLength = 10,
+        trControl = trainControl(method = "cv",
+        classProbs = TRUE,  ## necessary for predict with type="prob"
+        summaryFunction=twoClassSummary),  ## necessary for ROC
+        metric = "ROC",
+        control = rpart.control(minsplit = 3))
 fit
 
 rpart.plot(fit$finalModel, extra = 2)
 
 confusionMatrix(data = predict(fit, testing_reptile),
-  ref = testing_reptile$type, positive = "reptile")
+                ref = testing_reptile$type, positive = "reptile")
 ```
 
 **Note:** Accuracy is high, but it is close or below to the
@@ -813,7 +835,7 @@ tail(prob)
 pred <- as.factor(ifelse(prob[,"reptile"]>=0.01, "reptile", "nonreptile"))
 
 confusionMatrix(data = pred,
-  ref = testing_reptile$type, positive = "reptile")
+                ref = testing_reptile$type, positive = "reptile")
 ```
 
 **Note** that accuracy goes down and is below the no information rate.
@@ -858,10 +880,10 @@ cost
 
 fit <- training_reptile |> 
   train(type ~ .,
-    data = _,
-    method = "rpart",
-    parms = list(loss = cost),
-    trControl = trainControl(method = "cv"))
+        data = _,
+        method = "rpart",
+        parms = list(loss = cost),
+        trControl = trainControl(method = "cv"))
 ```
 
 The warning "There were missing values in resampled performance
@@ -875,7 +897,7 @@ fit
 rpart.plot(fit$finalModel, extra = 2)
 
 confusionMatrix(data = predict(fit, testing_reptile),
-  ref = testing_reptile$type, positive = "reptile")
+                ref = testing_reptile$type, positive = "reptile")
 ```
 
 The high cost for false negatives results in a classifier that does not

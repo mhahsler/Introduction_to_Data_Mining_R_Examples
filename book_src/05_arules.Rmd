@@ -104,7 +104,7 @@ What is column 13?
 ```{r }
 summary(Zoo[13])
 ggplot(Zoo, aes(legs)) + geom_bar()
-table(Zoo$legs)
+Zoo$legs |> table()
 ```
 
 Possible solution: Make legs into has/does not have legs
@@ -112,7 +112,7 @@ Possible solution: Make legs into has/does not have legs
 ```{r }
 Zoo_has_legs <- Zoo |> mutate(legs = legs > 0)
 ggplot(Zoo_has_legs, aes(legs)) + geom_bar()
-table(Zoo_has_legs$legs)
+Zoo_has_legs$legs |> table()
 ```
 
 **Alternatives:**
@@ -121,7 +121,7 @@ table(Zoo_has_legs$legs)
 
 ```{r }
 Zoo_unique_leg_values <- Zoo |> mutate(legs = factor(legs))
-head(Zoo_unique_leg_values$legs)
+Zoo_unique_leg_values$legs |> head()
 ```
 
 -   discretize (see
@@ -199,7 +199,7 @@ ggplot(
 
 ```{r }
 sapply(Zoo_has_legs, class)
-Zoo_factors <- Zoo_has_legs |> mutate_if(is.logical, factor)
+Zoo_factors <- Zoo_has_legs |> mutate(across(where(is.logical), factor))
 sapply(Zoo_factors, class)
 summary(Zoo_factors)
 
@@ -263,15 +263,16 @@ Sort by support
 
 ```{r }
 its <- sort(its, by = "support")
-inspect(head(its, n = 10))
+its |> head(n = 10) |> inspect()
 ```
 
 Look at frequent itemsets with many items (set breaks manually since
 Automatically chosen breaks look bad)
 
 ```{r }
-ggplot(tibble(`Itemset Size` = factor(size(its))), aes(`Itemset Size`)) + geom_bar()
-inspect(its[size(its) > 8])
+ggplot(tibble(`Itemset Size` = factor(size(its))), aes(`Itemset Size`)) + 
+  geom_bar()
+its[size(its) > 8] |> inspect()
 ```
 
 ### Concise Representation of Itemsets
@@ -281,7 +282,7 @@ Find maximal frequent itemsets (no superset if frequent)
 ```{r }
 its_max <- its[is.maximal(its)]
 its_max
-inspect(head(its_max, by = "support"))
+its_max |> head(by = "support") |> inspect()
 ```
 
 Find closed frequent itemsets (no superset if frequent)
@@ -289,7 +290,8 @@ Find closed frequent itemsets (no superset if frequent)
 ```{r }
 its_closed <- its[is.closed(its)]
 its_closed
-inspect(head(its_closed, by = "support"))
+
+its_closed |> head(by = "support") |> inspect()
 
 counts <- c(
   frequent=length(its),
@@ -312,15 +314,15 @@ We use the APRIORI algorithm (see
 rules <- apriori(trans, parameter = list(support = 0.05, confidence = 0.9))
 length(rules)
 
-inspect(head(rules))
-quality(head(rules))
+rules |> head() |> inspect()
+rules |> head() |> quality()
 ```
 
 Look at rules with highest lift
 
 ```{r }
 rules <- sort(rules, by = "lift")
-inspect(head(rules, n = 10))
+rules |> head(n = 10) |> inspect()
 ```
 
 Create rules using the alternative encoding (with "FALSE" item)
@@ -331,7 +333,7 @@ r
 print(object.size(r), unit = "Mb")
 
 inspect(r[1:10])
-inspect(head(r, n = 10, by = "lift"))
+r |> head(n = 10, by = "lift") |> inspect()
 ```
 
 ### Calculate Additional Interest Measures
@@ -352,7 +354,7 @@ quality(rules) <- cbind(quality(rules),
 Find rules which score high for Phi correlation
 
 ```{r }
-inspect(head(rules, by = "phi"))
+rules |> head(by = "phi") |> inspect()
 ```
 
 ### Mine Using Templates
@@ -370,7 +372,7 @@ type
 
 rules_type <- apriori(trans, appearance= list(rhs = type))
 
-inspect(head(sort(rules_type, by = "lift")))
+rules_type |> sort(by = "lift") |> head() |> inspect()
 ```
 
 Saving rules as a CSV-file to be opened with Excel or other tools.
@@ -410,7 +412,7 @@ As a graph
 
 ```{r }
 plot(rules, method = "graph")
-plot(head(rules, by = "phi", n = 100), method = "graph")
+plot(rules |> head(by = "phi", n = 100), method = "graph")
 ```
 
 ## Interactive Visualizations
@@ -430,7 +432,7 @@ frequency-based discretization with 3 classes to each numeric feature
 
 ```{r }
 iris_trans <- transactions(iris)
-inspect(head(iris_trans))
+iris_trans |> head() |> inspect()
 ```
 
 Next, we mine association rules.

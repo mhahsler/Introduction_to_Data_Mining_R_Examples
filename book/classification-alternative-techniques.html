@@ -930,8 +930,9 @@ install keras you need to</p>
 <div class="sourceCode" id="cb433"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tensorflow.rstudio.com/">keras</a></span><span class="op">)</span></span></code></pre></div>
 <p>Prepare the data. All data needs to be in a matrix of all
-numeric/integer values. The class variable needs to be one-hot encodes
-with the <code>keras</code> function <code><a href="https://rdrr.io/pkg/keras/man/to_categorical.html">to_categorical()</a></code>.</p>
+numeric/integer values. The class variable needs to be one-hot encoded and the
+the <code>keras</code> function <code><a href="https://rdrr.io/pkg/keras/man/to_categorical.html">to_categorical()</a></code> expects a class index starting with 0
+instead of 1.</p>
 <div class="sourceCode" id="cb434"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">!</span><span class="va">type</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -962,8 +963,7 @@ with the <code>keras</code> function <code><a href="https://rdrr.io/pkg/keras/ma
 <div class="sourceCode" id="cb436"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="st">"type"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="op">{</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">1L</span><span class="op">)</span><span class="op">}</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="op">{</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1L</span><span class="op">)</span><span class="op">}</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span>   <span class="co">## make index start with 0</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/keras/man/to_categorical.html">to_categorical</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7]
@@ -980,8 +980,7 @@ with the <code>keras</code> function <code><a href="https://rdrr.io/pkg/keras/ma
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">as.matrix</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">y_test</span> <span class="op">&lt;-</span> <span class="va">Zoo_test</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="st">"type"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="op">{</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="fl">1L</span><span class="op">)</span><span class="op">}</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="op">{</span>\<span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1L</span><span class="op">)</span><span class="op">}</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/keras/man/to_categorical.html">to_categorical</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Deep learning uses a large set of hyper-parameters. Choices are the
 activation function, number of layers, number of units per layer, the
@@ -1025,7 +1024,8 @@ training data for validation to provide generalization loss/accuracy.</p>
 <div class="sourceCode" id="cb442"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">history</span> <span class="op">&lt;-</span> <span class="va">model</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span></span>
-<span>    <span class="va">X</span>, <span class="va">y</span>,</span>
+<span>    <span class="va">X</span>, </span>
+<span>    <span class="va">y</span>,</span>
 <span>    batch_size <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>    epochs <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>    validation_split <span class="op">=</span> <span class="fl">.2</span></span>
@@ -1038,16 +1038,21 @@ encoding back to class labels.</p>
 <div class="sourceCode" id="cb443"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">class_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">Zoo_train</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">type</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">X_test</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span>MARGIN <span class="op">=</span> <span class="fl">1</span>, FUN <span class="op">=</span> <span class="va">which.max</span><span class="op">)</span></span>
+<span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">X_test</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span>MARGIN <span class="op">=</span> <span class="fl">1</span>, FUN <span class="op">=</span> <span class="va">which.max</span><span class="op">)</span></span>
 <span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">pr</span>, labels <span class="op">=</span> <span class="va">class_labels</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">class_labels</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">pr</span></span></code></pre></div>
-<pre><code>##  [1] mammal insect bird   mammal insect bird   mammal
-##  [8] insect mammal mammal bird   bird   fish   mammal
-## [15] fish   mammal mammal mammal
+<pre><code>##  [1] mammal        mollusc.et.al bird         
+##  [4] mammal        insect        bird         
+##  [7] mammal        mollusc.et.al mammal       
+## [10] mammal        bird          bird         
+## [13] fish          mammal        fish         
+## [16] mammal        mammal        mammal       
 ## 7 Levels: mammal bird reptile fish ... mollusc.et.al</code></pre>
 <div class="sourceCode" id="cb445"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span><span class="va">pr</span>, reference <span class="op">=</span> <span class="va">Zoo_test</span><span class="op">$</span><span class="va">type</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pr</span>, </span>
+<span>                reference <span class="op">=</span> <span class="va">Zoo_test</span><span class="op">$</span><span class="va">type</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Confusion Matrix and Statistics
 ## 
 ##                Reference
@@ -1066,17 +1071,17 @@ encoding back to class labels.</p>
 ##   reptile            0             0
 ##   fish               0             0
 ##   amphibian          0             0
-##   insect             1             2
-##   mollusc.et.al      0             0
+##   insect             1             0
+##   mollusc.et.al      0             2
 ## 
 ## Overall Statistics
 ##                                         
-##                Accuracy : 0.833         
-##                  95% CI : (0.586, 0.964)
+##                Accuracy : 0.944         
+##                  95% CI : (0.727, 0.999)
 ##     No Information Rate : 0.444         
-##     P-Value [Acc &gt; NIR] : 0.00085       
+##     P-Value [Acc &gt; NIR] : 1.08e-05      
 ##                                         
-##                   Kappa : 0.764         
+##                   Kappa : 0.921         
 ##                                         
 ##  Mcnemar's Test P-Value : NA            
 ## 
@@ -1102,22 +1107,22 @@ encoding back to class labels.</p>
 ## Balanced Accuracy            0.5000       1.000
 ##                      Class: amphibian Class: insect
 ## Sensitivity                        NA        1.0000
-## Specificity                         1        0.8824
-## Pos Pred Value                     NA        0.3333
+## Specificity                         1        1.0000
+## Pos Pred Value                     NA        1.0000
 ## Neg Pred Value                     NA        1.0000
 ## Prevalence                          0        0.0556
 ## Detection Rate                      0        0.0556
-## Detection Prevalence                0        0.1667
-## Balanced Accuracy                  NA        0.9412
+## Detection Prevalence                0        0.0556
+## Balanced Accuracy                  NA        1.0000
 ##                      Class: mollusc.et.al
-## Sensitivity                         0.000
+## Sensitivity                         1.000
 ## Specificity                         1.000
-## Pos Pred Value                        NaN
-## Neg Pred Value                      0.889
+## Pos Pred Value                      1.000
+## Neg Pred Value                      1.000
 ## Prevalence                          0.111
-## Detection Rate                      0.000
-## Detection Prevalence                0.000
-## Balanced Accuracy                   0.500</code></pre>
+## Detection Rate                      0.111
+## Detection Prevalence                0.111
+## Balanced Accuracy                   1.000</code></pre>
 </div>
 <div id="comparing-decision-boundaries-of-popular-classification-techniques" class="section level2" number="4.7">
 <h2>
@@ -1152,7 +1157,8 @@ small steps even if it is a (straight) line.</p>
 <span>  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">is.list</a></span><span class="op">(</span><span class="va">prediction</span><span class="op">)</span><span class="op">)</span> <span class="va">prediction</span> <span class="op">&lt;-</span> <span class="va">prediction</span><span class="op">$</span><span class="va">class</span></span>
 <span>  <span class="va">prediction</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">prediction</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
 <span>  </span>
-<span>  <span class="va">cm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">prediction</span>, reference <span class="op">=</span> <span class="va">y</span><span class="op">)</span></span>
+<span>  <span class="va">cm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">prediction</span>, </span>
+<span>                        reference <span class="op">=</span> <span class="va">y</span><span class="op">)</span></span>
 <span>  <span class="va">acc</span> <span class="op">&lt;-</span> <span class="va">cm</span><span class="op">$</span><span class="va">overall</span><span class="op">[</span><span class="st">"Accuracy"</span><span class="op">]</span></span>
 <span>  </span>
 <span>  <span class="co"># evaluate model on a grid</span></span>
@@ -1213,7 +1219,8 @@ Contour lines visualize the density like mountains on a map.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
 <span><span class="va">iris</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">### Three classes (MASS also has a select function)</span></span>
+<span><span class="co">### Three classes </span></span>
+<span><span class="co">### (note: MASS also has a select function which hides dplyr's select)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Sepal.Length</span>, <span class="va">Sepal.Width</span>, <span class="va">Species</span><span class="op">)</span></span>
 <span><span class="va">x</span></span></code></pre></div>
 <pre><code>## # A tibble: 150 × 3
