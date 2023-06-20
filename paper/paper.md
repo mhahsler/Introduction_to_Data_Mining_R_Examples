@@ -6,13 +6,12 @@ tags:
 authors:
   - name: Michael Hahsler
     orcid: 0000-0003-2716-1405
-    affiliation: "1"
+    affiliation: 1
 affiliations:
  - name: Southern Methodist University
    index: 1
 date: 30 May 2023
 bibliography: paper.bib
-
 ---
 
 # Summary
