@@ -33,7 +33,7 @@ of mining association rules from transaction data as follows (the definition is 
 Let $I = \{i_1,i_2,...,i_n\}$ be a set of $n$ binary attributes called items. Let $D = \{t_1,t_2,...,t_m\}$ be
 a set of transactions called the database. Each transaction in $D$ has a unique transaction ID and
 contains a subset of the items in $I$. A rule is defined as an implication of the form $X \Rightarrow Y$ where
-$X,Y \subseteq I$ and $X \cup Y = \emptyset$ are called itemsets. On itemsets and rules several quality measures can
+$X,Y \subseteq I$ and $X \cap Y = \emptyset$ are called itemsets. On itemsets and rules several quality measures can
 be defined. The most important measures are support and confidence. The support $supp(X)$ of
 an itemset $X$ is defined as the proportion of transactions in the data set which contain the itemset.
 Itemsets with a support which surpasses a user-defined threshold $\sigma$ are called frequent itemsets. The
