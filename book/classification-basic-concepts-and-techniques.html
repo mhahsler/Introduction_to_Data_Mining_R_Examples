@@ -19,7 +19,7 @@
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/transition.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
-<script src="libs/bs4_book/bs4_book.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet">
+<script src="libs/bs4_book/bs4_book.js"></script><script src="libs/accessible-code-block/empty-anchor.js"></script><script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet">
 <script src="libs/crosstalk/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet">
 <script src="libs/plotly-main/plotly-latest.min.js"></script><link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet">
 <script src="libs/datatables-binding/datatables.js"></script><link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet">
@@ -30,28 +30,6 @@
 <script src="libs/vis/vis-network.min.js"></script><script src="libs/visNetwork-binding/visNetwork.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
     
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  </style>
-<style type="text/css">
-    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
-    div.csl-bib-body { }
-    div.csl-entry {
-      clear: both;
-        }
-    .hanging div.csl-entry {
-      margin-left:2em;
-      text-indent:-2em;
-    }
-    div.csl-left-margin {
-      min-width:2em;
-      float:left;
-    }
-    div.csl-right-inline {
-      margin-left:2em;
-      padding-left:1em;
-    }
-    div.csl-indent {
-      margin-left: 2em;
-    }
   </style>
 </head>
 <body data-spy="scroll" data-target="#toc">
@@ -101,7 +79,7 @@
 <span></span>
 <span><span class="va">pkgs_install</span> <span class="op">&lt;-</span> <span class="va">pkgs</span><span class="op">[</span><span class="op">!</span><span class="op">(</span><span class="va">pkgs</span> <span class="op"><a href="https://rdrr.io/pkg/arules/man/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span>,<span class="st">"Package"</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">pkgs_install</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="va">pkgs_install</span><span class="op">)</span></span></code></pre></div>
-<p>The packages used for this chapter are: <em>caret</em> <span class="citation">(<a href="references.html#ref-R-caret" role="doc-biblioref">Kuhn 2023</a>)</span>, <em>FSelector</em> <span class="citation">(<a href="references.html#ref-R-FSelector" role="doc-biblioref">Romanski, Kotthoff, and Schratz 2021</a>)</span>, <em>lattice</em> <span class="citation">(<a href="references.html#ref-R-lattice" role="doc-biblioref">Sarkar 2023</a>)</span>, <em>mlbench</em> <span class="citation">(<a href="references.html#ref-R-mlbench" role="doc-biblioref">Leisch and Dimitriadou. 2023</a>)</span>, <em>pROC</em> <span class="citation">(<a href="references.html#ref-R-pROC" role="doc-biblioref">Robin et al. 2023</a>)</span>, <em>rpart</em> <span class="citation">(<a href="references.html#ref-R-rpart" role="doc-biblioref">Therneau and Atkinson 2022</a>)</span>, <em>rpart.plot</em> <span class="citation">(<a href="references.html#ref-R-rpart.plot" role="doc-biblioref">Milborrow 2022</a>)</span>, <em>sampling</em> <span class="citation">(<a href="references.html#ref-R-sampling" role="doc-biblioref">Tillé and Matei 2021</a>)</span>, <em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse" role="doc-biblioref">Wickham 2023b</a>)</span></p>
+<p>The packages used for this chapter are: <em>caret</em> <span class="citation">(M. Kuhn <a href="references.html#ref-R-caret" role="doc-biblioref">2023</a>)</span>, <em>FSelector</em> <span class="citation">(Romanski, Kotthoff, and Schratz <a href="references.html#ref-R-FSelector" role="doc-biblioref">2021</a>)</span>, <em>lattice</em> <span class="citation">(Sarkar <a href="references.html#ref-R-lattice" role="doc-biblioref">2023</a>)</span>, <em>mlbench</em> <span class="citation">(Leisch and Dimitriadou. <a href="references.html#ref-R-mlbench" role="doc-biblioref">2023</a>)</span>, <em>pROC</em> <span class="citation">(Robin et al. <a href="references.html#ref-R-pROC" role="doc-biblioref">2023</a>)</span>, <em>rpart</em> <span class="citation">(Therneau and Atkinson <a href="references.html#ref-R-rpart" role="doc-biblioref">2022</a>)</span>, <em>rpart.plot</em> <span class="citation">(Milborrow <a href="references.html#ref-R-rpart.plot" role="doc-biblioref">2022</a>)</span>, <em>sampling</em> <span class="citation">(Tillé and Matei <a href="references.html#ref-R-sampling" role="doc-biblioref">2021</a>)</span>, <em>tidyverse</em> <span class="citation">(Wickham <a href="references.html#ref-R-tidyverse" role="doc-biblioref">2023</a><a href="references.html#ref-R-tidyverse" role="doc-biblioref">b</a>)</span></p>
 <div id="introduction-2" class="section level2" number="3.1">
 <h2>
 <span class="header-section-number">3.1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction-2"><i class="fas fa-link"></i></a>
@@ -121,7 +99,7 @@ Linear regression is a very popular supervised learning model, however, we will 
 since it is taught in almost any introductory statistics course.</p>
 <p>This chapter will introduce decision trees, model evaluation and comparison, feature selection,
 and then explore methods to handle the class imbalance problem.</p>
-<p>You can read the free sample chapter from the textbook <span class="citation">(<a href="references.html#ref-Tan2005" role="doc-biblioref">Tan, Steinbach, and Kumar 2005</a>)</span>:
+<p>You can read the free sample chapter from the textbook <span class="citation">(Tan, Steinbach, and Kumar <a href="references.html#ref-Tan2005" role="doc-biblioref">2005</a>)</span>:
 <a href="https://www-users.cs.umn.edu/~kumar001/dmbook/ch3_classification.pdf">Chapter 3. Classification: Basic Concepts and
 Techniques</a></p>
 </div>
@@ -198,13 +176,10 @@ the data is ready for model learning.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/where.html">where</a></span><span class="op">(</span><span class="va">is.logical</span><span class="op">)</span>, <span class="va">factor</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/where.html">where</a></span><span class="op">(</span><span class="va">is.character</span><span class="op">)</span>, <span class="va">factor</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Warning: There was 1 warning in `mutate()`.
-## ℹ In argument: `across(where(is.logical), factor,
-##   levels = c(TRUE, FALSE))`.
+## ℹ In argument: `across(where(is.logical), factor, levels = c(TRUE, FALSE))`.
 ## Caused by warning:
-## ! The `...` argument of `across()` is deprecated as of
-##   dplyr 1.1.0.
-## Supply arguments directly to `.fns` through an
-## anonymous function instead.
+## ! The `...` argument of `across()` is deprecated as of dplyr 1.1.0.
+## Supply arguments directly to `.fns` through an anonymous function instead.
 ## 
 ##   # Previously
 ##   across(a:b, mean, na.rm = TRUE)
@@ -564,11 +539,9 @@ testing.</p>
 <div class="sourceCode" id="cb278"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">inTrain</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/createDataPartition.html">createDataPartition</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">Zoo</span><span class="op">$</span><span class="va">type</span>, p <span class="op">=</span> <span class="fl">.8</span>, list <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">Zoo_train</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="va">inTrain</span><span class="op">)</span></span></code></pre></div>
-<pre><code>## Warning: Slicing with a 1-column matrix was deprecated in dplyr
-## 1.1.0.
+<pre><code>## Warning: Slicing with a 1-column matrix was deprecated in dplyr 1.1.0.
 ## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see
-## where this warning was generated.</code></pre>
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
 <div class="sourceCode" id="cb280"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Zoo_test</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="va">inTrain</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -972,7 +945,7 @@ levels used by <code>ggplot</code>).</p>
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/as.simple.formula.html">as.simple.formula</a></span><span class="op">(</span><span class="va">subset</span>, <span class="st">"type"</span><span class="op">)</span></span>
 <span><span class="va">f</span></span></code></pre></div>
 <pre><code>## type ~ feathers + milk + backbone + toothed + eggs
-## &lt;environment: 0x563a4213bda8&gt;</code></pre>
+## &lt;environment: 0x55a5094da288&gt;</code></pre>
 <div class="sourceCode" id="cb311"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">m</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
@@ -1750,7 +1723,7 @@ cost.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2023-05-31.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2023-08-31.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
