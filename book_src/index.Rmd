@@ -54,7 +54,7 @@ The code examples collected in this book were developed for the course
 at [SMU](http://www.smu.edu) since Spring 2013 and will be regularly
 updated and improved. 
 The learning method used in this book is learning-by-doing. 
-The code examples in throughout this book are
+The code examples throughout this book are
 written in a self-contained manner so you can copy-and-paste a portion of the code,
 try it out on the provided dataset and then apply it directly to your own 
 data.
