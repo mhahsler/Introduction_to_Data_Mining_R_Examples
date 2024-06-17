@@ -33,7 +33,7 @@ for corrections or to suggest improvements.
 You need to install:
 
 * [R](https://cran.r-project.org/)
-* [R Studio Desktop](https://www.rstudio.com/products/rstudio/)
+* [R Studio Desktop](https://posit.co/products/open-source/rstudio/)
 
 Each book chapter will use a set of packages that must be installed. The 
 installation is done directly in R and the
