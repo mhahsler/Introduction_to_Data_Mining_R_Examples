@@ -14,7 +14,7 @@ Install the packages used in this chapter:
 ```{r setup_02}
 pkgs <- sort(c('tidyverse', 'GGally', 'ggcorrplot', 
     'plotly', 'factoextra', 'arules', 'seriation', 
-    'sampling', 'caret', 'proxy'))
+    'sampling', 'caret', 'proxy', 'hexbin'))
 
 pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
 if(length(pkgs_install)) install.packages(pkgs_install)
