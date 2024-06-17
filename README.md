@@ -3,6 +3,7 @@
 <img src="book_small_e2.jpg" align="right">
 <img src="book_small.jpg" align="right">
 
+R and [tidyverse](https://www.tidyverse.org/) are very popular for data mining.
 This repository contains slides and documented R examples to accompany several chapters of the popular data mining text book:
 
 > Pang-Ning Tan, Michael Steinbach, Anuj Karpatne and Vipin Kumar, 
@@ -26,6 +27,26 @@ for corrections or to suggest improvements.
 | 4. Classification: Alternative Techniques | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap4_alternative_classification.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/classification-alternative-techniques.html) | |
 | 5. Association Analysis: Basic Concepts and Algorithms | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap5_basic_association_analysis.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/association-analysis-basic-concepts-and-algorithms.html) | [Read Chapter 5](https://www-users.cs.umn.edu/~kumar001/dmbook/ch5_association_analysis.pdf) |
 | 7. Cluster Analysis: Basic Concepts and Algorithms | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap7_basic_cluster_analysis.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/clustering-analysis.html) | [Read Chapter 7](https://www-users.cs.umn.edu/~kumar001/dmbook/ch7_clustering.pdf) |
+
+## Software Requirements
+
+You need to install:
+
+* [R](https://cran.r-project.org/)
+* [R Studio Desktop](https://www.rstudio.com/products/rstudio/)
+
+Each book chapter will use a set of packages that must be installed. The 
+installation is done directly in R and the
+installation code can be found at the beginning of each chapter. 
+
+## Statement of Need
+
+Introduction to Data Mining is one of the most popular data mining textbooks.
+Before this R companion was created, the only code examples were in Python.
+R and [tidyverse](https://www.tidyverse.org/) are very popular for data mining.
+This R companion provides comprehensive documented R code examples and is linked on the 
+[textbook's hompage](https://www-users.cse.umn.edu/~kumar001/dmbook/index.php)
+as the official R code examples for the book.
 
 ## Instructor Resources
 
