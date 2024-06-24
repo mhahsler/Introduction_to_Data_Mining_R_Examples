@@ -11,7 +11,7 @@ authors:
   affiliation: 1
 bibliography: paper.bib
 affiliations:
-- name: Southern Methodist University
+- name: Department of Computer Science, Southern Methodist University
   index: 1
 ---
 
