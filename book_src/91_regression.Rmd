@@ -1,0 +1,352 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+# Regression*
+
+```{r setup_linear_regression}
+pkgs <- c('lars')
+  
+pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
+if(length(pkgs_install)) install.packages(pkgs_install)
+```
+
+```{r setup_linear_regression2, include=FALSE}
+source("_common.R")
+source("format_pkgs.R")
+all_pkgs <- union(all_pkgs, pkgs)
+```
+
+The packages used for this chapter are: `r format_pkgs(pkgs)`
+
+
+## Introduction
+
+Classification predicts one of a small set of discrete labels (e.g., yes or no). 
+Regression is also a supervised learning problem, but the goal is to 
+predict the value of a continuous value given a set of predictors. 
+We start with the popular linear regression and will later discuss alternative 
+regression methods.
+
+
+Linear regression models the value of a dependent variable $y$ (also called
+response) as
+as linear function of independent variables $X_1, X_2, ..., X_p$
+(also called regressors, predictors, exogenous variables or covariates).
+Given $n$ observations the model is:
+$$y_i = \beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip} + \epsilon_i $$
+
+where $\beta_0$ is the intercept, $\beta$ is a $p$-dimensional parameter
+vector learned from the data, and $\epsilon$ is the error term
+(called residuals).
+
+Linear regression makes several assumptions:
+
+* _Weak exogeneity:_ Predictor variables are assumed to be error free.
+* _Linearity:_ There is a linear relationship between dependent
+  and independent variables.
+* _Homoscedasticity:_ The variance of the error ($\epsilon$)
+  does not change (increase) with the predicted value.
+* _Independence of errors:_ Errors between observations are uncorrelated.
+* _No multicollinearity of predictors:_ Predictors cannot be
+  perfectly correlated or the parameter vector cannot be identified. _Note_
+  that highly correlated predictors lead to unstable results and should be
+  avoided.
+
+## A First Model
+
+```{r}
+set.seed(2000)
+```
+
+Load and shuffle data (flowers are in order by species)
+
+```{r}
+data(iris)
+x <- iris[sample(1:nrow(iris)),]
+plot(x, col=x$Species)
+```
+
+Make the data a little messy and add a useless feature
+
+```{r}
+x[,1] <- x[,1] + rnorm(nrow(x))
+x[,2] <- x[,2] + rnorm(nrow(x))
+x[,3] <- x[,3] + rnorm(nrow(x))
+x <- cbind(x[,-5], useless = mean(x[,1]) + rnorm(nrow(x)), Species = x[,5])
+
+plot(x, col=x$Species)
+summary(x)
+head(x)
+```
+
+Create some training and learning data
+
+```{r}
+train <- x[1:100,]
+test <- x[101:150,]
+```
+
+Can we predict Petal.Width using the other variables?
+
+lm uses a formula interface see ?lm for description
+
+```{r}
+model1 <- lm(Petal.Width ~ Sepal.Length
+            + Sepal.Width + Petal.Length + useless,
+            data = train)
+model1
+coef(model1)
+```
+
+Summary shows:
+
+* Which coefficients are significantly different from 0
+* R-squared (coefficient of determination): Proportion of the variability of the dependent variable explained by the model. It is better to look at the adjusted R-square (adjusted for number of dependent vars.)
+
+```{r}
+summary(model1)
+```
+
+Plotting the model produces diagnostic plots (see `? plot.lm`). For example
+to check for homoscedasticity (residual vs predicted value scatter plot should not look like a funnel)
+and if the residuals are approximately normally distributed (Q-Q plot should be close to the straight line).
+
+```{r}
+plot(model1, which = 1:2)
+```
+
+## Comparing Nested Models
+We try simpler models
+
+```{r}
+model2 <- lm(Petal.Width ~ Sepal.Length + Sepal.Width + Petal.Length,
+             data = train)
+summary(model2)
+```
+
+No intercept
+
+```{r}
+model3 <- lm(Petal.Width ~ Sepal.Length + Sepal.Width + Petal.Length - 1,
+             data = train)
+summary(model3)
+```
+
+Very simple model
+
+```{r}
+model4 <- lm(Petal.Width ~ Petal.Length -1,
+             data = train)
+summary(model4)
+```
+
+Compare models (Null hypothesis: all treatments=models have the same effect). __Note:__ This only works for _nested models._ Models are nested only if one model contains all the predictors of the other model.
+
+```{r}
+anova(model1, model2, model3, model4)
+```
+
+Models 1 is not significantly better than model 2. Model 2 is not significantly better than model 3. Model 3 is not significantly better than model 4! Use model 4 (simplest model)
+
+## Stepwise Variable Selection
+Automatically looks for the smallest AIC (Akaike information criterion)
+
+```{r}
+s1 <- step(lm(Petal.Width ~ . -Species, data=train))
+summary(s1)
+```
+
+## Modeling with Interaction Terms
+What if two variables are only important together? Interaction terms
+are modeled with `:` or `*` in the formula (they are literally multiplied).
+See `? formula`.
+
+```{r}
+model5 <- step(lm(Petal.Width ~ Sepal.Length * Sepal.Width * Petal.Length,
+             data = train))
+summary(model5)
+anova(model5, model4)
+```
+
+Model 5 is not significantly better than model 4
+
+## Prediction
+
+```{r}
+test[1:5,]
+test[1:5,]$Petal.Width
+predict(model4, test[1:5,])
+```
+
+Calculate the root-mean-square error (RMSE): less is better
+
+```{r}
+RMSE <- function(predicted, true) mean((predicted-true)^2)^.5
+RMSE(predict(model4, test), test$Petal.Width)
+```
+
+Compare predicted vs. actual values
+
+```{r}
+plot(test[,"Petal.Width"], predict(model4, test),
+  xlim=c(0,3), ylim=c(0,3), xlab = "actual", ylab = "predicted",
+  main = "Petal.Width")
+abline(0,1, col="red")
+cor(test[,"Petal.Width"], predict(model4, test))
+```
+
+## Using Nominal Variables
+
+Dummy coding is used for factors
+(i.e., levels are translated into individual 0-1 variable).
+The first level of factors is automatically used as the reference and
+the other levels are presented as 0-1 dummy variables called contrasts.
+
+```{r}
+levels(train$Species)
+```
+
+`model.matrix` is used internally to create the dummy coding.
+
+```{r}
+head(model.matrix(Petal.Width ~ ., data=train))
+```
+
+Note that there is no dummy variable for species Setosa, because it is
+used as the reference. It is often useful to set the reference level.
+A simple way is to use the
+function `relevel` to change which factor is listed first.
+
+```{r}
+model6 <- step(lm(Petal.Width ~ ., data=train))
+model6
+summary(model6)
+
+RMSE(predict(model6, test), test$Petal.Width)
+plot(test[,"Petal.Width"], predict(model6, test),
+  xlim=c(0,3), ylim=c(0,3), xlab = "actual", ylab = "predicted",
+  main = "Petal.Width")
+abline(0,1, col="red")
+cor(test[,"Petal.Width"], predict(model6, test))
+```
+
+## Alternative Regression Models
+### Regression Trees
+
+Many models we use for classification can also perform regression
+to produce piece-wise predictors.
+For example CART:
+
+```{r}
+library(rpart)
+library(rpart.plot)
+model7 <- rpart(Petal.Width ~ ., data=train,
+  control=rpart.control(cp=0.01))
+model7
+rpart.plot(model7)
+
+RMSE(predict(model7, test), test$Petal.Width)
+plot(test[,"Petal.Width"], predict(model7, test),
+  xlim=c(0,3), ylim=c(0,3), xlab = "actual", ylab = "predicted",
+  main = "Petal.Width")
+abline(0,1, col="red")
+cor(test[,"Petal.Width"], predict(model7, test))
+```
+
+__Note:__ This is not a nested model of the linear regressions so we cannot
+do ANOVA to compare the models!
+
+### Regularized Regression
+LASSO and LAR try to reduce the number of parameters using a
+regularization term (see `lars` in package lars and https://en.wikipedia.org/wiki/Elastic_net_regularization)
+
+```{r}
+library(lars)
+```
+
+create a design matrix (with dummy variables and interaction terms).
+`lm` did this automatically for us, but for this `lars` implementation
+we have to do it manually.
+
+```{r}
+x <- model.matrix(~ . + Sepal.Length*Sepal.Width*Petal.Length ,
+  data = train[, -4])
+head(x)
+y <- train[, 4]
+
+model_lars <- lars(x, y)
+summary(model_lars)
+model_lars
+plot(model_lars)
+```
+
+the plot shows how variables are added (from left to right to the model)
+
+find best model (using Mallows's Cp statistic, see https://en.wikipedia.org/wiki/Mallows's_Cp)
+
+```{r}
+plot(model_lars, plottype = "Cp")
+best <- which.min(model_lars$Cp)
+coef(model_lars, s = best)
+```
+
+make predictions
+
+```{r}
+x_test <- model.matrix(~ . + Sepal.Length*Sepal.Width*Petal.Length ,
+  data = test[, -4])
+predict(model_lars, x_test[1:5,], s = best)
+test[1:5, ]$Petal.Width
+
+RMSE(predict(model_lars, x_test, s = best)$fit, test$Petal.Width)
+plot(test[,"Petal.Width"],predict(model_lars, x_test, s = best)$fit,
+  xlim=c(0,3), ylim=c(0,3), xlab = "actual", ylab = "predicted",
+  main = "Petal.Width")
+abline(0,1, col="red")
+cor(test[,"Petal.Width"], predict(model_lars, x_test, s = best)$fit)
+```
+
+### Other Types of Regression
+
+* Robust regression: robust against violation of assumptions like heteroscedasticity and outliers (`roblm` and `robglm` in package robustbase)
+* Generalized linear models (`glm`). An example is logistic regression discussed in the next chapter.
+* Nonlinear least squares (`nlm`)
+
+## Exercises
+
+We will again use the Palmer penguin data for the exercises.
+
+```{r }
+library(palmerpenguins)
+head(penguins)
+```
+
+Create an R markdown document that performs the following:
+
+1. Create a linear regression model to predict the weight 
+   of a penguin (`body_mass_g`). 
+2. How high is the R-squared. What does it mean.
+3. What variables are significant, what are not?
+4. Use stepwise variable selection to remove unnecessary variables. 
+5. Predict the weight for the following new penguin:
+   ```{r }
+   new_penguin <- tibble(
+     species = factor("Adelie", 
+       levels = c("Adelie", "Chinstrap", "Gentoo")),
+     island = factor("Dream", 
+       levels = c("Biscoe", "Dream", "Torgersen")),
+    bill_length_mm = 39.8, 
+    bill_depth_mm = 19.1, 
+    flipper_length_mm = 184, 
+    body_mass_g = NA, 
+    sex = factor("male", levels = c("female", "male")), 
+    year = 2007
+   ) 
+   new_penguin
+   ```
+6. Create a regression tree. Look at the tree and explain what it does. 
+  Then use the regression tree to predict the weight for the above penguin. 
+

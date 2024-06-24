@@ -6,55 +6,86 @@ editor_options:
 
 # Introduction
 
-[Data mining](https://en.wikipedia.org/wiki/Data_mining) has the goal of finding patterns in large data sets. 
-In this chapter, we will talk about data its characteristics and how it is prepared for
-data mining.
+[Data mining](https://en.wikipedia.org/wiki/Data_mining) has the goal of
+finding patterns in large data sets. The popular data mining textbook
+[*Introduction to Data
+Mining*](https://www-users.cs.umn.edu/~kumar001/dmbook/) [@Tan2018]
+covers many important aspects of data mining. This companion contains
+annotated R code examples to complement the textbook. To make following
+along easier, we follow the chapters in data mining textbook which is
+organized by the main data mining tasks:
 
-This book is organized following the main data mining tasks:
+-   
 
-1. Data preparation and exploratory data analysis (Chapter 2)
-2. Classification (Chapters 3 and 4)
-3. Association analysis (Chapters 5 and 6)
-4. Clustering (Chapter 7)
+    2.  [Data] covers types of data and also includes data preparation
+        and exploratory data analysis in the chapter.
 
-First, we need to talk about the needed software.
+-   
+
+    3.  [Classification: Basic Concepts and Techniques] introduces
+        decision trees, model training and evaluation.
+
+-   
+
+    4.  [Classification: Alternative techniques] introduces and compares
+        methods including rule-based classifiers, nearest neighbor
+        classifiers, naive Bayes classifier, logistic regression and
+        artificial neural networks.
+
+-   
+
+    5.  [Association Analysis: Basic Concepts and Algorithms] covers
+        frequent itemset and association rule generation and analysis
+        including visualization. Some code covers also topics discussed
+        in the textbook's Chapter 6.
+
+-   
+
+    7.  [Cluster Analysis] discusses clustering approaches including
+        k-means, hierarchical clustering, DBSCAN and how to evaluate
+        clustering results.
+
+For completeness, we have added chapters on [Regression\*] and on
+[Logistic Regression\*]. Sections in this book followed by an asterisk
+contain code examples for methods that are not described in the data
+mining textbook.
 
 ## Used Software
 
 This companion book assumes that you have
 [R](https://cran.r-project.org/) and [RStudio
-Desktop](https://www.rstudio.com/products/rstudio/) installed and
-are familiar with the basics of R, how to run R code, and install
-packages.
-
+Desktop](https://www.rstudio.com/products/rstudio/) installed and are
+familiar with the basics of R, how to run R code, and install packages.
 If you are new to R, working through the official R manual [An
 Introduction to
 R](https://cran.r-project.org/doc/manuals/r-release/R-intro.html)
 [@RCore2021] will get you started. There are many introduction videos
-for RStudio available, and a basic video that shows how to run code and how to
-install packages will suffice.
+for RStudio available, and a basic video that shows how to run code and
+how to install packages will suffice.
 
-Each book chapter will use a set of packages that must be installed. 
-The installation code can be found at the beginning of each chapter. 
-Here is the code to install the packages used in this chapter:
+Each book chapter will use a set of packages that must be installed. The
+installation code can be found at the beginning of each chapter. Here is
+the code to install the packages used in this chapter:
 
 ```{r setup_01, message=FALSE}
-pkgs <- sort(c('tidyverse', 'ggplot2'))
+pkgs <- c('tidyverse', 'ggplot2')
 
 pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
 if(length(pkgs_install)) install.packages(pkgs_install)
 ```
 
-The packages used for this chapter are: `r format_pkgs(pkgs)`
-
 ```{r setup_01-2, include=FALSE}
+source("_common.R")
+source("format_pkgs.R")
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
+The packages used for this chapter are: `r format_pkgs(pkgs)`
+
 The code in this book uses `tidyverse` to manipulate data and `ggplot2`
-for visualization. A great introduction to these useful tools can
-be found in the freely available web book [R for Data
-Science](https://r4ds.had.co.nz) by @Wickham2017.
+for visualization. A great introduction to these useful tools can be
+found in the freely available web book [R for Data
+Science](https://r4ds.hadley.nz/) by @Wickham2023.
 
 ## Tidyverse
 
@@ -62,10 +93,9 @@ Science](https://r4ds.had.co.nz) by @Wickham2017.
 library(tidyverse)
 ```
 
-`tidyverse` [@R-tidyverse] is a collection of many useful packages
-that work well together by sharing design principles and data
-structures. `tidyverse` also includes `ggplot2` [@R-ggplot2] for
-visualization.
+`tidyverse` [@R-tidyverse] is a collection of many useful packages that
+work well together by sharing design principles and data structures.
+`tidyverse` also includes `ggplot2` [@R-ggplot2] for visualization.
 
 In this book, we will use
 
@@ -76,27 +106,27 @@ In this book, we will use
     package `dplyr`.
 
 A good introduction can be found in the [Section on Data
-Wrangling](https://r4ds.had.co.nz/wrangle-intro.html) [@Wickham2017],
-and a useful reference resource is the [RStudio Data Transformation
-Cheat
-Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf).
+Transformation](https://r4ds.hadley.nz/data-transform) [@Wickham2023].
 
-Here is a short example that will get you familiar with the basic syntax. 
-We create a tibble with the price in dollars
-per pound and the vitamin C content in milligrams (mg) per pound for
-three fruit.
+Here is a short example That analyses the vitamin C content of different
+fruits. that will get you familiar with the basic syntax. Data tables in
+R are called data.frames. Tidyverse introduces its own version called
+tibbles. We create a tibble with the price in dollars per pound and the
+vitamin C content in milligrams (mg) per pound for four different types
+of fruit.
 
 ```{r }
 fruit <- tibble(
-  name = c("apple", "banana", "orange"), 
-  price = c(2.5, 2.0, 3.5), 
-  vitamin_c = c(20, 45, 250))
+  name = c("apple", "banana", "mango", "orange"), 
+  price = c(2.5, 2.0, 4.0, 3.5), 
+  vitamin_c = c(20, 45, 130, 250))
 fruit
 ```
 
-Now we add a column with the vitamin C (in mg) that a dollar buys you,
-filter only fruit that provides more than 20 mg, and then order (arrange)
-the data by the vitamin C per dollar from largest to smallest.
+Now, we can add a column with the vitamin C (in mg) that a dollar buys
+you using `mutate()` to change the table. Then we filter only rows with
+fruit that provides more than 20 mg, and finally we arrange the data
+rows by the vitamin C per dollar from largest to smallest.
 
 ```{r }
 affordable_vitamin_c_sources <- fruit |>
@@ -107,14 +137,43 @@ affordable_vitamin_c_sources <- fruit |>
 affordable_vitamin_c_sources 
 ```
 
-The pipes operator `|>` lets you compose a sequence of function calls
-more readably by passing the value to the left on as the first
-argument to the function to the right.
+The pipes operator `|>` lets you pass the value to the left (often the
+result of a function) as the first argument to the function to the
+right. This makes composing a sequence of function calls to transform
+data much easier to write and read. The code above starts with the fruit
+data and pipes it through three transformation functions. The final
+result is assigned with `<-` to a variable.
+
+We can create summary statistics of price using `summarize()`.
+
+```{r }
+affordable_vitamin_c_sources |> 
+  summarize(min = min(price), 
+            mean = mean(price), 
+            max = max(price))
+```
+
+Often, we want to apply the same function to multiple columns. This can
+be achieved using `across()`.
+
+```{r }
+affordable_vitamin_c_sources |> 
+  summarize(across(c(price, vitamin_c), mean))
+```
+
+`dplyr` syntax and evaluation is slightly different from standard R
+which may lead to confusion. One example is that column names can be
+references without quotation marks. A very useful reference resource
+when working with `dplyr` is the [RStudio Data Transformation Cheat
+Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf)
+which covers on two pages almost everything you will need and also
+contains contains simple example code that you can take and modify for
+your use case.
 
 ## ggplot2
 
 For visualization, we will use mainly `ggplot2`. The *gg* in `ggplot2`
-stands for **The Grammar of Graphics** introduced by @Wilkinson2005. The
+stands for **Grammar of Graphics** introduced by @Wilkinson2005. The
 main idea is that every graph is built from the same basic components:
 
 -   the data,
@@ -132,10 +191,10 @@ what is visualizes. For example, `geom_bar` uses `stat_count` to create
 a bar chart by counting how often each value appears in the data (see
 `? geom_bar`). `geom_point` just uses the stat `"identity"` to display
 the points using the coordinates as they are. A great introduction can
-be found in the [Chapter on Data
-Visualization](https://r4ds.had.co.nz/data-visualisation.html)
-[@Wickham2017], and very useful is [RStudio's Data Visualization Cheat
-Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf).
+be found in the [Section on Data
+Visualization](https://r4ds.hadley.nz/data-visualize) [@Wickham2023],
+and very useful is [RStudio's Data Visualization Cheat
+Sheet](https://rstudio.github.io/cheatsheets/html/data-visualization.html).
 
 We can visualize our fruit data as a scatter plot.
 
@@ -143,9 +202,10 @@ We can visualize our fruit data as a scatter plot.
 ggplot(fruit, aes(x = price, y = vitamin_c)) + 
   geom_point()
 ```
+
 It is easy to add more geoms. For example, we can add a regression line
-using `geom_smooth` with the method `"lm"` (linear model). We suppress the
-confidence interval since we only have 3 data points.
+using `geom_smooth` with the method `"lm"` (linear model). We suppress
+the confidence interval since we only have 3 data points.
 
 ```{r }
 ggplot(fruit, aes(x = price, y = vitamin_c)) + 
@@ -153,16 +213,15 @@ ggplot(fruit, aes(x = price, y = vitamin_c)) +
   geom_smooth(method = "lm", se = FALSE)
 ```
 
-
-Alternatively, we can visualize each fruit's vitamin C content per dollar 
-using a bar chart.
+Alternatively, we can visualize each fruit's vitamin C content per
+dollar using a bar chart.
 
 ```{r }
 ggplot(fruit, aes(x = name, y = vitamin_c)) + 
   geom_bar(stat = "identity")
 ```
 
-Note that `geom_bar` by default uses the `stat_count` statistics to 
-aggregate data by counting, but
-we just want to visualize the value already available in the tibble, so
-we specify the identity statistic instead.
+Note that `geom_bar` by default uses the `stat_count` statistics to
+aggregate data by counting, but we just want to visualize the value
+already available in the tibble, so we specify the identity statistic
+instead.

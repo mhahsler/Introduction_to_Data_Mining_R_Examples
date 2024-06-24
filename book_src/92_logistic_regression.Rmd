@@ -1,0 +1,159 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+# Logistic Regression*
+
+This chapter only uses R's base functionality and does not need extra packages.
+
+```{r setup_log_reg, include=FALSE}
+source("_common.R")
+```
+
+## Introduction
+
+Logistic regression contains the word regression, but it is actually a 
+probabilistic statistical classification
+model to predict a binary outcome (a probability) given a set of features.
+It is a very powerful model that can be fit very quickly. It is one of the 
+first classification models you should try on new data.
+
+
+Logistic regression can be thought of as a linear regression with the
+log odds ratio (logit) 
+of the binary outcome as the dependent variable:
+
+$$logit(p) = ln(\frac{p}{1-p}) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...$$
+
+
+```{r}
+logit  <- function(p) log(p/(1-p))
+x <- seq(0, 1, length.out = 100)
+plot(x, logit(x), type = "l")
+abline(v=0.5, lty = 2)
+abline(h=0, lty = 2)
+```
+
+
+This is equivalent to modeling the probability of the outcome $p$ by
+
+$$ p = \frac{e^{\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...}}{1 +  e^{\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...}} = \frac{1}{1+e^{-(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...)}}$$
+
+## Data Preparation
+Load and shuffle data. We also add a useless variable to see if the logistic regression removes it.
+
+```{r}
+data(iris)
+x <- iris[sample(1:nrow(iris)),]
+x <- cbind(x, useless = rnorm(nrow(x)))
+```
+
+Make Species into a binary classification problem so we will
+classify if a flower is of species Virginica
+
+```{r}
+x$virginica <- x$Species == "virginica"
+x$Species <- NULL
+plot(x, col=x$virginica+1)
+```
+
+## Create a Logistic Regression Model
+Logistic regression is a generalized linear model (GLM) with logit as the
+link function and a binomial error model.
+
+```{r}
+model <- glm(virginica ~ .,
+  family = binomial(logit), data=x)
+```
+
+About the warning: glm.fit: fitted probabilities numerically 0 or 1 occurred means that the data is possibly linearly separable.
+
+```{r}
+model
+```
+
+Check which features are significant?
+
+```{r}
+summary(model)
+```
+
+AIC can be used for model selection
+
+## Stepwise Variable Selection
+
+```{r}
+model2 <- step(model, data = x)
+summary(model2)
+```
+
+The estimates ($\beta_0, \beta_1,...$ ) are
+log-odds and can be converted into odds using $exp(\beta)$.
+A negative log-odds ratio means that the odds go down with an increase in
+the value of the predictor.  A predictor with a
+positive log-odds ratio increases the odds. In this case, the odds of
+looking at a Virginica iris goes down with Sepal.Width and increases with the
+other two predictors.
+
+## Calculate the Response
+**Note:** we do here in-sample testing on the data we learned the data
+from. To get a generalization error estimate you should use a test set or
+cross-validation!
+
+```{r}
+pr <- predict(model2, x, type="response")
+round(pr, 2)
+hist(pr, breaks=20)
+hist(pr[x$virginica==TRUE], col="red", breaks=20, add=TRUE)
+```
+
+## Check Classification Performance
+
+We calculate the predicted class by checking if the probability is larger than
+.5. 
+
+```{r }
+pred <- pr > .5
+```
+
+Now er can create a confusion table and calculate the accuracy.
+```{r}
+tbl <- table(actual = x$virginica, predicted = pr>.5)
+tbl
+
+sum(diag(tbl))/sum(tbl)
+```
+
+We can also use caret's more advanced function `confusionMatrix()`. Our code
+above uses `logical` vectors.
+but foo caret, we need to make sure that both, the reference and the predictions
+are coded as `factor`.
+
+```{r }
+caret::confusionMatrix(
+  reference = factor(x$virginica, levels = c(TRUE, FALSE)), 
+  data = factor(pr>.5, levels = c(TRUE, FALSE)))
+```
+
+We see that the model performs well with a very high accuracy and kappa value.
+
+
+## Exercises
+
+We will again use the Palmer penguin data for the exercises.
+
+```{r }
+library(palmerpenguins)
+head(penguins)
+```
+
+Create an R markdown document that performs the following:
+
+1. Create a test and a training data set (see section [Holdout Method] in Chapter 3).
+2. Create a logistic regression using the training set to predict the variable sex.
+2. Use stepwise variable selection. What variables are selected? 
+3. What do the parameters for for each of the selected features tell you?
+4. Predict the sex of the penguins in the test set. Create a 
+  confusion table and calculate the accuracy and discuss how well the model works.

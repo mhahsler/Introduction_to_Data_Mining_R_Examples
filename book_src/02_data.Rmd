@@ -7,14 +7,14 @@ editor_options:
 # Data
 
 This chapter provides examples for cleaning and preparing data for data
-mining.
+mining. In addition, data exploration is covered in this chapter.
 
 Install the packages used in this chapter:
 
 ```{r setup_02}
-pkgs <- sort(c('tidyverse', 'GGally', 'ggcorrplot', 
-    'plotly', 'factoextra', 'arules', 'seriation', 
-    'sampling', 'caret', 'proxy', 'hexbin'))
+pkgs <- c("arules", "caret", "factoextra", "GGally", 
+          "ggcorrplot", "hexbin", "palmerpenguins", "plotly", 
+          "proxy", "sampling", "seriation", "tidyverse")
 
 pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
 if(length(pkgs_install)) install.packages(pkgs_install)
@@ -23,23 +23,25 @@ if(length(pkgs_install)) install.packages(pkgs_install)
 The packages used for this chapter are: `r format_pkgs(pkgs)`
 
 ```{r setup_02-2, include=FALSE}
+source("_common.R")
+source("format_pkgs.R")
 all_pkgs <- union(all_pkgs, pkgs)
 ```
-## Introduction
 
 
 ```{r include=FALSE}
 options(digits = 3)
 ```
 
-
 Data for data mining is typically organized in tabular form, with rows containing
-the objects of interest and columns representing features describing the objects.
+the objects of interest and columns representing attributes describing the objects.
 We will discuss topics like data quality, sampling, feature selection,
 and how to measure similarities between objects and features. 
 The second part of this chapter deals with data exploration and visualization. 
 
-## Scale of Measurement
+## Types of Data
+
+### Attributes and Measurement
 
 The values of features can be measured on [several scales](https://en.wikipedia.org/wiki/Level_of_measurement) 
 ranging from 
@@ -69,7 +71,7 @@ c(1, 2, 3, 4, 3)
 
 
 
-## The Iris Dataset
+### The Iris Dataset
 
 We will use a toy dataset that comes with R. [Fisher's iris
 dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set) gives the
@@ -104,14 +106,23 @@ print(iris, n = 3, width = Inf)
 
 Assessing the quality of the available data is crucial before we start
 using the data. Start with summary statistics for each column to
-identify outliers and missing values.
+identify outliers and missing values. The easiest way is to use the base R
+function `summary()`.
 
 ```{r }
 summary(iris)
 ```
 
-You can also summarize all numeric columns using a statistic function like
-`mean()`.
+You can also summarize 
+individual columns using tidyverse's dplyr functions.
+
+```{r }
+iris |> 
+  summarize(mean = mean(Sepal.Length))
+```
+
+Using `across()`, multiple columns can be summarized. Un the following,
+we calculate all numeric columns using the `mean` function.
 
 ```{r }
 iris |> 
@@ -133,7 +144,39 @@ library(GGally)
 ggpairs(iris, aes(color = Species), progress = FALSE)
 ```
 
+This useful visualization combines many visualizations used to understand the
+data and check for quality issues. Rows and columns are the features in the data.
+We have also specified the aesthetic that we want to group each species using a different color.
+
+* The visualizations in the diagonal panels show the
+smoothed histograms with the distribution for each feature. 
+The plot tries to pick a good number of bins for the histogram 
+(see messages above). The distribution can be checked if it is close to normal,
+unimodal or highly skewed. Also, we can see if the different groups are overlapping 
+or separable for each feature. For example, the three distributions for `Sepal.Width`
+are almost identical meaning that it is hard to distinguish between 
+the different species using this feature alone. `Petal.Lenght` and `Petal.Width`
+are much better.
+
+* The lower-left triangle panels contain scatterplots for all pairs features. These 
+are useful to see if there if features are correlated (the pearson correlation 
+coefficient if printed in the upper-right triangle). For example,
+`Petal.Length` and `Petal.Width` are highly correlated overall 
+This makes sense since larger plants will have both longer and wider petals.
+Inside the Setosa group this correlation it is a lot weaker.
+We can also see if groups are 
+well separated using projections on two variables. Almost all panels show that
+Setosa forms a point cloud well separated from the other two classes while 
+Versicolor and Virginica overlap. 
+We can also see outliers that are far from the other data points in its group.
 See if you can spot the one red dot that is far away from all others.
+
+* The last row/column represents in this data set the class label Species. 
+It is a nominal variable so the plots are different. The bottom row panels 
+show (regular) histograms. The last column shows boxplots to represent
+the distribution of the different features by group. Dots represent 
+outliers. Finally, the bottom-right panel contains the counts for the different 
+groups as a barplot. In this data set, each group has the same number of observations.
 
 Many data mining methods require complete data, that is the data cannot
 contain missing values (`NA`). To remove missing values and duplicates
@@ -152,7 +195,9 @@ Note that one non-unique case is gone leaving only 149 flowers. The data
 did not contain missing values, but if it did, they would also have been
 dropped. Typically, you should spend a lot more time on data cleaning.
 
-## Aggregation
+## Data Preprocessing
+
+### Aggregation
 
 Data often contains groups and we want to compare these groups. We group
 the iris dataset by species and then calculate a summary statistic for
@@ -171,13 +216,13 @@ iris |>
 Using this information, we can compare how features differ between
 groups.
 
-## Sampling
+### Sampling
 
 [Sampling](https://en.wikipedia.org/wiki/Sampling_(statistics)) is often
 used in data mining to reduce the dataset size before modeling or
 visualization.
 
-### Random Sampling
+#### Random Sampling
 
 The built-in sample function can sample from a vector. Here we sample
 with replacement.
@@ -204,13 +249,14 @@ results reproducible.
 
 ```{r }
 set.seed(1000)
-
 s <- iris |> 
   slice_sample(n = 15)
+
+library(GGally)
 ggpairs(s, aes(color = Species), progress = FALSE)
 ```
 
-### Stratified Sampling
+#### Stratified Sampling
 
 [Stratified sampling](https://en.wikipedia.org/wiki/Stratified_sampling)
 is a method of sampling from a population which can be partitioned into
@@ -236,7 +282,7 @@ s2 <- iris |>
 ggpairs(s2, aes(color = Species), progress = FALSE)
 ```
 
-## Features
+### Dimensionality Reduction
 
 The number of features is often called the dimensional of the data following the 
 idea that each feature (at least the numeric features) can be seen as an axis of the data.
@@ -411,14 +457,13 @@ Non-parametric multidimensional scaling performs MDS while relaxing the
 need of linear relationships. Methods are available in package `MASS` as
 functions `isoMDS()` and `sammon()`.
 
-### Feature Selection
+### Feature Subset Selection
 
 Feature selection is the process of identifying the features that are
 used to create a model. We will talk about feature selection when we
-discuss classification models in Chapter 3 in [Feature Selection and
-Feature Preparation].
+discuss classification models in Chapter 3 in [Feature Selection*].
 
-### Discretize Features
+### Discretization
 
 Some data mining methods require discrete data. Discretization converts
 continuous features into discrete features. As an example, we will
@@ -483,7 +528,7 @@ ggplot(iris, aes(Petal.Width)) + geom_histogram(binwidth = .2) +
 
 The user needs to decide on the number of intervals and the used method.
 
-### Standardize Data
+### Variable Transformation: Standardization
 
 Standardizing (scaling, normalizing) the range of features values is
 important to make them comparable. The most popular method is to convert
@@ -495,14 +540,18 @@ standard deviations from the mean. Positive values indicate how many
 standard deviation the original feature value was above the average.
 Negative standardized values indicate below-average values.
 
-*Note:* tidyverse currently does not have a simple scale function, so I
-make one that provides a wrapper for the standard scale function in R:
+Tidyverse currently does not have a simple scale function, so we
+make one that provides a wrapper for the standard scale function in R.
+It mutates all numeric columns using an anonymous function
+that uses the base R scale function and converts the result into a vector.
 
 ```{r }
 scale_numeric <- function(x) 
   x |> 
-  mutate(across(where(is.numeric), ~as.vector(scale(.))))
+  mutate(across(where(is.numeric), function(y) as.vector(scale(y))))
+```
 
+```{r }
 iris.scaled <- iris |> 
   scale_numeric()
 iris.scaled
@@ -513,7 +562,7 @@ The standardized feature has a mean of zero and most "normal" values
 will fall in the range $[-3,3]$ and is measured in standard deviations from the average.
 Negative values mean smaller than the average and positive values mean larger than the average.
 
-## Proximities: Similarities and Distances
+## Measures of Similarity and Dissimilarity
 
 Proximities help with quantifying how similar two objects are. 
 [Similariy](https://en.wikipedia.org/wiki/Similarity_(geometry)) is a concept from geometry.
@@ -685,195 +734,21 @@ the call. For example `stats::dist()` calls the default function in R
 (the package `stats` is part of R) while `proxy::dist()` calls the
 version in the package `proxy`.
 
-## Relationships Between Features
+## Data Exploration*
 
-### Correlation
+The following code covers the important part of 
+data exploration. For space reasons, this chapter was moved from the
+printed textbook to this 
+[Data Exploration Web Chapter.](https://www-users.cse.umn.edu/~kumar001/dmbook/data_exploration_1st_edition.pdf)
 
-Correlation can be used for ratio/interval scaled features. We typically
-think of the [Pearson correlation
-coefficient](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)
-between features (columns).
-
-```{r }
-cc <- iris |> 
-  select(-Species) |> 
-  cor()
-cc
-```
-
-`cor` calculates a correlation matrix with pairwise correlations between
-features. Correlation matrices are symmetric, but different to
-distances, the whole matrix is stored.
-
-The correlation between Petal.Length and Petal.Width can be visualized
-using a scatter plot.
+We will use again the iris dataset.
 
 ```{r }
-ggplot(iris, aes(Petal.Length, Petal.Width)) + 
-  geom_point() +
-  geom_smooth(method = "lm")
+library(tidyverse)
+data(iris)
+iris <- as_tibble(iris)
+iris
 ```
-
-`geom_smooth` adds a regression line by fitting a linear model (`lm`).
-Most points are close to this line indicating strong linear dependence
-(i.e., high correlation).
-
-We can calculate individual correlations by specifying two vectors.
-
-```{r }
-with(iris, cor(Petal.Length, Petal.Width))
-```
-
-*Note:* `with` lets you use columns using just their names and
-`with(iris, cor(Petal.Length, Petal.Width))` is the same as
-`cor(iris$Petal.Length, iris$Petal.Width)`.
-
-Finally, we can test if a correlation is significantly different from
-zero.
-
-```{r }
-with(iris, cor.test(Petal.Length, Petal.Width))
-```
-
-A small p-value (less than 0.05) indicates that the observed correlation
-is significantly different from zero. This can also be seen by the fact
-that the 95% confidence interval does not span zero.
-
-Sepal.Length and Sepal.Width show little correlation:
-
-```{r } 
-ggplot(iris, aes(Sepal.Length, Sepal.Width)) + 
-  geom_point() +   
-  geom_smooth(method = "lm") 
-
-with(iris, cor(Sepal.Length, Sepal.Width)) 
-with(iris, cor.test(Sepal.Length, Sepal.Width))
-```
-
-### Rank Correlation
-
-Rank correlation is used for ordinal features or if the correlation is
-not linear. To show this, we first convert the continuous features in
-the Iris dataset into ordered factors (ordinal) with three levels using
-the function `cut`.
-
-```{r }
-iris_ord <- iris |> 
-  mutate(across(where(is.numeric), 
-  ~ cut(., 3, labels = c("short", "medium", "long"), ordered = TRUE)))
-
-iris_ord
-summary(iris_ord)
-iris_ord |> 
-  pull(Sepal.Length)
-```
-
-Two measures for rank correlation are Kendall's Tau and Spearman's Rho.
-
-[Kendall's Tau Rank Correlation
-Coefficient](https://en.wikipedia.org/wiki/Kendall_rank_correlation_coefficient)
-measures the agreement between two rankings (i.e., ordinal features).
-
-```{r }
-iris_ord |> 
-  select(-Species) |> 
-  sapply(xtfrm) |> 
-  cor(method = "kendall")
-```
-
-**Note:** We have to use `xtfrm` to transform the ordered factors into
-ranks, i.e., numbers representing the order.
-
-[Spearman's
-Rho](https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient)
-is equal to the Pearson correlation between the rank values of those two
-features.
-
-```{r }
-iris_ord |> 
-  select(-Species) |> 
-  sapply(xtfrm) |> 
-  cor(method = "spearman")
-```
-
-Spearman's Rho is much faster to compute on large datasets then
-Kendall's Tau.
-
-Comparing the rank correlation results with the Pearson correlation on
-the original data shows that they are very similar. This indicates that
-discretizing data does not result in the loss of too much information.
-
-```{r }
-iris |> 
-  select(-Species) |> 
-  cor()
-```
-
-## Density Estimation
-
-[Density estimation](https://en.wikipedia.org/wiki/Density_estimation)
-constructions an estimate the probability density function
-(distribution) of a continuous variable based on observed data.
-
-Just plotting the data using points is not very helpful for a single
-feature.
-
-```{r }
-ggplot(iris, aes(x = Petal.Length, y = 0)) + geom_point()
-```
-
-### Histograms
-
-A [histograms](https://en.wikipedia.org/wiki/Histogram) shows more about
-the distribution by counting how many values fall within a bin and
-visualizing the counts as a bar chart. We use `geom_rug` to place marks
-for the original data points at the bottom of the histogram.
-
-```{r }
-ggplot(iris, aes(x = Petal.Length)) +
-  geom_histogram() +
-  geom_rug(alpha = 1/2)
-```
-
-Two-dimensional distributions can be visualized using 2-d binning or
-hexagonal bins.
-
-```{r }
-ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
-  geom_bin2d(bins = 10) +
-  geom_jitter(color = "red")
-
-ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
-  geom_hex(bins = 10) +
-  geom_jitter(color = "red")
-```
-
-### Kernel Density Estimate (KDE)
-
-[Kernel density
-estimation](https://en.wikipedia.org/wiki/Kernel_density_estimation) is
-used to estimate the probability density function (distribution) of a
-feature. It works by replacing each value with a kernel function (often
-a Gaussian) and then adding them up. The result is an estimated
-probability density function that looks like a smoothed version of the
-histogram. The bandwidth (`bw`) of the kernel controls the amount of
-smoothing.
-
-```{r }
-ggplot(iris, aes(Petal.Length)) +
-  geom_density(bw = .2) +
-  geom_rug(alpha = 1/2)
-```
-
-Kernel density estimates can also be done in two dimensions.
-
-```{r }
-ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
-  geom_density_2d_filled() +
-  geom_jitter()
-```
-
-## Exploring Data
 
 ### Basic statistics
 
@@ -929,7 +804,7 @@ The median absolute deviation (MAD) is another measure of dispersion.
 iris |> summarize(across(where(is.numeric), mad))
 ```
 
-### Grouping
+### Grouped Operations and Calculations
 
 We can use the nominal feature to form groups and then calculate
 group-wise statistics for the continuous features. We often use
@@ -978,7 +853,7 @@ For the following examples, we discretize the data using cut.
 
 ```{r }
 iris_ord <- iris |> mutate(across(where(is.numeric),  
-  ~ cut(., 3, labels = c("short", "medium", "long"), ordered = TRUE)))
+  function(x) cut(x, 3, labels = c("short", "medium", "long"), ordered = TRUE)))
 
 iris_ord
 summary(iris_ord)
@@ -1065,7 +940,200 @@ iris |>
   quantile(Petal.Length, probs = 0.75) - quantile(Petal.Length, probs = 0.25))
 ```
 
+### Correlation
+
+#### Pearson Correlation
+
+Correlation can be used for ratio/interval scaled features. We typically
+think of the [Pearson correlation
+coefficient](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)
+between features (columns).
+
+```{r }
+cc <- iris |> 
+  select(-Species) |> 
+  cor()
+cc
+```
+
+`cor` calculates a correlation matrix with pairwise correlations between
+features. Correlation matrices are symmetric, but different to
+distances, the whole matrix is stored.
+
+The correlation between Petal.Length and Petal.Width can be visualized
+using a scatter plot.
+
+```{r }
+ggplot(iris, aes(Petal.Length, Petal.Width)) + 
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+`geom_smooth` adds a regression line by fitting a linear model (`lm`).
+Most points are close to this line indicating strong linear dependence
+(i.e., high correlation).
+
+We can calculate individual correlations by specifying two vectors.
+
+```{r }
+with(iris, cor(Petal.Length, Petal.Width))
+```
+
+*Note:* `with` lets you use columns using just their names and
+`with(iris, cor(Petal.Length, Petal.Width))` is the same as
+`cor(iris$Petal.Length, iris$Petal.Width)`.
+
+Finally, we can test if a correlation is significantly different from
+zero.
+
+```{r }
+with(iris, cor.test(Petal.Length, Petal.Width))
+```
+
+A small p-value (less than 0.05) indicates that the observed correlation
+is significantly different from zero. This can also be seen by the fact
+that the 95% confidence interval does not span zero.
+
+Sepal.Length and Sepal.Width show little correlation:
+
+```{r } 
+ggplot(iris, aes(Sepal.Length, Sepal.Width)) + 
+  geom_point() +   
+  geom_smooth(method = "lm") 
+
+with(iris, cor(Sepal.Length, Sepal.Width)) 
+with(iris, cor.test(Sepal.Length, Sepal.Width))
+```
+
+#### Rank Correlation
+
+Rank correlation is used for ordinal features or if the correlation is
+not linear. To show this, we first convert the continuous features in
+the Iris dataset into ordered factors (ordinal) with three levels using
+the function `cut`.
+
+```{r }
+iris_ord <- iris |> 
+  mutate(across(where(is.numeric), 
+  function(x) cut(x, 3, labels = c("short", "medium", "long"), ordered = TRUE)))
+
+iris_ord
+summary(iris_ord)
+iris_ord |> 
+  pull(Sepal.Length)
+```
+
+Two measures for rank correlation are Kendall's Tau and Spearman's Rho.
+
+[Kendall's Tau Rank Correlation
+Coefficient](https://en.wikipedia.org/wiki/Kendall_rank_correlation_coefficient)
+measures the agreement between two rankings (i.e., ordinal features).
+
+```{r }
+iris_ord |> 
+  select(-Species) |> 
+  sapply(xtfrm) |> 
+  cor(method = "kendall")
+```
+
+**Note:** We have to use `xtfrm` to transform the ordered factors into
+ranks, i.e., numbers representing the order.
+
+[Spearman's
+Rho](https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient)
+is equal to the Pearson correlation between the rank values of those two
+features.
+
+```{r }
+iris_ord |> 
+  select(-Species) |> 
+  sapply(xtfrm) |> 
+  cor(method = "spearman")
+```
+
+Spearman's Rho is much faster to compute on large datasets then
+Kendall's Tau.
+
+Comparing the rank correlation results with the Pearson correlation on
+the original data shows that they are very similar. This indicates that
+discretizing data does not result in the loss of too much information.
+
+```{r }
+iris |> 
+  select(-Species) |> 
+  cor()
+```
+
+### Density 
+
+[Density estimation](https://en.wikipedia.org/wiki/Density_estimation)
+estimate the probability density function
+(distribution) of a continuous variable from observed data.
+
+Just plotting the data using points is not very helpful for a single
+feature.
+
+```{r }
+ggplot(iris, aes(x = Petal.Length, y = 0)) + geom_point()
+```
+
+#### Histograms
+
+A [histograms](https://en.wikipedia.org/wiki/Histogram) shows more about
+the distribution by counting how many values fall within a bin and
+visualizing the counts as a bar chart. We use `geom_rug` to place marks
+for the original data points at the bottom of the histogram.
+
+```{r }
+ggplot(iris, aes(x = Petal.Length)) +
+  geom_histogram() +
+  geom_rug(alpha = 1/2)
+```
+
+Two-dimensional distributions can be visualized using 2-d binning or
+hexagonal bins.
+
+```{r }
+ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
+  geom_bin2d(bins = 10) +
+  geom_jitter(color = "red")
+
+ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
+  geom_hex(bins = 10) +
+  geom_jitter(color = "red")
+```
+
+#### Kernel Density Estimate (KDE)
+
+[Kernel density
+estimation](https://en.wikipedia.org/wiki/Kernel_density_estimation) is
+used to estimate the probability density function (distribution) of a
+feature. It works by replacing each value with a kernel function (often
+a Gaussian) and then adding them up. The result is an estimated
+probability density function that looks like a smoothed version of the
+histogram. The bandwidth (`bw`) of the kernel controls the amount of
+smoothing.
+
+```{r }
+ggplot(iris, aes(Petal.Length)) +
+  geom_density(bw = .2) +
+  geom_rug(alpha = 1/2)
+```
+
+Kernel density estimates can also be done in two dimensions.
+
+```{r }
+ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
+  geom_density_2d_filled() +
+  geom_jitter()
+```
+
 ## Visualization
+
+We go through the basic visualizations used when working with data.
+For space reasons, this chapter was moved from the
+printed textbook to this 
+[Data Exploration Web Chapter.](https://www-users.cse.umn.edu/~kumar001/dmbook/data_exploration_1st_edition.pdf)
 
 ### Histogram
 
@@ -1073,6 +1141,15 @@ Histograms show the distribution of a single continuous feature.
 
 ```{r }
 ggplot(iris, aes(Petal.Width)) + geom_histogram(bins = 20)
+```
+
+If the data contains groups, then the group information can be easily 
+added as an aesthetic to the histogram. We also add alpha and position 
+to make the   
+
+```{r }
+ggplot(iris, aes(Petal.Width)) + 
+         geom_histogram(bins = 20, aes(fill = Species))
 ```
 
 ### Boxplot
@@ -1130,24 +1207,57 @@ ggplot(iris_long_scaled, aes(name, value)) +
 Scatter plots show the relationship between two continuous features.
 
 ```{r }
-ggplot(iris, aes(x = Petal.Length, y = Petal.Width, color = Species)) + 
-  geom_point()
+ggplot(iris, aes(x = Petal.Length, y = Sepal.Length)) + 
+  geom_point(aes(color = Species))
 ```
+
+We can add a regression using `geom_smooth` with the 
+linear model method to show that there is a 
+linear relationship between the two variables. A confidence interval 
+for the regression is also shown. 
+This can be suppressed using `se = FALSE`.
+
+```{r }
+ggplot(iris, aes(x = Petal.Length, y = Sepal.Length)) + 
+  geom_point(aes(color = Species)) +  
+  geom_smooth(method = "lm")
+```
+
+We can also perform group-wise linear regression by adding the color
+aesthetic also to `geom_smooth`.
+
+```{r }
+ggplot(iris, aes(x = Petal.Length, y = Sepal.Length)) + 
+  geom_point(aes(color = Species)) +  
+  geom_smooth(method = "lm", aes(color = Species))
+```
+
+The same can be achieved by using the color aesthetic in the `qqplot` call,
+then it applies to all geoms.
 
 ### Scatter Plot Matrix
 
-A scatter plot matrix show the relationship between several features
+A scatter plot matrix show the relationship between all pairs of features
+by arranging panels in a matrix. First, lets look at a regular
+R-base plot.
+
+```{r }
+pairs(iris, col = iris$Species)
+```
+
+The package `GGally` provides a way more sophisticated visualization.
 
 ```{r }
 library("GGally")
 ggpairs(iris,  aes(color = Species), progress = FALSE)
 ```
 
-The implementation in package `GGally` also shows additional plots
+Additional plots
 (histograms, density estimates and box plots) and correlation
-coefficients.
+coefficients are shown in different panels. See the [Data Quality]
+section for a description of how to interpret the different panels.
 
-### Data Matrix Visualization
+### Matrix Visualization
 
 Matrix visualization shows the values in the matrix using a color scale.
 
@@ -1164,8 +1274,8 @@ iris_long <- as_tibble(iris_matrix) |>
 
 head(iris_long)
 
-ggplot(iris_long,
-  aes(x = name, y = id, fill = value)) + geom_tile()
+ggplot(iris_long, aes(x = name, y = id)) + 
+  geom_tile(aes(fill = value))
 ```
 
 Smaller values are darker. Package `seriation` provides a simpler
@@ -1252,10 +1362,41 @@ features next to each other.
 ```{r }
 o <- seriate(as.dist(1-cor(iris[,1:4])), method = "BBURCG")
 get_order(o)
-ggparcoord(iris, columns = get_order(o), groupColumn = 5)
+ggparcoord(iris, columns = as.integer(get_order(o)), groupColumn = 5)
 ```
 
 ### More Visualizations
 
 A well organized collection of visualizations with code can be found at
 [The R Graph Gallery](https://www.r-graph-gallery.com/).
+
+## Exercises*
+
+The R package **palmerpenguins** contains measurements for penguin of different
+species from the Palmer Archipelago, Antarctica. Install the package.
+It provides a CSV file which can be read in the following way:
+
+```{r }
+library("palmerpenguins")
+penguins <- read_csv(path_to_file("penguins.csv"))
+head(penguins)
+```
+
+Create in RStudio a new R Markdown document 
+(under File -> New File -> R Markdown...). 
+Apply the code in the sections of this chapter to the data set to answer the
+following questions. 
+
+1. What is the scale of measurement for each column?
+2. Are there missing values in the data? How much data is missing?
+3. Compute and discuss basic statistics.
+4. Group the penguins by species, island or sex. What can you find out?
+5. Can you identify correlations?
+6. Apply histograms, boxplots, scatterplots and correlation matrix visualization.
+  What do the visualizations show.
+
+Make sure your markdown document contains now a well formatted report.
+Use the `Knit` button to create a HTML document.
+
+
+

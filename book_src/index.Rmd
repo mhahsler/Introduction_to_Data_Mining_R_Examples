@@ -16,59 +16,48 @@ editor_options:
     wrap: 72
 ---
 
-```{r setup, include=FALSE}
-options(
-  htmltools.dir.version = FALSE, formatR.indent = 2,
-  width = 55, digits = 4, warnPartialMatchAttr = FALSE, warnPartialMatchDollar = FALSE
-)
-local({
-  r = getOption('repos')
-  if (!length(r) || identical(unname(r['CRAN']), '@CRAN@'))
-    r['CRAN'] = 'https://cran.rstudio.com' 
-  options(repos = r)
-})
-```
-
-```{r include=FALSE}
-all_pkgs <- character()
-
-format_pkgs <- function(pkgs)
-  paste(sapply(pkgs, FUN = function(p) sprintf('_%s_ [@R-%s]', p ,p)), collapse = ', ')
-```
-
 # Preface {.unnumbered}
 
 ```{r fig.align='center', out.width="50%", echo=FALSE, include=identical(knitr:::pandoc_to(), 'html')}
 knitr::include_graphics('images/cover.png', dpi = NA)
 ```
 
-This book contains documented R examples to accompany several chapters
+This companion book contains documented R examples to accompany several chapters
 of the popular data mining textbook [*Introduction to Data
 Mining*](https://www-users.cs.umn.edu/~kumar001/dmbook/) by Pang-Ning
-Tan, Michael Steinbach, Anuj Karpatne and Vipin Kumar. The companion
+Tan, Michael Steinbach, Anuj Karpatne and Vipin Kumar. 
+It is not intended as a replacement for the textbook since it does not cover the 
+theory, but as a guide accompanying the textbook.
+The companion
 book can be used with either edition: 1st edition [@Tan2005] or 2nd
-edition [@Tan2018].
+edition [@Tan2018]. The sections are numbered to match the 2nd edition. Sections
+marked with an asterisk are additional content that is not covered in 
+the textbook.
 
 The code examples collected in this book were developed for the course
-[CS 7331 - Data Mining](http://michael.hahsler.net/SMU/CS7331) taught
-at [SMU](http://www.smu.edu) since Spring 2013 and will be regularly
+_CS 5/7331 Data Mining_ taught 
+at the advanced undergraduate and graduate level
+at the [Computer Science Department](https://www.smu.edu/lyle/departments/cs) at
+[SMU](http://www.smu.edu) since Spring 2013 and will be regularly
 updated and improved. 
 The learning method used in this book is learning-by-doing. 
 The code examples throughout this book are
-written in a self-contained manner so you can copy-and-paste a portion of the code,
+written in a self-contained manner so you can copy and paste a portion of the code,
 try it out on the provided dataset and then apply it directly to your own 
-data.
+data. Instructors can use this companion as a component to create an 
+introduction to data mining course for advanced undergraduates and graduate
+students who are proficient in programming and have basic statistics knowledge.
+A complete set of slides (PDF and PowerPoint) is provided on the
+[book's GitHub page.](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples)
 
 The latest update includes the use of the popular
 packages in the meta-package `tidyverse` [@R-tidyverse] including
-`ggplot2` [@R-ggplot2] for data wrangling and visualization along with
+`ggplot2` [@R-ggplot2] for data wrangling and visualization, along with
 `caret` [@R-caret] for model building and evaluation. 
-Presentation slides and other instructor resources are available on the
-[book's GitHub page.](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples)
 Please use the edit function within this book or visit the [book's
 GitHub project
 page](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples)
-to submit corrections or suggest improvements. To cite this book use:
+to submit corrections or suggest improvements. To cite this book, use:
 
 > Michael Hahsler (2021). *An R Companion for Introduction to Data
 > Mining.* Online Book.

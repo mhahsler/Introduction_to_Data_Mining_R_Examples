@@ -9,19 +9,22 @@ editor_options:
 Install the packages used in this chapter:
 
 ```{r setup_05}
-pkgs <- sort(c('tidyverse', 'arules', 'arulesViz', 'mlbench'))
+pkgs <- c("arules", "arulesViz", "mlbench", "palmerpenguins", "tidyverse")
 
 pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
 if(length(pkgs_install)) install.packages(pkgs_install)
 ```
 
-The packages used for this chapter are: `r format_pkgs(pkgs)`
-
 ```{r setup_05-2, include=FALSE}
+source("_common.R")
+source("format_pkgs.R")
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
-## Introduciton
+The packages used for this chapter are: `r format_pkgs(pkgs)`
+
+
+## Preliminaries
 
 [Association rule mining](https://en.wikipedia.org/wiki/Association_rule_learning) 
 plays a vital role in discovering hidden patterns and relationships within large
@@ -45,7 +48,7 @@ You can read the free sample chapter from the textbook [@Tan2005]:
 [Chapter 5. Association Analysis: Basic Concepts and
 Algorithms](https://www-users.cs.umn.edu/~kumar001/dmbook/ch5_association_analysis.pdf)
 
-## The arules Package
+### The arules Package
 
 Association rule mining in R is implemented in the package `arules`.
 
@@ -72,9 +75,9 @@ differences of using S4 objects compared to the usual S3 objects are:
 -   coercion (casting): `as(from, "class_name")`
 -   help for classes: `class? class_name`
 
-## Transactions
+### Transactions
 
-### Create Transactions
+#### Create Transactions
 
 We will use the Zoo dataset from `mlbench`.
 
@@ -143,7 +146,7 @@ trans <- transactions(Zoo_has_legs)
 trans
 ```
 
-### Inspect Transactions
+#### Inspect Transactions
 
 ```{r }
 summary(trans)
@@ -214,7 +217,7 @@ trans_insects
 inspect(trans_insects)
 ```
 
-### Vertical Layout (Transaction ID Lists)
+#### Vertical Layout (Transaction ID Lists)
 
 The default layout for transactions is horizontal layout (i.e. each
 transaction is a row). The vertical layout represents transaction data
@@ -225,9 +228,7 @@ vertical <- as(trans, "tidLists")
 as(vertical, "matrix")[1:10, 1:5]
 ```
 
-## Frequent Itemsets
-
-### Mine Frequent Itemsets
+## Frequent Itemset Generation
 
 For this dataset we have already a huge number of possible itemsets
 
@@ -275,37 +276,8 @@ ggplot(tibble(`Itemset Size` = factor(size(its))), aes(`Itemset Size`)) +
 its[size(its) > 8] |> inspect()
 ```
 
-### Concise Representation of Itemsets
 
-Find maximal frequent itemsets (no superset if frequent)
-
-```{r }
-its_max <- its[is.maximal(its)]
-its_max
-its_max |> head(by = "support") |> inspect()
-```
-
-Find closed frequent itemsets (no superset if frequent)
-
-```{r }
-its_closed <- its[is.closed(its)]
-its_closed
-
-its_closed |> head(by = "support") |> inspect()
-
-counts <- c(
-  frequent=length(its),
-  closed=length(its_closed),
-  maximal=length(its_max)
-)
-
-ggplot(as_tibble(counts, rownames = "Itemsets"),
-  aes(Itemsets, counts)) + geom_bar(stat = "identity")
-```
-
-## Association Rules
-
-### Mine Association Rules
+## Rules Generation
 
 We use the APRIORI algorithm (see
 [`? apriori`](https://www.rdocumentation.org/packages/arules/topics/apriori))
@@ -379,7 +351,42 @@ Saving rules as a CSV-file to be opened with Excel or other tools.
 
 `write(rules, file = "rules.csv", quote = TRUE)`
 
-## Association Rule Visualization
+## Compact Representation of Frequent Itemsets
+
+Find maximal frequent itemsets (no superset if frequent)
+
+```{r }
+its_max <- its[is.maximal(its)]
+its_max
+its_max |> head(by = "support") |> inspect()
+```
+
+Find closed frequent itemsets (no superset if frequent)
+
+```{r }
+its_closed <- its[is.closed(its)]
+its_closed
+
+its_closed |> head(by = "support") |> inspect()
+
+counts <- c(
+  frequent=length(its),
+  closed=length(its_closed),
+  maximal=length(its_max)
+)
+
+ggplot(as_tibble(counts, rownames = "Itemsets"),
+  aes(Itemsets, counts)) + geom_bar(stat = "identity")
+```
+
+
+## Association Rule Visualization*
+
+Visualization is a very powerful approach to analyse large sets of 
+mined association rules and frequent itemsets. We present here some options
+to create static visualizations and inspect rule sets interactively.
+
+### Static Visualizations
 
 ```{r }
 library(arulesViz)
@@ -415,7 +422,7 @@ plot(rules, method = "graph")
 plot(rules |> head(by = "phi", n = 100), method = "graph")
 ```
 
-## Interactive Visualizations
+### Interactive Visualizations
 
 We will use the association rules mined from the Iris dataset for the
 following examples.
@@ -425,13 +432,18 @@ data(iris)
 summary(iris)
 ```
 
-Convert the data to transactions. Note that the features are numeric and
-need to be discretized. The conversion automatically applies
-frequency-based discretization with 3 classes to each numeric feature
-(with a warning).
+Convert the data to transactions. 
 
 ```{r }
 iris_trans <- transactions(iris)
+```
+Note that this conversion gives a warning to indicate that some potentially 
+unwanted conversion happens. Some features are numeric and
+need to be discretized. The conversion automatically applies
+frequency-based discretization with 3 classes to each numeric feature,
+however, the use may want to use a different discretization strategy.
+
+```{r}
 iris_trans |> head() |> inspect()
 ```
 
@@ -442,13 +454,13 @@ rules <- apriori(iris_trans, parameter = list(support = 0.1, confidence = 0.8))
 rules
 ```
 
-### Interactive Inspect With Sorting, Filtering and Paging
+#### Interactive Inspect With Sorting, Filtering and Paging
 
 ```{r }
-inspectDT(rules)
+inspectDT(rules,options = list(scrollX = TRUE))
 ```
 
-### Scatter Plot
+#### Scatter Plot
 
 Plot rules as a scatter plot using an interactive html widget. To avoid
 overplotting, jitter is added automatically. Set `jitter = 0` to disable
@@ -460,7 +472,7 @@ the top 1000 rules with a warning if more rules are supplied.
 plot(rules, engine = "html")
 ```
 
-### Matrix Visualization
+#### Matrix Visualization
 
 Plot rules as a matrix using an interactive html widget.
 
@@ -468,7 +480,7 @@ Plot rules as a matrix using an interactive html widget.
 plot(rules, method = "matrix", engine = "html") 
 ```
 
-### Visualization as Graph
+#### Visualization as Graph
 
 Plot rules as a graph using an interactive html widget. *Note:* the used
 javascript library does not do well with too many graph nodes, so plot
@@ -478,7 +490,7 @@ selects the top 100 rules only (with a warning).
 plot(rules, method = "graph", engine = "html")
 ```
 
-### Interactive Rule Explorer
+#### Interactive Rule Explorer
 
 You can specify a rule set or a dataset. To explore rules that can be
 mined from iris, use: `ruleExplorer(iris)`
@@ -488,3 +500,35 @@ used locally or deployed on a server for sharing. A deployed version of
 the ruleExplorer is available
 [here](https://mhahsler-apps.shinyapps.io/ruleExplorer_demo/) (using
 [shinyapps.io](https://www.shinyapps.io/)).
+
+## Exercises*
+
+We will again use the Palmer penguin data for the exercises.
+
+```{r }
+library(palmerpenguins)
+head(penguins)
+```
+
+1. Translate the penguin data into transaction data with:
+  ```{r }
+  trans <- transactions(penguins)
+  trans
+  ```
+  Why does the conversion report warnings? 
+  
+2. What do the following first three transactions mean?
+  ```{r }
+  inspect(trans[1:3])
+  ```
+
+Next, use the `ruleExplorer()` function to analyze association rules
+created for the transaction data set.
+
+1. Use the default settings for the parameters. 
+  Using the _Data Table_, what is the association rule with the highest lift. What does its LHS, RHS,
+  support, confidence and lift mean?
+  
+2. Use the _Graph_ visualization. Use select by id to highlight different species and
+  different islands and then hover over some of the rules. What do you see?
+

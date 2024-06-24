@@ -18,16 +18,19 @@ for corrections or to suggest improvements.
 
 ## Covered Chapters
 
+| Textbook Chapter* | Slides | Companion R Code |  
+| :--------| :---: | :----: |
+| 1. Introduction | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap1_intro.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/introduction.html) |
+| 2. Data | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap2_data.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/data.html) | 
+| -. Web Chapter: [Exploring Data](https://www-users.cse.umn.edu/~kumar001/dmbook/data_exploration_1st_edition.pdf) | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap2_exploration.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/data.html#exploring-data)  | 
+| 3. [Classification: Basic Concepts and Techniques](https://www-users.cs.umn.edu/~kumar001/dmbook/ch3_classification.pdf) | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap3_basic_classification.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/classification-basic-concepts-and-techniques.html) | 
+| 4. Classification: Alternative Techniques |    [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap4_alternative_classification.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/classification-alternative-techniques.html) |
+| 5. [Association Analysis: Basic Concepts and Algorithms](https://www-users.cs.umn.edu/~kumar001/dmbook/ch5_association_analysis.pdf) | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap5_basic_association_analysis.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/association-analysis-basic-concepts-and-algorithms.html) |
+| 7. [Cluster Analysis: Basic Concepts and Algorithms](https://www-users.cs.umn.edu/~kumar001/dmbook/ch7_clustering.pdf) | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap7_basic_cluster_analysis.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/clustering-analysis.html) | 
 
-| Chapter | Slides | R Code Companion | Sample Textbook Chapters|  
-| :--------| :---: | :----: | :--: |
-| 1. Introduction | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap1_intro.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/introduction.html) | |
-| 2. Data | Slides: [Data](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap2_data.pdf), [Exploration](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap2_exploration.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/data.html) | [Data Exploration (Web Chapter)](https://www-users.cse.umn.edu/~kumar001/dmbook/data_exploration_1st_edition.pdf) |
-| 3. Classification: Basic Concepts and Techniques | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap3_basic_classification.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/classification-basic-concepts-and-techniques.html) | [Chapter 3](https://www-users.cs.umn.edu/~kumar001/dmbook/ch3_classification.pdf) |
-| 4. Classification: Alternative Techniques | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap4_alternative_classification.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/classification-alternative-techniques.html) | |
-| 5. Association Analysis: Basic Concepts and Algorithms | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap5_basic_association_analysis.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/association-analysis-basic-concepts-and-algorithms.html) | [Chapter 5](https://www-users.cs.umn.edu/~kumar001/dmbook/ch5_association_analysis.pdf) |
-| 7. Cluster Analysis: Basic Concepts and Algorithms | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap7_basic_cluster_analysis.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/clustering-analysis.html) | [Chapter 7](https://www-users.cs.umn.edu/~kumar001/dmbook/ch7_clustering.pdf) |
-
+\* Textbook chapters are from Introduction to Data Mining, 2nd edition. 
+Most used chapters are available as the linked free sample chapters.
+  
 ## Software Requirements
 
 You need to install:
