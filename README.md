@@ -9,12 +9,13 @@ This repository contains slides and documented R examples to accompany several c
 > Pang-Ning Tan, Michael Steinbach, Anuj Karpatne and Vipin Kumar, 
 [_Introduction to Data Mining,_](https://www-users.cs.umn.edu/~kumar001/dmbook/index.php) Addison Wesley, 1st or 2nd edition.
 
-The slides and examples are used in my course [CS 7331 - Data Mining](http://michael.hahsler.net/SMU/CS7331) taught at [SMU](https://www.smu.edu/) and will be regularly updated and improved. The code examples are now compiled into the free online book
+The slides and examples are used in my course _CS 5/7331 Data Mining_
+taught at [SMU](https://www.smu.edu/) and will be regularly updated and improved. 
+The code examples are now compiled into the free online book
 [An R Companion for Introduction to Data Mining](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/) which is
 published under the creative commons attribution license and you can
 share and adapt them freely. Please open an [issue](issues)  
 for corrections or to suggest improvements. 
-
 
 ## Covered Chapters
 
@@ -53,10 +54,10 @@ as the official R code examples for the book.
 
 ## Instructor Resources
 
-* Powerpoint presentation files for a data mining course can be found in the repository directory [slides](slides). 
+* PowerPoint presentation files for a data mining course can be found in the repository directory [slides](slides). 
 The slides have an R symbol at the bottom whenever there are R code examples available.
-* Datasets for projects: Datasets can be found at https://www.kaggle.com/datasets
-* More instructional material can be found on the course web site of [CS 7331 - Data Mining](http://michael.hahsler.net/SMU/CS7331) 
+* Datasets for projects can be found at https://www.kaggle.com/datasets
+
 
 
 ## License
