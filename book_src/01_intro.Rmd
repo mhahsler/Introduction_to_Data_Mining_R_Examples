@@ -82,16 +82,160 @@ all_pkgs <- union(all_pkgs, pkgs)
 
 The packages used for this chapter are: `r format_pkgs(pkgs)`
 
-The code in this book uses `tidyverse` to manipulate data and `ggplot2`
-for visualization. A great introduction to these useful tools can be
+The code examples in this book uses the R packages `tidyverse` to manipulate 
+data and `ggplot2` for visualization. These packages make working with
+data in R very convenient. 
+A great introduction to these useful tools can be
 found in the freely available web book [R for Data
 Science](https://r4ds.hadley.nz/) by @Wickham2023.
+We will give a few examples later in this chapter.
+
+Everything we do in R is built on top of the code R programming language
+and the packages that are automatically installed with R. This is typically 
+referred to as Base-R. 
+
+## Base-R
+
+Base-R is covered in detail in [An Introduction to R](https://cran.r-project.org/doc/manuals/r-release/R-intro.html).
+The most important difference between R and many other programming languages
+like Python is that R is functional (with some extensions) and vectorized.
+
+### Vectors
+
+Scalars do not exist in R. The basic data structure is a vector of real numbers.
+Special values like infinity and missing (`NA`) can be used.
+
+```{r }
+x <- c(10.4, 5.6, Inf, NA, 21.7) # c combines values
+x
+y <- seq(from = 0, to = 40, length.out = 5) # create a sequence
+y
+```
+
+### Operations
+
+Operations are vectorized so loops are typically not necessary.
+
+```{r }
+x + 1
+```
+
+Comparisons are performed element wise and return a `logical` vector (R's name for Boolean). 
+
+```{r }
+x > y
+```
+
+### Functions
+
+Functions work like in many other languages. However, they also operate 
+vectorized and arguments can be specified positional or by named. 
+An increment function can be defined as:
+
+```{r }
+inc <- function(x, by = 1) { 
+    x + by 
+  }
+```
+
+Calling the increment function on vector `x`.
+
+```{r }
+inc(x, by = 2)
+```
+
+R has many built-in functions like `min()`, `max()`, `mean()` and `sum()`.
+
+### Subsetting Vectors
+
+We can select vector elements using the `[` operator like in other 
+programming languages but the index starts at 1.
+
+```{r}
+x[1:3] # elements 1 through 3
+x[-1] # all but the first
+x[!is.na(x)] # all but the missing values
+
+```
+
+We can also assign values to a selection. For example, to get rid of 
+infinite values.
+```{r}
+x[!is.finite(x)] <- NA
+x
+```
+
+### Strings
+
+R uses `character` vectors. R accepts double or single quotation marks.
+
+```{r }
+string <- c("Hello", "Goodbye")
+string
+```
+
+Strings can be combined using `paste()`.
+
+```{r}
+paste(string, "World!")
+```
+
+Note that paste is vectorized and the string `"World!"`
+is used twice to match the length of `string`. 
+This behavior is called in R _recycling._
+
+### Plotting 
+
+Basic plotting in Base-R is done by calling `plot()`.
+
+```{r }
+plot(x, y)
+```
+
+Other plot functions are `pairs()`, `hist()`, `barplot()`. In this book,
+we will focus on plots created with the ggplot2 package.
+
+### Objects
+
+Other often used data structures include `list`, `data.frame`, `matrix`, and
+`factor`. In R, everything is an object. Objects are printed 
+by either just using the object's name or put it explicitly 
+into the `print()` function.
+
+```{r }
+x
+```
+
+For many objects, a summary can be created.
+
+```{r }
+summary(x)
+```
+
+Objects have a class.
+
+```{r }
+class(x)
+```
+
+Some functions are generic, meaning that they do something else depending 
+on the class of the first argument. For example, `plot()` has many methods 
+implemented to visualize data of different classes. The specific function is specified with a period after the method name. There also exists a default method. For plot 
+this method is `plot.default()`. Different methods may have their own manual page,
+so specifying the class with the dot can help finding the documentation.
+
+It is often useful to know what information it stored in an object.
+`str()` returns a humanly readable string representation of the object. 
+
+```{r}
+str(x)
+```
+
+There is much to learn about R. It is highly recommended to go through
+[An Introduction to R](https://cran.r-project.org/doc/manuals/r-release/R-intro.html).
 
 ## Tidyverse
 
-```{r}
-library(tidyverse)
-```
 
 `tidyverse` [@R-tidyverse] is a collection of many useful packages that
 work well together by sharing design principles and data structures.
@@ -108,6 +252,14 @@ In this book, we will use
 A good introduction can be found in the [Section on Data
 Transformation](https://r4ds.hadley.nz/data-transform) [@Wickham2023].
 
+Load the tidyverse packages.
+
+```{r}
+library(tidyverse)
+```
+
+### Tibbles
+
 Here is a short example That analyses the vitamin C content of different
 fruits. that will get you familiar with the basic syntax. Data tables in
 R are called data.frames. Tidyverse introduces its own version called
@@ -122,6 +274,8 @@ fruit <- tibble(
   vitamin_c = c(20, 45, 130, 250))
 fruit
 ```
+
+### Transformations
 
 Now, we can add a column with the vitamin C (in mg) that a dollar buys
 you using `mutate()` to change the table. Then we filter only rows with
@@ -182,8 +336,10 @@ main idea is that every graph is built from the same basic components:
 
 In `ggplot2`, the components are combined using the `+` operator.
 
-> `ggplot(data, mapping = aes(x = ..., y = ..., color = ...)) +`
-> `geom_point()`
+```{r eval=FALSE}
+ggplot(data, mapping = aes(x = ..., y = ..., color = ...)) +
+  geom_point()
+```
 
 Since we typically use a Cartesian coordinate system, `ggplot` uses that
 by default. Each `geom_` function uses a `stat_` function to calculate
@@ -221,7 +377,6 @@ ggplot(fruit, aes(x = name, y = vitamin_c)) +
   geom_bar(stat = "identity")
 ```
 
-Note that `geom_bar` by default uses the `stat_count` statistics to
+Note that `geom_bar` by default uses the `stat_count` function to
 aggregate data by counting, but we just want to visualize the value
-already available in the tibble, so we specify the identity statistic
-instead.
+in the tibble, so we specify the identity function instead.
