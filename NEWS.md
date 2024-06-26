@@ -14,7 +14,8 @@ CHANGES
  the 2nd edition.
 * Improved model selection in chapter 3.
 * Improved the discussion in many parts of the document including interpretation
-  of results and code details.  
+  of results and code details.
+* Improved introduction.
 
 
 # Version 1.0.0 (06/15/2024)

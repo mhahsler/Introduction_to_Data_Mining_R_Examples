@@ -1382,8 +1382,7 @@ penguins <- read_csv(path_to_file("penguins.csv"))
 head(penguins)
 ```
 
-Create in RStudio a new R Markdown document 
-(under File -> New File -> R Markdown...). 
+Create in RStudio a new R Markdown document.
 Apply the code in the sections of this chapter to the data set to answer the
 following questions. 
 

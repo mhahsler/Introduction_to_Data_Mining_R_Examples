@@ -663,16 +663,13 @@ encoding back to class labels.</p>
 <span></span>
 <span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">X_test</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span>MARGIN <span class="op">=</span> <span class="fl">1</span>, FUN <span class="op">=</span> <span class="va">which.max</span><span class="op">)</span></span>
-<span><span class="co">## 1/1 - 0s - 83ms/epoch - 83ms/step</span></span></code></pre></div>
+<span><span class="co">## 1/1 - 0s - 51ms/epoch - 51ms/step</span></span></code></pre></div>
 <div class="sourceCode" id="cb242"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">pr</span>, labels <span class="op">=</span> <span class="va">class_labels</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">class_labels</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">pr</span></span>
-<span><span class="co">##  [1] mammal        fish          mollusc.et.al fish         </span></span>
-<span><span class="co">##  [5] mammal        mollusc.et.al mammal        mammal       </span></span>
-<span><span class="co">##  [9] mammal        mammal        bird          mammal       </span></span>
-<span><span class="co">## [13] mammal        bird          fish          bird         </span></span>
-<span><span class="co">## [17] bird          bird         </span></span>
+<span><span class="co">##  [1] mammal fish   bird   fish   mammal insect mammal mammal mammal</span></span>
+<span><span class="co">## [10] mammal bird   mammal mammal bird   fish   bird   bird   bird  </span></span>
 <span><span class="co">## 7 Levels: mammal bird reptile fish amphibian ... mollusc.et.al</span></span></code></pre></div>
 </div>
 <div id="support-vector-machines" class="section level2" number="4.9">
@@ -2230,7 +2227,7 @@ models?</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-06-25.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-06-26.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

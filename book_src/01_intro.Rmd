@@ -15,33 +15,25 @@ annotated R code examples to complement the textbook. To make following
 along easier, we follow the chapters in data mining textbook which is
 organized by the main data mining tasks:
 
--   
+2.  [Data] covers types of data and also includes data preparation and
+    exploratory data analysis in the chapter.
 
-    2.  [Data] covers types of data and also includes data preparation
-        and exploratory data analysis in the chapter.
+3.  [Classification: Basic Concepts and Techniques] introduces decision
+    trees, model training and evaluation.
 
--   
-
-    3.  [Classification: Basic Concepts and Techniques] introduces
-        decision trees, model training and evaluation.
-
--   
-
-    4.  [Classification: Alternative techniques] introduces and compares
+4.  [Classification: Alternative techniques] introduces and compares
         methods including rule-based classifiers, nearest neighbor
         classifiers, naive Bayes classifier, logistic regression and
         artificial neural networks.
 
--   
-
-    5.  [Association Analysis: Basic Concepts and Algorithms] covers
+5.  [Association Analysis: Basic Concepts and Algorithms] covers
         frequent itemset and association rule generation and analysis
         including visualization. Some code covers also topics discussed
         in the textbook's Chapter 6.
 
--   
+6.  Unused 
 
-    7.  [Cluster Analysis] discusses clustering approaches including
+7.  [Cluster Analysis] discusses clustering approaches including
         k-means, hierarchical clustering, DBSCAN and how to evaluate
         clustering results.
 
@@ -50,25 +42,23 @@ For completeness, we have added chapters on [Regression\*] and on
 contain code examples for methods that are not described in the data
 mining textbook.
 
+This book assumes that you are
+familiar with the basics of R, how to run R code, and install packages.
+The rest of this chapter will provide an overview and point you to where 
+you can learn more about R and the used packages.
+
 ## Used Software
 
-This companion book assumes that you have
+To use this book you need to have
 [R](https://cran.r-project.org/) and [RStudio
-Desktop](https://www.rstudio.com/products/rstudio/) installed and are
-familiar with the basics of R, how to run R code, and install packages.
-If you are new to R, working through the official R manual [An
-Introduction to
-R](https://cran.r-project.org/doc/manuals/r-release/R-intro.html)
-[@RCore2021] will get you started. There are many introduction videos
-for RStudio available, and a basic video that shows how to run code and
-how to install packages will suffice.
+Desktop](https://www.rstudio.com/products/rstudio/) installed.
 
 Each book chapter will use a set of packages that must be installed. The
 installation code can be found at the beginning of each chapter. Here is
 the code to install the packages used in this chapter:
 
 ```{r setup_01, message=FALSE}
-pkgs <- c('tidyverse', 'ggplot2')
+pkgs <- c('tidyverse')
 
 pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
 if(length(pkgs_install)) install.packages(pkgs_install)
@@ -80,30 +70,27 @@ source("format_pkgs.R")
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
-The packages used for this chapter are: `r format_pkgs(pkgs)`
-
-The code examples in this book uses the R packages `tidyverse` to manipulate 
-data and `ggplot2` for visualization. These packages make working with
-data in R very convenient. 
-A great introduction to these useful tools can be
-found in the freely available web book [R for Data
-Science](https://r4ds.hadley.nz/) by @Wickham2023.
-We will give a few examples later in this chapter.
-
-Everything we do in R is built on top of the code R programming language
-and the packages that are automatically installed with R. This is typically 
-referred to as Base-R. 
+The code examples in this book use the R package collection `tidyverse` 
+[@R-tidyverse] to manipulate data. Tidyverse also includes the package 
+`ggplot2` [@R-ggplot2] for visualization. Tidyverse packages make
+working with data in R very convenient. Data analysis and data mining 
+reports are typically done by creating 
+R Markdown documents. Everything in R is built on top of the 
+core R programming language and the packages that are automatically 
+installed with R. This is referred to as Base-R.
 
 ## Base-R
 
-Base-R is covered in detail in [An Introduction to R](https://cran.r-project.org/doc/manuals/r-release/R-intro.html).
-The most important difference between R and many other programming languages
-like Python is that R is functional (with some extensions) and vectorized.
+Base-R is covered in detail in [An Introduction to
+R](https://cran.r-project.org/doc/manuals/r-release/R-intro.html). The
+most important difference between R and many other programming languages
+like Python is that R is functional (with some extensions) and
+vectorized.
 
 ### Vectors
 
-Scalars do not exist in R. The basic data structure is a vector of real numbers.
-Special values like infinity and missing (`NA`) can be used.
+Scalars do not exist in R. The basic data structure is a vector of real
+numbers. Special values like infinity and missing (`NA`) can be used.
 
 ```{r }
 x <- c(10.4, 5.6, Inf, NA, 21.7) # c combines values
@@ -112,7 +99,7 @@ y <- seq(from = 0, to = 40, length.out = 5) # create a sequence
 y
 ```
 
-### Operations
+### Vectorized Operations
 
 Operations are vectorized so loops are typically not necessary.
 
@@ -120,17 +107,38 @@ Operations are vectorized so loops are typically not necessary.
 x + 1
 ```
 
-Comparisons are performed element wise and return a `logical` vector (R's name for Boolean). 
+Comparisons are performed element wise and return a `logical` vector
+(R's name for Boolean).
 
 ```{r }
 x > y
 ```
 
+### Subsetting Vectors
+
+We can select vector elements using the `[` operator like in other
+programming languages but the index starts at 1.
+
+```{r}
+x[1:3] # elements 1 through 3
+x[-1] # all but the first
+x[!is.na(x)] # all but the missing values
+
+```
+
+We can also assign values to a selection. For example, to get rid of
+infinite values.
+
+```{r}
+x[!is.finite(x)] <- NA
+x
+```
+
 ### Functions
 
-Functions work like in many other languages. However, they also operate 
-vectorized and arguments can be specified positional or by named. 
-An increment function can be defined as:
+Functions work like in many other languages. However, they also operate
+vectorized and arguments can be specified positional or by named. An
+increment function can be defined as:
 
 ```{r }
 inc <- function(x, by = 1) { 
@@ -144,30 +152,14 @@ Calling the increment function on vector `x`.
 inc(x, by = 2)
 ```
 
-R has many built-in functions like `min()`, `max()`, `mean()` and `sum()`.
-
-### Subsetting Vectors
-
-We can select vector elements using the `[` operator like in other 
-programming languages but the index starts at 1.
-
-```{r}
-x[1:3] # elements 1 through 3
-x[-1] # all but the first
-x[!is.na(x)] # all but the missing values
-
-```
-
-We can also assign values to a selection. For example, to get rid of 
-infinite values.
-```{r}
-x[!is.finite(x)] <- NA
-x
-```
+R has many built-in functions like `min()`, `max()`, `mean()` and
+`sum()`.
 
 ### Strings
 
-R uses `character` vectors. R accepts double or single quotation marks.
+R uses `character` vectors where `character` stands for a string and not
+like in other programming language for a single character. R accepts
+double or single quotation marks for strings.
 
 ```{r }
 string <- c("Hello", "Goodbye")
@@ -180,11 +172,14 @@ Strings can be combined using `paste()`.
 paste(string, "World!")
 ```
 
-Note that paste is vectorized and the string `"World!"`
-is used twice to match the length of `string`. 
-This behavior is called in R _recycling._
+Note that paste is vectorized and the string `"World!"` is used twice to
+match the length of `string`. This behavior is called in R *recycling*
+and works if one vector's length is an exact multiple of the other
+vector's length. The special case where one vector has one element is
+particularly often used. We have used it already above in the expression
+`x + 1` where one is recycled for each element in `x`.
 
-### Plotting 
+### Plotting
 
 Basic plotting in Base-R is done by calling `plot()`.
 
@@ -197,10 +192,10 @@ we will focus on plots created with the ggplot2 package.
 
 ### Objects
 
-Other often used data structures include `list`, `data.frame`, `matrix`, and
-`factor`. In R, everything is an object. Objects are printed 
-by either just using the object's name or put it explicitly 
-into the `print()` function.
+Other often used data structures include `list`, `data.frame`, `matrix`,
+and `factor`. In R, everything is an object. Objects are printed by
+either just using the object's name or put it explicitly into the
+`print()` function.
 
 ```{r }
 x
@@ -218,24 +213,47 @@ Objects have a class.
 class(x)
 ```
 
-Some functions are generic, meaning that they do something else depending 
-on the class of the first argument. For example, `plot()` has many methods 
-implemented to visualize data of different classes. The specific function is specified with a period after the method name. There also exists a default method. For plot 
-this method is `plot.default()`. Different methods may have their own manual page,
-so specifying the class with the dot can help finding the documentation.
+Some functions are generic, meaning that they do something else
+depending on the class of the first argument. For example, `plot()` has
+many methods implemented to visualize data of different classes. The
+specific function is specified with a period after the method name.
+There also exists a default method. For plot, this method is
+`plot.default()`. Different methods may have their own manual page, so
+specifying the class with the dot can help finding the documentation.
 
 It is often useful to know what information it stored in an object.
-`str()` returns a humanly readable string representation of the object. 
+`str()` returns a humanly readable string representation of the object.
 
 ```{r}
 str(x)
 ```
 
 There is much to learn about R. It is highly recommended to go through
-[An Introduction to R](https://cran.r-project.org/doc/manuals/r-release/R-intro.html).
+the official
+[An Introduction to
+R](https://cran.r-project.org/doc/manuals/r-release/R-intro.html) manual.
+There is also a good [Base R Cheat Sheet](https://github.com/rstudio/cheatsheets/blob/main/base-r.pdf)
+available.
+
+## R Markdown
+
+R Markdown is a simple method to include R code inside a text document
+written using markdown syntax. Using R markdown is especially convention to analyze
+data and compose a data mining report. RStudio makes creating and
+translating R Markdown document easy. Just choose
+`File -> New File -> R Markdown...` RStudio will create a small
+demo markdown document that already includes examples for code and how
+to include plots. You can switch to visual mode if you prefer a What You
+See Is What You Get editor.
+
+To convert the R markdown document to HTML, PDF or Word, just click the
+Knit button. All the code will be executed and combined with the text
+into a complete document.
+
+Examples and detailed documentation can be found on [RStudio's R Markdown
+website](https://rmarkdown.rstudio.com/) and in the [R Markdown Cheatsheet](https://rstudio.github.io/cheatsheets/html/rmarkdown.html).
 
 ## Tidyverse
-
 
 `tidyverse` [@R-tidyverse] is a collection of many useful packages that
 work well together by sharing design principles and data structures.
@@ -247,7 +265,7 @@ In this book, we will use
 -   the pipe operator `|>` to chain functions together, and
 -   data transformation functions like `filter()`, `arrange()`,
     `select()`, `group_by()`, and `mutate()` provided by the tidyverse
-    package `dplyr`.
+    package `dplyr` [@R-dplyr].
 
 A good introduction can be found in the [Section on Data
 Transformation](https://r4ds.hadley.nz/data-transform) [@Wickham2023].
@@ -318,13 +336,12 @@ affordable_vitamin_c_sources |>
 `dplyr` syntax and evaluation is slightly different from standard R
 which may lead to confusion. One example is that column names can be
 references without quotation marks. A very useful reference resource
-when working with `dplyr` is the [RStudio Data Transformation Cheat
-Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf)
+when working with `dplyr` is the [RStudio Data Transformation Cheatsheet](https://rstudio.github.io/cheatsheets/html/data-transformation.html)
 which covers on two pages almost everything you will need and also
 contains contains simple example code that you can take and modify for
 your use case.
 
-## ggplot2
+### ggplot2
 
 For visualization, we will use mainly `ggplot2`. The *gg* in `ggplot2`
 stands for **Grammar of Graphics** introduced by @Wilkinson2005. The
@@ -349,8 +366,7 @@ a bar chart by counting how often each value appears in the data (see
 the points using the coordinates as they are. A great introduction can
 be found in the [Section on Data
 Visualization](https://r4ds.hadley.nz/data-visualize) [@Wickham2023],
-and very useful is [RStudio's Data Visualization Cheat
-Sheet](https://rstudio.github.io/cheatsheets/html/data-visualization.html).
+and very useful is [RStudio's Data Visualization Cheatsheet](https://rstudio.github.io/cheatsheets/html/data-visualization.html).
 
 We can visualize our fruit data as a scatter plot.
 
@@ -378,5 +394,6 @@ ggplot(fruit, aes(x = name, y = vitamin_c)) +
 ```
 
 Note that `geom_bar` by default uses the `stat_count` function to
-aggregate data by counting, but we just want to visualize the value
-in the tibble, so we specify the identity function instead.
+aggregate data by counting, but we just want to visualize the value in
+the tibble, so we specify the identity function instead.
+

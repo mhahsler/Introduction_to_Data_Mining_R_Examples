@@ -2,12 +2,13 @@ introduction
 used-software
 base-r
 vectors
-operations
-functions
+vectorized-operations
 subsetting-vectors
+functions
 strings
 plotting
 objects
+r-markdown
 tidyverse
 tibbles
 transformations
