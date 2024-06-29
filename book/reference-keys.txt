@@ -145,6 +145,12 @@ visualization-as-graph
 interactive-rule-explorer
 exercises-3
 association-analysis-advanced-concepts
+handling-categorical-attributes
+handling-continuous-attributes
+handling-concept-hierarchies
+aggregation-1
+multi-level-analysis
+sequential-patterns
 cluster-analysis
 overview
 data-preparation
@@ -182,7 +188,7 @@ local-outlier-factor-lof
 exercises-4
 regression
 introduction-1
-a-first-model
+a-first-linear-regression-model
 comparing-nested-models
 stepwise-variable-selection
 modeling-with-interaction-terms
@@ -200,4 +206,5 @@ create-a-logistic-regression-model
 stepwise-variable-selection-1
 calculate-the-response
 check-classification-performance
+regularized-logistic-regression
 exercises-6

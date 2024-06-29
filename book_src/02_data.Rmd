@@ -6,10 +6,14 @@ editor_options:
 
 # Data
 
-This chapter provides examples for cleaning and preparing data for data
-mining. In addition, data exploration is covered in this chapter.
+Data for data mining is typically organized in tabular form, with rows containing
+the objects of interest and columns representing attributes describing the objects.
+We will discuss topics like data quality, sampling, feature selection,
+and how to measure similarities between objects and features. 
+The second part of this chapter deals with data exploration and visualization. 
 
-Install the packages used in this chapter:
+
+### Packages Used in this Chapter {.unnumbered}
 
 ```{r setup_02}
 pkgs <- c("arules", "caret", "factoextra", "GGally", 
@@ -28,16 +32,6 @@ source("format_pkgs.R")
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
-
-```{r include=FALSE}
-options(digits = 3)
-```
-
-Data for data mining is typically organized in tabular form, with rows containing
-the objects of interest and columns representing attributes describing the objects.
-We will discuss topics like data quality, sampling, feature selection,
-and how to measure similarities between objects and features. 
-The second part of this chapter deals with data exploration and visualization. 
 
 ## Types of Data
 
@@ -313,7 +307,7 @@ We can use an interactive 3-d plot (from package `plotly`) to look at
 three of the four dimensions of the iris dataset. Note that it is hard
 to visualize more than 3 dimensions.
 
-```{r }
+```{r eval = !knitr::is_latex_output()}
 # library(plotly) # I don't load the package because it's namespace clashes with select in dplyr.
 plotly::plot_ly(iris, x = ~Sepal.Length, y = ~Petal.Length, z = ~Sepal.Width, 
       color = ~Species, size = 1) |> 

@@ -14,3 +14,6 @@ if (length(params) == 0) {
 }
 
 warnings()
+
+
+# bookdown::render_book("index.Rmd", "bookdown::pdf_book")

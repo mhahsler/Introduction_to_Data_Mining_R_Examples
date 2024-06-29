@@ -6,7 +6,13 @@ editor_options:
 
 # Classification: Alternative Techniques
 
-Install the packages used in this chapter:
+This chapter introduces different types of classifiers. It also 
+discusses the important problem of class imbalance in data and options 
+to deal with it. In addition, this chapter compares visually the 
+decision boundaries used by different algorithms. This will provide a 
+better understanding of the model bias that different algorithms have.
+
+### Packages Used in this Chapter {.unnumbered}
 
 ```{r setup_04}
 pkgs <- c("basemodels", "C50", "caret", "e1071", "keras", "klaR", 
@@ -28,19 +34,6 @@ set.seed(1234)
 The packages used for this chapter are: `r format_pkgs(pkgs)`
 
 
-We will use tidyverse to prepare the data.
-
-```{r message=FALSE, warning=FALSE}
-library(tidyverse)
-```
-
-Show fewer digits
-
-```{r }
-options(digits=3)
-```
-
-
 ## Types of Classifiers
 
 Many different [classification algorithms](https://en.wikipedia.org/wiki/Supervised_learning) 
@@ -57,8 +50,11 @@ toothed, backbone, breathes, venomous, fins, legs, tail, domestic,
 catsize, type). We convert the data frame into a tidyverse tibble
 (optional).
 
-```{r }
-data(Zoo, package="mlbench")
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+data(Zoo, package = "mlbench")
+
 Zoo <- as_tibble(Zoo)
 Zoo
 ```
@@ -217,6 +213,8 @@ binary variable. Since we have data with several
 classes, we use [multinomial logistic regression](https://en.wikipedia.org/wiki/Multinomial_logistic_regression), 
 also called a log-linear model
 which is an extension of logistic regresses for multi-class problems.
+Caret can use method `"multinom"` which uses an implementation
+in package `nnet` for penalized multinomial regression.
 
 ```{r }
 logRegFit <- Zoo_train |> train(type ~ .,

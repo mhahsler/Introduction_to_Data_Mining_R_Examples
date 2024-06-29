@@ -31,7 +31,8 @@ organized by the main data mining tasks:
         including visualization. Some code covers also topics discussed
         in the textbook's Chapter 6.
 
-6.  Unused 
+6.  [Association Analysis: Advanced Concepts] covers categorical and continuous
+        attributes, concept hierarchies, and frequent sequence pattern mining.
 
 7.  [Cluster Analysis] discusses clustering approaches including
         k-means, hierarchical clustering, DBSCAN and how to evaluate

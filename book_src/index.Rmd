@@ -5,6 +5,7 @@ date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 github-repo: mhahsler/Introduction_to_Data_Mining_R_Examples
 documentclass: book
+#documentclass: amsbook
 cover-image: images/cover.png
 bibliography: [book.bib, packages.bib]
 #biblio-style: apalike

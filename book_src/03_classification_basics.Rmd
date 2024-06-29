@@ -6,7 +6,10 @@ editor_options:
 
 # Classification: Basic Concepts and Techniques
 
-Install the packages used in this chapter:
+This chapter introduces decision trees for classification and discusses
+how models are built and evaluated.
+
+### Packages Used in this Chapter {.unnumbered}
 
 ```{r setup_03}
 pkgs <- c("caret", "FSelector", "lattice", "mlbench", 

@@ -6,15 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 6 Association Analysis: Advanced Concepts | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
-<meta name="description" content="No code is available for this Chapter. Some topics were already covered in the code for the previous chapter.">
+<meta name="description" content="This chapter discusses a few advanced concepts of association analysis. First, we look at how categorical and continuous attributes are converted into items. The we look at integrating item...">
 <meta name="generator" content="bookdown 0.39 with bs4_book()">
 <meta property="og:title" content="Chapter 6 Association Analysis: Advanced Concepts | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
-<meta property="og:description" content="No code is available for this Chapter. Some topics were already covered in the code for the previous chapter.">
+<meta property="og:description" content="This chapter discusses a few advanced concepts of association analysis. First, we look at how categorical and continuous attributes are converted into items. The we look at integrating item...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 6 Association Analysis: Advanced Concepts | An R Companion for Introduction to Data Mining">
-<meta name="twitter:description" content="No code is available for this Chapter. Some topics were already covered in the code for the previous chapter.">
+<meta name="twitter:description" content="This chapter discusses a few advanced concepts of association analysis. First, we look at how categorical and continuous attributes are converted into items. The we look at integrating item...">
 <meta name="twitter:image" content="/images/cover.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -75,16 +75,463 @@
 <h1>
 <span class="header-section-number">6</span> Association Analysis: Advanced Concepts<a class="anchor" aria-label="anchor" href="#association-analysis-advanced-concepts"><i class="fas fa-link"></i></a>
 </h1>
-<p>No code is available for this Chapter. Some topics were already covered in the
-code for the previous chapter.</p>
+<p>This chapter discusses a few advanced concepts of association analysis.
+First, we look at how categorical and continuous attributes are converted
+into items. The we look at integrating item hierarchies into the analysis.
+Finally, sequence pattern mining is introduced.</p>
+<div id="packages-used-in-this-chapter-4" class="section level3 unnumbered" number="">
+<h3>Packages Used in this Chapter<a class="anchor" aria-label="anchor" href="#packages-used-in-this-chapter-4"><i class="fas fa-link"></i></a>
+</h3>
+<div class="sourceCode" id="cb409"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"arules"</span>, <span class="st">"arulesSequences"</span>, <span class="st">"tidyverse"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pkgs_install</span> <span class="op">&lt;-</span> <span class="va">pkgs</span><span class="op">[</span><span class="op">!</span><span class="op">(</span><span class="va">pkgs</span> <span class="op"><a href="https://rdrr.io/pkg/arules/man/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span>,<span class="st">"Package"</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">pkgs_install</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="va">pkgs_install</span><span class="op">)</span></span></code></pre></div>
+<p>The packages used for this chapter are: <em>arules</em> <span class="citation">(Hahsler et al. <a href="references.html#ref-R-arules" role="doc-biblioref">2023</a>)</span>, <em>arulesSequences</em> <span class="citation">(Buchta, Hahsler, and Daniel Diaz <a href="references.html#ref-R-arulesSequences" role="doc-biblioref">2023</a>)</span>, <em>tidyverse</em> <span class="citation">(Wickham <a href="references.html#ref-R-tidyverse" role="doc-biblioref">2023</a><a href="references.html#ref-R-tidyverse" role="doc-biblioref">c</a>)</span></p>
+</div>
+<div id="handling-categorical-attributes" class="section level2" number="6.1">
+<h2>
+<span class="header-section-number">6.1</span> Handling Categorical Attributes<a class="anchor" aria-label="anchor" href="#handling-categorical-attributes"><i class="fas fa-link"></i></a>
+</h2>
+<p>Categorical attributes are nominal or ordinal variables.
+In R they are <code>factors</code> or <code>ordinal</code>. They are
+translated into a series of binary items (one for each level constructed as ⁠variable
+<code>name = level</code>⁠). Items cannot represent order and this ordered factors lose
+the order information. Note that nominal variables need to be encoded as
+factors (and not characters or numbers) before converting them into transactions.</p>
+<p>For the special case of Boolean variables (<code>logical</code>), the <code>TRUE</code> value is
+converted into an item with the name of the variable and for the <code>FALSE</code>
+values no item is created.</p>
+<p>We will give an example in the next section.</p>
+</div>
+<div id="handling-continuous-attributes" class="section level2" number="6.2">
+<h2>
+<span class="header-section-number">6.2</span> Handling Continuous Attributes<a class="anchor" aria-label="anchor" href="#handling-continuous-attributes"><i class="fas fa-link"></i></a>
+</h2>
+<p>Continuous variables cannot directly be represented as items and need to be
+discretized first (see <a href="data.html#discretization">Discretization</a> in Chapter 2).
+An item resulting from discretization might be <code>age&gt;18</code> and
+the column contains only <code>TRUE</code> or <code>FALSE</code>. Alternatively, it can be a factor
+with levels <code>age&lt;=18</code>, <code>⁠50=&gt;age&gt;18</code>⁠ and <code>age&gt;50</code>. These will be automatically
+converted into 3 items, one for each level. Discretization is described in functions
+<code><a href="https://rdrr.io/pkg/arules/man/discretize.html">discretize()</a></code> and <code><a href="https://rdrr.io/pkg/arules/man/discretize.html">discretizeDF()</a></code> to discretize all columns in a data.frame.</p>
+<p>We give a short example using the iris dataset. We add an extra <code>logical</code> column
+to show how Boolean attributes are converted in to items.</p>
+<div class="sourceCode" id="cb410"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## add a Boolean attribute</span></span>
+<span><span class="va">iris</span><span class="op">$</span><span class="va">Versicolor</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">$</span><span class="va">Species</span> <span class="op">==</span> <span class="st">"versicolor"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
+<span><span class="co">##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span></span>
+<span><span class="co">## 1          5.1         3.5          1.4         0.2  setosa</span></span>
+<span><span class="co">## 2          4.9         3.0          1.4         0.2  setosa</span></span>
+<span><span class="co">## 3          4.7         3.2          1.3         0.2  setosa</span></span>
+<span><span class="co">## 4          4.6         3.1          1.5         0.2  setosa</span></span>
+<span><span class="co">## 5          5.0         3.6          1.4         0.2  setosa</span></span>
+<span><span class="co">## 6          5.4         3.9          1.7         0.4  setosa</span></span>
+<span><span class="co">##   Versicolor</span></span>
+<span><span class="co">## 1      FALSE</span></span>
+<span><span class="co">## 2      FALSE</span></span>
+<span><span class="co">## 3      FALSE</span></span>
+<span><span class="co">## 4      FALSE</span></span>
+<span><span class="co">## 5      FALSE</span></span>
+<span><span class="co">## 6      FALSE</span></span></code></pre></div>
+<p>The first step is to
+discretize continuous attributes (marked as <code>&lt;dbl&gt;</code> in the table above).
+We discretize the two Petal features.</p>
+<div class="sourceCode" id="cb411"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mhahsler/arules">arules</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">iris_disc</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Petal.Length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/discretize.html">discretize</a></span><span class="op">(</span><span class="va">Petal.Length</span>, </span>
+<span>                                   method <span class="op">=</span> <span class="st">"frequency"</span>, breaks <span class="op">=</span> <span class="fl">3</span>, </span>
+<span>                                   labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"short"</span>, <span class="st">"medium"</span>, <span class="st">"long"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>         Petal.Width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/discretize.html">discretize</a></span><span class="op">(</span><span class="va">Petal.Width</span>,</span>
+<span>                                  method <span class="op">=</span> <span class="st">"frequency"</span>, breaks <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>                                  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"narrow"</span>, <span class="st">"wide"</span><span class="op">)</span><span class="op">)</span></span>
+<span>         <span class="op">)</span></span>
+<span>  </span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">iris_disc</span><span class="op">)</span></span>
+<span><span class="co">##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span></span>
+<span><span class="co">## 1          5.1         3.5        short      narrow  setosa</span></span>
+<span><span class="co">## 2          4.9         3.0        short      narrow  setosa</span></span>
+<span><span class="co">## 3          4.7         3.2        short      narrow  setosa</span></span>
+<span><span class="co">## 4          4.6         3.1        short      narrow  setosa</span></span>
+<span><span class="co">## 5          5.0         3.6        short      narrow  setosa</span></span>
+<span><span class="co">## 6          5.4         3.9        short      narrow  setosa</span></span>
+<span><span class="co">##   Versicolor</span></span>
+<span><span class="co">## 1      FALSE</span></span>
+<span><span class="co">## 2      FALSE</span></span>
+<span><span class="co">## 3      FALSE</span></span>
+<span><span class="co">## 4      FALSE</span></span>
+<span><span class="co">## 5      FALSE</span></span>
+<span><span class="co">## 6      FALSE</span></span></code></pre></div>
+<p>Next, we convert the dataset into transactions.</p>
+<div class="sourceCode" id="cb412"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">trans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/transactions-class.html">transactions</a></span><span class="op">(</span><span class="va">iris_disc</span><span class="op">)</span></span>
+<span><span class="co">## Warning: Column(s) 1, 2 not logical or factor. Applying default</span></span>
+<span><span class="co">## discretization (see '? discretizeDF').</span></span></code></pre></div>
+<div class="sourceCode" id="cb413"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">trans</span></span>
+<span><span class="co">## transactions in sparse format with</span></span>
+<span><span class="co">##  150 transactions (rows) and</span></span>
+<span><span class="co">##  15 items (columns)</span></span></code></pre></div>
+<p>The conversion creates a warning because there are still two undiscretized columns
+in the data. The warning indicates that the default discretization is used
+automatically.</p>
+<div class="sourceCode" id="cb414"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/itemMatrix-class.html">itemLabels</a></span><span class="op">(</span><span class="va">trans</span><span class="op">)</span></span>
+<span><span class="co">##  [1] "Sepal.Length=[4.3,5.4)" "Sepal.Length=[5.4,6.3)"</span></span>
+<span><span class="co">##  [3] "Sepal.Length=[6.3,7.9]" "Sepal.Width=[2,2.9)"   </span></span>
+<span><span class="co">##  [5] "Sepal.Width=[2.9,3.2)"  "Sepal.Width=[3.2,4.4]" </span></span>
+<span><span class="co">##  [7] "Petal.Length=short"     "Petal.Length=medium"   </span></span>
+<span><span class="co">##  [9] "Petal.Length=long"      "Petal.Width=narrow"    </span></span>
+<span><span class="co">## [11] "Petal.Width=wide"       "Species=setosa"        </span></span>
+<span><span class="co">## [13] "Species=versicolor"     "Species=virginica"     </span></span>
+<span><span class="co">## [15] "Versicolor"</span></span></code></pre></div>
+<p>We see that all continuous variables are discretized and the different ranges
+create an item. For example <code>Petal.Width</code> has the two items <code>Petal.Width=narrow</code>
+and <code>Petal.Width=wide</code>. The automatically discretized variables show intervals.
+<code>Sepal.Length=[4.3,5.4)</code> means that this item used for flowers with
+a sepal length between 4.3 and 5.4 cm.</p>
+<p>The species is converted into three items, one for each class. The logical
+variable <code>Versicolor</code> created only a single item that is used when
+the variable is <code>TRUE</code>.</p>
+</div>
+<div id="handling-concept-hierarchies" class="section level2" number="6.3">
+<h2>
+<span class="header-section-number">6.3</span> Handling Concept Hierarchies<a class="anchor" aria-label="anchor" href="#handling-concept-hierarchies"><i class="fas fa-link"></i></a>
+</h2>
+<p>Often an item hierarchy is available for transactions used for association rule mining. For example in a supermarket dataset items like “bread” and “beagle” might belong to the item group (category) “baked goods.”
+Transactions can store item hierarchies as additional columns in the itemInfo data.frame.</p>
+<div id="aggregation-1" class="section level3" number="6.3.1">
+<h3>
+<span class="header-section-number">6.3.1</span> Aggregation<a class="anchor" aria-label="anchor" href="#aggregation-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>To perform analysis at a group level of the item hierarchy, <code><a href="https://rdrr.io/r/stats/aggregate.html">aggregate()</a></code> produces a new object with items aggregated to a given group level. A group-level item is present if one or more of the items in the group are present in the original object. If rules are aggregated, and the aggregation would lead to the same aggregated group item in the lhs and in the rhs, then that group item is removed from the lhs. Rules or itemsets, which are not unique after the aggregation, are also removed. Note also that the quality measures are not applicable to the new rules and thus are removed. If these measures are required, then aggregate the transactions before mining rules.</p>
+<p>We use the Groceries data set in this example. It contains 1 month (30 days) of real-world point-of-sale transaction data from a typical local grocery outlet. The items
+are 169 products categories.</p>
+<div class="sourceCode" id="cb415"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"Groceries"</span><span class="op">)</span></span>
+<span><span class="va">Groceries</span></span>
+<span><span class="co">## transactions in sparse format with</span></span>
+<span><span class="co">##  9835 transactions (rows) and</span></span>
+<span><span class="co">##  169 items (columns)</span></span></code></pre></div>
+<p>The dataset also contains two aggregation levels.</p>
+<div class="sourceCode" id="cb416"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/itemMatrix-class.html">itemInfo</a></span><span class="op">(</span><span class="va">Groceries</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">##              labels  level2           level1</span></span>
+<span><span class="co">## 1       frankfurter sausage meat and sausage</span></span>
+<span><span class="co">## 2           sausage sausage meat and sausage</span></span>
+<span><span class="co">## 3        liver loaf sausage meat and sausage</span></span>
+<span><span class="co">## 4               ham sausage meat and sausage</span></span>
+<span><span class="co">## 5              meat sausage meat and sausage</span></span>
+<span><span class="co">## 6 finished products sausage meat and sausage</span></span></code></pre></div>
+<p>We aggregate to level1 stored in Groceries. All items with the same level2 label
+will become a single item with that name. This reduces the number of items to
+the 55 level2 categories</p>
+<div class="sourceCode" id="cb417"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Groceries_level2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span><span class="va">Groceries</span>, by <span class="op">=</span> <span class="st">"level2"</span><span class="op">)</span></span>
+<span><span class="va">Groceries_level2</span></span>
+<span><span class="co">## transactions in sparse format with</span></span>
+<span><span class="co">##  9835 transactions (rows) and</span></span>
+<span><span class="co">##  55 items (columns)</span></span></code></pre></div>
+<div class="sourceCode" id="cb418"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/itemMatrix-class.html">itemInfo</a></span><span class="op">(</span><span class="va">Groceries_level2</span><span class="op">)</span><span class="op">)</span> <span class="co">## labels are alphabetically sorted!</span></span>
+<span><span class="co">##             labels           level2           level1</span></span>
+<span><span class="co">## 1        baby food        baby food      canned food</span></span>
+<span><span class="co">## 2             bags             bags         non-food</span></span>
+<span><span class="co">## 3  bakery improver  bakery improver   processed food</span></span>
+<span><span class="co">## 4 bathroom cleaner bathroom cleaner        detergent</span></span>
+<span><span class="co">## 5             beef             beef meat and sausage</span></span>
+<span><span class="co">## 6             beer             beer           drinks</span></span></code></pre></div>
+<p>We can now compare an original transaction with the aggregated transaction.</p>
+<div class="sourceCode" id="cb419"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Groceries</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">##     items                 </span></span>
+<span><span class="co">## [1] {citrus fruit,        </span></span>
+<span><span class="co">##      semi-finished bread, </span></span>
+<span><span class="co">##      margarine,           </span></span>
+<span><span class="co">##      ready soups}         </span></span>
+<span><span class="co">## [2] {tropical fruit,      </span></span>
+<span><span class="co">##      yogurt,              </span></span>
+<span><span class="co">##      coffee}              </span></span>
+<span><span class="co">## [3] {whole milk}</span></span></code></pre></div>
+<div class="sourceCode" id="cb420"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Groceries_level2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">##     items                    </span></span>
+<span><span class="co">## [1] {bread and backed goods, </span></span>
+<span><span class="co">##      fruit,                  </span></span>
+<span><span class="co">##      soups/sauces,           </span></span>
+<span><span class="co">##      vinegar/oils}           </span></span>
+<span><span class="co">## [2] {coffee,                 </span></span>
+<span><span class="co">##      dairy produce,          </span></span>
+<span><span class="co">##      fruit}                  </span></span>
+<span><span class="co">## [3] {dairy produce}</span></span></code></pre></div>
+<p>For example, citrus fruit in the first transaction was translated to the category fruit.
+Note that the order of items in a transaction is not important, so it might change
+during aggregation.</p>
+<p>It is now easy to mine rules on the aggregated data.</p>
+<div class="sourceCode" id="cb421"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rules</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/apriori.html">apriori</a></span><span class="op">(</span><span class="va">Groceries_level2</span>, support <span class="op">=</span> <span class="fl">0.005</span><span class="op">)</span></span>
+<span><span class="co">## Apriori</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Parameter specification:</span></span>
+<span><span class="co">##  confidence minval smax arem  aval originalSupport maxtime support</span></span>
+<span><span class="co">##         0.8    0.1    1 none FALSE            TRUE       5   0.005</span></span>
+<span><span class="co">##  minlen maxlen target  ext</span></span>
+<span><span class="co">##       1     10  rules TRUE</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Algorithmic control:</span></span>
+<span><span class="co">##  filter tree heap memopt load sort verbose</span></span>
+<span><span class="co">##     0.1 TRUE TRUE  FALSE TRUE    2    TRUE</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Absolute minimum support count: 49 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## set item appearances ...[0 item(s)] done [0.00s].</span></span>
+<span><span class="co">## set transactions ...[55 item(s), 9835 transaction(s)] done [0.00s].</span></span>
+<span><span class="co">## sorting and recoding items ... [47 item(s)] done [0.00s].</span></span>
+<span><span class="co">## creating transaction tree ... done [0.00s].</span></span>
+<span><span class="co">## checking subsets of size 1 2 3 4 5 6 done [0.01s].</span></span>
+<span><span class="co">## writing ... [243 rule(s)] done [0.00s].</span></span>
+<span><span class="co">## creating S4 object  ... done [0.00s].</span></span></code></pre></div>
+<div class="sourceCode" id="cb422"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rules</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span>, by <span class="op">=</span> <span class="st">"support"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">##     lhs                          rhs             support confidence coverage  lift count</span></span>
+<span><span class="co">## [1] {bread and backed goods,                                                            </span></span>
+<span><span class="co">##      cheese,                                                                            </span></span>
+<span><span class="co">##      fruit}                   =&gt; {dairy produce} 0.02481     0.8385  0.02959 1.893   244</span></span>
+<span><span class="co">## [2] {bread and backed goods,                                                            </span></span>
+<span><span class="co">##      cheese,                                                                            </span></span>
+<span><span class="co">##      vegetables}              =&gt; {dairy produce} 0.02379     0.8239  0.02888 1.860   234</span></span>
+<span><span class="co">## [3] {cheese,                                                                            </span></span>
+<span><span class="co">##      fruit,                                                                             </span></span>
+<span><span class="co">##      vegetables}              =&gt; {dairy produce} 0.02267     0.8479  0.02674 1.914   223</span></span></code></pre></div>
+<p>You can add your own aggregation to an existing dataset by constructing
+the and iteminfo data.frame and adding it to the transactions. See <code><a href="https://rdrr.io/pkg/arules/man/hierarchy.html">? hierarchy</a></code>
+for details.</p>
+</div>
+<div id="multi-level-analysis" class="section level3" number="6.3.2">
+<h3>
+<span class="header-section-number">6.3.2</span> Multi-level Analysis<a class="anchor" aria-label="anchor" href="#multi-level-analysis"><i class="fas fa-link"></i></a>
+</h3>
+<p>To analyze relationships between individual items and item groups at the same time, <code><a href="https://rdrr.io/pkg/arules/man/hierarchy.html">addAggregate()</a></code> can be used to create a new transactions object which contains both, the original items and group-level items.</p>
+<div class="sourceCode" id="cb423"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Groceries_multilevel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/hierarchy.html">addAggregate</a></span><span class="op">(</span><span class="va">Groceries</span>, <span class="st">"level2"</span><span class="op">)</span></span>
+<span><span class="va">Groceries_multilevel</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">##     items                     </span></span>
+<span><span class="co">## [1] {citrus fruit,            </span></span>
+<span><span class="co">##      semi-finished bread,     </span></span>
+<span><span class="co">##      margarine,               </span></span>
+<span><span class="co">##      ready soups,             </span></span>
+<span><span class="co">##      bread and backed goods*, </span></span>
+<span><span class="co">##      fruit*,                  </span></span>
+<span><span class="co">##      soups/sauces*,           </span></span>
+<span><span class="co">##      vinegar/oils*}           </span></span>
+<span><span class="co">## [2] {tropical fruit,          </span></span>
+<span><span class="co">##      yogurt,                  </span></span>
+<span><span class="co">##      coffee,                  </span></span>
+<span><span class="co">##      coffee*,                 </span></span>
+<span><span class="co">##      dairy produce*,          </span></span>
+<span><span class="co">##      fruit*}                  </span></span>
+<span><span class="co">## [3] {whole milk,              </span></span>
+<span><span class="co">##      dairy produce*}</span></span></code></pre></div>
+<p>The added group-level items are marked with an * after the name. Now we can mine rules
+including items from multiple levels.</p>
+<div class="sourceCode" id="cb424"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rules</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/apriori.html">apriori</a></span><span class="op">(</span><span class="va">Groceries_multilevel</span>,</span>
+<span>  parameter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>support <span class="op">=</span> <span class="fl">0.005</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## Apriori</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Parameter specification:</span></span>
+<span><span class="co">##  confidence minval smax arem  aval originalSupport maxtime support</span></span>
+<span><span class="co">##         0.8    0.1    1 none FALSE            TRUE       5   0.005</span></span>
+<span><span class="co">##  minlen maxlen target  ext</span></span>
+<span><span class="co">##       1     10  rules TRUE</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Algorithmic control:</span></span>
+<span><span class="co">##  filter tree heap memopt load sort verbose</span></span>
+<span><span class="co">##     0.1 TRUE TRUE  FALSE TRUE    2    TRUE</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Absolute minimum support count: 49 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## set item appearances ...[0 item(s)] done [0.00s].</span></span>
+<span><span class="co">## set transactions ...[224 item(s), 9835 transaction(s)] done [0.01s].</span></span>
+<span><span class="co">## sorting and recoding items ... [167 item(s)] done [0.00s].</span></span>
+<span><span class="co">## creating transaction tree ... done [0.00s].</span></span>
+<span><span class="co">## checking subsets of size 1 2 3 4 5 6 7 8 done [0.05s].</span></span>
+<span><span class="co">## writing ... [21200 rule(s)] done [0.00s].</span></span>
+<span><span class="co">## creating S4 object  ... done [0.00s].</span></span></code></pre></div>
+<div class="sourceCode" id="cb425"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rules</span></span>
+<span><span class="co">## set of 21200 rules</span></span></code></pre></div>
+<p>Mining rules with group-level items added will
+create many spurious rules of the type</p>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb426-1"><a href="association-analysis-advanced-concepts.html#cb426-1" aria-hidden="true"></a>⁠item A =<span class="er">&gt;</span><span class="st"> </span>group of item A⁠</span></code></pre></div>
+<p>with a confidence of 1.
+This will also happen if you mine itemsets. <code><a href="https://rdrr.io/pkg/arules/man/hierarchy.html">filterAggregate()</a></code>
+can be used to filter these spurious rules or itemsets.</p>
+<div class="sourceCode" id="cb427"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rules</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/hierarchy.html">filterAggregate</a></span><span class="op">(</span><span class="va">rules</span><span class="op">)</span></span>
+<span><span class="va">rules</span></span>
+<span><span class="co">## set of 838 rules</span></span></code></pre></div>
+<div class="sourceCode" id="cb428"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">rules</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">3</span>, by <span class="op">=</span> <span class="st">"lift"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">##     lhs                           rhs                        support confidence coverage  lift count</span></span>
+<span><span class="co">## [1] {whole milk,                                                                                    </span></span>
+<span><span class="co">##      whipped/sour cream,                                                                            </span></span>
+<span><span class="co">##      bread and backed goods*,                                                                       </span></span>
+<span><span class="co">##      cheese*}                  =&gt; {vegetables*}             0.005186     0.8095 0.006406 2.965    51</span></span>
+<span><span class="co">## [2] {sausage,                                                                                       </span></span>
+<span><span class="co">##      poultry*}                 =&gt; {vegetables*}             0.005084     0.8065 0.006304 2.954    50</span></span>
+<span><span class="co">## [3] {other vegetables,                                                                              </span></span>
+<span><span class="co">##      soda,                                                                                          </span></span>
+<span><span class="co">##      fruit*,                                                                                        </span></span>
+<span><span class="co">##      sausage*}                 =&gt; {bread and backed goods*} 0.005287     0.8525 0.006202 2.467    52</span></span></code></pre></div>
+<p>Using multi-level mining can reduce the number of rules and help to analyze if
+customers differentiate between products in a group.</p>
+</div>
+</div>
+<div id="sequential-patterns" class="section level2" number="6.4">
+<h2>
+<span class="header-section-number">6.4</span> Sequential Patterns<a class="anchor" aria-label="anchor" href="#sequential-patterns"><i class="fas fa-link"></i></a>
+</h2>
+<p>The frequent sequential pattern mining algorithm cSPADE <span class="citation">(Zaki <a href="references.html#ref-Zaki2000" role="doc-biblioref">2000</a>)</span> is implemented in
+the <code>arules</code> extension package <code>arulesSequences</code>.</p>
+<p>Sequential pattern mining starts with sequences of events.
+Each sequence is identified by a sequence ID and
+each event is a set of items that happen together.
+The order of events is specified using
+event IDs. The goal is to find subsequences of items in events that
+follow each other frequently. These are called frequent sequential pattern.</p>
+<p>We will look at a small example dataset that comes with the package
+arulesSequences.</p>
+<div class="sourceCode" id="cb429"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">arulesSequences</span><span class="op">)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Attaching package: 'arulesSequences'</span></span>
+<span><span class="co">## The following object is masked from 'package:arules':</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     itemsets</span></span></code></pre></div>
+<div class="sourceCode" id="cb430"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">zaki</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="va">zaki</span><span class="op">)</span></span>
+<span><span class="co">##      items        sequenceID eventID SIZE</span></span>
+<span><span class="co">## [1]  {C, D}       1          10      2   </span></span>
+<span><span class="co">## [2]  {A, B, C}    1          15      3   </span></span>
+<span><span class="co">## [3]  {A, B, F}    1          20      3   </span></span>
+<span><span class="co">## [4]  {A, C, D, F} 1          25      4   </span></span>
+<span><span class="co">## [5]  {A, B, F}    2          15      3   </span></span>
+<span><span class="co">## [6]  {E}          2          20      1   </span></span>
+<span><span class="co">## [7]  {A, B, F}    3          10      3   </span></span>
+<span><span class="co">## [8]  {D, G, H}    4          10      3   </span></span>
+<span><span class="co">## [9]  {B, F}       4          20      2   </span></span>
+<span><span class="co">## [10] {A, G, H}    4          25      3</span></span></code></pre></div>
+<p>The dataset contains four sequences (see <code>sequenceID</code>) and the event IDs
+are integer numbers to provide the order events in a sequence.
+In arulesSequences, this set of sequences is implemented as a regular transaction
+set, where each transaction is an event. The temporal information is added
+as extra columns to the transaction’s <code><a href="https://rdrr.io/pkg/arules/man/transactions-class.html">transactionInfo()</a></code> data.frame.</p>
+<p>Mine frequent sequence patterns
+using cspade is very similar to using apriori.
+Here we set support so we will find patterns that occur in 50% of the
+sequences.</p>
+<div class="sourceCode" id="cb431"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fsp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arulesSequences/man/cspade.html">cspade</a></span><span class="op">(</span><span class="va">zaki</span>, parameter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>support <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fsp</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">##     items support </span></span>
+<span><span class="co">##   1 &lt;{A}&gt;    1.00 </span></span>
+<span><span class="co">##   2 &lt;{B}&gt;    1.00 </span></span>
+<span><span class="co">##   3 &lt;{D}&gt;    0.50 </span></span>
+<span><span class="co">##   4 &lt;{F}&gt;    1.00 </span></span>
+<span><span class="co">##   5 &lt;{A,   </span></span>
+<span><span class="co">##       F}&gt;    0.75 </span></span>
+<span><span class="co">##   6 &lt;{B,   </span></span>
+<span><span class="co">##       F}&gt;    1.00 </span></span>
+<span><span class="co">##   7 &lt;{D},  </span></span>
+<span><span class="co">##      {F}&gt;    0.50 </span></span>
+<span><span class="co">##   8 &lt;{D},  </span></span>
+<span><span class="co">##      {B,   </span></span>
+<span><span class="co">##       F}&gt;    0.50 </span></span>
+<span><span class="co">##   9 &lt;{A,   </span></span>
+<span><span class="co">##       B,   </span></span>
+<span><span class="co">##       F}&gt;    0.75 </span></span>
+<span><span class="co">##  10 &lt;{A,   </span></span>
+<span><span class="co">##       B}&gt;    0.75 </span></span>
+<span><span class="co">##  11 &lt;{D},  </span></span>
+<span><span class="co">##      {B}&gt;    0.50 </span></span>
+<span><span class="co">##  12 &lt;{B},  </span></span>
+<span><span class="co">##      {A}&gt;    0.50 </span></span>
+<span><span class="co">##  13 &lt;{D},  </span></span>
+<span><span class="co">##      {A}&gt;    0.50 </span></span>
+<span><span class="co">##  14 &lt;{F},  </span></span>
+<span><span class="co">##      {A}&gt;    0.50 </span></span>
+<span><span class="co">##  15 &lt;{D},  </span></span>
+<span><span class="co">##      {F},  </span></span>
+<span><span class="co">##      {A}&gt;    0.50 </span></span>
+<span><span class="co">##  16 &lt;{B,   </span></span>
+<span><span class="co">##       F},  </span></span>
+<span><span class="co">##      {A}&gt;    0.50 </span></span>
+<span><span class="co">##  17 &lt;{D},  </span></span>
+<span><span class="co">##      {B,   </span></span>
+<span><span class="co">##       F},  </span></span>
+<span><span class="co">##      {A}&gt;    0.50 </span></span>
+<span><span class="co">##  18 &lt;{D},  </span></span>
+<span><span class="co">##      {B},  </span></span>
+<span><span class="co">##      {A}&gt;    0.50 </span></span>
+<span><span class="co">## </span></span></code></pre></div>
+<p>For example, pattern 17 shows that D in an event, it is often followed by
+an event by containing B and F which in turn is followed by an event
+containing A.</p>
+<p>The cspade algorithm supports many additional parameters to control gaps
+and windows. Details can be found in the manual page for <code>cspade</code>.</p>
+<p>Rules, similar to regular association rules can be generated
+from frequent sequence patterns using <code><a href="https://rdrr.io/pkg/arules/man/ruleInduction.html">ruleInduction()</a></code>.</p>
+<div class="sourceCode" id="cb432"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rules</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/ruleInduction.html">ruleInduction</a></span><span class="op">(</span><span class="va">fsp</span>, confidence <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span></span>
+<span><span class="va">rules</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">##    lhs      rhs   support confidence lift </span></span>
+<span><span class="co">##  1 &lt;{D}&gt; =&gt; &lt;{F}&gt;     0.5          1    1 </span></span>
+<span><span class="co">##  2 &lt;{D}&gt; =&gt; &lt;{B,      0.5          1    1 </span></span>
+<span><span class="co">##               F}&gt;    </span></span>
+<span><span class="co">##  3 &lt;{D}&gt; =&gt; &lt;{B}&gt;     0.5          1    1 </span></span>
+<span><span class="co">##  4 &lt;{D}&gt; =&gt; &lt;{A}&gt;     0.5          1    1 </span></span>
+<span><span class="co">##  5 &lt;{D},             </span></span>
+<span><span class="co">##     {F}&gt; =&gt; &lt;{A}&gt;     0.5          1    1 </span></span>
+<span><span class="co">##  6 &lt;{D},             </span></span>
+<span><span class="co">##     {B,              </span></span>
+<span><span class="co">##      F}&gt; =&gt; &lt;{A}&gt;     0.5          1    1 </span></span>
+<span><span class="co">##  7 &lt;{D},             </span></span>
+<span><span class="co">##     {B}&gt; =&gt; &lt;{A}&gt;     0.5          1    1 </span></span>
+<span><span class="co">## </span></span></code></pre></div>
+<p>The usual measures of confidence and lift are used.</p>
 
+</div>
 </div>
   <div class="chapter-nav">
 <div class="prev"><a href="association-analysis-basic-concepts-and-algorithms.html"><span class="header-section-number">5</span> Association Analysis: Basic Concepts and Algorithms</a></div>
 <div class="next"><a href="cluster-analysis.html"><span class="header-section-number">7</span> Cluster Analysis</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
-      <ul class="nav navbar-nav"><li><a class="nav-link" href="#association-analysis-advanced-concepts"><span class="header-section-number">6</span> Association Analysis: Advanced Concepts</a></li></ul>
+      <ul class="nav navbar-nav">
+<li>
+<a class="nav-link" href="#association-analysis-advanced-concepts"><span class="header-section-number">6</span> Association Analysis: Advanced Concepts</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#packages-used-in-this-chapter-4">Packages Used in this Chapter</a></li></ul>
+</li>
+<li><a class="nav-link" href="#handling-categorical-attributes"><span class="header-section-number">6.1</span> Handling Categorical Attributes</a></li>
+<li><a class="nav-link" href="#handling-continuous-attributes"><span class="header-section-number">6.2</span> Handling Continuous Attributes</a></li>
+<li>
+<a class="nav-link" href="#handling-concept-hierarchies"><span class="header-section-number">6.3</span> Handling Concept Hierarchies</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#aggregation-1"><span class="header-section-number">6.3.1</span> Aggregation</a></li>
+<li><a class="nav-link" href="#multi-level-analysis"><span class="header-section-number">6.3.2</span> Multi-level Analysis</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#sequential-patterns"><span class="header-section-number">6.4</span> Sequential Patterns</a></li>
+</ul>
 
       <div class="book-extra">
         <ul class="list-unstyled">
@@ -101,7 +548,7 @@ code for the previous chapter.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-06-26.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-06-28.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

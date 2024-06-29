@@ -6,15 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 3 Classification: Basic Concepts and Techniques | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
-<meta name="description" content='Install the packages used in this chapter: pkgs &lt;- c("caret", "FSelector", "lattice", "mlbench",      "palmerpenguins", "party", "pROC", "rpart", "rpart.plot",      "sampling", "tidyverse")...'>
+<meta name="description" content='This chapter introduces decision trees for classification and discusses how models are built and evaluated. Packages Used in this Chapter pkgs &lt;- c("caret", "FSelector", "lattice", "mlbench",     ...'>
 <meta name="generator" content="bookdown 0.39 with bs4_book()">
 <meta property="og:title" content="Chapter 3 Classification: Basic Concepts and Techniques | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
-<meta property="og:description" content='Install the packages used in this chapter: pkgs &lt;- c("caret", "FSelector", "lattice", "mlbench",      "palmerpenguins", "party", "pROC", "rpart", "rpart.plot",      "sampling", "tidyverse")...'>
+<meta property="og:description" content='This chapter introduces decision trees for classification and discusses how models are built and evaluated. Packages Used in this Chapter pkgs &lt;- c("caret", "FSelector", "lattice", "mlbench",     ...'>
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 3 Classification: Basic Concepts and Techniques | An R Companion for Introduction to Data Mining">
-<meta name="twitter:description" content='Install the packages used in this chapter: pkgs &lt;- c("caret", "FSelector", "lattice", "mlbench",      "palmerpenguins", "party", "pROC", "rpart", "rpart.plot",      "sampling", "tidyverse")...'>
+<meta name="twitter:description" content='This chapter introduces decision trees for classification and discusses how models are built and evaluated. Packages Used in this Chapter pkgs &lt;- c("caret", "FSelector", "lattice", "mlbench",     ...'>
 <meta name="twitter:image" content="/images/cover.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -75,7 +75,11 @@
 <h1>
 <span class="header-section-number">3</span> Classification: Basic Concepts and Techniques<a class="anchor" aria-label="anchor" href="#classification-basic-concepts-and-techniques"><i class="fas fa-link"></i></a>
 </h1>
-<p>Install the packages used in this chapter:</p>
+<p>This chapter introduces decision trees for classification and discusses
+how models are built and evaluated.</p>
+<div id="packages-used-in-this-chapter-1" class="section level3 unnumbered" number="">
+<h3>Packages Used in this Chapter<a class="anchor" aria-label="anchor" href="#packages-used-in-this-chapter-1"><i class="fas fa-link"></i></a>
+</h3>
 <div class="sourceCode" id="cb158"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"caret"</span>, <span class="st">"FSelector"</span>, <span class="st">"lattice"</span>, <span class="st">"mlbench"</span>, </span>
 <span>          <span class="st">"palmerpenguins"</span>, <span class="st">"party"</span>, <span class="st">"pROC"</span>, <span class="st">"rpart"</span>, <span class="st">"rpart.plot"</span>, </span>
@@ -84,6 +88,7 @@
 <span><span class="va">pkgs_install</span> <span class="op">&lt;-</span> <span class="va">pkgs</span><span class="op">[</span><span class="op">!</span><span class="op">(</span><span class="va">pkgs</span> <span class="op"><a href="https://rdrr.io/pkg/arules/man/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span>,<span class="st">"Package"</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">pkgs_install</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="va">pkgs_install</span><span class="op">)</span></span></code></pre></div>
 <p>The packages used for this chapter are: <em>caret</em> <span class="citation">(M. Kuhn <a href="references.html#ref-R-caret" role="doc-biblioref">2023</a>)</span>, <em>FSelector</em> <span class="citation">(Romanski, Kotthoff, and Schratz <a href="references.html#ref-R-FSelector" role="doc-biblioref">2023</a>)</span>, <em>lattice</em> <span class="citation">(Sarkar <a href="references.html#ref-R-lattice" role="doc-biblioref">2023</a>)</span>, <em>mlbench</em> <span class="citation">(Leisch and Dimitriadou <a href="references.html#ref-R-mlbench" role="doc-biblioref">2024</a>)</span>, <em>palmerpenguins</em> <span class="citation">(Horst, Hill, and Gorman <a href="references.html#ref-R-palmerpenguins" role="doc-biblioref">2022</a>)</span>, <em>party</em> <span class="citation">(Hothorn et al. <a href="references.html#ref-R-party" role="doc-biblioref">2024</a>)</span>, <em>pROC</em> <span class="citation">(Robin et al. <a href="references.html#ref-R-pROC" role="doc-biblioref">2023</a>)</span>, <em>rpart</em> <span class="citation">(Therneau and Atkinson <a href="references.html#ref-R-rpart" role="doc-biblioref">2023</a>)</span>, <em>rpart.plot</em> <span class="citation">(Milborrow <a href="references.html#ref-R-rpart.plot" role="doc-biblioref">2024</a>)</span>, <em>sampling</em> <span class="citation">(Tillé and Matei <a href="references.html#ref-R-sampling" role="doc-biblioref">2023</a>)</span>, <em>tidyverse</em> <span class="citation">(Wickham <a href="references.html#ref-R-tidyverse" role="doc-biblioref">2023</a><a href="references.html#ref-R-tidyverse" role="doc-biblioref">c</a>)</span></p>
+</div>
 <div id="basic-concepts" class="section level2" number="3.1">
 <h2>
 <span class="header-section-number">3.1</span> Basic Concepts<a class="anchor" aria-label="anchor" href="#basic-concepts"><i class="fas fa-link"></i></a>
@@ -281,7 +286,7 @@ Use <code><a href="https://rdrr.io/r/base/factor.html">as.factor()</a></code> on
 <div class="sourceCode" id="cb164"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">tree_default</span>, extra <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-125-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-124-1.png" width="672"></div>
 <p><em>Note:</em> <code>extra=2</code> prints for each leaf node the number of correctly
 classified objects from data and the total number of objects from the
 training data falling into that node (correct/total).</p>
@@ -489,7 +494,7 @@ As we will see later, full trees overfit the training data!</p>
 <span>           roundint<span class="op">=</span><span class="cn">FALSE</span>,</span>
 <span>            box.palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"Gy"</span>, <span class="st">"Gn"</span>, <span class="st">"Bu"</span>, <span class="st">"Bn"</span>, </span>
 <span>                               <span class="st">"Or"</span>, <span class="st">"Rd"</span>, <span class="st">"Pu"</span><span class="op">)</span><span class="op">)</span> <span class="co"># specify 7 colors</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-134-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-133-1.png" width="672"></div>
 <div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tree_full</span></span>
 <span><span class="co">## n= 101 </span></span>
@@ -696,7 +701,7 @@ to <code><a href="https://rdrr.io/pkg/caret/man/train.html">train()</a></code> i
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">finalModel</span>, extra <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  box.palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"Gy"</span>, <span class="st">"Gn"</span>, <span class="st">"Bu"</span>, <span class="st">"Bn"</span>, <span class="st">"Or"</span>, <span class="st">"Rd"</span>, <span class="st">"Pu"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-142-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-141-1.png" width="672"></div>
 <p>caret also computes variable importance. By default it uses competing
 splits (splits which would be runners up, but do not get chosen by the
 tree) for rpart models (see <code><a href="https://rdrr.io/pkg/caret/man/varImp.html">? varImp</a></code>). Toothed is the runner up for
@@ -748,7 +753,7 @@ many splits, but it never gets chosen!</p>
 <div class="sourceCode" id="cb188"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">imp</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-144-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-143-1.png" width="672"></div>
 <p><strong>Note:</strong> Not all models provide a variable importance function. In this
 case caret might calculate the variable importance by itself and ignore
 the model (see <code><a href="https://rdrr.io/pkg/caret/man/varImp.html">? varImp</a></code>)!</p>
@@ -928,7 +933,7 @@ example, a boxplot to compare the accuracy and kappa distribution (over
 the 10 folds).</p>
 <div class="sourceCode" id="cb195"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/xyplot.html">bwplot</a></span><span class="op">(</span><span class="va">resamps</span>, layout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-151-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-150-1.png" width="672"></div>
 <p>We see that kNN is performing consistently better on the folds than CART
 (except for some outlier folds).</p>
 <p>Find out if one models is statistically better than the other (is the
@@ -1024,7 +1029,7 @@ levels used by <code>ggplot</code>).</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Importance score"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"Feature"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-155-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-154-1.png" width="672"></div>
 <p>Picking the best features is called the feature ranking approach.
 Here we pick the 5 highest-ranked features.</p>
 <div class="sourceCode" id="cb201"><pre class="downlit sourceCode r">
@@ -1038,12 +1043,12 @@ Here we pick the 5 highest-ranked features.</p>
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/as.simple.formula.html">as.simple.formula</a></span><span class="op">(</span><span class="va">subset</span>, <span class="st">"type"</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
 <span><span class="co">## type ~ feathers + milk + backbone + toothed + eggs</span></span>
-<span><span class="co">## &lt;environment: 0x59296aa5e5a8&gt;</span></span></code></pre></div>
+<span><span class="co">## &lt;environment: 0x633d384b9ce8&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb203"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">m</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-157-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-156-1.png" width="672"></div>
 <p>There are many alternative ways to calculate univariate importance
 scores (see package FSelector). Some of them (also) work for continuous
 features. One example is the information gain ratio based on entropy as
@@ -1134,7 +1139,7 @@ with several values.</p>
 <code class="sourceCode R"><span><span class="va">tree_predator</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">predator</span> <span class="op">~</span> <span class="va">type</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">tree_predator</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-163-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-162-1.png" width="672"></div>
 <p><strong>Note:</strong> Some splits use multiple values. Building the tree will become
 extremely slow if a factor has many levels (different values) since the
 tree has to check all possible splits into two subsets. This situation
@@ -1167,7 +1172,7 @@ also <code><a href="https://rdrr.io/pkg/caret/man/dummyVars.html">? dummyVars</a
 <span>        data <span class="op">=</span> <span class="va">_</span>,</span>
 <span>        control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">rpart.control</a></span><span class="op">(</span>minsplit <span class="op">=</span> <span class="fl">2</span>, cp <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">tree_predator</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-164-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-163-1.png" width="672"></div>
 <p>Using <code>caret</code> on the original factor encoding automatically translates
 factors (here type) into 0-1 dummy variables (e.g., <code>typeinsect = 0</code>).
 The reason is that some models cannot directly use factors and <code>caret</code>
@@ -1198,7 +1203,7 @@ tries to consistently work with all of them.</p>
 <div class="sourceCode" id="cb213"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">finalModel</span>, extra <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-165-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-164-1.png" width="672"></div>
 <p><em>Note:</em> To use a fixed value for the tuning parameter <code>cp</code>, we have to
 create a tuning grid that only contains that value.</p>
 </div>
@@ -1244,7 +1249,9 @@ the most important? What variables do not matter?</li>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
-<li><a class="nav-link" href="#classification-basic-concepts-and-techniques"><span class="header-section-number">3</span> Classification: Basic Concepts and Techniques</a></li>
+<li>
+<a class="nav-link" href="#classification-basic-concepts-and-techniques"><span class="header-section-number">3</span> Classification: Basic Concepts and Techniques</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#packages-used-in-this-chapter-1">Packages Used in this Chapter</a></li></ul>
+</li>
 <li><a class="nav-link" href="#basic-concepts"><span class="header-section-number">3.1</span> Basic Concepts</a></li>
 <li>
 <a class="nav-link" href="#general-framework-for-classification"><span class="header-section-number">3.2</span> General Framework for Classification</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#the-zoo-dataset"><span class="header-section-number">3.2.1</span> The Zoo Dataset</a></li></ul>
@@ -1293,7 +1300,7 @@ the most important? What variables do not matter?</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-06-26.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-06-28.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

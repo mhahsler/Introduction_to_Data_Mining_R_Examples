@@ -6,6 +6,10 @@ editor_options:
 
 # Logistic Regression*
 
+This chapter introduces the popular classification method 
+logistic regression.
+
+### Packages Used in this Chapter {.unnumbered}
 This chapter only uses R's base functionality and does not need extra packages.
 
 ```{r setup_log_reg, include=FALSE}
@@ -46,6 +50,8 @@ Load and shuffle data. We also add a useless variable to see if the logistic reg
 
 ```{r}
 data(iris)
+set.seed(100) # for reproducability
+
 x <- iris[sample(1:nrow(iris)),]
 x <- cbind(x, useless = rnorm(nrow(x)))
 ```
@@ -139,6 +145,48 @@ caret::confusionMatrix(
 
 We see that the model performs well with a very high accuracy and kappa value.
 
+## Regularized Logistic Regression
+
+Glmnet fits generalized linear models (including logistic regression) 
+using regularization via penalized maximum likelihood.
+The regularization parameter $\lambda$ is a hyperparameter and 
+glmnet can use cross-validation to find an appropriate 
+value. glmnet does not have a function interface, so we have
+to supply a matrix for `X` and a vector of responses for `y`.
+
+```{r }
+library(glmnet)
+
+X <- as.matrix(x[, 1:5])
+y <- x$virginica
+
+fit <- cv.glmnet(X, y, family = "binomial")
+fit
+```
+
+There are several selection rules for lambda, we look at the 
+coefficients of the logistic regression using the 
+lambda that  gives the most regularized model such that the cross-validated error is within one standard error of the minimum cross-validated error.
+
+```{r}
+coef(fit, s = fit$lambda.1se)
+```
+
+A dot means 0. We see that the predictors Sepal.Length and 
+useless are not used in the prediction giving a models similar to
+stepwise variable selection above. 
+
+A predict function is provided. We need to specify
+what regularization to use and that we want to predict a class
+label.
+
+```{r}
+predict(fit, newx = X[1:5,], s = fit$lambda.1se, type = "class")
+```
+
+Glmnet provides supports many types of 
+generalized linear models. Examples can be found in the
+article [An Introduction to glmnet](https://glmnet.stanford.edu/articles/glmnet.html).
 
 ## Exercises
 

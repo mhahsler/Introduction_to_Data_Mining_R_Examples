@@ -6,7 +6,11 @@ editor_options:
 
 # Association Analysis: Basic Concepts and Algorithms
 
-Install the packages used in this chapter:
+This chapter introduces association rules mining using the APRIORI
+algorithm. In addition, analyzing sets of association rules 
+using visualization techniques is demonstrated. 
+
+### Packages Used in this Chapter {.unnumbered}
 
 ```{r setup_05}
 pkgs <- c("arules", "arulesViz", "mlbench", "palmerpenguins", "tidyverse")
@@ -456,7 +460,7 @@ rules
 
 #### Interactive Inspect With Sorting, Filtering and Paging
 
-```{r }
+```{r eval = !knitr::is_latex_output()}
 inspectDT(rules,options = list(scrollX = TRUE))
 ```
 
@@ -468,7 +472,7 @@ jitter. Hovering over rules shows rule information. *Note:*
 plotly/javascript does not do well with too many points, so plot selects
 the top 1000 rules with a warning if more rules are supplied.
 
-```{r }
+```{r eval = !knitr::is_latex_output()}
 plot(rules, engine = "html")
 ```
 
@@ -476,7 +480,7 @@ plot(rules, engine = "html")
 
 Plot rules as a matrix using an interactive html widget.
 
-```{r }
+```{r eval = !knitr::is_latex_output()}
 plot(rules, method = "matrix", engine = "html") 
 ```
 
@@ -486,7 +490,7 @@ Plot rules as a graph using an interactive html widget. *Note:* the used
 javascript library does not do well with too many graph nodes, so plot
 selects the top 100 rules only (with a warning).
 
-```{r }
+```{r eval = !knitr::is_latex_output()}
 plot(rules, method = "graph", engine = "html")
 ```
 

@@ -3,4 +3,3 @@ bookdown::bs4_book:
     base:   https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples
     branch: master
     subdir: book_src
-  

@@ -1,13 +1,14 @@
 # Version 1.0-1 (xx/xx/2024)
 
+NEW
+* We added chapters on regression and logistic regression.
+* Added exercises for each chapter.
+* Added chapter 6 (advanced association rule mining).
+
 FIXES
 * Chapter 2: ggparcoord() stopped to accept names for the columns vector. We use
   now as.integer() to remove the names.
 * Fixed many deprecated calls for dplyr.
-
-NEW
-* We added chapters on regression and logistic regression.
-* Added exercises for each chapter.
 
 CHANGES
 * Reorganized the sections so they are in the same order as the textbook in 

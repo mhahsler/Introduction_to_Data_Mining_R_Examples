@@ -1,4 +1,249 @@
 # Association Analysis: Advanced Concepts
 
-No code is available for this Chapter. Some topics were already covered in the 
-code for the previous chapter.
+This chapter discusses a few advanced concepts of association analysis.
+First, we look at how categorical and continuous attributes are converted
+into items. The we look at integrating item hierarchies into the analysis.
+Finally, sequence pattern mining is introduced.
+
+### Packages Used in this Chapter {.unnumbered}
+
+```{r setup_06}
+pkgs <- c("arules", "arulesSequences", "tidyverse")
+
+pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
+if(length(pkgs_install)) install.packages(pkgs_install)
+```
+
+```{r setup_06-2, include=FALSE}
+source("_common.R")
+source("format_pkgs.R")
+all_pkgs <- union(all_pkgs, pkgs)
+```
+
+The packages used for this chapter are: `r format_pkgs(pkgs)`
+
+## Handling Categorical Attributes
+
+Categorical attributes are nominal or ordinal variables. 
+In R they are `factors` or `ordinal`. They are
+translated into a series of binary items (one for each level constructed as ⁠variable
+`name = level`⁠). Items cannot represent order and this ordered factors lose
+the order information. Note that nominal variables need to be encoded as 
+factors (and not characters or numbers) before converting them into transactions.
+
+For the special case of Boolean variables (`logical`), the `TRUE` value is 
+converted into an item with the name of the variable and for the `FALSE` 
+values no item is created.
+
+We will give an example in the next section.
+
+## Handling Continuous Attributes
+
+Continuous variables cannot directly be represented as items and need to be 
+discretized first (see [Discretization] in Chapter 2). 
+An item resulting from discretization might be `age>18` and 
+the column contains only `TRUE` or `FALSE`. Alternatively, it can be a factor 
+with levels `age<=18`, `⁠50=>age>18`⁠ and `age>50`. These will be automatically
+converted into 3 items, one for each level. Discretization is described in functions 
+`discretize()` and `discretizeDF()` to discretize all columns in a data.frame.
+
+We give a short example using the iris dataset. We add an extra `logical` column
+to show how Boolean attributes are converted in to items.
+
+```{r }
+data(iris)
+
+## add a Boolean attribute
+iris$Versicolor <- iris$Species == "versicolor"
+head(iris)
+```
+
+The first step is to
+discretize continuous attributes (marked as `<dbl>` in the table above).
+We discretize the two Petal features.
+
+```{r }
+library(tidyverse)
+library(arules)
+
+iris_disc <- iris %>% 
+  mutate(Petal.Length = discretize(Petal.Length, 
+                                   method = "frequency", breaks = 3, 
+                                   labels = c("short", "medium", "long")),
+         Petal.Width = discretize(Petal.Width,
+                                  method = "frequency", breaks = 2, 
+                                  labels = c("narrow", "wide"))
+         )
+  
+
+head(iris_disc)
+```
+
+Next, we convert the dataset into transactions.
+
+```{r }
+trans <- transactions(iris_disc)
+trans
+```
+
+The conversion creates a warning because there are still two undiscretized columns
+in the data. The warning indicates that the default discretization is used 
+automatically.
+
+```{r }
+itemLabels(trans)
+```
+
+We see that all continuous variables are discretized and the different ranges 
+create an item. For example `Petal.Width` has the two items `Petal.Width=narrow`
+and `Petal.Width=wide`. The automatically discretized variables show intervals.
+`Sepal.Length=[4.3,5.4)` means that this item used for flowers with 
+a sepal length between 4.3 and 5.4 cm.
+
+The species is converted into three items, one for each class. The logical 
+variable `Versicolor` created only a single item that is used when 
+the variable is `TRUE`.
+
+## Handling Concept Hierarchies
+
+Often an item hierarchy is available for transactions used for association rule mining. For example in a supermarket dataset items like "bread" and "beagle" might belong to the item group (category) "baked goods."
+Transactions can store item hierarchies as additional columns in the itemInfo data.frame.
+
+### Aggregation
+
+To perform analysis at a group level of the item hierarchy, `aggregate()` produces a new object with items aggregated to a given group level. A group-level item is present if one or more of the items in the group are present in the original object. If rules are aggregated, and the aggregation would lead to the same aggregated group item in the lhs and in the rhs, then that group item is removed from the lhs. Rules or itemsets, which are not unique after the aggregation, are also removed. Note also that the quality measures are not applicable to the new rules and thus are removed. If these measures are required, then aggregate the transactions before mining rules.
+
+We use the Groceries data set in this example. It contains 1 month (30 days) of real-world point-of-sale transaction data from a typical local grocery outlet. The items 
+are 169 products categories.
+
+```{r }
+data("Groceries")
+Groceries
+```
+
+The dataset also contains two aggregation levels.
+
+```{r }
+head(itemInfo(Groceries))
+```
+
+We aggregate to level1 stored in Groceries. All items with the same level2 label
+will become a single item with that name. This reduces the number of items to
+the 55 level2 categories
+
+```{r }
+Groceries_level2 <- aggregate(Groceries, by = "level2")
+Groceries_level2
+head(itemInfo(Groceries_level2)) ## labels are alphabetically sorted!
+```
+We can now compare an original transaction with the aggregated transaction.
+
+```{r }
+inspect(head(Groceries, 3))
+inspect(head(Groceries_level2, 3))
+```
+For example, citrus fruit in the first transaction was translated to the category fruit.
+Note that the order of items in a transaction is not important, so it might change
+during aggregation.
+
+It is now easy to mine rules on the aggregated data.
+```{r }
+rules <- apriori(Groceries_level2, support = 0.005)
+rules |> head(3, by = "support") |> inspect()
+```
+
+You can add your own aggregation to an existing dataset by constructing
+the and iteminfo data.frame and adding it to the transactions. See `? hierarchy` 
+for details.
+
+### Multi-level Analysis
+
+To analyze relationships between individual items and item groups at the same time, `addAggregate()` can be used to create a new transactions object which contains both, the original items and group-level items.
+
+```{r}
+Groceries_multilevel <- addAggregate(Groceries, "level2")
+Groceries_multilevel |> head(n=3) |> inspect()
+```
+
+The added group-level items are marked with an \* after the name. Now we can mine rules 
+including items from multiple levels.
+
+```{r }
+rules <- apriori(Groceries_multilevel,
+  parameter = list(support = 0.005))
+rules
+```
+
+Mining rules with group-level items added will 
+create many spurious rules of the type
+
+```{r eval=FALSE}
+⁠item A => group of item A⁠
+```
+
+with a confidence of 1. 
+This will also happen if you mine itemsets. `filterAggregate()` 
+can be used to filter these spurious rules or itemsets.
+
+```{r }
+rules <- filterAggregate(rules)
+rules
+
+rules |> head(n = 3, by = "lift") |> inspect()
+```
+
+Using multi-level mining can reduce the number of rules and help to analyze if
+customers differentiate between products in a group.
+
+## Sequential Patterns
+
+The frequent sequential pattern mining algorithm cSPADE [@Zaki2000] is implemented in 
+the `arules` extension package `arulesSequences`. 
+
+Sequential pattern mining starts with sequences of events. 
+Each sequence is identified by a sequence ID and 
+each event is a set of items that happen together. 
+The order of events is specified using
+event IDs. The goal is to find subsequences of items in events that
+follow each other frequently. These are called frequent sequential pattern.
+
+We will look at a small example dataset that comes with the package
+arulesSequences.
+
+```{r}
+library(arulesSequences)
+data(zaki)
+
+inspect(zaki)
+```
+
+The dataset contains four sequences (see `sequenceID`) and the event IDs
+are integer numbers to provide the order events in a sequence.
+In arulesSequences, this set of sequences is implemented as a regular transaction
+set, where each transaction is an event. The temporal information is added
+as extra columns to the transaction's `transactionInfo()` data.frame.
+
+Mine frequent sequence patterns
+using cspade is very similar to using apriori.
+Here we set support so we will find patterns that occur in 50% of the 
+sequences.
+
+```{r}
+fsp <- cspade(zaki, parameter = list(support = .5))
+fsp |> inspect()
+```
+For example, pattern 17 shows that D in an event, it is often followed by 
+an event by containing B and F which in turn is followed by an event
+containing A.
+
+The cspade algorithm supports many additional parameters to control gaps
+and windows. Details can be found in the manual page for `cspade`.
+
+Rules, similar to regular association rules can be generated 
+from frequent sequence patterns using `ruleInduction()`.
+```{r }
+rules <- ruleInduction(fsp, confidence = .8)
+rules |> inspect()
+```
+
+The usual measures of confidence and lift are used.

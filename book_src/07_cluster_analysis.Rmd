@@ -6,6 +6,13 @@ editor_options:
 
 # Cluster Analysis
 
+This chapter introduces cluster analysis using K-means, hierarchical clustering
+and DBSCAN. We will discuss how to choose the number of clusters and how 
+to evaluate the quality clusterings. In addition, we will introduce more 
+clustering algorithms and how clustering is influenced by outliers. 
+
+### Packages Used in this Chapter {.unnumbered}
+
 ```{r setup_07}
 pkgs <- c("cluster", "dbscan", "e1071", "factoextra", "fpc", 
           "GGally", "kernlab", "mclust", "mlbench", "scatterpie", 

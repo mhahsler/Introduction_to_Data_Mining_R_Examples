@@ -6,6 +6,14 @@ editor_options:
 
 # Regression*
 
+This chapter introduces the regression problem
+and multiple linear regression. In addition,
+alternative models like regression trees and regularized regression
+are discussed.
+
+
+### Packages Used in this Chapter {.unnumbered}
+
 ```{r setup_linear_regression}
 pkgs <- c('lars')
   
@@ -55,16 +63,14 @@ Linear regression makes several assumptions:
   that highly correlated predictors lead to unstable results and should be
   avoided.
 
-## A First Model
-
-```{r}
-set.seed(2000)
-```
+## A First Linear Regression Model
 
 Load and shuffle data (flowers are in order by species)
 
 ```{r}
 data(iris)
+set.seed(2000) # make the sampling reproducible
+
 x <- iris[sample(1:nrow(iris)),]
 plot(x, col=x$Species)
 ```
@@ -111,7 +117,7 @@ summary(model1)
 ```
 
 Plotting the model produces diagnostic plots (see `? plot.lm`). For example
-to check for homoscedasticity (residual vs predicted value scatter plot should not look like a funnel)
+to check for homoscedasticity (residual vs predicted value scatter plot should produce a close to horizontal line)
 and if the residuals are approximately normally distributed (Q-Q plot should be close to the straight line).
 
 ```{r}
@@ -119,7 +125,7 @@ plot(model1, which = 1:2)
 ```
 
 ## Comparing Nested Models
-We try simpler models
+Here we create a simpler model by using only three predictors. 
 
 ```{r}
 model2 <- lm(Petal.Width ~ Sepal.Length + Sepal.Width + Petal.Length,
@@ -127,7 +133,7 @@ model2 <- lm(Petal.Width ~ Sepal.Length + Sepal.Width + Petal.Length,
 summary(model2)
 ```
 
-No intercept
+We can remove the intercept by adding `-1` to the formula.
 
 ```{r}
 model3 <- lm(Petal.Width ~ Sepal.Length + Sepal.Width + Petal.Length - 1,
@@ -135,7 +141,7 @@ model3 <- lm(Petal.Width ~ Sepal.Length + Sepal.Width + Petal.Length - 1,
 summary(model3)
 ```
 
-Very simple model
+here is a very simple model:
 
 ```{r}
 model4 <- lm(Petal.Width ~ Petal.Length -1,
