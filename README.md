@@ -4,18 +4,20 @@
 <img src="book_small.jpg" align="right">
 
 R and [tidyverse](https://www.tidyverse.org/) are very popular for data mining.
-This repository contains slides and documented R examples to accompany several chapters of the popular data mining text book:
+This repository contains slides and documented R examples to accompany several
+chapters of the popular data mining text book:
 
 > Pang-Ning Tan, Michael Steinbach, Anuj Karpatne and Vipin Kumar, 
 [_Introduction to Data Mining,_](https://www-users.cs.umn.edu/~kumar001/dmbook/index.php) Addison Wesley, 1st or 2nd edition.
 
-The slides and examples are used in my course _CS 5/7331 Data Mining_
-taught at [SMU](https://www.smu.edu/) and will be regularly updated and improved. 
-The code examples are now compiled into the free online book
-[An R Companion for Introduction to Data Mining](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/) which is
-published under the creative commons attribution license and you can
-share and adapt them freely. Please open an [issue](issues)  
-for corrections or to suggest improvements. 
+The slides and examples are used in my course _CS 5/7331 Data Mining_ taught at
+[SMU](https://www.smu.edu/) and will be regularly updated and improved.  The
+code examples are now compiled into the free online book [An R Companion for
+Introduction to Data
+Mining](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/)
+which is published under the creative commons attribution license and you can
+share and adapt them freely. Please open an [issue](issues)  for corrections or
+to suggest improvements. 
 
 ## Covered Chapters
 
@@ -40,23 +42,30 @@ You need to install:
 * [R](https://cran.r-project.org/)
 * [R Studio Desktop](https://posit.co/products/open-source/rstudio/)
 
-Each book chapter will use a set of packages that must be installed. The 
-installation is done directly in R and the
-installation code can be found at the beginning of each chapter. 
+Each book chapter will use a set of packages that must be installed. The
+installation is done directly in R and the installation code can be found at
+the beginning of each chapter. 
 
 ## Statement of Need
 
-Introduction to Data Mining is one of the most popular data mining textbooks.
-Before this R companion was created, the only code examples were in Python.
-R and [tidyverse](https://www.tidyverse.org/) are very popular for data mining.
-This R companion provides comprehensive documented R code examples and is linked on the 
-[textbook's hompage](https://www-users.cse.umn.edu/~kumar001/dmbook/index.php)
-as the official R code examples for the book.
+The textbook Introduction to Data Mining [@Tan2018] has been one of the most
+popular choices to learn and teach data mining concepts.  Some of the most
+important chapters have been made available for free by the authors on the
+[books's website](https://www-users.cse.umn.edu/~kumar001/dmbook/index.php).
+One of the authors also provides Python Jupyter notebooks with examples, but
+complete R code examples were still needed. Given the R community's interest in
+data analysis, data science, and machine learning, and the broad support of R
+packages for data mining, there was a noticeable gap that was filled by this
+learning resource.  This resource targets advanced undergraduate and graduate
+students and can be used as a component for a first introduction to data
+mining.
+
 
 ## Instructor Resources
 
-* PowerPoint presentation files for a data mining course can be found in the repository directory [slides](slides). 
-The slides have an R symbol at the bottom whenever there are R code examples available.
+* PowerPoint presentation files for a data mining course can be found in the
+  repository directory [slides](slides).  The slides have an R symbol at the
+bottom whenever there are R code examples available.
 * Datasets for projects can be found at https://www.kaggle.com/datasets
 
 
