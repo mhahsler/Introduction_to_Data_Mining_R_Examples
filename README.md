@@ -48,7 +48,7 @@ the beginning of each chapter.
 
 ## Statement of Need
 
-The textbook Introduction to Data Mining [@Tan2018] has been one of the most
+The textbook Introduction to Data Mining has been one of the most
 popular choices to learn and teach data mining concepts.  Some of the most
 important chapters have been made available for free by the authors on the
 [books's website](https://www-users.cse.umn.edu/~kumar001/dmbook/index.php).
