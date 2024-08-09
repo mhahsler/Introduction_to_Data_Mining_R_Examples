@@ -34,6 +34,12 @@ to suggest improvements.
 
 \* Textbook chapters are from Introduction to Data Mining, 2nd edition. 
 Most used chapters are available as the linked free sample chapters.
+
+## Interactive Help
+
+* Ask the [R Wizard](https://chatgpt.com/g/g-TgjKDuQwZ-r-wizard) (GPT) to explain R code
+ and help with writing code.
+ 
   
 ## Software Requirements
 
