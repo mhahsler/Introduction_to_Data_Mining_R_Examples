@@ -9,7 +9,11 @@ editor_options:
 This chapter introduces cluster analysis using K-means, hierarchical clustering
 and DBSCAN. We will discuss how to choose the number of clusters and how 
 to evaluate the quality clusterings. In addition, we will introduce more 
-clustering algorithms and how clustering is influenced by outliers. 
+clustering algorithms and how clustering is influenced by outliers.
+
+The corresponding chapter of 
+the data mining textbook is available online: 
+[Chapter 7: Cluster Analysis: Basic Concepts and Algorithms.](https://www-users.cs.umn.edu/~kumar001/dmbook/ch7_clustering.pdf)
 
 ### Packages Used in this Chapter {.unnumbered}
 

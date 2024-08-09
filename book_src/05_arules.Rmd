@@ -10,6 +10,10 @@ This chapter introduces association rules mining using the APRIORI
 algorithm. In addition, analyzing sets of association rules 
 using visualization techniques is demonstrated. 
 
+The corresponding chapter of 
+the data mining textbook is available online: 
+[Chapter 5: Association Analysis: Basic Concepts and Algorithms.](https://www-users.cs.umn.edu/~kumar001/dmbook/ch5_association_analysis.pdf)
+
 ### Packages Used in this Chapter {.unnumbered}
 
 ```{r setup_05}
