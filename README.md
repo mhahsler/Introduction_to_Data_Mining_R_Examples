@@ -1,7 +1,7 @@
 # R Companion for Introduction to Data Mining
 
-<img src="book_small_e2.jpg" align="right">
-<img src="book_small.jpg" align="right">
+<img src="assets/book_small_e2.jpg" align="right">
+<img src="assets/cover_small.png" align="right">
 
 R and [tidyverse](https://www.tidyverse.org/) are very popular for data mining.
 This repository contains slides and documented R examples to accompany several
