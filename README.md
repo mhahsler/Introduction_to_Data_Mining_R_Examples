@@ -19,6 +19,13 @@ which is published under the creative commons attribution license and you can
 share and adapt them freely. Please open an [issue](issues)  for corrections or
 to suggest improvements. 
 
+## Online Book
+
+Browse the complete book: [An R Companion for
+Introduction to Data
+Mining](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/)
+
+
 ## Covered Chapters
 
 | Textbook Chapter* | Slides | Companion R Code |  
