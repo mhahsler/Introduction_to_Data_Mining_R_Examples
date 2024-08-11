@@ -283,21 +283,22 @@ Here is a short example That analyses the vitamin C content of different
 fruits. that will get you familiar with the basic syntax. Data tables in
 R are called data.frames. Tidyverse introduces its own version called
 tibbles. We create a tibble with the price in dollars per pound and the
-vitamin C content in milligrams (mg) per pound for four different types
-of fruit.
+vitamin C content in milligrams (mg) per pound for five different fruits.
+
 
 ```{r }
 fruit <- tibble(
-  name = c("apple", "banana", "mango", "orange"), 
-  price = c(2.5, 2.0, 4.0, 3.5), 
-  vitamin_c = c(20, 45, 130, 250))
+  name = c("apple", "banana", "mango", "orange", "lime"), 
+  price = c(2.5, 2.0, 4.0, 3.5, 2.5), 
+  vitamin_c = c(20, 45, 130, 250, 132),
+  type = c("pome", "tropical", "tropical", "citrus", "citrus"))
 fruit
 ```
 
 ### Transformations
 
-Now, we can add a column with the vitamin C (in mg) that a dollar buys
-you using `mutate()` to change the table. Then we filter only rows with
+We can modify the table by adding a column with the vitamin C (in mg) 
+that a dollar buys using `mutate()`. Then we filter only rows with
 fruit that provides more than 20 mg, and finally we arrange the data
 rows by the vitamin C per dollar from largest to smallest.
 
@@ -313,7 +314,12 @@ affordable_vitamin_c_sources
 The pipes operator `|>` lets you pass the value to the left (often the
 result of a function) as the first argument to the function to the
 right. This makes composing a sequence of function calls to transform
-data much easier to write and read. The code above starts with the fruit
+data much easier to write and read. 
+You will often see `%>%` as the pipe operator, especially in examples using 
+tidyverse. Both operators work similarly where `|>` is a native R operator
+while `%>%` is provided in the extension package `magrittr`.
+
+The code above starts with the fruit
 data and pipes it through three transformation functions. The final
 result is assigned with `<-` to a variable.
 
@@ -325,6 +331,19 @@ affordable_vitamin_c_sources |>
             mean = mean(price), 
             max = max(price))
 ```
+
+We can also calculate statistics for groups by first grouping the data
+wirh `group_by()`. Here 
+we produce statistics for fruit types.
+
+```{r }
+affordable_vitamin_c_sources |> 
+  group_by(type) |>
+  summarize(min = min(price), 
+            mean = mean(price), 
+            max = max(price))
+```
+
 
 Often, we want to apply the same function to multiple columns. This can
 be achieved using `across()`.

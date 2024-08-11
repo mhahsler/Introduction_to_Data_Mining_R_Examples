@@ -18,7 +18,7 @@ The second part of this chapter deals with data exploration and visualization.
 ```{r setup_02}
 pkgs <- c("arules", "caret", "factoextra", "GGally", 
           "ggcorrplot", "hexbin", "palmerpenguins", "plotly", 
-          "proxy", "sampling", "seriation", "tidyverse")
+          "proxy", "seriation", "tidyverse")
 
 pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
 if(length(pkgs_install)) install.packages(pkgs_install)
@@ -249,6 +249,8 @@ s <- iris |>
 library(GGally)
 ggpairs(s, aes(color = Species), progress = FALSE)
 ```
+Instead of `n` you can also specify the proportion of rows to select using
+`prob`. 
 
 #### Stratified Sampling
 
@@ -259,22 +261,24 @@ in the resulting sample.
 
 In the following, the subpopulations are the different types of species
 and we want to make sure to sample the same number (5) flowers from
-each. The library `sampling` provides a function for stratified
-sampling. The column `ID_unit` in the resulting data.frame contains the
-row numbers of the sampled rows. We can use `slice()` from `dplyr` to
-select the sampled rows.
+each. This can be achieved by first grouping the data by species and 
+then sampling a number of flowers from each group.
+
 
 ```{r }
-library(sampling)
-id2 <- strata(iris, stratanames = "Species", 
-              size = c(5,5,5), method = "srswor")
-id2
+set.seed(1000)
 
 s2 <- iris |> 
-  slice(id2$ID_unit)
+  group_by(Species) |>
+  slice_sample(n = 5) |>
+  ungroup()
 
+library(GGally)
 ggpairs(s2, aes(color = Species), progress = FALSE)
 ```
+
+More sophisticated sampling procedures are implemented in the package 
+`sampling`.
 
 ### Dimensionality Reduction
 
