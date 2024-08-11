@@ -323,13 +323,13 @@ Transformation</a> <span class="citation">(Wickham, Çetinkaya-Rundel, and Grole
 <p>Load the tidyverse packages.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
-<span><span class="co">## ── Attaching core tidyverse packages ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 2.0.0 ──</span></span>
+<span><span class="co">## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──</span></span>
 <span><span class="co">## ✔ dplyr     1.1.4     ✔ readr     2.1.5</span></span>
 <span><span class="co">## ✔ forcats   1.0.0     ✔ stringr   1.5.1</span></span>
 <span><span class="co">## ✔ ggplot2   3.5.1     ✔ tibble    3.2.1</span></span>
 <span><span class="co">## ✔ lubridate 1.9.3     ✔ tidyr     1.3.1</span></span>
 <span><span class="co">## ✔ purrr     1.0.2     </span></span>
-<span><span class="co">## ── Conflicts ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──</span></span>
+<span><span class="co">## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──</span></span>
 <span><span class="co">## ✖ dplyr::filter() masks stats::filter()</span></span>
 <span><span class="co">## ✖ dplyr::lag()    masks stats::lag()</span></span>
 <span><span class="co">## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</span></span></code></pre></div>
@@ -341,28 +341,29 @@ Transformation</a> <span class="citation">(Wickham, Çetinkaya-Rundel, and Grole
 fruits. that will get you familiar with the basic syntax. Data tables in
 R are called data.frames. Tidyverse introduces its own version called
 tibbles. We create a tibble with the price in dollars per pound and the
-vitamin C content in milligrams (mg) per pound for four different types
-of fruit.</p>
+vitamin C content in milligrams (mg) per pound for five different fruits.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fruit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
-<span>  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"mango"</span>, <span class="st">"orange"</span><span class="op">)</span>, </span>
-<span>  price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2.5</span>, <span class="fl">2.0</span>, <span class="fl">4.0</span>, <span class="fl">3.5</span><span class="op">)</span>, </span>
-<span>  vitamin_c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">45</span>, <span class="fl">130</span>, <span class="fl">250</span><span class="op">)</span><span class="op">)</span></span>
+<span>  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"mango"</span>, <span class="st">"orange"</span>, <span class="st">"lime"</span><span class="op">)</span>, </span>
+<span>  price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2.5</span>, <span class="fl">2.0</span>, <span class="fl">4.0</span>, <span class="fl">3.5</span>, <span class="fl">2.5</span><span class="op">)</span>, </span>
+<span>  vitamin_c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">45</span>, <span class="fl">130</span>, <span class="fl">250</span>, <span class="fl">132</span><span class="op">)</span>,</span>
+<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pome"</span>, <span class="st">"tropical"</span>, <span class="st">"tropical"</span>, <span class="st">"citrus"</span>, <span class="st">"citrus"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fruit</span></span>
-<span><span class="co">## # A tibble: 4 × 3</span></span>
-<span><span class="co">##   name   price vitamin_c</span></span>
-<span><span class="co">##   &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 apple    2.5        20</span></span>
-<span><span class="co">## 2 banana   2          45</span></span>
-<span><span class="co">## 3 mango    4         130</span></span>
-<span><span class="co">## 4 orange   3.5       250</span></span></code></pre></div>
+<span><span class="co">## # A tibble: 5 × 4</span></span>
+<span><span class="co">##   name   price vitamin_c type    </span></span>
+<span><span class="co">##   &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;   </span></span>
+<span><span class="co">## 1 apple    2.5        20 pome    </span></span>
+<span><span class="co">## 2 banana   2          45 tropical</span></span>
+<span><span class="co">## 3 mango    4         130 tropical</span></span>
+<span><span class="co">## 4 orange   3.5       250 citrus  </span></span>
+<span><span class="co">## 5 lime     2.5       132 citrus</span></span></code></pre></div>
 </div>
 <div id="transformations" class="section level3" number="1.4.2">
 <h3>
 <span class="header-section-number">1.4.2</span> Transformations<a class="anchor" aria-label="anchor" href="#transformations"><i class="fas fa-link"></i></a>
 </h3>
-<p>Now, we can add a column with the vitamin C (in mg) that a dollar buys
-you using <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> to change the table. Then we filter only rows with
+<p>We can modify the table by adding a column with the vitamin C (in mg)
+that a dollar buys using <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>. Then we filter only rows with
 fruit that provides more than 20 mg, and finally we arrange the data
 rows by the vitamin C per dollar from largest to smallest.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
@@ -372,16 +373,21 @@ rows by the vitamin C per dollar from largest to smallest.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">vitamin_c_per_dollar</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">affordable_vitamin_c_sources</span> </span>
-<span><span class="co">## # A tibble: 3 × 4</span></span>
-<span><span class="co">##   name   price vitamin_c vitamin_c_per_dollar</span></span>
-<span><span class="co">##   &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt;                &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 orange   3.5       250                 71.4</span></span>
-<span><span class="co">## 2 mango    4         130                 32.5</span></span>
-<span><span class="co">## 3 banana   2          45                 22.5</span></span></code></pre></div>
+<span><span class="co">## # A tibble: 4 × 5</span></span>
+<span><span class="co">##   name   price vitamin_c type     vitamin_c_per_dollar</span></span>
+<span><span class="co">##   &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;</span></span>
+<span><span class="co">## 1 orange   3.5       250 citrus                   71.4</span></span>
+<span><span class="co">## 2 lime     2.5       132 citrus                   52.8</span></span>
+<span><span class="co">## 3 mango    4         130 tropical                 32.5</span></span>
+<span><span class="co">## 4 banana   2          45 tropical                 22.5</span></span></code></pre></div>
 <p>The pipes operator <code>|&gt;</code> lets you pass the value to the left (often the
 result of a function) as the first argument to the function to the
 right. This makes composing a sequence of function calls to transform
-data much easier to write and read. The code above starts with the fruit
+data much easier to write and read.
+You will often see <code>%&gt;%</code> as the pipe operator, especially in examples using
+tidyverse. Both operators work similarly where <code>|&gt;</code> is a native R operator
+while <code>%&gt;%</code> is provided in the extension package <code>magrittr</code>.</p>
+<p>The code above starts with the fruit
 data and pipes it through three transformation functions. The final
 result is assigned with <code>&lt;-</code> to a variable.</p>
 <p>We can create summary statistics of price using <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code>.</p>
@@ -393,16 +399,30 @@ result is assigned with <code>&lt;-</code> to a variable.</p>
 <span><span class="co">## # A tibble: 1 × 3</span></span>
 <span><span class="co">##     min  mean   max</span></span>
 <span><span class="co">##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">## 1     2  3.17     4</span></span></code></pre></div>
+<span><span class="co">## 1     2     3     4</span></span></code></pre></div>
+<p>We can also calculate statistics for groups by first grouping the data
+wirh <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code>. Here
+we produce statistics for fruit types.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">affordable_vitamin_c_sources</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">type</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">price</span><span class="op">)</span>, </span>
+<span>            mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">price</span><span class="op">)</span>, </span>
+<span>            max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">price</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## # A tibble: 2 × 4</span></span>
+<span><span class="co">##   type       min  mean   max</span></span>
+<span><span class="co">##   &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">## 1 citrus     2.5     3   3.5</span></span>
+<span><span class="co">## 2 tropical   2       3   4</span></span></code></pre></div>
 <p>Often, we want to apply the same function to multiple columns. This can
 be achieved using <code><a href="https://dplyr.tidyverse.org/reference/across.html">across()</a></code>.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">affordable_vitamin_c_sources</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">price</span>, <span class="va">vitamin_c</span><span class="op">)</span>, <span class="va">mean</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 2</span></span>
 <span><span class="co">##   price vitamin_c</span></span>
 <span><span class="co">##   &lt;dbl&gt;     &lt;dbl&gt;</span></span>
-<span><span class="co">## 1  3.17      142.</span></span></code></pre></div>
+<span><span class="co">## 1     3      139.</span></span></code></pre></div>
 <p><code>dplyr</code> syntax and evaluation is slightly different from standard R
 which may lead to confusion. One example is that column names can be
 references without quotation marks. A very useful reference resource
@@ -424,7 +444,7 @@ main idea is that every graph is built from the same basic components:</p>
 <li>visual marks representing the data (geoms).</li>
 </ul>
 <p>In <code>ggplot2</code>, the components are combined using the <code>+</code> operator.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">data</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">...</span>, y <span class="op">=</span> <span class="va">...</span>, color <span class="op">=</span> <span class="va">...</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Since we typically use a Cartesian coordinate system, <code>ggplot</code> uses that
@@ -437,25 +457,25 @@ be found in the <a href="https://r4ds.hadley.nz/data-visualize">Section on Data
 Visualization</a> <span class="citation">(Wickham, Çetinkaya-Rundel, and Grolemund <a href="references.html#ref-Wickham2023" role="doc-biblioref">2023</a>)</span>,
 and very useful is <a href="https://rstudio.github.io/cheatsheets/html/data-visualization.html">RStudio’s Data Visualization Cheatsheet</a>.</p>
 <p>We can visualize our fruit data as a scatter plot.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">price</span>, y <span class="op">=</span> <span class="va">vitamin_c</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-22-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-23-1.png" width="672"></div>
 <p>It is easy to add more geoms. For example, we can add a regression line
 using <code>geom_smooth</code> with the method <code>"lm"</code> (linear model). We suppress
 the confidence interval since we only have 3 data points.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">price</span>, y <span class="op">=</span> <span class="va">vitamin_c</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, se <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">## `geom_smooth()` using formula = 'y ~ x'</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-23-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-24-1.png" width="672"></div>
 <p>Alternatively, we can visualize each fruit’s vitamin C content per
 dollar using a bar chart.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">name</span>, y <span class="op">=</span> <span class="va">vitamin_c</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-24-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-25-1.png" width="672"></div>
 <p>Note that <code>geom_bar</code> by default uses the <code>stat_count</code> function to
 aggregate data by counting, but we just want to visualize the value in
 the tibble, so we specify the identity function instead.</p>
@@ -507,7 +527,7 @@ the tibble, so we specify the identity function instead.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-06-28.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-08-11.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
