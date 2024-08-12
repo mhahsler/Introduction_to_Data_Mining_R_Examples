@@ -32,6 +32,18 @@ source("format_pkgs.R")
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
+In the examples in this book, we use the popular machine learning R package [`caret`](https://topepo.github.io/caret/). It makes preparing
+training sets, building classification (and regression) models and
+evaluation easier. A great cheat sheet can be found
+[here](https://ugoproto.github.io/ugo_r_doc/pdf/caret.pdf).
+
+A newer R framework for machine learning
+is [`tidymodels`](https://www.tidymodels.org/), a set of packages that 
+integrate more naturally with tidyverse. Using tidymodels, or any other 
+framework (e.g., Python's [scikit-learn](https://scikit-learn.org/)) should 
+be relatively easy after 
+learning the concepts using caret. 
+
 ## Basic Concepts
 
 Classification is a machine learning task with the goal to learn a predictive 
@@ -250,11 +262,6 @@ accuracy(Zoo |> pull(type), pred)
 ```
 
 ### Confusion Matrix using Caret 
-
-The package [`caret`](https://topepo.github.io/caret/) makes preparing
-training sets, building classification (and regression) models and
-evaluation easier. A great cheat sheet can be found
-[here](https://ugoproto.github.io/ugo_r_doc/pdf/caret.pdf).
 
 The caret package provides a convenient way to create and 
 analyze a confusion table including many useful statistics.

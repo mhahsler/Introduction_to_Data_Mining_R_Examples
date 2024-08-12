@@ -91,6 +91,16 @@ the data mining textbook is available online:
 <span><span class="va">pkgs_install</span> <span class="op">&lt;-</span> <span class="va">pkgs</span><span class="op">[</span><span class="op">!</span><span class="op">(</span><span class="va">pkgs</span> <span class="op"><a href="https://rdrr.io/pkg/arules/man/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span>,<span class="st">"Package"</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">pkgs_install</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="va">pkgs_install</span><span class="op">)</span></span></code></pre></div>
 <p>The packages used for this chapter are: <em>caret</em> <span class="citation">(M. Kuhn <a href="references.html#ref-R-caret" role="doc-biblioref">2023</a>)</span>, <em>FSelector</em> <span class="citation">(Romanski, Kotthoff, and Schratz <a href="references.html#ref-R-FSelector" role="doc-biblioref">2023</a>)</span>, <em>lattice</em> <span class="citation">(Sarkar <a href="references.html#ref-R-lattice" role="doc-biblioref">2023</a>)</span>, <em>mlbench</em> <span class="citation">(Leisch and Dimitriadou <a href="references.html#ref-R-mlbench" role="doc-biblioref">2024</a>)</span>, <em>palmerpenguins</em> <span class="citation">(Horst, Hill, and Gorman <a href="references.html#ref-R-palmerpenguins" role="doc-biblioref">2022</a>)</span>, <em>party</em> <span class="citation">(Hothorn et al. <a href="references.html#ref-R-party" role="doc-biblioref">2024</a>)</span>, <em>pROC</em> <span class="citation">(Robin et al. <a href="references.html#ref-R-pROC" role="doc-biblioref">2023</a>)</span>, <em>rpart</em> <span class="citation">(Therneau and Atkinson <a href="references.html#ref-R-rpart" role="doc-biblioref">2023</a>)</span>, <em>rpart.plot</em> <span class="citation">(Milborrow <a href="references.html#ref-R-rpart.plot" role="doc-biblioref">2024</a>)</span>, <em>sampling</em> <span class="citation">(Tillé and Matei <a href="references.html#ref-R-sampling" role="doc-biblioref">2023</a>)</span>, <em>tidyverse</em> <span class="citation">(Wickham <a href="references.html#ref-R-tidyverse" role="doc-biblioref">2023</a><a href="references.html#ref-R-tidyverse" role="doc-biblioref">c</a>)</span></p>
+<p>In the examples in this book, we use the popular machine learning R package <a href="https://topepo.github.io/caret/"><code>caret</code></a>. It makes preparing
+training sets, building classification (and regression) models and
+evaluation easier. A great cheat sheet can be found
+<a href="https://ugoproto.github.io/ugo_r_doc/pdf/caret.pdf">here</a>.</p>
+<p>A newer R framework for machine learning
+is <a href="https://www.tidymodels.org/"><code>tidymodels</code></a>, a set of packages that
+integrate more naturally with tidyverse. Using tidymodels, or any other
+framework (e.g., Python’s <a href="https://scikit-learn.org/">scikit-learn</a>) should
+be relatively easy after
+learning the concepts using caret.</p>
 </div>
 <div id="basic-concepts" class="section level2" number="3.1">
 <h2>
@@ -401,10 +411,6 @@ counts represent errors (i.e., confusions).</p>
 <h3>
 <span class="header-section-number">3.3.4</span> Confusion Matrix using Caret<a class="anchor" aria-label="anchor" href="#confusion-matrix-using-caret"><i class="fas fa-link"></i></a>
 </h3>
-<p>The package <a href="https://topepo.github.io/caret/"><code>caret</code></a> makes preparing
-training sets, building classification (and regression) models and
-evaluation easier. A great cheat sheet can be found
-<a href="https://ugoproto.github.io/ugo_r_doc/pdf/caret.pdf">here</a>.</p>
 <p>The caret package provides a convenient way to create and
 analyze a confusion table including many useful statistics.</p>
 <div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
@@ -1046,7 +1052,7 @@ Here we pick the 5 highest-ranked features.</p>
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/as.simple.formula.html">as.simple.formula</a></span><span class="op">(</span><span class="va">subset</span>, <span class="st">"type"</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
 <span><span class="co">## type ~ feathers + milk + backbone + toothed + eggs</span></span>
-<span><span class="co">## &lt;environment: 0x5e8bc9786060&gt;</span></span></code></pre></div>
+<span><span class="co">## &lt;environment: 0x5f27c38720e0&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb203"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
@@ -1303,7 +1309,7 @@ the most important? What variables do not matter?</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-08-11.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-08-12.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

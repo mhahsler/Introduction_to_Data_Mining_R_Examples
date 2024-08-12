@@ -27,6 +27,7 @@ dimensionality-reduction
 principal-components-analysis-pca
 multi-dimensional-scaling-mds
 non-parametric-multidimensional-scaling
+other-nonlinear-dimensionality-reduction-methods
 feature-subset-selection
 discretization
 variable-transformation-standardization
