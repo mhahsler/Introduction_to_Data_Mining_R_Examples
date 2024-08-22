@@ -27,7 +27,9 @@ source("format_pkgs.R")
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
-The packages used for this chapter are: `r format_pkgs(pkgs)`
+The packages used for this chapter are: 
+
+`r format_pkgs(pkgs)`
 
 
 ## Introduction
@@ -81,7 +83,9 @@ Make the data a little messy and add a useless feature
 x[,1] <- x[,1] + rnorm(nrow(x))
 x[,2] <- x[,2] + rnorm(nrow(x))
 x[,3] <- x[,3] + rnorm(nrow(x))
-x <- cbind(x[,-5], useless = mean(x[,1]) + rnorm(nrow(x)), Species = x[,5])
+x <- cbind(x[,-5], 
+           useless = mean(x[,1]) + rnorm(nrow(x)), 
+           Species = x[,5])
 
 plot(x, col=x$Species)
 summary(x)
@@ -128,7 +132,8 @@ plot(model1, which = 1:2)
 Here we create a simpler model by using only three predictors. 
 
 ```{r}
-model2 <- lm(Petal.Width ~ Sepal.Length + Sepal.Width + Petal.Length,
+model2 <- lm(Petal.Width ~ Sepal.Length + 
+               Sepal.Width + Petal.Length,
              data = train)
 summary(model2)
 ```
@@ -136,7 +141,8 @@ summary(model2)
 We can remove the intercept by adding `-1` to the formula.
 
 ```{r}
-model3 <- lm(Petal.Width ~ Sepal.Length + Sepal.Width + Petal.Length - 1,
+model3 <- lm(Petal.Width ~ Sepal.Length + 
+               Sepal.Width + Petal.Length - 1,
              data = train)
 summary(model3)
 ```
@@ -161,7 +167,7 @@ Models 1 is not significantly better than model 2. Model 2 is not significantly 
 Automatically looks for the smallest AIC (Akaike information criterion)
 
 ```{r}
-s1 <- step(lm(Petal.Width ~ . -Species, data=train))
+s1 <- step(lm(Petal.Width ~ . -Species, data = train))
 summary(s1)
 ```
 
@@ -171,7 +177,8 @@ are modeled with `:` or `*` in the formula (they are literally multiplied).
 See `? formula`.
 
 ```{r}
-model5 <- step(lm(Petal.Width ~ Sepal.Length * Sepal.Width * Petal.Length,
+model5 <- step(lm(Petal.Width ~ Sepal.Length * 
+                    Sepal.Width * Petal.Length,
              data = train))
 summary(model5)
 anova(model5, model4)
@@ -198,7 +205,8 @@ Compare predicted vs. actual values
 
 ```{r}
 plot(test[,"Petal.Width"], predict(model4, test),
-  xlim=c(0,3), ylim=c(0,3), xlab = "actual", ylab = "predicted",
+  xlim=c(0,3), ylim=c(0,3), 
+  xlab = "actual", ylab = "predicted",
   main = "Petal.Width")
 abline(0,1, col="red")
 cor(test[,"Petal.Width"], predict(model4, test))
@@ -233,7 +241,8 @@ summary(model6)
 
 RMSE(predict(model6, test), test$Petal.Width)
 plot(test[,"Petal.Width"], predict(model6, test),
-  xlim=c(0,3), ylim=c(0,3), xlab = "actual", ylab = "predicted",
+  xlim=c(0,3), ylim=c(0,3), 
+  xlab = "actual", ylab = "predicted",
   main = "Petal.Width")
 abline(0,1, col="red")
 cor(test[,"Petal.Width"], predict(model6, test))
@@ -249,16 +258,17 @@ For example CART:
 ```{r}
 library(rpart)
 library(rpart.plot)
-model7 <- rpart(Petal.Width ~ ., data=train,
-  control=rpart.control(cp=0.01))
+model7 <- rpart(Petal.Width ~ ., data = train,
+  control = rpart.control(cp = 0.01))
 model7
 rpart.plot(model7)
 
 RMSE(predict(model7, test), test$Petal.Width)
 plot(test[,"Petal.Width"], predict(model7, test),
-  xlim=c(0,3), ylim=c(0,3), xlab = "actual", ylab = "predicted",
+  xlim = c(0,3), ylim = c(0,3), 
+  xlab = "actual", ylab = "predicted",
   main = "Petal.Width")
-abline(0,1, col="red")
+abline(0,1, col = "red")
 cor(test[,"Petal.Width"], predict(model7, test))
 ```
 
@@ -302,17 +312,20 @@ coef(model_lars, s = best)
 make predictions
 
 ```{r}
-x_test <- model.matrix(~ . + Sepal.Length*Sepal.Width*Petal.Length ,
+x_test <- model.matrix(~ . + Sepal.Length*Sepal.Width*Petal.Length,
   data = test[, -4])
 predict(model_lars, x_test[1:5,], s = best)
 test[1:5, ]$Petal.Width
 
 RMSE(predict(model_lars, x_test, s = best)$fit, test$Petal.Width)
-plot(test[,"Petal.Width"],predict(model_lars, x_test, s = best)$fit,
-  xlim=c(0,3), ylim=c(0,3), xlab = "actual", ylab = "predicted",
-  main = "Petal.Width")
-abline(0,1, col="red")
-cor(test[,"Petal.Width"], predict(model_lars, x_test, s = best)$fit)
+plot(test[,"Petal.Width"], 
+     predict(model_lars, x_test, s = best)$fit,
+     xlim=c(0,3), ylim=c(0,3), 
+     xlab = "actual", ylab = "predicted",
+     main = "Petal.Width")
+abline(0,1, col = "red")
+cor(test[,"Petal.Width"],
+    predict(model_lars, x_test, s = best)$fit)
 ```
 
 ### Other Types of Regression

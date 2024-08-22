@@ -2,6 +2,11 @@
 # References {-}
 '`
 
+`r if (knitr::is_latex_output()) '
+# References {-}
+'`
+
+
 ```{r include=FALSE}
 knitr::write_bib(c(
   .packages(), unique(all_pkgs)), 'packages.bib')
