@@ -4,7 +4,7 @@ editor_options:
     wrap: 72
 ---
 
-# Classification: Basic Concepts and Techniques
+# Classification: Basic Concepts
 
 This chapter introduces decision trees for classification and discusses
 how models are built and evaluated. 
@@ -17,14 +17,16 @@ the data mining textbook is available online:
 
 ```{r setup_03}
 pkgs <- c("caret", "FSelector", "lattice", "mlbench", 
-          "palmerpenguins", "party", "pROC", "rpart", "rpart.plot", 
-          "sampling", "tidyverse")
+          "palmerpenguins", "party", "pROC", "rpart", 
+          "rpart.plot", "tidyverse")
 
 pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
 if(length(pkgs_install)) install.packages(pkgs_install)
 ```
 
-The packages used for this chapter are: `r format_pkgs(pkgs)`
+The packages used for this chapter are: 
+
+`r format_pkgs(pkgs)`
 
 ```{r setup_03-2, include=FALSE}
 source("_common.R")
@@ -137,7 +139,7 @@ the data is ready for model learning.
 ```{r }
 Zoo <- Zoo |>
   mutate(across(where(is.logical), 
-                function (x) factor(x, levels = c(TRUE, FALSE)))) |>
+         function (x) factor(x, levels = c(TRUE, FALSE)))) |>
   mutate(across(where(is.character), factor))
 
 summary(Zoo)
@@ -169,9 +171,8 @@ tree_default
   the first argument of `rpart`, the syntax `data = _` is used to specify
   where the data in `Zoo` goes. The call is equivalent to
   `tree_default <- rpart(type ~ ., data = Zoo)`. 
-
-- The formula models the`type` variable by all other features represented by `.`.
-
+- The formula models the `type` variable by all other features represented by 
+  a single period (`.`).
 - The class variable needs to be a factor to be recognized as nominal 
   or rpart will create a regression tree instead of a decision tree. 
   Use `as.factor()` on the column with the class label first, if necessary.
@@ -194,9 +195,9 @@ I will make up my own animal: A lion with feathered wings.
 ```{r }
 my_animal <- tibble(hair = TRUE, feathers = TRUE, eggs = FALSE,
   milk = TRUE, airborne = TRUE, aquatic = FALSE, predator = TRUE,
-  toothed = TRUE, backbone = TRUE, breathes = TRUE, venomous = FALSE,
-  fins = FALSE, legs = 4, tail = TRUE, domestic = FALSE,
-  catsize = FALSE, type = NA)
+  toothed = TRUE, backbone = TRUE, breathes = TRUE, 
+  venomous = FALSE, fins = FALSE, legs = 4, tail = TRUE, 
+  domestic = FALSE, catsize = FALSE, type = NA)
 ```
 
 The data types need to match the original data so we
@@ -293,8 +294,8 @@ tree_full <- Zoo |>
         control = rpart.control(minsplit = 2, cp = 0))
 rpart.plot(tree_full, extra = 2, 
            roundint=FALSE,
-            box.palette = list("Gy", "Gn", "Bu", "Bn", 
-                               "Or", "Rd", "Pu")) # specify 7 colors
+           box.palette = list("Gy", "Gn", "Bu", "Bn", 
+                              "Or", "Rd", "Pu")) 
 tree_full
 ```
 
@@ -339,7 +340,9 @@ fit <- Zoo |>
     method = "rpart",
     control = rpart.control(minsplit = 2), # we have little data
     tuneGrid = data.frame(cp = c(0.01, 0)),
-    trControl = trainControl(method = "LGOCV", p = 0.8, number = 10),
+    trControl = trainControl(method = "LGOCV", 
+                             p = 0.8, 
+                             number = 10),
     tuneLength = 5)
 
 fit
@@ -539,7 +542,9 @@ compare the different models using exactly the same folds. It is
 specified as `trControl` during training.
 
 ```{r }
-train_index <- createFolds(Zoo_train$type, k = 10, returnTrain = TRUE)
+train_index <- createFolds(Zoo_train$type, 
+                           k = 10, 
+                           returnTrain = TRUE)
 ```
 
 Build models
@@ -550,7 +555,8 @@ rpartFit <- Zoo_train |>
         data = _,
         method = "rpart",
         tuneLength = 10,
-        trControl = trainControl(method = "cv", index = train_index)
+        trControl = trainControl(method = "cv", 
+                                 index = train_index)
   )
 ```
 
@@ -565,7 +571,8 @@ knnFit <- Zoo_train |>
         method = "knn",
         preProcess = "scale",
 	      tuneLength = 10,
-	      trControl = trainControl(method = "cv", index = train_index)
+	      trControl = trainControl(method = "cv", 
+	                               index = train_index)
   )
 ```
 
@@ -642,7 +649,8 @@ levels used by `ggplot`).
 
 ```{r }
 ggplot(weights,
-  aes(x = attr_importance, y = reorder(feature, attr_importance))) +
+  aes(x = attr_importance, 
+      y = reorder(feature, attr_importance))) +
   geom_bar(stat = "identity") +
   xlab("Importance score") + 
   ylab("Feature")
@@ -653,7 +661,8 @@ Here we pick the 5 highest-ranked features.
 
 ```{r }
 subset <- cutoff.k(weights |> 
-                   column_to_rownames("feature"), 5)
+                   column_to_rownames("feature"), 
+                   5)
 subset
 ```
 
@@ -709,8 +718,11 @@ evaluator <- function(subset) {
           method = "rpart",
           trControl = trainControl(method = "boot", number = 5),
           tuneLength = 0)
+  
   results <- model$resample$Accuracy
+  
   cat("Trying features:", paste(subset, collapse = " + "), "\n")
+  
   m <- mean(results)
   cat("Accuracy:", round(m, 2), "\n\n")
   m
@@ -720,19 +732,20 @@ evaluator <- function(subset) {
 Start with all features (but not the class variable `type`)
 
 ```{r }
-features <- Zoo_train |> colnames() |> setdiff("type")
+features <- Zoo_train |> 
+  colnames() |> 
+  setdiff("type")
 ```
 
 There are several (greedy) search strategies available. These run for a
-while so we have commented them out. Remove the comment for one at a time
-to try this type of feature selection.
+while so they commented out below. Remove the comment for one at a time
+to try these types of feature selection.
 
 ```{r }
 #subset <- backward.search(features, evaluator)
 #subset <- forward.search(features, evaluator)
 #subset <- best.first.search(features, evaluator)
 #subset <- hill.climbing.search(features, evaluator)
-#
 #subset
 ```
 

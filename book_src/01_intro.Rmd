@@ -18,18 +18,18 @@ organized by the main data mining tasks:
 2.  [Data] covers types of data and also includes data preparation and
     exploratory data analysis in the chapter.
 
-3.  [Classification: Basic Concepts and Techniques] introduces decision
-    trees, model training and evaluation.
+3.  [Classification: Basic Concepts] introduces the purpose of 
+    classification, basic classifiers using decision trees,
+    and model training and evaluation.
 
-4.  [Classification: Alternative techniques] introduces and compares
+4.  [Classification: Alternative Techniques] introduces and compares
         methods including rule-based classifiers, nearest neighbor
         classifiers, naive Bayes classifier, logistic regression and
         artificial neural networks.
 
-5.  [Association Analysis: Basic Concepts and Algorithms] covers
+5.  [Association Analysis: Basic Concepts] covers algorithms for
         frequent itemset and association rule generation and analysis
-        including visualization. Some code covers also topics discussed
-        in the textbook's Chapter 6.
+        including visualization.
 
 6.  [Association Analysis: Advanced Concepts] covers categorical and continuous
         attributes, concept hierarchies, and frequent sequence pattern mining.
@@ -84,32 +84,50 @@ installed with R. This is referred to as Base-R.
 
 Base-R is covered in detail in [An Introduction to
 R](https://cran.r-project.org/doc/manuals/r-release/R-intro.html). The
-most important difference between R and many other programming languages
-like Python is that R is functional (with some extensions) and
+most important differences between R and many other programming languages
+like Python are that R is functional (with some extensions) and
 vectorized.
 
 ### Vectors
 
-Scalars do not exist in R. The basic data structure is a vector of real
-numbers. Special values like infinity and missing (`NA`) can be used.
+R is vectorized and scalars do not exist. The basic data structure is a 
+vector of real numbers. Special values like infinity and 
+missing (`NA`) can be used.
+
+We can combine values into a vector using the combine function `c()`. 
+Special values for infinity and missing values (`NA`) can be used.
 
 ```{r }
-x <- c(10.4, 5.6, Inf, NA, 21.7) # c combines values
+x <- c(10.4, 5.6, Inf, NA, 21.7)
 x
-y <- seq(from = 0, to = 40, length.out = 5) # create a sequence
+```
+
+We often use sequences. A simple sequence of integers can be produced using
+the colon operator in the form `from:to`.
+
+```{r }
+3:10
+```
+
+More complicated sequences can be created using `seq()` or one of
+the related functions starting with `seq_`.
+
+```{r }
+y <- seq(from = 0, to = 1, length.out = 5)
 y
 ```
 
 ### Vectorized Operations
 
-Operations are vectorized so loops are typically not necessary.
+Operations are vectorized and applied to each element, 
+so loops are typically not necessary.
 
 ```{r }
 x + 1
 ```
 
 Comparisons are performed element wise and return a `logical` vector
-(R's name for Boolean).
+(R's name for the datatype Boolean).
 
 ```{r }
 x > y
@@ -118,16 +136,27 @@ x > y
 ### Subsetting Vectors
 
 We can select vector elements using the `[` operator like in other
-programming languages but the index starts at 1.
+programming languages but the index always starts at 1.
+
+We can select elements 1 through 3 using an index sequence.
 
 ```{r}
-x[1:3] # elements 1 through 3
-x[-1] # all but the first
-x[!is.na(x)] # all but the missing values
-
+x[1:3]
 ```
 
-We can also assign values to a selection. For example, to get rid of
+Negative indices remove elements. We can select al but the first element.
+```{r}
+x[-1]
+```
+
+We can use any function that creates a `logical` vector for subsetting.
+Here we select all non-missing values using the function `is.na()`.
+```{r}
+is.na(x)
+x[!is.na(x)] # select all non-missing values
+```
+
+We can also assign values to a selection. For example, this code gets rid of
 infinite values.
 
 ```{r}
@@ -158,9 +187,9 @@ R has many built-in functions like `min()`, `max()`, `mean()` and
 
 ### Strings
 
-R uses `character` vectors where `character` stands for a string and not
-like in other programming language for a single character. R accepts
-double or single quotation marks for strings.
+R uses `character` vectors where the datatype `character` represents a string 
+and not like in other programming language for a single character. 
+R accepts double or single quotation marks to delimit strings.
 
 ```{r }
 string <- c("Hello", "Goodbye")
@@ -208,7 +237,7 @@ For many objects, a summary can be created.
 summary(x)
 ```
 
-Objects have a class.
+Objects have a class. 
 
 ```{r }
 class(x)
@@ -312,7 +341,7 @@ affordable_vitamin_c_sources
 ```
 
 The pipes operator `|>` lets you pass the value to the left (often the
-result of a function) as the first argument to the function to the
+result of a function) as the first argument to the function on the
 right. This makes composing a sequence of function calls to transform
 data much easier to write and read. 
 You will often see `%>%` as the pipe operator, especially in examples using 
@@ -346,7 +375,7 @@ affordable_vitamin_c_sources |>
 
 
 Often, we want to apply the same function to multiple columns. This can
-be achieved using `across()`.
+be achieved using `across(columns, function)`.
 
 ```{r }
 affordable_vitamin_c_sources |> 

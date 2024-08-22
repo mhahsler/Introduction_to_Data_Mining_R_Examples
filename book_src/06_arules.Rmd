@@ -20,7 +20,9 @@ source("format_pkgs.R")
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
-The packages used for this chapter are: `r format_pkgs(pkgs)`
+The packages used for this chapter are: 
+
+`r format_pkgs(pkgs)`
 
 ## Handling Categorical Attributes
 
@@ -68,11 +70,13 @@ library(arules)
 
 iris_disc <- iris %>% 
   mutate(Petal.Length = discretize(Petal.Length, 
-                                   method = "frequency", breaks = 3, 
-                                   labels = c("short", "medium", "long")),
+                          method = "frequency", 
+                          breaks = 3, 
+                          labels = c("short", "medium", "long")),
          Petal.Width = discretize(Petal.Width,
-                                  method = "frequency", breaks = 2, 
-                                  labels = c("narrow", "wide"))
+                          method = "frequency", 
+                          breaks = 2, 
+                          labels = c("narrow", "wide"))
          )
   
 

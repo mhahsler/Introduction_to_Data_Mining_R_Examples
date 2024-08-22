@@ -24,7 +24,9 @@ pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
 if(length(pkgs_install)) install.packages(pkgs_install)
 ```
 
-The packages used for this chapter are: `r format_pkgs(pkgs)`
+The packages used for this chapter are: 
+
+`r format_pkgs(pkgs)`
 
 ```{r setup_02-2, include=FALSE}
 source("_common.R")
@@ -58,7 +60,9 @@ and interval scale.
 ```{r}
 factor(c("red", "green", "green", "blue"))
 
-factor("S", "L", "M", "S", levels = c("S", "M", "L"), ordered = TRUE)
+factor("S", "L", "M", "S", 
+       levels = c("S", "M", "L"), 
+       ordered = TRUE)
 
 c(1, 2, 3, 4, 3)
 ```
@@ -313,11 +317,17 @@ We can use an interactive 3-d plot (from package `plotly`) to look at
 three of the four dimensions of the iris dataset. Note that it is hard
 to visualize more than 3 dimensions.
 
-```{r eval = !knitr::is_latex_output()}
-# library(plotly) # I don't load the package because it's namespace clashes with select in dplyr.
-plotly::plot_ly(iris, x = ~Sepal.Length, y = ~Petal.Length, z = ~Sepal.Width, 
+```{r eval = knitr::is_html_output()}
+plotly::plot_ly(iris, 
+                x = ~Sepal.Length, 
+                y = ~Petal.Length, 
+                z = ~Sepal.Width, 
       color = ~Species, size = 1) |> 
   plotly::add_markers()
+```
+
+```{r eval = !knitr::is_html_output(), echo=FALSE, results='asis'}
+cat('_The resulting interactive plot can be seen in the [online version of this book.](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/data.html#dimensionality-reduction)_')
 ```
 
 The principal components can be calculated from a matrix using the
@@ -391,7 +401,7 @@ called a [biplot](https://en.wikipedia.org/wiki/Biplot). If the arrows
 (original axes) align roughly with the axes of the projection, then they
 are correlated (linearly dependent).
 
-```{r }
+```{r message=FALSE}
 library(factoextra)
 fviz_pca(pc)
 ```
@@ -445,7 +455,8 @@ colnames(fit) <- c("comp1", "comp2")
 fit <- as_tibble(fit) |> 
   add_column(Species = iris$Species)
 
-ggplot(fit, aes(x = comp1, y = comp2, color = Species)) + geom_point()
+ggplot(fit, aes(x = comp1, y = comp2, color = Species)) + 
+  geom_point()
 ```
 
 The resulting projection is similar (except for rotation and reflection)
@@ -467,8 +478,8 @@ Some popular methods are:
 * [t-distributed stochastic neighbor embedding](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding) (`Rtsne()` in package `Rtsne`) and uniform manifold approximation and projection
 (`umap()` in package `umap`) are used 
 for projecting data to 2 dimensions for visualization.
-* [Word2vec](https://en.wikipedia.org/wiki/Word2vec) (`word2vec` in package (`word2vec`)) is used in [natural language processing](https://cran.r-project.org/web/views/NaturalLanguageProcessing.html) to convert words to numeric 
-vectors for similarity calculation.
+* [Word2vec](https://en.wikipedia.org/wiki/Word2vec) (`word2vec` in 
+  package `word2vec`) is used in [natural language processing](https://cran.r-project.org/web/views/NaturalLanguageProcessing.html) to convert words to numeric vectors for similarity calculation.
 
 ### Feature Subset Selection
 
@@ -487,12 +498,14 @@ discrete values. A histogram visualizes the distribution of a single
 continuous feature.
 
 ```{r }
-ggplot(iris, aes(x = Petal.Width)) + geom_histogram(binwidth = .2)
+ggplot(iris, aes(x = Petal.Width)) + 
+  geom_histogram(binwidth = .2)
 ```
 
 The bins in the histogram represent a discretization using a fixed bin
 width. The R function `cut()` performs equal interval width
-discretization.
+discretization creating a vector of type `factor` where each level
+represents an interval.
 
 ```{r }
 iris |> 
@@ -510,33 +523,42 @@ intervals assigned to each discrete value.
 library(arules)
 iris |> pull(Petal.Width) |> 
   discretize(method = "interval", breaks = 3)
+```
 
-iris |> pull(Petal.Width) |> 
-  discretize(method = "frequency", breaks = 3)
+To show the differences between the methods, we use the three
+discretization methods and draw blue lines in the histogram to show
+how they cut the data.
 
-iris |> pull(Petal.Width) |> 
-  discretize(method = "cluster", breaks = 3)
-
+```{r }
 ggplot(iris, aes(Petal.Width)) + geom_histogram(binwidth = .2) +
-  geom_vline(xintercept = iris |> pull(Petal.Width) |> 
-        discretize(method = "interval", breaks = 3, onlycuts = TRUE),
-    color = "blue") +
+  geom_vline(
+      xintercept = iris |> 
+      pull(Petal.Width) |> 
+      discretize(method = "interval", breaks = 3, onlycuts = TRUE),
+    color = "blue"
+  ) +
   labs(title = "Discretization: interval", 
-       subtitle = "Blue lines are boundaries")
+       subtitle = "Blue lines are discretization boundaries")
 
 ggplot(iris, aes(Petal.Width)) + geom_histogram(binwidth = .2) +
-  geom_vline(xintercept = iris |> pull(Petal.Width) |> 
-        discretize(method = "frequency", breaks = 3, onlycuts = TRUE),
-    color = "blue") +
+  geom_vline(
+    xintercept = iris |> 
+    pull(Petal.Width) |> 
+    discretize(method = "frequency", breaks = 3, onlycuts = TRUE),
+   color = "blue"
+  ) +
   labs(title = "Discretization: frequency", 
-       subtitle = "Blue lines are boundaries")
+       subtitle = "Blue lines are discretization boundaries")
 
 ggplot(iris, aes(Petal.Width)) + geom_histogram(binwidth = .2) +
-  geom_vline(xintercept = iris |> pull(Petal.Width) |> 
-               discretize(method = "cluster", breaks = 3, onlycuts = TRUE),
-    color = "blue") +
+  geom_vline(
+    xintercept = iris |> 
+    pull(Petal.Width) |> 
+    discretize(method = "cluster", breaks = 3, onlycuts = TRUE),
+   color = "blue"
+  ) +
   labs(title = "Discretization: cluster", 
-       subtitle = "Blue lines are boundaries")
+       subtitle = "Blue lines are discretization boundaries")
 ```
 
 The user needs to decide on the number of intervals and the used method.
@@ -553,15 +575,15 @@ standard deviations from the mean. Positive values indicate how many
 standard deviation the original feature value was above the average.
 Negative standardized values indicate below-average values.
 
-Tidyverse currently does not have a simple scale function, so we
-make one that provides a wrapper for the standard scale function in R.
-It mutates all numeric columns using an anonymous function
-that uses the base R scale function and converts the result into a vector.
+R-base provides the function `scale()` to standardize the columns in a data.frame. Tidyverse currently does not have a simple scale function, so we
+make one It mutates all numeric columns using an anonymous function
+that calculates the z-score. 
 
 ```{r }
 scale_numeric <- function(x) 
   x |> 
-  mutate(across(where(is.numeric), function(y) as.vector(scale(y))))
+  mutate(across(where(is.numeric), 
+                function(y) (y - mean(y, na.rm = TRUE)) / sd(y, na.rm = TRUE)))
 ```
 
 ```{r }
@@ -715,7 +737,10 @@ weight and sex have the same influence on the distance measure, then we
 need to weight the sex columns by 1/2 after scaling.
 
 ```{r }
-weight_matrix <- matrix(c(1, 1, 1/2, 1/2), ncol = 4, nrow = nrow(data_dummy), byrow = TRUE)
+weight_matrix <- matrix(c(1, 1, 1/2, 1/2), 
+                        ncol = 4, 
+                        nrow = nrow(data_dummy), 
+                        byrow = TRUE)
 data_dummy_scaled <- scale(data_dummy) * weight_matrix
 
 d_dummy <- dist(data_dummy_scaled)
@@ -732,16 +757,18 @@ ggplot(tibble(d_dummy, d_Gower), aes(x = d_dummy, y = d_Gower)) +
   geom_smooth(method = "lm", se = FALSE)
 ```
 
-### Additional proximity Measures Available in Package proxy
+### More Proximity Measures
 
-The package `proxy` implements a wide array of distances.
+The package `proxy` implements a wide array of proximity measures
+(similarity measures are converted into distances).
 
 ```{r }
 library(proxy)
 pr_DB$get_entry_names()
 ```
 
-Note that loading the package `proxy` replaces the `dist` function in R.
+Note that loading the package `proxy` overwrites the default `dist()` function
+in R.
 You can specify which dist function to use by specifying the package in
 the call. For example `stats::dist()` calls the default function in R
 (the package `stats` is part of R) while `proxy::dist()` calls the
@@ -771,11 +798,12 @@ Get summary statistics (using base R)
 summary(iris)
 ```
 
-Get mean and standard deviation for sepal length
+Get mean and standard deviation for sepal length.
 
 ```{r }
 iris |> 
-  summarize(avg_Sepal.Length = mean(Sepal.Length), sd_Sepal.Length = sd(Sepal.Length))
+  summarize(avg_Sepal.Length = mean(Sepal.Length), 
+            sd_Sepal.Length = sd(Sepal.Length))
 ```
 
 Data with missing values will result in statistics of `NA`. Adding the
@@ -788,13 +816,15 @@ mean(c(1, 2, NA, 3, 4, 5),  na.rm = TRUE)
 ```
 
 Outliers are typically the smallest or the largest values of a feature.
-To make the mean more robust to outliers, we can trim 10% of
+To make the mean more robust against outliers, we can trim 10% of
 observations from each end of the distribution.
 
 ```{r }
 iris |>
-  summarize(avg_Sepal.Length = mean(Sepal.Length),
-            trimmed_avg_Sepal.Length = mean(Sepal.Length, trim = .1))
+  summarize(
+    avg_Sepal.Length = mean(Sepal.Length),
+    trimmed_avg_Sepal.Length = mean(Sepal.Length, trim = .1)
+  )
 ```
 
 Sepal length does not have outliers, so the trimmed mean is almost
@@ -808,7 +838,9 @@ iris |> summarize(across(where(is.numeric), mean))
 iris |> summarize(across(where(is.numeric), sd))
 
 iris |> summarize(across(where(is.numeric), 
-            list(min = min, median = median, max = max)))
+            list(min = min, 
+                 median = median, 
+                 max = max)))
 ```
 
 The median absolute deviation (MAD) is another measure of dispersion.
@@ -865,8 +897,10 @@ In base R, this can be also done using `count(iris$Species)`.
 For the following examples, we discretize the data using cut.
 
 ```{r }
-iris_ord <- iris |> mutate(across(where(is.numeric),  
-  function(x) cut(x, 3, labels = c("short", "medium", "long"), ordered = TRUE)))
+iris_ord <- iris |> 
+  mutate(across(where(is.numeric),  
+    function(x) cut(x, 3, labels = c("short", "medium", "long"), 
+                    ordered = TRUE)))
 
 iris_ord
 summary(iris_ord)
@@ -950,7 +984,8 @@ of the data in the middle.
 ```{r }
 iris |> 
   summarize(IQR = 
-  quantile(Petal.Length, probs = 0.75) - quantile(Petal.Length, probs = 0.25))
+  quantile(Petal.Length, probs = 0.75) - 
+    quantile(Petal.Length, probs = 0.25))
 ```
 
 ### Correlation
@@ -1028,7 +1063,9 @@ the function `cut`.
 ```{r }
 iris_ord <- iris |> 
   mutate(across(where(is.numeric), 
-  function(x) cut(x, 3, labels = c("short", "medium", "long"), ordered = TRUE)))
+    function(x) cut(x, 3, 
+                    labels = c("short", "medium", "long"), 
+                    ordered = TRUE)))
 
 iris_ord
 summary(iris_ord)
@@ -1329,7 +1366,10 @@ right because it is very different from the other features.
 A correlation matrix contains the correlation between features.
 
 ```{r }
-cm1 <- iris |> select(-Species) |> as.matrix() |> cor()
+cm1 <- iris |> 
+  select(-Species) |> 
+  as.matrix() |> 
+  cor()
 cm1
 ```
 
@@ -1351,7 +1391,11 @@ Correlations can also be calculates between objects by transposing the
 data matrix.
 
 ```{r }
-cm2 <- iris |> select(-Species) |> as.matrix() |> t() |> cor()
+cm2 <- iris |> 
+  select(-Species) |> 
+  as.matrix() |> 
+  t() |> 
+  cor()
 
 ggcorrplot(cm2)
 ```
@@ -1375,7 +1419,9 @@ features next to each other.
 ```{r }
 o <- seriate(as.dist(1-cor(iris[,1:4])), method = "BBURCG")
 get_order(o)
-ggparcoord(iris, columns = as.integer(get_order(o)), groupColumn = 5)
+ggparcoord(iris, 
+           columns = as.integer(get_order(o)), 
+           groupColumn = 5)
 ```
 
 ### More Visualizations

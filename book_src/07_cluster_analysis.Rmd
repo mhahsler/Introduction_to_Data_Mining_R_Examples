@@ -32,7 +32,9 @@ source("format_pkgs.R")
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
-The packages used for this chapter are: `r format_pkgs(pkgs)`
+The packages used for this chapter are: 
+
+`r format_pkgs(pkgs)`
 
 ## Overview
 
@@ -101,7 +103,8 @@ all numeric columns.
 ```{r }
 ## I use this till tidyverse implements a scale function
 scale_numeric <- function(x) {
-  x |> mutate(across(where(is.numeric), function(y) as.vector(scale(y))))
+  x |> mutate(across(where(is.numeric), 
+                     function(y) as.vector(scale(y))))
 }
 ```
 
@@ -177,7 +180,9 @@ To group the plots by cluster, we have to change the data format to the
 clusters in the scatter plots.
 
 ```{r }
-ggplot(pivot_longer(centroids, cols = c(x, y), names_to = "feature"),
+ggplot(pivot_longer(centroids, 
+                    cols = c(x, y), 
+                    names_to = "feature"),
   aes(x = value, y = feature, fill = cluster)) +
   geom_bar(stat = "identity") +
   facet_grid(rows = vars(cluster))
@@ -339,6 +344,7 @@ width](https://en.wikipedia.org/wiki/Silhouette_(clustering)). Look at
 ```
 
 Notes: 
+
 * I do not load fpc since the NAMESPACE overwrites dbscan. 
 * The clustering (second argument below) has to be supplied as a vector
 with numbers (cluster IDs) and cannot be a factor (use `as.integer()` to
@@ -430,9 +436,12 @@ The reordering by `dissplot` makes the misspecification of k visible as
 blocks.
 
 ```{r }
-dissplot(d, labels = kmeans(ruspini_scaled, centers = 3)$cluster, 
+dissplot(d, 
+         labels = kmeans(ruspini_scaled, centers = 3)$cluster, 
          col = bluered(100))
-dissplot(d, labels = kmeans(ruspini_scaled, centers = 9)$cluster, 
+
+dissplot(d, 
+         labels = kmeans(ruspini_scaled, centers = 9)$cluster, 
          col = bluered(100))
 ```
 
@@ -520,7 +529,10 @@ away from the first local maximum.
 
 ```{r }
 library(cluster)
-k <- clusGap(ruspini_scaled, FUN = kmeans,  nstart = 10, K.max = 10)
+k <- clusGap(ruspini_scaled, 
+             FUN = kmeans,  
+             nstart = 10, 
+             K.max = 10)
 k
 plot(k)
 ```
@@ -772,22 +784,26 @@ random_6 <- sample(1:6, nrow(shapes), replace = TRUE)
 
 r <- rbind(
   kmeans_7 = c(
-    unlist(fpc::cluster.stats(d, km$cluster, truth, compareonly = TRUE)),
+    unlist(fpc::cluster.stats(d, km$cluster, 
+                              truth, compareonly = TRUE)),
     entropy = entropy(km$cluster, truth),
     purity = purity(km$cluster, truth)
     ),
   hc_4 = c(
-    unlist(fpc::cluster.stats(d, hc_4, truth, compareonly = TRUE)),
+    unlist(fpc::cluster.stats(d, hc_4, 
+                              truth, compareonly = TRUE)),
     entropy = entropy(hc_4, truth),
     purity = purity(hc_4, truth)
     ),
   random_4 = c(
-    unlist(fpc::cluster.stats(d, random_4, truth, compareonly = TRUE)),
+    unlist(fpc::cluster.stats(d, random_4, 
+                              truth, compareonly = TRUE)),
     entropy = entropy(random_4, truth),
     purity = purity(random_4, truth)
     ),
   random_6 = c(
-    unlist(fpc::cluster.stats(d, random_6, truth, compareonly = TRUE)),
+    unlist(fpc::cluster.stats(d, random_6, 
+                              truth, compareonly = TRUE)),
     entropy = entropy(random_6, truth),
     purity = purity(random_6, truth)
     )
@@ -833,15 +849,19 @@ p
 ruspini_clustered <- ruspini_scaled |> 
   add_column(cluster = factor(p$cluster))
 
-medoids <- as_tibble(ruspini_scaled[p$medoids, ], rownames = "cluster")
+medoids <- as_tibble(ruspini_scaled[p$medoids, ], 
+                     rownames = "cluster")
 medoids
 
 ggplot(ruspini_clustered, aes(x = x, y = y, color = cluster)) + 
   geom_point() +
-  geom_point(data = medoids, aes(x = x, y = y, color = cluster), shape = 3, size = 10)
+  geom_point(data = medoids, aes(x = x, y = y, color = cluster), 
+             shape = 3, size = 10)
 
 ## __Note:__ `fviz_cluster` needs the original data.
-fviz_cluster(c(p, list(data = ruspini_scaled)), geom = "point", ellipse.type = "norm")
+fviz_cluster(c(p, list(data = ruspini_scaled)), 
+             geom = "point", 
+             ellipse.type = "norm")
 ```
 
 ### Gaussian Mixture Models
@@ -965,8 +985,11 @@ ruspini_scaled_outlier_km <- ruspini_scaled_outlier|>
   add_column(cluster = factor(km$cluster))
 centroids <- as_tibble(km$centers, rownames = "cluster")
 
-ggplot(ruspini_scaled_outlier_km, aes(x = x, y = y, color = cluster)) + geom_point() +
-  geom_point(data = centroids, aes(x = x, y = y, color = cluster), shape = 3, size = 10)
+ggplot(ruspini_scaled_outlier_km, aes(x = x, y = y, color = cluster)) + 
+  geom_point() +
+  geom_point(data = centroids, 
+             aes(x = x, y = y, color = cluster), 
+             shape = 3, size = 10)
 ```
 
 This problem can be fixed by increasing the number of clusters and
@@ -984,14 +1007,17 @@ the LOF (I choose a local neighborhood size of 10 for density estimation),
 lof <- lof(ruspini_scaled_outlier, minPts= 10)
 lof
 
-ggplot(ruspini_scaled_outlier |> add_column(lof = lof), aes(x, y, color = lof)) +
-    geom_point() + scale_color_gradient(low = "gray", high = "red")
+ggplot(ruspini_scaled_outlier |> add_column(lof = lof), 
+       aes(x, y, color = lof)) +
+  geom_point() + 
+  scale_color_gradient(low = "gray", high = "red")
 ```
 
 Plot the points sorted by increasing LOF and look for a knee.
 
 ```{r }
-ggplot(tibble(index = seq_len(length(lof)), lof = sort(lof)), aes(index, lof)) +
+ggplot(tibble(index = seq_len(length(lof)), lof = sort(lof)), 
+       aes(index, lof)) +
   geom_line() +
   geom_hline(yintercept = 1, color = "red", linetype = 2)
 ```
@@ -999,7 +1025,8 @@ ggplot(tibble(index = seq_len(length(lof)), lof = sort(lof)), aes(index, lof)) +
 Choose a threshold above 1.
 
 ```{r }
-ggplot(ruspini_scaled_outlier |> add_column(outlier = lof >= 2), aes(x, y, color = outlier)) +
+ggplot(ruspini_scaled_outlier |> add_column(outlier = lof >= 2), 
+       aes(x, y, color = outlier)) +
   geom_point()
 ```
 
@@ -1013,8 +1040,11 @@ ruspini_scaled_clean_km <- ruspini_scaled_clean|>
   add_column(cluster = factor(km$cluster))
 centroids <- as_tibble(km$centers, rownames = "cluster")
 
-ggplot(ruspini_scaled_clean_km, aes(x = x, y = y, color = cluster)) + geom_point() +
-  geom_point(data = centroids, aes(x = x, y = y, color = cluster), shape = 3, size = 10)
+ggplot(ruspini_scaled_clean_km, aes(x = x, y = y, color = cluster)) + 
+  geom_point() +
+  geom_point(data = centroids, 
+             aes(x = x, y = y, color = cluster), 
+             shape = 3, size = 10)
 ```
 
 There are many other outlier removal strategies available. See, e.g.,
