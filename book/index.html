@@ -56,9 +56,9 @@
 <li><a class="active" href="index.html">Preface</a></li>
 <li><a class="" href="introduction.html"><span class="header-section-number">1</span> Introduction</a></li>
 <li><a class="" href="data.html"><span class="header-section-number">2</span> Data</a></li>
-<li><a class="" href="classification-basic-concepts-and-techniques.html"><span class="header-section-number">3</span> Classification: Basic Concepts and Techniques</a></li>
+<li><a class="" href="classification-basic-concepts.html"><span class="header-section-number">3</span> Classification: Basic Concepts</a></li>
 <li><a class="" href="classification-alternative-techniques.html"><span class="header-section-number">4</span> Classification: Alternative Techniques</a></li>
-<li><a class="" href="association-analysis-basic-concepts-and-algorithms.html"><span class="header-section-number">5</span> Association Analysis: Basic Concepts and Algorithms</a></li>
+<li><a class="" href="association-analysis-basic-concepts.html"><span class="header-section-number">5</span> Association Analysis: Basic Concepts</a></li>
 <li><a class="" href="association-analysis-advanced-concepts.html"><span class="header-section-number">6</span> Association Analysis: Advanced Concepts</a></li>
 <li><a class="" href="cluster-analysis.html"><span class="header-section-number">7</span> Cluster Analysis</a></li>
 <li><a class="" href="regression.html"><span class="header-section-number">8</span> Regression*</a></li>
@@ -90,7 +90,7 @@ the textbook.</p>
 <em>CS 5/7331 Data Mining</em> taught
 at the advanced undergraduate and graduate level
 at the <a href="https://www.smu.edu/lyle/departments/cs">Computer Science Department</a> at
-<a href="http://www.smu.edu">SMU</a> since Spring 2013 and will be regularly
+Southern Methodist University (SMU) since Spring 2013 and will be regularly
 updated and improved.
 The learning method used in this book is learning-by-doing.
 The code examples throughout this book are
@@ -99,7 +99,9 @@ try it out on the provided dataset and then apply it directly to your own
 data. Instructors can use this companion as a component to create an
 introduction to data mining course for advanced undergraduates and graduate
 students who are proficient in programming and have basic statistics knowledge.
-A complete set of slides (PDF and PowerPoint) is provided on the
+The latest version of this book (html and PDF)
+with a complete set of lecture slides (PDF and PowerPoint)
+is provided on the
 <a href="https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples">book’s GitHub page.</a></p>
 <p>The latest update includes the use of the popular
 packages in the meta-package <code>tidyverse</code> <span class="citation">(Wickham <a href="references.html#ref-R-tidyverse" role="doc-biblioref">2023</a><a href="references.html#ref-R-tidyverse" role="doc-biblioref">c</a>)</span> including
@@ -108,20 +110,21 @@ packages in the meta-package <code>tidyverse</code> <span class="citation">(Wick
 Please use the edit function within this book or visit the <a href="https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples">book’s
 GitHub project
 page</a>
-to submit corrections or suggest improvements. To cite this book, use:</p>
+to submit corrections or suggest improvements.</p>
+<div style="page-break-after: always;"></div>
+<p>To cite this book, use:</p>
 <blockquote>
-<p>Michael Hahsler (2021). <em>An R Companion for Introduction to Data
-Mining.</em> Online Book.
-<a href="https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/" class="uri">https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/</a></p>
+<p>Michael Hahsler (2024). <em>An R Companion for Introduction to Data
+Mining.</em> figshare.
+DOI: 10.6084/m9.figshare.26750404
+URL: <a href="https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/" class="uri">https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/</a></p>
 </blockquote>
 <p>I hope this book helps you to learn to use R more efficiently for your
 data mining projects.</p>
 <p>Michael Hahsler</p>
-<div id="license" class="section level2 unnumbered" number="">
-<h2>License<a class="anchor" aria-label="anchor" href="#license"><i class="fas fa-link"></i></a>
-</h2>
-<p><img src="images/by-nc-sa.png" alt="Creative Commons License"> The online version of
-this book is licensed under the <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
+<div class="inline-figure">
+<img src="images/by-nc-sa.png" alt="Creative Commons License"> </div>
+<p>This book is licensed under the <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
 Attribution-NonCommercial-ShareAlike 4.0 International
 License</a>.</p>
 <p>The cover art is based on
@@ -131,16 +134,12 @@ BY
 2.0</a>.</p>
 
 </div>
-</div>
   <div class="chapter-nav">
 <div class="empty"></div>
 <div class="next"><a href="introduction.html"><span class="header-section-number">1</span> Introduction</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
-      <ul class="nav navbar-nav">
-<li><a class="nav-link" href="#preface">Preface</a></li>
-<li><a class="nav-link" href="#license">License</a></li>
-</ul>
+      <ul class="nav navbar-nav"><li><a class="nav-link" href="#preface">Preface</a></li></ul>
 
       <div class="book-extra">
         <ul class="list-unstyled">
@@ -157,7 +156,7 @@ BY
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-08-12.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-08-22.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
