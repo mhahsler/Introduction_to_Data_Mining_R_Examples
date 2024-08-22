@@ -15,6 +15,12 @@ description: "This book contains documented R examples to accompany several chap
 editor_options: 
   markdown: 
     wrap: 72
+header-includes: 
+  - \usepackage{titlepic}
+  - \titlepic{\includegraphics[width=\textwidth]{images/cover.pdf}}
+classoption: 
+  - notitlepage
+links-as-notes: true
 ---
 
 # Preface {.unnumbered}
@@ -39,7 +45,7 @@ The code examples collected in this book were developed for the course
 _CS 5/7331 Data Mining_ taught 
 at the advanced undergraduate and graduate level
 at the [Computer Science Department](https://www.smu.edu/lyle/departments/cs) at
-[SMU](http://www.smu.edu) since Spring 2013 and will be regularly
+Southern Methodist University (SMU) since Spring 2013 and will be regularly
 updated and improved. 
 The learning method used in this book is learning-by-doing. 
 The code examples throughout this book are
@@ -48,7 +54,9 @@ try it out on the provided dataset and then apply it directly to your own
 data. Instructors can use this companion as a component to create an 
 introduction to data mining course for advanced undergraduates and graduate
 students who are proficient in programming and have basic statistics knowledge.
-A complete set of slides (PDF and PowerPoint) is provided on the
+The latest version of this book (html and PDF) 
+with a complete set of lecture slides (PDF and PowerPoint) 
+is provided on the
 [book's GitHub page.](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples)
 
 The latest update includes the use of the popular
@@ -58,21 +66,34 @@ packages in the meta-package `tidyverse` [@R-tidyverse] including
 Please use the edit function within this book or visit the [book's
 GitHub project
 page](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples)
-to submit corrections or suggest improvements. To cite this book, use:
+to submit corrections or suggest improvements. 
 
-> Michael Hahsler (2021). *An R Companion for Introduction to Data
-> Mining.* Online Book.
-> <https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/>
+\newpage
+
+To cite this book, use:
+
+> Michael Hahsler (2024). *An R Companion for Introduction to Data
+> Mining.* figshare.
+> DOI: 10.6084/m9.figshare.26750404
+> URL: <https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/>
 
 I hope this book helps you to learn to use R more efficiently for your
 data mining projects.
 
 Michael Hahsler
 
-## License {.unnumbered}
+\vfill
 
-![Creative Commons License](images/by-nc-sa.png) The online version of
-this book is licensed under the [Creative Commons
+
+```{r echo=FALSE, results='asis'}
+if (knitr::is_latex_output()) {
+  cat('![Creative Commons License](images/by-nc-sa.pdf)&nbsp;')
+} else {
+  cat('![Creative Commons License](images/by-nc-sa.png)\\ ')
+}
+```
+
+This book is licensed under the [Creative Commons
 Attribution-NonCommercial-ShareAlike 4.0 International
 License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 
