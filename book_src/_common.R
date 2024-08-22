@@ -2,7 +2,7 @@
 options(
   htmltools.dir.version = FALSE, 
   formatR.indent = 2,
-  width = 70, 
+  width = 60, 
   digits = 4, 
   warnPartialMatchAttr = FALSE, 
   warnPartialMatchDollar = FALSE
@@ -18,5 +18,12 @@ local({
 # example chunk options set globally
 knitr::opts_chunk$set(
 #  comment = "#>",
-  collapse = TRUE
+  # tidy = TRUE,
+  # tidy.opts = list(width.cutoff = 60),
+  collapse = TRUE,
+  options(width = 60),
+  strip.white = TRUE
   )
+
+# this is for tidyverse bug
+options(cli.width = 60)

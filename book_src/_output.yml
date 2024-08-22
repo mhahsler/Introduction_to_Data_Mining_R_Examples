@@ -3,3 +3,9 @@ bookdown::bs4_book:
     base:   https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples
     branch: master
     subdir: book_src
+
+bookdown::pdf_book:
+  latex_engine: xelatex
+  toc_depth: 3
+  keep_tex: TRUE
+  keep_md: TRUE

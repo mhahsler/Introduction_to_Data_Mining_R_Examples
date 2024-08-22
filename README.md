@@ -1,7 +1,12 @@
 # R Companion for Introduction to Data Mining
 
-<img src="assets/book_small_e2.jpg" align="right">
-<img src="assets/cover_small.png" align="right">
+<a href="https://www-users.cs.umn.edu/~kumar001/dmbook/index.php">
+  <img src="assets/book_small_e2.jpg" align="right">
+</a>
+
+<a href="https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/">
+  <img src="assets/cover_small.png" align="right">
+</a>
 
 R and [tidyverse](https://www.tidyverse.org/) are very popular for data mining.
 This repository contains slides and documented R examples to accompany several
@@ -19,12 +24,8 @@ which is published under the creative commons attribution license and you can
 share and adapt them freely. Please open an [issue](issues)  for corrections or
 to suggest improvements. 
 
-## Online Book
-
-Browse the complete book: [An R Companion for
-Introduction to Data
-Mining](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/)
-
+* [Browse the complete online book](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/)
+* [Download the book as a PDF](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/R-Companion-Data-Mining.pdf)
 
 ## Covered Chapters
 
@@ -84,8 +85,11 @@ bottom whenever there are R code examples available.
 
 
 ## License
-![Creative Commons License](https://i.creativecommons.org/l/by-nc/4.0/88x31.png)
-All code and documents in this repository are licensed under a [Creative Commons Attribution-NonCommercial 4.0 International License](http://creativecommons.org/licenses/by-nc/4.0/)
+![Creative Commons License](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png)
+All code and documents in this repository are licensed under the [Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 International
+License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+
 
  
 For questions please contact [Michael Hahsler](http://michael.hahsler.net).
