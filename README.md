@@ -10,10 +10,11 @@
 
 R and [tidyverse](https://www.tidyverse.org/) are very popular for data mining.
 This repository contains slides and documented R examples to accompany several
-chapters of the popular data mining text book:
+chapters of the popular data mining textbook:
 
 > Pang-Ning Tan, Michael Steinbach, Anuj Karpatne and Vipin Kumar, 
-[_Introduction to Data Mining,_](https://www-users.cs.umn.edu/~kumar001/dmbook/index.php) Addison Wesley, 1st or 2nd edition.
+> [_Introduction to Data Mining,_](https://www-users.cs.umn.edu/~kumar001/dmbook/index.php) 
+> Addison Wesley, 1st or 2nd edition.
 
 The slides and examples are used in my course _CS 5/7331 Data Mining_ taught at
 [SMU](https://www.smu.edu/) and will be regularly updated and improved.  The
@@ -24,24 +25,24 @@ which is published under the Creative Commons Attribution-ShareAlike license and
 share and adapt them freely. Please open an [issue](issues)  for corrections or
 to suggest improvements. 
 
-* [Browse the complete online book](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/)
+
+## Content
+
+* [Browse the online book](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/)
 * [Download the book as a PDF](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/R-Companion-Data-Mining.pdf)
 
-## Covered Chapters
-
-| Textbook Chapter* | Slides | Companion R Code |  
+| Companion Chapter | Lecture Slides | Free Textbook Chapter  |  
 | :--------| :---: | :----: |
-| 1. Introduction | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap1_intro.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/introduction.html) |
-| 2. Data | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap2_data.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/data.html) | 
-| -. Web Chapter: [Exploring Data](https://www-users.cse.umn.edu/~kumar001/dmbook/data_exploration_1st_edition.pdf) | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap2_exploration.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/data.html#data-exploration)  | 
-| 3. [Classification: Basic Concepts and Techniques](https://www-users.cs.umn.edu/~kumar001/dmbook/ch3_classification.pdf) | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap3_basic_classification.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/classification-basic-concepts-and-techniques.html) | 
-| 4. Classification: Alternative Techniques |    [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap4_alternative_classification.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/classification-alternative-techniques.html) |
-| 5. [Association Analysis: Basic Concepts and Algorithms](https://www-users.cs.umn.edu/~kumar001/dmbook/ch5_association_analysis.pdf) | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap5_basic_association_analysis.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/association-analysis-basic-concepts-and-algorithms.html) |
-| 6. Association Analysis: Advanced Concepts | - | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/association-analysis-advanced-concepts.html) |
-| 7. [Cluster Analysis: Basic Concepts and Algorithms](https://www-users.cs.umn.edu/~kumar001/dmbook/ch7_clustering.pdf) | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap7_basic_cluster_analysis.pdf) | [R Code](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/clustering-analysis.html) | 
-
-\* Textbook chapters are from Introduction to Data Mining, 2nd edition. 
-Most used chapters are available as the linked free sample chapters.
+| 1. [Introduction](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/introduction.html) | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap1_intro.pdf) | -  |
+| 2. [Data](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/data.html) | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap2_data.pdf) | - | 
+| 2.5. [Exploring Data](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/data.html#data-exploration)  | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap2_exploration.pdf) | Web Chapter [Exploring Data](https://www-users.cse.umn.edu/~kumar001/dmbook/data_exploration_1st_edition.pdf)  | 
+| 3. [Classification: Basic Concepts](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/classification-basic-concepts.html) | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap3_basic_classification.pdf) | [3. Classification](https://www-users.cs.umn.edu/~kumar001/dmbook/ch3_classification.pdf) | 
+| 4. [Classification: Alternative Techniques](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/classification-alternative-techniques.html) | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap4_alternative_classification.pdf) | - |
+| 5. [Association Analysis: Basic Concepts](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/association-analysis-basic-concepts.html)  | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap5_basic_association_analysis.pdf) | [5. Association Analysis](https://www-users.cs.umn.edu/~kumar001/dmbook/ch5_association_analysis.pdf) |
+| 6. [Association Analysis: Advanced Concepts](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/association-analysis-advanced-concepts.html) | - | - |
+| 7. [Cluster Analysis: Basic Concepts](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/cluster-analysis.html) | [Slides](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap7_basic_cluster_analysis.pdf) | [7. Cluster Analysis](https://www-users.cs.umn.edu/~kumar001/dmbook/ch7_clustering.pdf) | 
+| 8. [Regression](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/regression.html) | - | - | 
+| 9. [Logistic Regression](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/logistic-regression-1.html) | - | - | 
 
 ## Interactive Help
 
@@ -81,9 +82,17 @@ mining.
 * PowerPoint presentation files for a data mining course can be found in the
   repository directory [slides](slides).  The slides have an R symbol at the
 bottom whenever there are R code examples available.
-* Datasets for projects can be found at https://www.kaggle.com/datasets
+* Datasets for projects can be found at 
+  [https://www.kaggle.com/datasets](https://www.kaggle.com/datasets)
+
+## How To Cite This Book
+
+> Michael Hahsler (2024). _An R Companion for Introduction to Data Mining._ 
+> figshare. DOI: [10.6084/m9.figshare.26750404](http://doi.org/10.6084/m9.figshare.26750404), 
+> URL: https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/
 
 ## License
+
 ![Creative Commons BY-SA 4.0 License](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
 All code and documents in this repository are licensed under the 
 [Creative Commons Attribution-ShareAlike 4.0 International license](http://creativecommons.org/licenses/by-sa/4.0/).
