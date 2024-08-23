@@ -20,7 +20,7 @@ The slides and examples are used in my course _CS 5/7331 Data Mining_ taught at
 code examples are now compiled into the free online book [An R Companion for
 Introduction to Data
 Mining](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/)
-which is published under the creative commons attribution license and you can
+which is published under the Creative Commons Attribution-ShareAlike license and you can
 share and adapt them freely. Please open an [issue](issues)  for corrections or
 to suggest improvements. 
 
@@ -60,10 +60,11 @@ Each book chapter will use a set of packages that must be installed. The
 installation is done directly in R and the installation code can be found at
 the beginning of each chapter. 
 
+
 ## Statement of Need
 
 The textbook Introduction to Data Mining has been one of the most
-popular choices to learn and teach data mining concepts.  Some of the most
+popular choices for learning and teaching data mining concepts.  Some of the most
 important chapters have been made available for free by the authors on the
 [books's website](https://www-users.cse.umn.edu/~kumar001/dmbook/index.php).
 One of the authors also provides Python Jupyter notebooks with examples, but
@@ -82,14 +83,10 @@ mining.
 bottom whenever there are R code examples available.
 * Datasets for projects can be found at https://www.kaggle.com/datasets
 
-
-
 ## License
-![Creative Commons License](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png)
-All code and documents in this repository are licensed under the [Creative Commons
-Attribution-NonCommercial-ShareAlike 4.0 International
-License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
-
+![Creative Commons BY-SA 4.0 License](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
+All code and documents in this repository are licensed under the 
+[Creative Commons Attribution-ShareAlike 4.0 International license](http://creativecommons.org/licenses/by-sa/4.0/).
 
  
 For questions please contact [Michael Hahsler](http://michael.hahsler.net).
