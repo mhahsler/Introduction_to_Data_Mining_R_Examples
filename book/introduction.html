@@ -141,17 +141,21 @@ installed with R. This is referred to as Base-R.</p>
 <p>Base-R is covered in detail in <a href="https://cran.r-project.org/doc/manuals/r-release/R-intro.html">An Introduction to
 R</a>. The
 most important differences between R and many other programming languages
-like Python are that R is functional (with some extensions) and
-vectorized.</p>
+like Python are:</p>
+<ul>
+<li>R is a functional programming language (with some extensions).</li>
+<li>R only uses vectors and operations are vectorized. You rarely will see loops.</li>
+<li>R starts indexing into vectors with 1 not 0.</li>
+<li>R uses <code>&lt;-</code> for assignment. Do not use <code>=</code> for assignment.</li>
+</ul>
 <div id="vectors" class="section level3" number="1.2.1">
 <h3>
 <span class="header-section-number">1.2.1</span> Vectors<a class="anchor" aria-label="anchor" href="#vectors"><i class="fas fa-link"></i></a>
 </h3>
-<p>R is vectorized and scalars do not exist. The basic data structure is a
-vector of real numbers. Special values like infinity and
-missing (<code>NA</code>) can be used.</p>
+<p>The basic data structure in R is a vector of real numbers.
+Scalars do not exist, they are just vectors of length 1.</p>
 <p>We can combine values into a vector using the combine function <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>.
-Special values for infinity and missing values (<code>NA</code>) can be used.</p>
+Special values for infinity (<code>Inf</code>) and missing values (<code>NA</code>) can be used.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10.4</span>, <span class="fl">5.6</span>, <span class="cn">Inf</span>, <span class="cn">NA</span>, <span class="fl">21.7</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
@@ -177,8 +181,8 @@ so loops are typically not necessary.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">+</span> <span class="fl">1</span></span>
 <span><span class="co">## [1] 11.4  6.6  Inf   NA 22.7</span></span></code></pre></div>
-<p>Comparisons are performed element wise and return a <code>logical</code> vector
-(R’s name for the datatype Boolean).</p>
+<p>Comparisons are also vectorized are performed element-wise. They
+return a <code>logical</code> vector (R’s name for the datatype Boolean).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&gt;</span> <span class="va">y</span></span>
 <span><span class="co">## [1] TRUE TRUE TRUE   NA TRUE</span></span></code></pre></div>
@@ -223,11 +227,16 @@ increment function can be defined as:</p>
 <code class="sourceCode R"><span><span class="va">inc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">by</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span> </span>
 <span>    <span class="va">x</span> <span class="op">+</span> <span class="va">by</span> </span>
 <span>  <span class="op">}</span></span></code></pre></div>
+<p>The value of the last evaluated expression in the function body is
+automatically returned by the function. The function can also
+explicitly use <code>return(return_value)</code>.</p>
 <p>Calling the increment function on vector <code>x</code>.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">inc</span><span class="op">(</span><span class="va">x</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">## [1] 12.4  7.6   NA   NA 23.7</span></span></code></pre></div>
-<p>R has many built-in functions like <code><a href="https://rdrr.io/r/base/Extremes.html">min()</a></code>, <code><a href="https://rdrr.io/r/base/Extremes.html">max()</a></code>, <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code> and
+<p>Before you implement your own function, check if R does not already provide an
+implementation.
+R has many built-in functions like <code><a href="https://rdrr.io/r/base/Extremes.html">min()</a></code>, <code><a href="https://rdrr.io/r/base/Extremes.html">max()</a></code>, <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code>, and
 <code><a href="https://rdrr.io/r/base/sum.html">sum()</a></code>.</p>
 </div>
 <div id="strings" class="section level3" number="1.2.5">
@@ -318,8 +327,9 @@ See Is What You Get editor.</p>
 <p>To convert the R markdown document to HTML, PDF or Word, just click the
 Knit button. All the code will be executed and combined with the text
 into a complete document.</p>
-<p>Examples and detailed documentation can be found on <a href="https://rmarkdown.rstudio.com/">RStudio’s R Markdown
-website</a> and in the <a href="https://rstudio.github.io/cheatsheets/html/rmarkdown.html">R Markdown Cheatsheet</a>.</p>
+<p>Examples and detailed documentation can be found on
+<a href="https://rmarkdown.rstudio.com/">RStudio’s R Markdown website</a> and in the
+<a href="https://rstudio.github.io/cheatsheets/html/rmarkdown.html">R Markdown Cheatsheet</a>.</p>
 </div>
 <div id="tidyverse" class="section level2" number="1.4">
 <h2>
@@ -545,7 +555,7 @@ the tibble, so we specify the identity function instead.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-08-22.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-09-11.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

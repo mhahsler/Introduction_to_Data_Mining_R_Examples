@@ -85,17 +85,20 @@ installed with R. This is referred to as Base-R.
 Base-R is covered in detail in [An Introduction to
 R](https://cran.r-project.org/doc/manuals/r-release/R-intro.html). The
 most important differences between R and many other programming languages
-like Python are that R is functional (with some extensions) and
-vectorized.
+like Python are:
+
+* R is a functional programming language (with some extensions).
+* R only uses vectors and operations are vectorized. You rarely will see loops.
+* R starts indexing into vectors with 1 not 0.
+* R uses `<-` for assignment. Do not use `=` for assignment.
 
 ### Vectors
 
-R is vectorized and scalars do not exist. The basic data structure is a 
-vector of real numbers. Special values like infinity and 
-missing (`NA`) can be used.
+The basic data structure in R is a vector of real numbers.
+Scalars do not exist, they are just vectors of length 1. 
 
 We can combine values into a vector using the combine function `c()`. 
-Special values for infinity and missing values (`NA`) can be used.
+Special values for infinity (`Inf`) and missing values (`NA`) can be used.
 
 ```{r }
 x <- c(10.4, 5.6, Inf, NA, 21.7)
@@ -126,8 +129,8 @@ so loops are typically not necessary.
 x + 1
 ```
 
-Comparisons are performed element wise and return a `logical` vector
-(R's name for the datatype Boolean).
+Comparisons are also vectorized are performed element-wise. They 
+return a `logical` vector (R's name for the datatype Boolean).
 
 ```{r }
 x > y
@@ -176,13 +179,19 @@ inc <- function(x, by = 1) {
   }
 ```
 
+The value of the last evaluated expression in the function body is 
+automatically returned by the function. The function can also 
+explicitly use `return(return_value)`. 
+
 Calling the increment function on vector `x`.
 
 ```{r }
 inc(x, by = 2)
 ```
 
-R has many built-in functions like `min()`, `max()`, `mean()` and
+Before you implement your own function, check if R does not already provide an
+implementation.
+R has many built-in functions like `min()`, `max()`, `mean()`, and
 `sum()`.
 
 ### Strings
@@ -280,8 +289,9 @@ To convert the R markdown document to HTML, PDF or Word, just click the
 Knit button. All the code will be executed and combined with the text
 into a complete document.
 
-Examples and detailed documentation can be found on [RStudio's R Markdown
-website](https://rmarkdown.rstudio.com/) and in the [R Markdown Cheatsheet](https://rstudio.github.io/cheatsheets/html/rmarkdown.html).
+Examples and detailed documentation can be found on 
+[RStudio's R Markdown website](https://rmarkdown.rstudio.com/) and in the 
+[R Markdown Cheatsheet](https://rstudio.github.io/cheatsheets/html/rmarkdown.html).
 
 ## Tidyverse
 

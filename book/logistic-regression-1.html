@@ -101,7 +101,7 @@ of the binary outcome as the dependent variable:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu">logit</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v<span class="op">=</span><span class="fl">0.5</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="fl">0</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-415-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-417-1.png" width="672"></div>
 <p>This is equivalent to modeling the probability of the outcome <span class="math inline">\(p\)</span> by</p>
 <p><span class="math display">\[ p = \frac{e^{\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...}}{1 +  e^{\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...}} = \frac{1}{1+e^{-(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...)}}\]</span></p>
 </div>
@@ -122,7 +122,7 @@ classify if a flower is of species Virginica</p>
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="va">virginica</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">$</span><span class="va">Species</span> <span class="op">==</span> <span class="st">"virginica"</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="va">Species</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x</span>, col<span class="op">=</span><span class="va">x</span><span class="op">$</span><span class="va">virginica</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-417-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-419-1.png" width="672"></div>
 </div>
 <div id="create-a-logistic-regression-model" class="section level2" number="9.3">
 <h2>
@@ -308,7 +308,7 @@ cross-validation!</p>
 <div class="sourceCode" id="cb595"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">pr</span>, breaks<span class="op">=</span><span class="fl">20</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">pr</span><span class="op">[</span><span class="va">x</span><span class="op">$</span><span class="va">virginica</span><span class="op">==</span><span class="cn">TRUE</span><span class="op">]</span>, col<span class="op">=</span><span class="st">"red"</span>, breaks<span class="op">=</span><span class="fl">20</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-422-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-424-1.png" width="672"></div>
 </div>
 <div id="check-classification-performance" class="section level2" number="9.6">
 <h2>
@@ -488,7 +488,7 @@ confusion table and calculate the accuracy and discuss how well the model works.
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-08-22.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-09-11.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
