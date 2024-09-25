@@ -1203,12 +1203,21 @@ ggplot(iris, aes(Petal.Width)) + geom_histogram(bins = 20)
 ```
 
 If the data contains groups, then the group information can be easily 
-added as an aesthetic to the histogram. We also add alpha and position 
-to make the   
+added as an aesthetic to the histogram.
 
 ```{r }
 ggplot(iris, aes(Petal.Width)) + 
          geom_histogram(bins = 20, aes(fill = Species))
+```
+
+The bars appear stacked with a green blocks on top pf blue blocks.
+To display the three distributions behind each other, we change `position`
+for placement and make the bars slightly translucent using `alpha`.
+  
+
+```{r }
+ggplot(iris, aes(Petal.Width)) + 
+         geom_histogram(bins = 20, aes(fill = Species), alpha = .5, position = 'identity')
 ```
 
 ### Boxplot
@@ -1431,6 +1440,21 @@ get_order(o)
 ggparcoord(iris, 
            columns = as.integer(get_order(o)), 
            groupColumn = 5)
+```
+
+### Star Plot
+
+Star plots are a type of [radar chart](https://en.wikipedia.org/wiki/Radar_chart)
+to visualize three or more quantitative variables represented on axes starting from 
+the plot's origin. R-base offers a simple star plot. We plot the 
+first 5 flowers of each species.
+
+
+```{r }
+flowers_5 <- iris[c(1:5, 51:55, 101:105), ]
+flowers_5
+
+stars(flowers_5[, 1:4], ncol = 5)
 ```
 
 ### More Visualizations
