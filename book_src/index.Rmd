@@ -15,12 +15,12 @@ description: "This book contains documented R examples to accompany several chap
 editor_options: 
   markdown: 
     wrap: 72
-header-includes: 
-  - \usepackage{titlepic}
-  - \titlepic{\includegraphics[width=\textwidth]{images/cover.pdf}}
-classoption: 
-  - notitlepage
+header-includes: |
+  \usepackage{titlepic}
+  \titlepic{\includegraphics[width=\textwidth]{images/cover.pdf}}
 links-as-notes: true
+classoption:  
+  - notitlepage
 ---
 
 # Preface {.unnumbered}
@@ -89,7 +89,7 @@ Michael Hahsler
 if (knitr::is_latex_output()) {
   cat('![Creative Commons License](images/by-sa.pdf)&nbsp;')
 } else {
-  cat('![Creative Commons License](images/by-sa.png)\\ ')
+  cat('![Creative Commons License](images/by-sa_small.png)\\ ')
 }
 ```
 
@@ -102,3 +102,10 @@ The cover art is based on
 [stebulus](https://www.flickr.com/photos/69017177@N00) licensed with [CC
 BY
 2.0](https://creativecommons.org/licenses/by/2.0/?ref=ccsearch&atype=rich).
+
+
+```{r echo=FALSE, results='asis'}
+  cat('This book was built on', date(), paste0('(latest GitHub tag: ', 
+                                         system2("git", c("describe", "--tags", "--abbrev=0"), stdout = TRUE),
+                                         ')'), '\n\n')
+```

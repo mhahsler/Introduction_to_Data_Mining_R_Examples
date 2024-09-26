@@ -7,7 +7,7 @@
 <title>Chapter 1 Introduction | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
 <meta name="description" content="Data mining has the goal of finding patterns in large data sets. The popular data mining textbook Introduction to Data Mining (Tan et al. 2017) covers many important aspects of data mining. This...">
-<meta name="generator" content="bookdown 0.39 with bs4_book()">
+<meta name="generator" content="bookdown 0.40 with bs4_book()">
 <meta property="og:title" content="Chapter 1 Introduction | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -19,7 +19,7 @@
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/transition.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
-<script src="libs/bs4_book/bs4_book.js"></script><script src="libs/accessible-code-block/empty-anchor.js"></script><link href="libs/htmltools-fill/fill.css" rel="stylesheet">
+<script src="libs/bs4_book/bs4_book.js"></script><link href="libs/htmltools-fill/fill.css" rel="stylesheet">
 <script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet">
 <script src="libs/crosstalk/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet">
 <script src="libs/plotly-main/plotly-latest.min.js"></script><link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet">
@@ -31,6 +31,28 @@
 <script src="libs/vis/vis-network.min.js"></script><script src="libs/visNetwork-binding/visNetwork.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
     
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
   </style>
 </head>
 <body data-spy="scroll" data-target="#toc">
@@ -78,7 +100,7 @@
 <p><a href="https://en.wikipedia.org/wiki/Data_mining">Data mining</a> has the goal of
 finding patterns in large data sets. The popular data mining textbook
 <a href="https://www-users.cs.umn.edu/~kumar001/dmbook/"><em>Introduction to Data
-Mining</em></a> <span class="citation">(Tan et al. <a href="references.html#ref-Tan2018" role="doc-biblioref">2017</a>)</span>
+Mining</em></a> <span class="citation">(<a href="references.html#ref-Tan2018">Tan et al. 2017</a>)</span>
 covers many important aspects of data mining. This companion contains
 annotated R code examples to complement the textbook. To make following
 along easier, we follow the chapters in data mining textbook which is
@@ -126,8 +148,8 @@ the code to install the packages used in this chapter:</p>
 <span><span class="va">pkgs_install</span> <span class="op">&lt;-</span> <span class="va">pkgs</span><span class="op">[</span><span class="op">!</span><span class="op">(</span><span class="va">pkgs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span>,<span class="st">"Package"</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">pkgs_install</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="va">pkgs_install</span><span class="op">)</span></span></code></pre></div>
 <p>The code examples in this book use the R package collection <code>tidyverse</code>
-<span class="citation">(Wickham <a href="references.html#ref-R-tidyverse" role="doc-biblioref">2023</a><a href="references.html#ref-R-tidyverse" role="doc-biblioref">c</a>)</span> to manipulate data. Tidyverse also includes the package
-<code>ggplot2</code> <span class="citation">(Wickham, Chang, et al. <a href="references.html#ref-R-ggplot2" role="doc-biblioref">2024</a>)</span> for visualization. Tidyverse packages make
+<span class="citation">(<a href="references.html#ref-R-tidyverse">Wickham 2023c</a>)</span> to manipulate data. Tidyverse also includes the package
+<code>ggplot2</code> <span class="citation">(<a href="references.html#ref-R-ggplot2">Wickham et al. 2024</a>)</span> for visualization. Tidyverse packages make
 working with data in R very convenient. Data analysis and data mining
 reports are typically done by creating
 R Markdown documents. Everything in R is built on top of the
@@ -205,13 +227,12 @@ programming languages but the index always starts at 1.</p>
 Here we select all non-missing values using the function <code><a href="https://rdrr.io/r/base/NA.html">is.na()</a></code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="co">## [1] FALSE FALSE FALSE  TRUE FALSE</span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">]</span> <span class="co"># select all non-missing values</span></span>
+<span><span class="co">## [1] FALSE FALSE FALSE  TRUE FALSE</span></span>
+<span><span class="va">x</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">]</span> <span class="co"># select all non-missing values</span></span>
 <span><span class="co">## [1] 10.4  5.6  Inf 21.7</span></span></code></pre></div>
 <p>We can also assign values to a selection. For example, this code gets rid of
 infinite values.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/is.finite.html">is.finite</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
 <span><span class="va">x</span></span>
 <span><span class="co">## [1] 10.4  5.6   NA   NA 21.7</span></span></code></pre></div>
@@ -223,7 +244,7 @@ infinite values.</p>
 <p>Functions work like in many other languages. However, they also operate
 vectorized and arguments can be specified positional or by named. An
 increment function can be defined as:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">inc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">by</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span> </span>
 <span>    <span class="va">x</span> <span class="op">+</span> <span class="va">by</span> </span>
 <span>  <span class="op">}</span></span></code></pre></div>
@@ -231,7 +252,7 @@ increment function can be defined as:</p>
 automatically returned by the function. The function can also
 explicitly use <code>return(return_value)</code>.</p>
 <p>Calling the increment function on vector <code>x</code>.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">inc</span><span class="op">(</span><span class="va">x</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">## [1] 12.4  7.6   NA   NA 23.7</span></span></code></pre></div>
 <p>Before you implement your own function, check if R does not already provide an
@@ -246,12 +267,12 @@ R has many built-in functions like <code><a href="https://rdrr.io/r/base/Extreme
 <p>R uses <code>character</code> vectors where the datatype <code>character</code> represents a string
 and not like in other programming language for a single character.
 R accepts double or single quotation marks to delimit strings.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">string</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Hello"</span>, <span class="st">"Goodbye"</span><span class="op">)</span></span>
 <span><span class="va">string</span></span>
 <span><span class="co">## [1] "Hello"   "Goodbye"</span></span></code></pre></div>
 <p>Strings can be combined using <code><a href="https://rdrr.io/r/base/paste.html">paste()</a></code>.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">string</span>, <span class="st">"World!"</span><span class="op">)</span></span>
 <span><span class="co">## [1] "Hello World!"   "Goodbye World!"</span></span></code></pre></div>
 <p>Note that paste is vectorized and the string <code>"World!"</code> is used twice to
@@ -266,9 +287,9 @@ particularly often used. We have used it already above in the expression
 <span class="header-section-number">1.2.6</span> Plotting<a class="anchor" aria-label="anchor" href="#plotting"><i class="fas fa-link"></i></a>
 </h3>
 <p>Basic plotting in Base-R is done by calling <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-16-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-17-1.png" width="672"></div>
 <p>Other plot functions are <code><a href="https://rdrr.io/r/graphics/pairs.html">pairs()</a></code>, <code><a href="https://rdrr.io/r/graphics/hist.html">hist()</a></code>, <code><a href="https://rdrr.io/r/graphics/barplot.html">barplot()</a></code>. In this book,
 we will focus on plots created with the ggplot2 package.</p>
 </div>
@@ -280,16 +301,16 @@ we will focus on plots created with the ggplot2 package.</p>
 and <code>factor</code>. In R, everything is an object. Objects are printed by
 either just using the object’s name or put it explicitly into the
 <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> function.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span></span>
 <span><span class="co">## [1] 10.4  5.6   NA   NA 21.7</span></span></code></pre></div>
 <p>For many objects, a summary can be created.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's </span></span>
 <span><span class="co">##     5.6     8.0    10.4    12.6    16.1    21.7       2</span></span></code></pre></div>
 <p>Objects have a class.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">## [1] "numeric"</span></span></code></pre></div>
 <p>Some functions are generic, meaning that they do something else
@@ -301,7 +322,7 @@ There also exists a default method. For plot, this method is
 specifying the class with the dot can help finding the documentation.</p>
 <p>It is often useful to know what information it stored in an object.
 <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> returns a humanly readable string representation of the object.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">##  num [1:5] 10.4 5.6 NA NA 21.7</span></span></code></pre></div>
 <p>There is much to learn about R. It is highly recommended to go through
@@ -335,21 +356,21 @@ into a complete document.</p>
 <h2>
 <span class="header-section-number">1.4</span> Tidyverse<a class="anchor" aria-label="anchor" href="#tidyverse"><i class="fas fa-link"></i></a>
 </h2>
-<p><code>tidyverse</code> <span class="citation">(Wickham <a href="references.html#ref-R-tidyverse" role="doc-biblioref">2023</a><a href="references.html#ref-R-tidyverse" role="doc-biblioref">c</a>)</span> is a collection of many useful packages that
+<p><code>tidyverse</code> <span class="citation">(<a href="references.html#ref-R-tidyverse">Wickham 2023c</a>)</span> is a collection of many useful packages that
 work well together by sharing design principles and data structures.
-<code>tidyverse</code> also includes <code>ggplot2</code> <span class="citation">(Wickham, Chang, et al. <a href="references.html#ref-R-ggplot2" role="doc-biblioref">2024</a>)</span> for visualization.</p>
+<code>tidyverse</code> also includes <code>ggplot2</code> <span class="citation">(<a href="references.html#ref-R-ggplot2">Wickham et al. 2024</a>)</span> for visualization.</p>
 <p>In this book, we will use</p>
 <ul>
 <li>often tidyverse tibbles to replace R’s built-in data.frames,</li>
 <li>the pipe operator <code>|&gt;</code> to chain functions together, and</li>
 <li>data transformation functions like <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code>,
 <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code>, and <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> provided by the tidyverse
-package <code>dplyr</code> <span class="citation">(Wickham, François, et al. <a href="references.html#ref-R-dplyr" role="doc-biblioref">2023</a>)</span>.</li>
+package <code>dplyr</code> <span class="citation">(<a href="references.html#ref-R-dplyr">Wickham et al. 2023</a>)</span>.</li>
 </ul>
 <p>A good introduction can be found in the <a href="https://r4ds.hadley.nz/data-transform">Section on Data
-Transformation</a> <span class="citation">(Wickham, Çetinkaya-Rundel, and Grolemund <a href="references.html#ref-Wickham2023" role="doc-biblioref">2023</a>)</span>.</p>
+Transformation</a> <span class="citation">(<a href="references.html#ref-Wickham2023">Wickham, Çetinkaya-Rundel, and Grolemund 2023</a>)</span>.</p>
 <p>Load the tidyverse packages.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="co">## ── Attaching core tidyverse packages ──── tidyverse 2.0.0 ──</span></span>
 <span><span class="co">## ✔ dplyr     1.1.4     ✔ readr     2.1.5</span></span>
@@ -370,7 +391,7 @@ fruits. that will get you familiar with the basic syntax. Data tables in
 R are called data.frames. Tidyverse introduces its own version called
 tibbles. We create a tibble with the price in dollars per pound and the
 vitamin C content in milligrams (mg) per pound for five different fruits.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fruit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"mango"</span>, <span class="st">"orange"</span>, <span class="st">"lime"</span><span class="op">)</span>, </span>
 <span>  price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2.5</span>, <span class="fl">2.0</span>, <span class="fl">4.0</span>, <span class="fl">3.5</span>, <span class="fl">2.5</span><span class="op">)</span>, </span>
@@ -394,7 +415,7 @@ vitamin C content in milligrams (mg) per pound for five different fruits.</p>
 that a dollar buys using <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>. Then we filter only rows with
 fruit that provides more than 20 mg, and finally we arrange the data
 rows by the vitamin C per dollar from largest to smallest.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">affordable_vitamin_c_sources</span> <span class="op">&lt;-</span> <span class="va">fruit</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>vitamin_c_per_dollar <span class="op">=</span> <span class="va">vitamin_c</span> <span class="op">/</span> <span class="va">price</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">vitamin_c_per_dollar</span> <span class="op">&gt;</span> <span class="fl">20</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -419,7 +440,7 @@ while <code>%&gt;%</code> is provided in the extension package <code>magrittr</c
 data and pipes it through three transformation functions. The final
 result is assigned with <code>&lt;-</code> to a variable.</p>
 <p>We can create summary statistics of price using <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code>.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">affordable_vitamin_c_sources</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">price</span><span class="op">)</span>, </span>
 <span>            mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">price</span><span class="op">)</span>, </span>
@@ -431,7 +452,7 @@ result is assigned with <code>&lt;-</code> to a variable.</p>
 <p>We can also calculate statistics for groups by first grouping the data
 wirh <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code>. Here
 we produce statistics for fruit types.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">affordable_vitamin_c_sources</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">type</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">price</span><span class="op">)</span>, </span>
@@ -444,7 +465,7 @@ we produce statistics for fruit types.</p>
 <span><span class="co">## 2 tropical   2       3   4</span></span></code></pre></div>
 <p>Often, we want to apply the same function to multiple columns. This can
 be achieved using <code>across(columns, function)</code>.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">affordable_vitamin_c_sources</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">price</span>, <span class="va">vitamin_c</span><span class="op">)</span>, <span class="va">mean</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 2</span></span>
@@ -464,7 +485,7 @@ your use case.</p>
 <span class="header-section-number">1.4.3</span> ggplot2<a class="anchor" aria-label="anchor" href="#ggplot2"><i class="fas fa-link"></i></a>
 </h3>
 <p>For visualization, we will use mainly <code>ggplot2</code>. The <em>gg</em> in <code>ggplot2</code>
-stands for <strong>Grammar of Graphics</strong> introduced by <span class="citation">Wilkinson (<a href="references.html#ref-Wilkinson2005" role="doc-biblioref">2005</a>)</span>. The
+stands for <strong>Grammar of Graphics</strong> introduced by <span class="citation">Wilkinson (<a href="references.html#ref-Wilkinson2005">2005</a>)</span>. The
 main idea is that every graph is built from the same basic components:</p>
 <ul>
 <li>the data,</li>
@@ -472,7 +493,7 @@ main idea is that every graph is built from the same basic components:</p>
 <li>visual marks representing the data (geoms).</li>
 </ul>
 <p>In <code>ggplot2</code>, the components are combined using the <code>+</code> operator.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">data</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">...</span>, y <span class="op">=</span> <span class="va">...</span>, color <span class="op">=</span> <span class="va">...</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Since we typically use a Cartesian coordinate system, <code>ggplot</code> uses that
@@ -482,28 +503,28 @@ a bar chart by counting how often each value appears in the data (see
 <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">? geom_bar</a></code>). <code>geom_point</code> just uses the stat <code>"identity"</code> to display
 the points using the coordinates as they are. A great introduction can
 be found in the <a href="https://r4ds.hadley.nz/data-visualize">Section on Data
-Visualization</a> <span class="citation">(Wickham, Çetinkaya-Rundel, and Grolemund <a href="references.html#ref-Wickham2023" role="doc-biblioref">2023</a>)</span>,
+Visualization</a> <span class="citation">(<a href="references.html#ref-Wickham2023">Wickham, Çetinkaya-Rundel, and Grolemund 2023</a>)</span>,
 and very useful is <a href="https://rstudio.github.io/cheatsheets/html/data-visualization.html">RStudio’s Data Visualization Cheatsheet</a>.</p>
 <p>We can visualize our fruit data as a scatter plot.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">price</span>, y <span class="op">=</span> <span class="va">vitamin_c</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-28-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-29-1.png" width="672"></div>
 <p>It is easy to add more geoms. For example, we can add a regression line
 using <code>geom_smooth</code> with the method <code>"lm"</code> (linear model). We suppress
 the confidence interval since we only have 3 data points.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">price</span>, y <span class="op">=</span> <span class="va">vitamin_c</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, se <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">## `geom_smooth()` using formula = 'y ~ x'</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-29-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-30-1.png" width="672"></div>
 <p>Alternatively, we can visualize each fruit’s vitamin C content per
 dollar using a bar chart.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">name</span>, y <span class="op">=</span> <span class="va">vitamin_c</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-30-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-31-1.png" width="672"></div>
 <p>Note that <code>geom_bar</code> by default uses the <code>stat_count</code> function to
 aggregate data by counting, but we just want to visualize the value in
 the tibble, so we specify the identity function instead.</p>
@@ -555,7 +576,7 @@ the tibble, so we specify the identity function instead.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-09-11.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-09-26.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

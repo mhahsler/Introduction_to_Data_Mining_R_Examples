@@ -7,7 +7,7 @@
 <title>Preface | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
 <meta name="description" content="This book contains documented R examples to accompany several chapters of the popular data mining textbook Introduction to Data Mining by Pang-Ning Tan, Michael Steinbach and Vipin Kumar.">
-<meta name="generator" content="bookdown 0.39 with bs4_book()">
+<meta name="generator" content="bookdown 0.40 with bs4_book()">
 <meta property="og:title" content="Preface | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -19,7 +19,7 @@
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/transition.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
-<script src="libs/bs4_book/bs4_book.js"></script><script src="libs/accessible-code-block/empty-anchor.js"></script><link href="libs/htmltools-fill/fill.css" rel="stylesheet">
+<script src="libs/bs4_book/bs4_book.js"></script><link href="libs/htmltools-fill/fill.css" rel="stylesheet">
 <script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet">
 <script src="libs/crosstalk/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet">
 <script src="libs/plotly-main/plotly-latest.min.js"></script><link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet">
@@ -31,6 +31,28 @@
 <script src="libs/vis/vis-network.min.js"></script><script src="libs/visNetwork-binding/visNetwork.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
     
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
   </style>
 </head>
 <body data-spy="scroll" data-target="#toc">
@@ -71,10 +93,11 @@
         </div>
       </nav>
 </div>
-  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><!--bookdown:title:end--><!--bookdown:title:start--><div id="preface" class="section level1 unnumbered" number="">
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><!--bookdown:title:end--><!--bookdown:title:start--><div id="preface" class="section level1 unnumbered">
 <h1>Preface<a class="anchor" aria-label="anchor" href="#preface"><i class="fas fa-link"></i></a>
 </h1>
 <div class="inline-figure"><img src="images/cover.png" width="50%" style="display: block; margin: auto;"></div>
+<p>Book compiled on Thu Sep 26 09:08:13 2024 (latest GitHub tag: 1.0.2)</p>
 <p>This companion book contains documented R examples to accompany several chapters
 of the popular data mining textbook <a href="https://www-users.cs.umn.edu/~kumar001/dmbook/"><em>Introduction to Data
 Mining</em></a> by Pang-Ning
@@ -82,8 +105,8 @@ Tan, Michael Steinbach, Anuj Karpatne and Vipin Kumar.
 It is not intended as a replacement for the textbook since it does not cover the
 theory, but as a guide accompanying the textbook.
 The companion
-book can be used with either edition: 1st edition <span class="citation">(Tan, Steinbach, and Kumar <a href="references.html#ref-Tan2005" role="doc-biblioref">2005</a>)</span> or 2nd
-edition <span class="citation">(Tan et al. <a href="references.html#ref-Tan2018" role="doc-biblioref">2017</a>)</span>. The sections are numbered to match the 2nd edition. Sections
+book can be used with either edition: 1st edition <span class="citation">(<a href="references.html#ref-Tan2005">Tan, Steinbach, and Kumar 2005</a>)</span> or 2nd
+edition <span class="citation">(<a href="references.html#ref-Tan2018">Tan et al. 2017</a>)</span>. The sections are numbered to match the 2nd edition. Sections
 marked with an asterisk are additional content that is not covered in
 the textbook.</p>
 <p>The code examples collected in this book were developed for the course
@@ -104,9 +127,9 @@ with a complete set of lecture slides (PDF and PowerPoint)
 is provided on the
 <a href="https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples">book’s GitHub page.</a></p>
 <p>The latest update includes the use of the popular
-packages in the meta-package <code>tidyverse</code> <span class="citation">(Wickham <a href="references.html#ref-R-tidyverse" role="doc-biblioref">2023</a><a href="references.html#ref-R-tidyverse" role="doc-biblioref">c</a>)</span> including
-<code>ggplot2</code> <span class="citation">(Wickham, Chang, et al. <a href="references.html#ref-R-ggplot2" role="doc-biblioref">2024</a>)</span> for data wrangling and visualization, along with
-<code>caret</code> <span class="citation">(M. Kuhn <a href="references.html#ref-R-caret" role="doc-biblioref">2023</a>)</span> for model building and evaluation.
+packages in the meta-package <code>tidyverse</code> <span class="citation">(<a href="references.html#ref-R-tidyverse">Wickham 2023c</a>)</span> including
+<code>ggplot2</code> <span class="citation">(<a href="references.html#ref-R-ggplot2">Wickham et al. 2024</a>)</span> for data wrangling and visualization, along with
+<code>caret</code> <span class="citation">(<a href="references.html#ref-R-caret">Kuhn 2023</a>)</span> for model building and evaluation.
 Please use the edit function within this book or visit the <a href="https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples">book’s
 GitHub project
 page</a>
@@ -123,7 +146,7 @@ URL: <a href="https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/
 data mining projects.</p>
 <p>Michael Hahsler</p>
 <div class="inline-figure">
-<img src="images/by-sa.png" alt="Creative Commons License"> </div>
+<img src="images/by-sa_small.png" alt="Creative Commons License"> </div>
 <p>This book is licensed under the <a href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons
 Attribution-ShareAlike 4.0 International
 License</a>.</p>
@@ -156,7 +179,7 @@ BY
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-09-11.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-09-26.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

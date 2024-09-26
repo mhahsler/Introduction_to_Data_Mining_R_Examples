@@ -10,7 +10,7 @@
 \contentsline {subsection}{\numberline {1.2.6}Plotting}{15}{subsection.1.2.6}%
 \contentsline {subsection}{\numberline {1.2.7}Objects}{15}{subsection.1.2.7}%
 \contentsline {section}{\numberline {1.3}R Markdown}{16}{section.1.3}%
-\contentsline {section}{\numberline {1.4}Tidyverse}{17}{section.1.4}%
+\contentsline {section}{\numberline {1.4}Tidyverse}{16}{section.1.4}%
 \contentsline {subsection}{\numberline {1.4.1}Tibbles}{17}{subsection.1.4.1}%
 \contentsline {subsection}{\numberline {1.4.2}Transformations}{18}{subsection.1.4.2}%
 \contentsline {subsection}{\numberline {1.4.3}ggplot2}{19}{subsection.1.4.3}%
@@ -41,10 +41,10 @@
 \contentsline {subsection}{\numberline {2.4.3}Distances for Mixed Data}{49}{subsection.2.4.3}%
 \contentsline {subsubsection}{\numberline {2.4.3.1}Gower's Coefficient}{49}{subsubsection.2.4.3.1}%
 \contentsline {subsubsection}{\numberline {2.4.3.2}Using Euclidean Distance with Mixed Data}{50}{subsubsection.2.4.3.2}%
-\contentsline {subsection}{\numberline {2.4.4}More Proximity Measures}{52}{subsection.2.4.4}%
+\contentsline {subsection}{\numberline {2.4.4}More Proximity Measures}{51}{subsection.2.4.4}%
 \contentsline {section}{\numberline {2.5}Data Exploration*}{52}{section.2.5}%
 \contentsline {subsection}{\numberline {2.5.1}Basic statistics}{53}{subsection.2.5.1}%
-\contentsline {subsection}{\numberline {2.5.2}Grouped Operations and Calculations}{55}{subsection.2.5.2}%
+\contentsline {subsection}{\numberline {2.5.2}Grouped Operations and Calculations}{54}{subsection.2.5.2}%
 \contentsline {subsection}{\numberline {2.5.3}Tabulate data}{56}{subsection.2.5.3}%
 \contentsline {subsection}{\numberline {2.5.4}Percentiles (Quantiles)}{58}{subsection.2.5.4}%
 \contentsline {subsection}{\numberline {2.5.5}Correlation}{59}{subsection.2.5.5}%
@@ -56,168 +56,168 @@
 \contentsline {section}{\numberline {2.6}Visualization}{69}{section.2.6}%
 \contentsline {subsection}{\numberline {2.6.1}Histogram}{69}{subsection.2.6.1}%
 \contentsline {subsection}{\numberline {2.6.2}Boxplot}{71}{subsection.2.6.2}%
-\contentsline {subsection}{\numberline {2.6.3}Scatter plot}{73}{subsection.2.6.3}%
-\contentsline {subsection}{\numberline {2.6.4}Scatter Plot Matrix}{76}{subsection.2.6.4}%
-\contentsline {subsection}{\numberline {2.6.5}Matrix Visualization}{78}{subsection.2.6.5}%
-\contentsline {subsection}{\numberline {2.6.6}Correlation Matrix}{81}{subsection.2.6.6}%
-\contentsline {subsection}{\numberline {2.6.7}Parallel Coordinates Plot}{84}{subsection.2.6.7}%
-\contentsline {subsection}{\numberline {2.6.8}More Visualizations}{86}{subsection.2.6.8}%
-\contentsline {section}{\numberline {2.7}Exercises*}{86}{section.2.7}%
-\contentsline {chapter}{\numberline {3}Classification: Basic Concepts}{89}{chapter.3}%
-\contentsline {subsection}{Packages Used in this Chapter}{89}{section*.4}%
-\contentsline {section}{\numberline {3.1}Basic Concepts}{90}{section.3.1}%
-\contentsline {section}{\numberline {3.2}General Framework for Classification}{91}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}The Zoo Dataset}{91}{subsection.3.2.1}%
-\contentsline {section}{\numberline {3.3}Decision Tree Classifiers}{93}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}Create Tree}{93}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Make Predictions for New Data}{95}{subsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.3.3}Manual Calculation of the Resubstitution Error}{96}{subsection.3.3.3}%
-\contentsline {subsection}{\numberline {3.3.4}Confusion Matrix using Caret}{97}{subsection.3.3.4}%
-\contentsline {section}{\numberline {3.4}Model Overfitting}{99}{section.3.4}%
-\contentsline {section}{\numberline {3.5}Model Selection}{101}{section.3.5}%
-\contentsline {section}{\numberline {3.6}Model Evaluation}{102}{section.3.6}%
-\contentsline {subsection}{\numberline {3.6.1}Holdout Method}{102}{subsection.3.6.1}%
-\contentsline {subsection}{\numberline {3.6.2}Cross-Validation}{102}{subsection.3.6.2}%
-\contentsline {section}{\numberline {3.7}Hyperparameter Tuning}{103}{section.3.7}%
-\contentsline {section}{\numberline {3.8}Pitfalls of Model Selection and Evaluation}{109}{section.3.8}%
-\contentsline {section}{\numberline {3.9}Model Comparison}{109}{section.3.9}%
-\contentsline {section}{\numberline {3.10}Feature Selection*}{112}{section.3.10}%
-\contentsline {subsection}{\numberline {3.10.1}Univariate Feature Importance Score}{112}{subsection.3.10.1}%
-\contentsline {subsection}{\numberline {3.10.2}Feature Subset Selection}{116}{subsection.3.10.2}%
-\contentsline {subsection}{\numberline {3.10.3}Using Dummy Variables for Factors}{117}{subsection.3.10.3}%
-\contentsline {section}{\numberline {3.11}Exercises*}{120}{section.3.11}%
-\contentsline {chapter}{\numberline {4}Classification: Alternative Techniques}{123}{chapter.4}%
-\contentsline {subsection}{Packages Used in this Chapter}{123}{section*.5}%
-\contentsline {section}{\numberline {4.1}Types of Classifiers}{124}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}Set up the Training and Test Data}{124}{subsection.4.1.1}%
-\contentsline {section}{\numberline {4.2}Rule-based classifier: PART}{126}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Nearest Neighbor Classifier}{127}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Naive Bayes Classifier}{128}{section.4.4}%
-\contentsline {section}{\numberline {4.5}Bayesian Network}{130}{section.4.5}%
-\contentsline {section}{\numberline {4.6}Logistic regression}{130}{section.4.6}%
-\contentsline {section}{\numberline {4.7}Artificial Neural Network (ANN)}{132}{section.4.7}%
-\contentsline {section}{\numberline {4.8}Deep Learning with keras/tensorflow}{134}{section.4.8}%
-\contentsline {section}{\numberline {4.9}Support Vector Machines}{137}{section.4.9}%
-\contentsline {section}{\numberline {4.10}Ensemble Methods}{138}{section.4.10}%
-\contentsline {subsection}{\numberline {4.10.1}Random Forest}{139}{subsection.4.10.1}%
-\contentsline {subsection}{\numberline {4.10.2}Gradient Boosted Decision Trees (xgboost)}{140}{subsection.4.10.2}%
-\contentsline {section}{\numberline {4.11}Class Imbalance}{142}{section.4.11}%
-\contentsline {subsection}{\numberline {4.11.1}Option 1: Use the Data As Is and Hope For The Best}{145}{subsection.4.11.1}%
-\contentsline {subsection}{\numberline {4.11.2}Option 2: Balance Data With Resampling}{147}{subsection.4.11.2}%
-\contentsline {subsection}{\numberline {4.11.3}Option 3: Build A Larger Tree and use Predicted Probabilities}{151}{subsection.4.11.3}%
-\contentsline {subsubsection}{\numberline {4.11.3.1}Create A Biased Classifier}{153}{subsubsection.4.11.3.1}%
-\contentsline {subsubsection}{\numberline {4.11.3.2}Plot the ROC Curve}{154}{subsubsection.4.11.3.2}%
-\contentsline {subsection}{\numberline {4.11.4}Option 4: Use a Cost-Sensitive Classifier}{155}{subsection.4.11.4}%
-\contentsline {section}{\numberline {4.12}Model Comparison}{158}{section.4.12}%
-\contentsline {section}{\numberline {4.13}Comparing Decision Boundaries of Popular Classification Techniques*}{163}{section.4.13}%
-\contentsline {subsection}{\numberline {4.13.1}Iris Dataset}{165}{subsection.4.13.1}%
-\contentsline {subsubsection}{\numberline {4.13.1.1}Nearest Neighbor Classifier}{167}{subsubsection.4.13.1.1}%
-\contentsline {subsubsection}{\numberline {4.13.1.2}Naive Bayes Classifier}{169}{subsubsection.4.13.1.2}%
-\contentsline {subsubsection}{\numberline {4.13.1.3}Linear Discriminant Analysis}{169}{subsubsection.4.13.1.3}%
-\contentsline {subsubsection}{\numberline {4.13.1.4}Multinomial Logistic Regression}{170}{subsubsection.4.13.1.4}%
-\contentsline {subsubsection}{\numberline {4.13.1.5}Decision Trees}{171}{subsubsection.4.13.1.5}%
-\contentsline {subsubsection}{\numberline {4.13.1.6}Ensemble: Random Forest}{173}{subsubsection.4.13.1.6}%
-\contentsline {subsubsection}{\numberline {4.13.1.7}Support Vector Machine}{174}{subsubsection.4.13.1.7}%
-\contentsline {subsubsection}{\numberline {4.13.1.8}Single Layer Feed-forward Neural Networks}{177}{subsubsection.4.13.1.8}%
-\contentsline {subsection}{\numberline {4.13.2}Circle Dataset}{181}{subsection.4.13.2}%
-\contentsline {subsubsection}{\numberline {4.13.2.1}Nearest Neighbor Classifier}{182}{subsubsection.4.13.2.1}%
-\contentsline {subsubsection}{\numberline {4.13.2.2}Naive Bayes Classifier}{184}{subsubsection.4.13.2.2}%
-\contentsline {subsubsection}{\numberline {4.13.2.3}Linear Discriminant Analysis}{184}{subsubsection.4.13.2.3}%
-\contentsline {subsubsection}{\numberline {4.13.2.4}Multinomial Logistic Regression}{185}{subsubsection.4.13.2.4}%
-\contentsline {subsubsection}{\numberline {4.13.2.5}Decision Trees}{186}{subsubsection.4.13.2.5}%
-\contentsline {subsubsection}{\numberline {4.13.2.6}Ensemble: Random Forest}{188}{subsubsection.4.13.2.6}%
-\contentsline {subsubsection}{\numberline {4.13.2.7}Support Vector Machine}{189}{subsubsection.4.13.2.7}%
-\contentsline {subsubsection}{\numberline {4.13.2.8}Single Layer Feed-forward Neural Networks}{192}{subsubsection.4.13.2.8}%
-\contentsline {section}{\numberline {4.14}More Information on Classification with R}{195}{section.4.14}%
-\contentsline {section}{\numberline {4.15}Exercises*}{195}{section.4.15}%
-\contentsline {chapter}{\numberline {5}Association Analysis: Basic Concepts}{197}{chapter.5}%
-\contentsline {subsection}{Packages Used in this Chapter}{197}{section*.6}%
-\contentsline {section}{\numberline {5.1}Preliminaries}{198}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}The arules Package}{198}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Transactions}{199}{subsection.5.1.2}%
-\contentsline {subsubsection}{\numberline {5.1.2.1}Create Transactions}{199}{subsubsection.5.1.2.1}%
-\contentsline {subsubsection}{\numberline {5.1.2.2}Inspect Transactions}{202}{subsubsection.5.1.2.2}%
-\contentsline {subsubsection}{\numberline {5.1.2.3}Vertical Layout (Transaction ID Lists)}{211}{subsubsection.5.1.2.3}%
-\contentsline {section}{\numberline {5.2}Frequent Itemset Generation}{212}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Rule Generation}{217}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Calculate Additional Interest Measures}{221}{subsection.5.3.1}%
-\contentsline {subsection}{\numberline {5.3.2}Mine Using Templates}{222}{subsection.5.3.2}%
-\contentsline {section}{\numberline {5.4}Compact Representation of Frequent Itemsets}{224}{section.5.4}%
-\contentsline {section}{\numberline {5.5}Association Rule Visualization*}{226}{section.5.5}%
-\contentsline {subsection}{\numberline {5.5.1}Static Visualizations}{226}{subsection.5.5.1}%
-\contentsline {subsection}{\numberline {5.5.2}Interactive Visualizations}{231}{subsection.5.5.2}%
-\contentsline {subsubsection}{\numberline {5.5.2.1}Interactive Inspect With Sorting, Filtering and Paging}{233}{subsubsection.5.5.2.1}%
-\contentsline {subsubsection}{\numberline {5.5.2.2}Scatter Plot}{233}{subsubsection.5.5.2.2}%
-\contentsline {subsubsection}{\numberline {5.5.2.3}Matrix Visualization}{233}{subsubsection.5.5.2.3}%
-\contentsline {subsubsection}{\numberline {5.5.2.4}Visualization as Graph}{233}{subsubsection.5.5.2.4}%
-\contentsline {subsubsection}{\numberline {5.5.2.5}Interactive Rule Explorer}{234}{subsubsection.5.5.2.5}%
-\contentsline {section}{\numberline {5.6}Exercises*}{234}{section.5.6}%
-\contentsline {chapter}{\numberline {6}Association Analysis: Advanced Concepts}{237}{chapter.6}%
-\contentsline {subsection}{Packages Used in this Chapter}{237}{section*.7}%
-\contentsline {section}{\numberline {6.1}Handling Categorical Attributes}{237}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Handling Continuous Attributes}{238}{section.6.2}%
-\contentsline {section}{\numberline {6.3}Handling Concept Hierarchies}{240}{section.6.3}%
-\contentsline {subsection}{\numberline {6.3.1}Aggregation}{240}{subsection.6.3.1}%
-\contentsline {subsection}{\numberline {6.3.2}Multi-level Analysis}{243}{subsection.6.3.2}%
-\contentsline {section}{\numberline {6.4}Sequential Patterns}{244}{section.6.4}%
-\contentsline {chapter}{\numberline {7}Cluster Analysis}{249}{chapter.7}%
-\contentsline {subsection}{Packages Used in this Chapter}{249}{section*.8}%
-\contentsline {section}{\numberline {7.1}Overview}{250}{section.7.1}%
-\contentsline {subsection}{\numberline {7.1.1}Data Preparation}{250}{subsection.7.1.1}%
-\contentsline {subsection}{\numberline {7.1.2}Data cleaning}{251}{subsection.7.1.2}%
-\contentsline {subsection}{\numberline {7.1.3}Scale data}{252}{subsection.7.1.3}%
-\contentsline {section}{\numberline {7.2}K-means}{252}{section.7.2}%
-\contentsline {subsubsection}{\numberline {7.2.0.1}Inspect clusters}{256}{subsubsection.7.2.0.1}%
-\contentsline {paragraph}{\numberline {7.2.0.1.1}Cluster Profiles}{256}{paragraph.7.2.0.1.1}%
-\contentsline {paragraph}{\numberline {7.2.0.1.2}Extract a single cluster}{257}{paragraph.7.2.0.1.2}%
-\contentsline {section}{\numberline {7.3}Agglomerative Hierarchical Clustering}{259}{section.7.3}%
-\contentsline {section}{\numberline {7.4}DBSCAN}{264}{section.7.4}%
-\contentsline {section}{\numberline {7.5}Cluster Evaluation}{267}{section.7.5}%
-\contentsline {subsection}{\numberline {7.5.1}Unsupervized Cluster Evaluation}{267}{subsection.7.5.1}%
-\contentsline {subsection}{\numberline {7.5.2}Unsupervised Cluster Evaluation using the Proximity Matrix}{272}{subsection.7.5.2}%
-\contentsline {subsection}{\numberline {7.5.3}Determining the Correct Number of Clusters}{278}{subsection.7.5.3}%
-\contentsline {subsubsection}{\numberline {7.5.3.1}Elbow Method: Within-Cluster Sum of Squares}{279}{subsubsection.7.5.3.1}%
-\contentsline {subsubsection}{\numberline {7.5.3.2}Average Silhouette Width}{279}{subsubsection.7.5.3.2}%
-\contentsline {subsubsection}{\numberline {7.5.3.3}Dunn Index}{280}{subsubsection.7.5.3.3}%
-\contentsline {subsubsection}{\numberline {7.5.3.4}Gap Statistic}{281}{subsubsection.7.5.3.4}%
-\contentsline {subsection}{\numberline {7.5.4}Clustering Tendency}{282}{subsection.7.5.4}%
-\contentsline {subsubsection}{\numberline {7.5.4.1}Scatter plots}{283}{subsubsection.7.5.4.1}%
-\contentsline {subsubsection}{\numberline {7.5.4.2}Visual Analysis for Cluster Tendency Assessment (VAT)}{283}{subsubsection.7.5.4.2}%
-\contentsline {subsubsection}{\numberline {7.5.4.3}Hopkins statistic}{285}{subsubsection.7.5.4.3}%
-\contentsline {subsubsection}{\numberline {7.5.4.4}Data Without Clustering Tendency}{286}{subsubsection.7.5.4.4}%
-\contentsline {subsubsection}{\numberline {7.5.4.5}k-means on Data Without Clustering Tendency}{288}{subsubsection.7.5.4.5}%
-\contentsline {subsection}{\numberline {7.5.5}Supervised Measures of Cluster Validity}{289}{subsection.7.5.5}%
-\contentsline {section}{\numberline {7.6}More Clustering Algorithms*}{297}{section.7.6}%
-\contentsline {subsection}{\numberline {7.6.1}Partitioning Around Medoids (PAM)}{297}{subsection.7.6.1}%
-\contentsline {subsection}{\numberline {7.6.2}Gaussian Mixture Models}{300}{subsection.7.6.2}%
-\contentsline {subsection}{\numberline {7.6.3}Spectral clustering}{302}{subsection.7.6.3}%
-\contentsline {subsection}{\numberline {7.6.4}Fuzzy C-Means Clustering}{304}{subsection.7.6.4}%
-\contentsline {section}{\numberline {7.7}Outliers in Clustering*}{307}{section.7.7}%
-\contentsline {subsection}{\numberline {7.7.1}Visual inspection of the data}{307}{subsection.7.7.1}%
-\contentsline {subsection}{\numberline {7.7.2}Local Outlier Factor (LOF)}{309}{subsection.7.7.2}%
-\contentsline {section}{\numberline {7.8}Exercises*}{312}{section.7.8}%
-\contentsline {chapter}{\numberline {8}Regression*}{315}{chapter.8}%
-\contentsline {subsection}{Packages Used in this Chapter}{315}{section*.9}%
-\contentsline {section}{\numberline {8.1}Introduction}{315}{section.8.1}%
-\contentsline {section}{\numberline {8.2}A First Linear Regression Model}{316}{section.8.2}%
-\contentsline {section}{\numberline {8.3}Comparing Nested Models}{320}{section.8.3}%
-\contentsline {section}{\numberline {8.4}Stepwise Variable Selection}{323}{section.8.4}%
-\contentsline {section}{\numberline {8.5}Modeling with Interaction Terms}{324}{section.8.5}%
-\contentsline {section}{\numberline {8.6}Prediction}{326}{section.8.6}%
-\contentsline {section}{\numberline {8.7}Using Nominal Variables}{327}{section.8.7}%
-\contentsline {section}{\numberline {8.8}Alternative Regression Models}{330}{section.8.8}%
-\contentsline {subsection}{\numberline {8.8.1}Regression Trees}{330}{subsection.8.8.1}%
-\contentsline {subsection}{\numberline {8.8.2}Regularized Regression}{332}{subsection.8.8.2}%
-\contentsline {subsection}{\numberline {8.8.3}Other Types of Regression}{338}{subsection.8.8.3}%
-\contentsline {section}{\numberline {8.9}Exercises}{338}{section.8.9}%
-\contentsline {chapter}{\numberline {9}Logistic Regression*}{341}{chapter.9}%
-\contentsline {subsection}{Packages Used in this Chapter}{341}{section*.10}%
-\contentsline {section}{\numberline {9.1}Introduction}{341}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Data Preparation}{342}{section.9.2}%
-\contentsline {section}{\numberline {9.3}Create a Logistic Regression Model}{343}{section.9.3}%
-\contentsline {section}{\numberline {9.4}Stepwise Variable Selection}{344}{section.9.4}%
-\contentsline {section}{\numberline {9.5}Calculate the Response}{346}{section.9.5}%
-\contentsline {section}{\numberline {9.6}Check Classification Performance}{347}{section.9.6}%
-\contentsline {section}{\numberline {9.7}Regularized Logistic Regression}{349}{section.9.7}%
-\contentsline {section}{\numberline {9.8}Exercises}{350}{section.9.8}%
-\contentsline {chapter}{References}{351}{chapter*.11}%
+\contentsline {subsection}{\numberline {2.6.3}Scatter plot}{74}{subsection.2.6.3}%
+\contentsline {subsection}{\numberline {2.6.4}Scatter Plot Matrix}{77}{subsection.2.6.4}%
+\contentsline {subsection}{\numberline {2.6.5}Matrix Visualization}{79}{subsection.2.6.5}%
+\contentsline {subsection}{\numberline {2.6.6}Correlation Matrix}{82}{subsection.2.6.6}%
+\contentsline {subsection}{\numberline {2.6.7}Parallel Coordinates Plot}{85}{subsection.2.6.7}%
+\contentsline {subsection}{\numberline {2.6.8}Star Plot}{87}{subsection.2.6.8}%
+\contentsline {subsection}{\numberline {2.6.9}More Visualizations}{88}{subsection.2.6.9}%
+\contentsline {section}{\numberline {2.7}Exercises*}{88}{section.2.7}%
+\contentsline {chapter}{\numberline {3}Classification: Basic Concepts}{91}{chapter.3}%
+\contentsline {subsection}{Packages Used in this Chapter}{91}{section*.4}%
+\contentsline {section}{\numberline {3.1}Basic Concepts}{92}{section.3.1}%
+\contentsline {section}{\numberline {3.2}General Framework for Classification}{93}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}The Zoo Dataset}{93}{subsection.3.2.1}%
+\contentsline {section}{\numberline {3.3}Decision Tree Classifiers}{95}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Create Tree}{95}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Make Predictions for New Data}{97}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Manual Calculation of the Resubstitution Error}{98}{subsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.3.4}Confusion Matrix using Caret}{99}{subsection.3.3.4}%
+\contentsline {section}{\numberline {3.4}Model Overfitting}{101}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Model Selection}{103}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Model Evaluation}{104}{section.3.6}%
+\contentsline {subsection}{\numberline {3.6.1}Holdout Method}{104}{subsection.3.6.1}%
+\contentsline {subsection}{\numberline {3.6.2}Cross-Validation}{104}{subsection.3.6.2}%
+\contentsline {section}{\numberline {3.7}Hyperparameter Tuning}{105}{section.3.7}%
+\contentsline {section}{\numberline {3.8}Pitfalls of Model Selection and Evaluation}{111}{section.3.8}%
+\contentsline {section}{\numberline {3.9}Model Comparison}{111}{section.3.9}%
+\contentsline {section}{\numberline {3.10}Feature Selection*}{114}{section.3.10}%
+\contentsline {subsection}{\numberline {3.10.1}Univariate Feature Importance Score}{114}{subsection.3.10.1}%
+\contentsline {subsection}{\numberline {3.10.2}Feature Subset Selection}{118}{subsection.3.10.2}%
+\contentsline {subsection}{\numberline {3.10.3}Using Dummy Variables for Factors}{119}{subsection.3.10.3}%
+\contentsline {section}{\numberline {3.11}Exercises*}{122}{section.3.11}%
+\contentsline {chapter}{\numberline {4}Classification: Alternative Techniques}{125}{chapter.4}%
+\contentsline {subsection}{Packages Used in this Chapter}{125}{section*.5}%
+\contentsline {section}{\numberline {4.1}Types of Classifiers}{126}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Set up the Training and Test Data}{126}{subsection.4.1.1}%
+\contentsline {section}{\numberline {4.2}Rule-based classifier: PART}{128}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Nearest Neighbor Classifier}{129}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Naive Bayes Classifier}{130}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Bayesian Network}{132}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Logistic regression}{132}{section.4.6}%
+\contentsline {section}{\numberline {4.7}Artificial Neural Network (ANN)}{134}{section.4.7}%
+\contentsline {section}{\numberline {4.8}Support Vector Machines}{136}{section.4.8}%
+\contentsline {section}{\numberline {4.9}Ensemble Methods}{137}{section.4.9}%
+\contentsline {subsection}{\numberline {4.9.1}Random Forest}{137}{subsection.4.9.1}%
+\contentsline {subsection}{\numberline {4.9.2}Gradient Boosted Decision Trees (xgboost)}{139}{subsection.4.9.2}%
+\contentsline {section}{\numberline {4.10}Class Imbalance}{140}{section.4.10}%
+\contentsline {subsection}{\numberline {4.10.1}Option 1: Use the Data As Is and Hope For The Best}{143}{subsection.4.10.1}%
+\contentsline {subsection}{\numberline {4.10.2}Option 2: Balance Data With Resampling}{145}{subsection.4.10.2}%
+\contentsline {subsection}{\numberline {4.10.3}Option 3: Build A Larger Tree and use Predicted Probabilities}{149}{subsection.4.10.3}%
+\contentsline {subsubsection}{\numberline {4.10.3.1}Create A Biased Classifier}{151}{subsubsection.4.10.3.1}%
+\contentsline {subsubsection}{\numberline {4.10.3.2}Plot the ROC Curve}{152}{subsubsection.4.10.3.2}%
+\contentsline {subsection}{\numberline {4.10.4}Option 4: Use a Cost-Sensitive Classifier}{153}{subsection.4.10.4}%
+\contentsline {section}{\numberline {4.11}Model Comparison}{156}{section.4.11}%
+\contentsline {section}{\numberline {4.12}Comparing Decision Boundaries of Popular Classification Techniques*}{161}{section.4.12}%
+\contentsline {subsection}{\numberline {4.12.1}Iris Dataset}{163}{subsection.4.12.1}%
+\contentsline {subsubsection}{\numberline {4.12.1.1}Nearest Neighbor Classifier}{165}{subsubsection.4.12.1.1}%
+\contentsline {subsubsection}{\numberline {4.12.1.2}Naive Bayes Classifier}{167}{subsubsection.4.12.1.2}%
+\contentsline {subsubsection}{\numberline {4.12.1.3}Linear Discriminant Analysis}{167}{subsubsection.4.12.1.3}%
+\contentsline {subsubsection}{\numberline {4.12.1.4}Multinomial Logistic Regression}{168}{subsubsection.4.12.1.4}%
+\contentsline {subsubsection}{\numberline {4.12.1.5}Decision Trees}{169}{subsubsection.4.12.1.5}%
+\contentsline {subsubsection}{\numberline {4.12.1.6}Ensemble: Random Forest}{171}{subsubsection.4.12.1.6}%
+\contentsline {subsubsection}{\numberline {4.12.1.7}Support Vector Machine}{172}{subsubsection.4.12.1.7}%
+\contentsline {subsubsection}{\numberline {4.12.1.8}Single Layer Feed-forward Neural Networks}{175}{subsubsection.4.12.1.8}%
+\contentsline {subsection}{\numberline {4.12.2}Circle Dataset}{179}{subsection.4.12.2}%
+\contentsline {subsubsection}{\numberline {4.12.2.1}Nearest Neighbor Classifier}{180}{subsubsection.4.12.2.1}%
+\contentsline {subsubsection}{\numberline {4.12.2.2}Naive Bayes Classifier}{182}{subsubsection.4.12.2.2}%
+\contentsline {subsubsection}{\numberline {4.12.2.3}Linear Discriminant Analysis}{182}{subsubsection.4.12.2.3}%
+\contentsline {subsubsection}{\numberline {4.12.2.4}Multinomial Logistic Regression}{183}{subsubsection.4.12.2.4}%
+\contentsline {subsubsection}{\numberline {4.12.2.5}Decision Trees}{184}{subsubsection.4.12.2.5}%
+\contentsline {subsubsection}{\numberline {4.12.2.6}Ensemble: Random Forest}{186}{subsubsection.4.12.2.6}%
+\contentsline {subsubsection}{\numberline {4.12.2.7}Support Vector Machine}{187}{subsubsection.4.12.2.7}%
+\contentsline {subsubsection}{\numberline {4.12.2.8}Single Layer Feed-forward Neural Networks}{190}{subsubsection.4.12.2.8}%
+\contentsline {section}{\numberline {4.13}More Information on Classification with R}{193}{section.4.13}%
+\contentsline {section}{\numberline {4.14}Exercises*}{193}{section.4.14}%
+\contentsline {chapter}{\numberline {5}Association Analysis: Basic Concepts}{195}{chapter.5}%
+\contentsline {subsection}{Packages Used in this Chapter}{195}{section*.6}%
+\contentsline {section}{\numberline {5.1}Preliminaries}{196}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}The arules Package}{196}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Transactions}{197}{subsection.5.1.2}%
+\contentsline {subsubsection}{\numberline {5.1.2.1}Create Transactions}{197}{subsubsection.5.1.2.1}%
+\contentsline {subsubsection}{\numberline {5.1.2.2}Inspect Transactions}{200}{subsubsection.5.1.2.2}%
+\contentsline {subsubsection}{\numberline {5.1.2.3}Vertical Layout (Transaction ID Lists)}{209}{subsubsection.5.1.2.3}%
+\contentsline {section}{\numberline {5.2}Frequent Itemset Generation}{210}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Rule Generation}{215}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Calculate Additional Interest Measures}{219}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Mine Using Templates}{220}{subsection.5.3.2}%
+\contentsline {section}{\numberline {5.4}Compact Representation of Frequent Itemsets}{222}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Association Rule Visualization*}{224}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Static Visualizations}{224}{subsection.5.5.1}%
+\contentsline {subsection}{\numberline {5.5.2}Interactive Visualizations}{228}{subsection.5.5.2}%
+\contentsline {subsubsection}{\numberline {5.5.2.1}Interactive Inspect With Sorting, Filtering and Paging}{230}{subsubsection.5.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.5.2.2}Scatter Plot}{230}{subsubsection.5.5.2.2}%
+\contentsline {subsubsection}{\numberline {5.5.2.3}Matrix Visualization}{230}{subsubsection.5.5.2.3}%
+\contentsline {subsubsection}{\numberline {5.5.2.4}Visualization as Graph}{230}{subsubsection.5.5.2.4}%
+\contentsline {subsubsection}{\numberline {5.5.2.5}Interactive Rule Explorer}{230}{subsubsection.5.5.2.5}%
+\contentsline {section}{\numberline {5.6}Exercises*}{231}{section.5.6}%
+\contentsline {chapter}{\numberline {6}Association Analysis: Advanced Concepts}{233}{chapter.6}%
+\contentsline {subsection}{Packages Used in this Chapter}{233}{section*.7}%
+\contentsline {section}{\numberline {6.1}Handling Categorical Attributes}{233}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Handling Continuous Attributes}{234}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Handling Concept Hierarchies}{236}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Aggregation}{236}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}Multi-level Analysis}{238}{subsection.6.3.2}%
+\contentsline {section}{\numberline {6.4}Sequential Patterns}{240}{section.6.4}%
+\contentsline {chapter}{\numberline {7}Cluster Analysis}{245}{chapter.7}%
+\contentsline {subsection}{Packages Used in this Chapter}{245}{section*.8}%
+\contentsline {section}{\numberline {7.1}Overview}{246}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}Data Preparation}{246}{subsection.7.1.1}%
+\contentsline {subsection}{\numberline {7.1.2}Data cleaning}{247}{subsection.7.1.2}%
+\contentsline {subsection}{\numberline {7.1.3}Scale data}{248}{subsection.7.1.3}%
+\contentsline {section}{\numberline {7.2}K-means}{248}{section.7.2}%
+\contentsline {subsubsection}{\numberline {7.2.0.1}Inspect clusters}{252}{subsubsection.7.2.0.1}%
+\contentsline {paragraph}{\numberline {7.2.0.1.1}Cluster Profiles}{252}{paragraph.7.2.0.1.1}%
+\contentsline {paragraph}{\numberline {7.2.0.1.2}Extract a single cluster}{253}{paragraph.7.2.0.1.2}%
+\contentsline {section}{\numberline {7.3}Agglomerative Hierarchical Clustering}{255}{section.7.3}%
+\contentsline {section}{\numberline {7.4}DBSCAN}{260}{section.7.4}%
+\contentsline {section}{\numberline {7.5}Cluster Evaluation}{263}{section.7.5}%
+\contentsline {subsection}{\numberline {7.5.1}Unsupervized Cluster Evaluation}{263}{subsection.7.5.1}%
+\contentsline {subsection}{\numberline {7.5.2}Unsupervised Cluster Evaluation using the Proximity Matrix}{268}{subsection.7.5.2}%
+\contentsline {subsection}{\numberline {7.5.3}Determining the Correct Number of Clusters}{274}{subsection.7.5.3}%
+\contentsline {subsubsection}{\numberline {7.5.3.1}Elbow Method: Within-Cluster Sum of Squares}{275}{subsubsection.7.5.3.1}%
+\contentsline {subsubsection}{\numberline {7.5.3.2}Average Silhouette Width}{275}{subsubsection.7.5.3.2}%
+\contentsline {subsubsection}{\numberline {7.5.3.3}Dunn Index}{276}{subsubsection.7.5.3.3}%
+\contentsline {subsubsection}{\numberline {7.5.3.4}Gap Statistic}{277}{subsubsection.7.5.3.4}%
+\contentsline {subsection}{\numberline {7.5.4}Clustering Tendency}{278}{subsection.7.5.4}%
+\contentsline {subsubsection}{\numberline {7.5.4.1}Scatter plots}{279}{subsubsection.7.5.4.1}%
+\contentsline {subsubsection}{\numberline {7.5.4.2}Visual Analysis for Cluster Tendency Assessment (VAT)}{279}{subsubsection.7.5.4.2}%
+\contentsline {subsubsection}{\numberline {7.5.4.3}Hopkins statistic}{281}{subsubsection.7.5.4.3}%
+\contentsline {subsubsection}{\numberline {7.5.4.4}Data Without Clustering Tendency}{282}{subsubsection.7.5.4.4}%
+\contentsline {subsubsection}{\numberline {7.5.4.5}k-means on Data Without Clustering Tendency}{284}{subsubsection.7.5.4.5}%
+\contentsline {subsection}{\numberline {7.5.5}Supervised Measures of Cluster Validity}{285}{subsection.7.5.5}%
+\contentsline {section}{\numberline {7.6}More Clustering Algorithms*}{293}{section.7.6}%
+\contentsline {subsection}{\numberline {7.6.1}Partitioning Around Medoids (PAM)}{293}{subsection.7.6.1}%
+\contentsline {subsection}{\numberline {7.6.2}Gaussian Mixture Models}{296}{subsection.7.6.2}%
+\contentsline {subsection}{\numberline {7.6.3}Spectral clustering}{298}{subsection.7.6.3}%
+\contentsline {subsection}{\numberline {7.6.4}Fuzzy C-Means Clustering}{300}{subsection.7.6.4}%
+\contentsline {section}{\numberline {7.7}Outliers in Clustering*}{303}{section.7.7}%
+\contentsline {subsection}{\numberline {7.7.1}Visual inspection of the data}{304}{subsection.7.7.1}%
+\contentsline {subsection}{\numberline {7.7.2}Local Outlier Factor (LOF)}{305}{subsection.7.7.2}%
+\contentsline {section}{\numberline {7.8}Exercises*}{308}{section.7.8}%
+\contentsline {chapter}{\numberline {8}Regression*}{311}{chapter.8}%
+\contentsline {subsection}{Packages Used in this Chapter}{311}{section*.9}%
+\contentsline {section}{\numberline {8.1}Introduction}{311}{section.8.1}%
+\contentsline {section}{\numberline {8.2}A First Linear Regression Model}{312}{section.8.2}%
+\contentsline {section}{\numberline {8.3}Comparing Nested Models}{316}{section.8.3}%
+\contentsline {section}{\numberline {8.4}Stepwise Variable Selection}{319}{section.8.4}%
+\contentsline {section}{\numberline {8.5}Modeling with Interaction Terms}{320}{section.8.5}%
+\contentsline {section}{\numberline {8.6}Prediction}{322}{section.8.6}%
+\contentsline {section}{\numberline {8.7}Using Nominal Variables}{323}{section.8.7}%
+\contentsline {section}{\numberline {8.8}Alternative Regression Models}{326}{section.8.8}%
+\contentsline {subsection}{\numberline {8.8.1}Regression Trees}{326}{subsection.8.8.1}%
+\contentsline {subsection}{\numberline {8.8.2}Regularized Regression}{328}{subsection.8.8.2}%
+\contentsline {subsection}{\numberline {8.8.3}Other Types of Regression}{334}{subsection.8.8.3}%
+\contentsline {section}{\numberline {8.9}Exercises}{334}{section.8.9}%
+\contentsline {chapter}{\numberline {9}Logistic Regression*}{337}{chapter.9}%
+\contentsline {subsection}{Packages Used in this Chapter}{337}{section*.10}%
+\contentsline {section}{\numberline {9.1}Introduction}{337}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Data Preparation}{338}{section.9.2}%
+\contentsline {section}{\numberline {9.3}Create a Logistic Regression Model}{339}{section.9.3}%
+\contentsline {section}{\numberline {9.4}Stepwise Variable Selection}{340}{section.9.4}%
+\contentsline {section}{\numberline {9.5}Calculate the Response}{342}{section.9.5}%
+\contentsline {section}{\numberline {9.6}Check Classification Performance}{343}{section.9.6}%
+\contentsline {section}{\numberline {9.7}Regularized Logistic Regression}{345}{section.9.7}%
+\contentsline {section}{\numberline {9.8}Exercises}{346}{section.9.8}%
+\contentsline {chapter}{References}{347}{chapter*.11}%

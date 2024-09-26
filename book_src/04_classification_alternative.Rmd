@@ -15,7 +15,7 @@ better understanding of the model bias that different algorithms have.
 ### Packages Used in this Chapter {.unnumbered}
 
 ```{r setup_04}
-pkgs <- c("basemodels", "C50", "caret", "e1071", "keras", "klaR", 
+pkgs <- c("basemodels", "C50", "caret", "e1071", "keras3", "klaR", 
           "lattice", "MASS", "mlbench", "nnet", "palmerpenguins", 
           "randomForest", "rpart", "RWeka", "scales", "tidyverse", 
           "xgboost")
@@ -271,123 +271,9 @@ and the used variables are shown as a summary.
 nnetFit$finalModel
 ```
 
+For deep Learning, R offers packages for using [tensorflow](https://tensorflow.rstudio.com/) 
+and [Keras](https://keras3.posit.co/).
 
-## Deep Learning with keras/tensorflow
-
-Using deep learning requires some extra setup. It is not very helpful 
-for the dataset we use, but it is included here to demonstrate how to set up
-and train a simple model architecture.
-
-The keras package needs the packages `reticulate` and `tensorflow`. To
-install keras you need to
-
-1.  have a working Python installation,
-2.  install the keras R package `install.packages("keras")`, and
-3.  install the tensorflow/keras Python modules with
-    `library(keras); install_keras()`
-
-```{r message=FALSE, warning=FALSE}
-library(keras)
-```
-
-Prepare the data. All data needs to be in a matrix of all
-numeric/integer values. The class variable needs to be one-hot encoded and the
-the `keras` function `to_categorical()` expects a class index starting with 0 
-instead of 1.
-
-```{r warning=FALSE}
-X <- Zoo_train |> 
-  select(!type) |> 
-  mutate(across(everything(), as.integer)) |> 
-  as.matrix()
-head(X)
-
-y <- Zoo_train |> 
-  pull("type") |> 
-  { function(x)(as.integer(x) - 1L) }() |>   ## make index start with 0
-  to_categorical()
-head(y)
-
-X_test <- Zoo_test |> 
-  select(!type) |> 
-  mutate(across(everything(), as.integer)) |> 
-  as.matrix()
-y_test <- Zoo_test |> 
-  pull("type") |> 
-  { function(x)(as.integer(x) - 1L) }() |>
-  to_categorical()
-```
-
-Deep learning uses a large set of hyper-parameters. Choices are the
-activation function, number of layers, number of units per layer, the
-optimizer, and the type of regularization used. 
-
-We define here a simple network with a single dense hidden layer.
-Note that in keras, we have to specify the input size in this first dense layer. 
-The output of the classifier is a categorical class value, therefore
-we use for the output layer the softmax activation function, and for
-training we specify 
-categorical cross-entropy as the loss function, and accuracy
-as an additional metric.
-Also, L2 regularization is used for the weights of the hidden layer to
-reduce overfitting. 
-
-```{r message=FALSE, warning=FALSE}
-model <- keras_model_sequential(input_shape = c(ncol(X)), 
-              name = "single_hidden_layer_classifier") |>
-  layer_dense(units = 10, 
-              activation = 'relu', 
-              kernel_regularizer=regularizer_l2(l=0.01), 
-              name = "hidden1") |>
-  layer_dense(units = ncol(y), 
-              activation = 'softmax', 
-              name = "output")
-
-model
-```
-
-
-```{r message=FALSE, warning=FALSE}
-model <- model |>  
-  compile(loss = 'categorical_crossentropy', 
-          optimizer = 'adam', 
-          metrics = 'accuracy')
-```
-
-For model training, we need to specify the batch size and the number of
-training epochs. The fitting process can also use a fraction of the
-training data for validation to provide generalization loss/accuracy.
-
-```{r include=FALSE}
-# suppress the progress output for the book
-options("keras.fit_verbose" = 0)
-```
-
-```{r }
-history <- model |>
-  fit(
-    X, 
-    y,
-    batch_size = 10,
-    epochs = 100,
-    validation_split = .2
-  )
-
-plot(history)
-```
-
-To create predictions from the model, we have to convert the one-hot
-encoding back to class labels.
-
-```{r}
-class_labels <- levels(Zoo_train |> pull(type))
-
-pr <- predict(model, X_test) |> 
-  apply(MARGIN = 1, FUN = which.max)
-pr <- factor(pr, labels = class_labels, levels = seq_along(class_labels))
-
-pr
-```
 
 ## Support Vector Machines
 

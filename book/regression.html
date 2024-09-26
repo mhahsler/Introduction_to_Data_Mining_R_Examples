@@ -7,7 +7,7 @@
 <title>Chapter 8 Regression* | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
 <meta name="description" content="This chapter introduces the regression problem and multiple linear regression. In addition, alternative models like regression trees and regularized regression are discussed. Packages Used in this...">
-<meta name="generator" content="bookdown 0.39 with bs4_book()">
+<meta name="generator" content="bookdown 0.40 with bs4_book()">
 <meta property="og:title" content="Chapter 8 Regression* | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -19,7 +19,7 @@
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap/bootstrap.bundle.min.js"></script><script src="libs/bs3compat/transition.js"></script><script src="libs/bs3compat/tabs.js"></script><script src="libs/bs3compat/bs3compat.js"></script><link href="libs/bs4_book/bs4_book.css" rel="stylesheet">
-<script src="libs/bs4_book/bs4_book.js"></script><script src="libs/accessible-code-block/empty-anchor.js"></script><link href="libs/htmltools-fill/fill.css" rel="stylesheet">
+<script src="libs/bs4_book/bs4_book.js"></script><link href="libs/htmltools-fill/fill.css" rel="stylesheet">
 <script src="libs/htmlwidgets/htmlwidgets.js"></script><script src="libs/plotly-binding/plotly.js"></script><script src="libs/typedarray/typedarray.min.js"></script><link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet">
 <script src="libs/crosstalk/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet">
 <script src="libs/plotly-main/plotly-latest.min.js"></script><link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet">
@@ -31,6 +31,28 @@
 <script src="libs/vis/vis-network.min.js"></script><script src="libs/visNetwork-binding/visNetwork.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
     
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
   </style>
 </head>
 <body data-spy="scroll" data-target="#toc">
@@ -79,10 +101,10 @@
 and multiple linear regression. In addition,
 alternative models like regression trees and regularized regression
 are discussed.</p>
-<div id="packages-used-in-this-chapter-6" class="section level3 unnumbered" number="">
+<div id="packages-used-in-this-chapter-6" class="section level3 unnumbered">
 <h3>Packages Used in this Chapter<a class="anchor" aria-label="anchor" href="#packages-used-in-this-chapter-6"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb534"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb428"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'lars'</span><span class="op">)</span></span>
 <span>  </span>
 <span><span class="va">pkgs_install</span> <span class="op">&lt;-</span> <span class="va">pkgs</span><span class="op">[</span><span class="op">!</span><span class="op">(</span><span class="va">pkgs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span>,<span class="st">"Package"</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></span>
@@ -90,7 +112,7 @@ are discussed.</p>
 <p>The packages used for this chapter are:</p>
 <ul>
 <li>
-<em>lars</em> <span class="citation">(Hastie and Efron <a href="references.html#ref-R-lars" role="doc-biblioref">2022</a>)</span>
+<em>lars</em> <span class="citation">(<a href="references.html#ref-R-lars">Hastie and Efron 2022</a>)</span>
 </li>
 </ul>
 </div>
@@ -136,15 +158,15 @@ avoided.</li>
 <span class="header-section-number">8.2</span> A First Linear Regression Model<a class="anchor" aria-label="anchor" href="#a-first-linear-regression-model"><i class="fas fa-link"></i></a>
 </h2>
 <p>Load and shuffle data (flowers are in order by species)</p>
-<div class="sourceCode" id="cb535"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb429"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span> <span class="co"># make the sampling reproducible</span></span>
 <span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">)</span>,<span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x</span>, col<span class="op">=</span><span class="va">x</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-392-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-388-1.png" width="672"></div>
 <p>Make the data a little messy and add a useless feature</p>
-<div class="sourceCode" id="cb536"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb430"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">x</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">x</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
@@ -153,8 +175,8 @@ avoided.</li>
 <span>           Species <span class="op">=</span> <span class="va">x</span><span class="op">[</span>,<span class="fl">5</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x</span>, col<span class="op">=</span><span class="va">x</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-393-1.png" width="672"></div>
-<div class="sourceCode" id="cb537"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-389-1.png" width="672"></div>
+<div class="sourceCode" id="cb431"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">##   Sepal.Length   Sepal.Width     Petal.Length   </span></span>
 <span><span class="co">##  Min.   :2.68   Min.   :0.611   Min.   :-0.713  </span></span>
@@ -169,9 +191,8 @@ avoided.</li>
 <span><span class="co">##  Median :1.3   Median :5.91   virginica :50  </span></span>
 <span><span class="co">##  Mean   :1.2   Mean   :5.88                  </span></span>
 <span><span class="co">##  3rd Qu.:1.8   3rd Qu.:6.57                  </span></span>
-<span><span class="co">##  Max.   :2.5   Max.   :8.11</span></span></code></pre></div>
-<div class="sourceCode" id="cb538"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">##  Max.   :2.5   Max.   :8.11</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">##     Sepal.Length Sepal.Width Petal.Length Petal.Width</span></span>
 <span><span class="co">## 85         2.980       1.464        5.227         1.5</span></span>
 <span><span class="co">## 104        5.096       3.044        5.187         1.8</span></span>
@@ -187,12 +208,12 @@ avoided.</li>
 <span><span class="co">## 143   6.553  virginica</span></span>
 <span><span class="co">## 142   5.222  virginica</span></span></code></pre></div>
 <p>Create some training and learning data</p>
-<div class="sourceCode" id="cb539"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb432"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">train</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>,<span class="op">]</span></span>
 <span><span class="va">test</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="fl">101</span><span class="op">:</span><span class="fl">150</span>,<span class="op">]</span></span></code></pre></div>
 <p>Can we predict Petal.Width using the other variables?</p>
 <p>lm uses a formula interface see ?lm for description</p>
-<div class="sourceCode" id="cb540"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb433"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">Sepal.Length</span></span>
 <span>            <span class="op">+</span> <span class="va">Sepal.Width</span> <span class="op">+</span> <span class="va">Petal.Length</span> <span class="op">+</span> <span class="va">useless</span>,</span>
 <span>            data <span class="op">=</span> <span class="va">train</span><span class="op">)</span></span>
@@ -206,9 +227,8 @@ avoided.</li>
 <span><span class="co">##  (Intercept)  Sepal.Length   Sepal.Width  Petal.Length  </span></span>
 <span><span class="co">##     -0.20589       0.01957       0.03406       0.30814  </span></span>
 <span><span class="co">##      useless  </span></span>
-<span><span class="co">##      0.00392</span></span></code></pre></div>
-<div class="sourceCode" id="cb541"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">model1</span><span class="op">)</span></span>
+<span><span class="co">##      0.00392</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">model1</span><span class="op">)</span></span>
 <span><span class="co">##  (Intercept) Sepal.Length  Sepal.Width Petal.Length </span></span>
 <span><span class="co">##    -0.205886     0.019568     0.034062     0.308139 </span></span>
 <span><span class="co">##      useless </span></span>
@@ -218,7 +238,7 @@ avoided.</li>
 <li>Which coefficients are significantly different from 0</li>
 <li>R-squared (coefficient of determination): Proportion of the variability of the dependent variable explained by the model. It is better to look at the adjusted R-square (adjusted for number of dependent vars.)</li>
 </ul>
-<div class="sourceCode" id="cb542"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb434"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model1</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
@@ -246,16 +266,16 @@ avoided.</li>
 <p>Plotting the model produces diagnostic plots (see <code><a href="https://rdrr.io/r/stats/plot.lm.html">? plot.lm</a></code>). For example
 to check for homoscedasticity (residual vs predicted value scatter plot should produce a close to horizontal line)
 and if the residuals are approximately normally distributed (Q-Q plot should be close to the straight line).</p>
-<div class="sourceCode" id="cb543"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb435"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">model1</span>, which <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-397-1.png" width="672"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-397-2.png" width="672"></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-393-1.png" width="672"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-393-2.png" width="672"></p>
 </div>
 <div id="comparing-nested-models" class="section level2" number="8.3">
 <h2>
 <span class="header-section-number">8.3</span> Comparing Nested Models<a class="anchor" aria-label="anchor" href="#comparing-nested-models"><i class="fas fa-link"></i></a>
 </h2>
 <p>Here we create a simpler model by using only three predictors.</p>
-<div class="sourceCode" id="cb544"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb436"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">Sepal.Length</span> <span class="op">+</span> </span>
 <span>               <span class="va">Sepal.Width</span> <span class="op">+</span> <span class="va">Petal.Length</span>,</span>
 <span>             data <span class="op">=</span> <span class="va">train</span><span class="op">)</span></span>
@@ -283,7 +303,7 @@ and if the residuals are approximately normally distributed (Q-Q plot should be 
 <span><span class="co">## Multiple R-squared:  0.778,  Adjusted R-squared:  0.771 </span></span>
 <span><span class="co">## F-statistic:  112 on 3 and 96 DF,  p-value: &lt;2e-16</span></span></code></pre></div>
 <p>We can remove the intercept by adding <code>-1</code> to the formula.</p>
-<div class="sourceCode" id="cb545"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb437"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">Sepal.Length</span> <span class="op">+</span> </span>
 <span>               <span class="va">Sepal.Width</span> <span class="op">+</span> <span class="va">Petal.Length</span> <span class="op">-</span> <span class="fl">1</span>,</span>
 <span>             data <span class="op">=</span> <span class="va">train</span><span class="op">)</span></span>
@@ -310,7 +330,7 @@ and if the residuals are approximately normally distributed (Q-Q plot should be 
 <span><span class="co">## Multiple R-squared:  0.938,  Adjusted R-squared:  0.936 </span></span>
 <span><span class="co">## F-statistic:  486 on 3 and 97 DF,  p-value: &lt;2e-16</span></span></code></pre></div>
 <p>here is a very simple model:</p>
-<div class="sourceCode" id="cb546"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb438"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">Petal.Length</span> <span class="op">-</span><span class="fl">1</span>,</span>
 <span>             data <span class="op">=</span> <span class="va">train</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model4</span><span class="op">)</span></span>
@@ -333,7 +353,7 @@ and if the residuals are approximately normally distributed (Q-Q plot should be 
 <span><span class="co">## Multiple R-squared:  0.937,  Adjusted R-squared:  0.936 </span></span>
 <span><span class="co">## F-statistic: 1.47e+03 on 1 and 99 DF,  p-value: &lt;2e-16</span></span></code></pre></div>
 <p>Compare models (Null hypothesis: all treatments=models have the same effect). <strong>Note:</strong> This only works for <em>nested models.</em> Models are nested only if one model contains all the predictors of the other model.</p>
-<div class="sourceCode" id="cb547"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb439"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">model1</span>, <span class="va">model2</span>, <span class="va">model3</span>, <span class="va">model4</span><span class="op">)</span></span>
 <span><span class="co">## Analysis of Variance Table</span></span>
 <span><span class="co">## </span></span>
@@ -353,7 +373,7 @@ and if the residuals are approximately normally distributed (Q-Q plot should be 
 <span class="header-section-number">8.4</span> Stepwise Variable Selection<a class="anchor" aria-label="anchor" href="#stepwise-variable-selection"><i class="fas fa-link"></i></a>
 </h2>
 <p>Automatically looks for the smallest AIC (Akaike information criterion)</p>
-<div class="sourceCode" id="cb548"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb440"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/step.html">step</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">.</span> <span class="op">-</span><span class="va">Species</span>, data <span class="op">=</span> <span class="va">train</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## Start:  AIC=-195.9</span></span>
 <span><span class="co">## Petal.Width ~ (Sepal.Length + Sepal.Width + Petal.Length + useless + </span></span>
@@ -388,9 +408,8 @@ and if the residuals are approximately normally distributed (Q-Q plot should be 
 <span><span class="co">## </span></span>
 <span><span class="co">##                Df Sum of Sq  RSS    AIC</span></span>
 <span><span class="co">## &lt;none&gt;                      12.9 -200.4</span></span>
-<span><span class="co">## - Petal.Length  1      44.6 57.6  -53.2</span></span></code></pre></div>
-<div class="sourceCode" id="cb549"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span></span>
+<span><span class="co">## - Petal.Length  1      44.6 57.6  -53.2</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">s1</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
 <span><span class="co">## lm(formula = Petal.Width ~ Petal.Length, data = train)</span></span>
@@ -418,7 +437,7 @@ and if the residuals are approximately normally distributed (Q-Q plot should be 
 <p>What if two variables are only important together? Interaction terms
 are modeled with <code>:</code> or <code>*</code> in the formula (they are literally multiplied).
 See <code><a href="https://rdrr.io/r/stats/formula.html">? formula</a></code>.</p>
-<div class="sourceCode" id="cb550"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb441"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model5</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/step.html">step</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">Sepal.Length</span> <span class="op">*</span> </span>
 <span>                    <span class="va">Sepal.Width</span> <span class="op">*</span> <span class="va">Petal.Length</span>,</span>
 <span>             data <span class="op">=</span> <span class="va">train</span><span class="op">)</span><span class="op">)</span></span>
@@ -430,9 +449,8 @@ See <code><a href="https://rdrr.io/r/stats/formula.html">? formula</a></code>.</
 <span><span class="co">## - Sepal.Length:Sepal.Width:Petal.Length  1     0.265 12.2</span></span>
 <span><span class="co">##                                          AIC</span></span>
 <span><span class="co">## &lt;none&gt;                                  -196</span></span>
-<span><span class="co">## - Sepal.Length:Sepal.Width:Petal.Length -196</span></span></code></pre></div>
-<div class="sourceCode" id="cb551"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model5</span><span class="op">)</span></span>
+<span><span class="co">## - Sepal.Length:Sepal.Width:Petal.Length -196</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model5</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
 <span><span class="co">## lm(formula = Petal.Width ~ Sepal.Length * Sepal.Width * Petal.Length, </span></span>
@@ -467,9 +485,8 @@ See <code><a href="https://rdrr.io/r/stats/formula.html">? formula</a></code>.</
 <span><span class="co">## </span></span>
 <span><span class="co">## Residual standard error: 0.36 on 92 degrees of freedom</span></span>
 <span><span class="co">## Multiple R-squared:  0.792,  Adjusted R-squared:  0.777 </span></span>
-<span><span class="co">## F-statistic: 50.2 on 7 and 92 DF,  p-value: &lt;2e-16</span></span></code></pre></div>
-<div class="sourceCode" id="cb552"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">model5</span>, <span class="va">model4</span><span class="op">)</span></span>
+<span><span class="co">## F-statistic: 50.2 on 7 and 92 DF,  p-value: &lt;2e-16</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">model5</span>, <span class="va">model4</span><span class="op">)</span></span>
 <span><span class="co">## Analysis of Variance Table</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Model 1: Petal.Width ~ Sepal.Length * Sepal.Width * Petal.Length</span></span>
@@ -483,7 +500,7 @@ See <code><a href="https://rdrr.io/r/stats/formula.html">? formula</a></code>.</
 <h2>
 <span class="header-section-number">8.6</span> Prediction<a class="anchor" aria-label="anchor" href="#prediction"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb553"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb442"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span></span>
 <span><span class="co">##     Sepal.Length Sepal.Width Petal.Length Petal.Width</span></span>
 <span><span class="co">## 128        8.017       1.541        3.515         1.8</span></span>
@@ -496,28 +513,26 @@ See <code><a href="https://rdrr.io/r/stats/formula.html">? formula</a></code>.</
 <span><span class="co">## 92    4.938 versicolor</span></span>
 <span><span class="co">## 50    6.373     setosa</span></span>
 <span><span class="co">## 134   5.595  virginica</span></span>
-<span><span class="co">## 8     7.270     setosa</span></span></code></pre></div>
-<div class="sourceCode" id="cb554"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">test</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span><span class="op">$</span><span class="va">Petal.Width</span></span>
-<span><span class="co">## [1] 1.8 1.4 0.2 1.5 0.2</span></span></code></pre></div>
-<div class="sourceCode" id="cb555"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model4</span>, <span class="va">test</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">## 8     7.270     setosa</span></span>
+<span><span class="va">test</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span><span class="op">$</span><span class="va">Petal.Width</span></span>
+<span><span class="co">## [1] 1.8 1.4 0.2 1.5 0.2</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model4</span>, <span class="va">test</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">##    128     92     50    134      8 </span></span>
 <span><span class="co">## 1.1104 1.9155 0.3529 1.4526 0.3429</span></span></code></pre></div>
 <p>Calculate the root-mean-square error (RMSE): less is better</p>
-<div class="sourceCode" id="cb556"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb443"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">RMSE</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">predicted</span>, <span class="va">true</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="op">(</span><span class="va">predicted</span><span class="op">-</span><span class="va">true</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">^</span><span class="fl">.5</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/postResample.html">RMSE</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model4</span>, <span class="va">test</span><span class="op">)</span>, <span class="va">test</span><span class="op">$</span><span class="va">Petal.Width</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.3874</span></span></code></pre></div>
 <p>Compare predicted vs. actual values</p>
-<div class="sourceCode" id="cb557"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb444"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model4</span>, <span class="va">test</span><span class="op">)</span>,</span>
 <span>  xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, </span>
 <span>  xlab <span class="op">=</span> <span class="st">"actual"</span>, ylab <span class="op">=</span> <span class="st">"predicted"</span>,</span>
 <span>  main <span class="op">=</span> <span class="st">"Petal.Width"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-406-1.png" width="672"></div>
-<div class="sourceCode" id="cb558"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-402-1.png" width="672"></div>
+<div class="sourceCode" id="cb445"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model4</span>, <span class="va">test</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.8636</span></span></code></pre></div>
 </div>
@@ -529,11 +544,11 @@ See <code><a href="https://rdrr.io/r/stats/formula.html">? formula</a></code>.</
 (i.e., levels are translated into individual 0-1 variable).
 The first level of factors is automatically used as the reference and
 the other levels are presented as 0-1 dummy variables called contrasts.</p>
-<div class="sourceCode" id="cb559"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb446"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">train</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span></span>
 <span><span class="co">## [1] "setosa"     "versicolor" "virginica"</span></span></code></pre></div>
 <p><code>model.matrix</code> is used internally to create the dummy coding.</p>
-<div class="sourceCode" id="cb560"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb447"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">.</span>, data<span class="op">=</span><span class="va">train</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">##     (Intercept) Sepal.Length Sepal.Width Petal.Length</span></span>
 <span><span class="co">## 85            1        2.980       1.464        5.227</span></span>
@@ -553,7 +568,7 @@ the other levels are presented as 0-1 dummy variables called contrasts.</p>
 used as the reference. It is often useful to set the reference level.
 A simple way is to use the
 function <code>relevel</code> to change which factor is listed first.</p>
-<div class="sourceCode" id="cb561"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb448"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model6</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/step.html">step</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">.</span>, data<span class="op">=</span><span class="va">train</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## Start:  AIC=-308.4</span></span>
 <span><span class="co">## Petal.Width ~ Sepal.Length + Sepal.Width + Petal.Length + useless + </span></span>
@@ -592,9 +607,8 @@ function <code>relevel</code> to change which factor is listed first.</p>
 <span><span class="co">##                Df Sum of Sq   RSS  AIC</span></span>
 <span><span class="co">## &lt;none&gt;                       4.02 -313</span></span>
 <span><span class="co">## - Petal.Length  1      0.50  4.52 -304</span></span>
-<span><span class="co">## - Species       2      8.93 12.95 -200</span></span></code></pre></div>
-<div class="sourceCode" id="cb562"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">model6</span></span>
+<span><span class="co">## - Species       2      8.93 12.95 -200</span></span>
+<span><span class="va">model6</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
 <span><span class="co">## lm(formula = Petal.Width ~ Petal.Length + Species, data = train)</span></span>
@@ -603,9 +617,8 @@ function <code>relevel</code> to change which factor is listed first.</p>
 <span><span class="co">##       (Intercept)       Petal.Length  Speciesversicolor  </span></span>
 <span><span class="co">##            0.1597             0.0664             0.8938  </span></span>
 <span><span class="co">##  Speciesvirginica  </span></span>
-<span><span class="co">##            1.4903</span></span></code></pre></div>
-<div class="sourceCode" id="cb563"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model6</span><span class="op">)</span></span>
+<span><span class="co">##            1.4903</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model6</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
 <span><span class="co">## lm(formula = Petal.Width ~ Petal.Length + Species, data = train)</span></span>
@@ -626,18 +639,16 @@ function <code>relevel</code> to change which factor is listed first.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Residual standard error: 0.205 on 96 degrees of freedom</span></span>
 <span><span class="co">## Multiple R-squared:  0.93,   Adjusted R-squared:  0.928 </span></span>
-<span><span class="co">## F-statistic:  427 on 3 and 96 DF,  p-value: &lt;2e-16</span></span></code></pre></div>
-<div class="sourceCode" id="cb564"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/postResample.html">RMSE</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model6</span>, <span class="va">test</span><span class="op">)</span>, <span class="va">test</span><span class="op">$</span><span class="va">Petal.Width</span><span class="op">)</span></span>
-<span><span class="co">## [1] 0.1885</span></span></code></pre></div>
-<div class="sourceCode" id="cb565"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model6</span>, <span class="va">test</span><span class="op">)</span>,</span>
+<span><span class="co">## F-statistic:  427 on 3 and 96 DF,  p-value: &lt;2e-16</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/postResample.html">RMSE</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model6</span>, <span class="va">test</span><span class="op">)</span>, <span class="va">test</span><span class="op">$</span><span class="va">Petal.Width</span><span class="op">)</span></span>
+<span><span class="co">## [1] 0.1885</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model6</span>, <span class="va">test</span><span class="op">)</span>,</span>
 <span>  xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, </span>
 <span>  xlab <span class="op">=</span> <span class="st">"actual"</span>, ylab <span class="op">=</span> <span class="st">"predicted"</span>,</span>
 <span>  main <span class="op">=</span> <span class="st">"Petal.Width"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-409-1.png" width="672"></div>
-<div class="sourceCode" id="cb566"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-405-1.png" width="672"></div>
+<div class="sourceCode" id="cb449"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model6</span>, <span class="va">test</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.9696</span></span></code></pre></div>
 </div>
@@ -652,7 +663,7 @@ function <code>relevel</code> to change which factor is listed first.</p>
 <p>Many models we use for classification can also perform regression
 to produce piece-wise predictors.
 For example CART:</p>
-<div class="sourceCode" id="cb567"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb450"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bethatkinson/rpart">rpart</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></span><span class="op">)</span></span>
 <span><span class="va">model7</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train</span>,</span>
@@ -667,21 +678,19 @@ For example CART:</p>
 <span><span class="co">##   2) Species=setosa 32  0.3797 0.2469 *</span></span>
 <span><span class="co">##   3) Species=versicolor,virginica 68 12.7200 1.6760  </span></span>
 <span><span class="co">##     6) Species=versicolor 35  1.5350 1.3310 *</span></span>
-<span><span class="co">##     7) Species=virginica 33  2.6010 2.0420 *</span></span></code></pre></div>
-<div class="sourceCode" id="cb568"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">model7</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-410-1.png" width="672"></div>
-<div class="sourceCode" id="cb569"><pre class="downlit sourceCode r">
+<span><span class="co">##     7) Species=virginica 33  2.6010 2.0420 *</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">model7</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-406-1.png" width="672"></div>
+<div class="sourceCode" id="cb451"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/postResample.html">RMSE</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model7</span>, <span class="va">test</span><span class="op">)</span>, <span class="va">test</span><span class="op">$</span><span class="va">Petal.Width</span><span class="op">)</span></span>
-<span><span class="co">## [1] 0.182</span></span></code></pre></div>
-<div class="sourceCode" id="cb570"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model7</span>, <span class="va">test</span><span class="op">)</span>,</span>
+<span><span class="co">## [1] 0.182</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model7</span>, <span class="va">test</span><span class="op">)</span>,</span>
 <span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, </span>
 <span>  xlab <span class="op">=</span> <span class="st">"actual"</span>, ylab <span class="op">=</span> <span class="st">"predicted"</span>,</span>
 <span>  main <span class="op">=</span> <span class="st">"Petal.Width"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-410-2.png" width="672"></div>
-<div class="sourceCode" id="cb571"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-406-2.png" width="672"></div>
+<div class="sourceCode" id="cb452"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model7</span>, <span class="va">test</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.9717</span></span></code></pre></div>
 <p><strong>Note:</strong> This is not a nested model of the linear regressions so we cannot
@@ -693,13 +702,13 @@ do ANOVA to compare the models!</p>
 </h3>
 <p>LASSO and LAR try to reduce the number of parameters using a
 regularization term (see <code>lars</code> in package lars and <a href="https://en.wikipedia.org/wiki/Elastic_net_regularization" class="uri">https://en.wikipedia.org/wiki/Elastic_net_regularization</a>)</p>
-<div class="sourceCode" id="cb572"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb453"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://doi.org/10.1214/009053604000000067">lars</a></span><span class="op">)</span></span>
 <span><span class="co">## Loaded lars 1.3</span></span></code></pre></div>
 <p>create a design matrix (with dummy variables and interaction terms).
 <code>lm</code> did this automatically for us, but for this <code>lars</code> implementation
 we have to do it manually.</p>
-<div class="sourceCode" id="cb573"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb454"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span><span class="op">(</span><span class="op">~</span> <span class="va">.</span> <span class="op">+</span> <span class="va">Sepal.Length</span><span class="op">*</span><span class="va">Sepal.Width</span><span class="op">*</span><span class="va">Petal.Length</span> ,</span>
 <span>  data <span class="op">=</span> <span class="va">train</span><span class="op">[</span>, <span class="op">-</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
@@ -737,9 +746,8 @@ we have to do it manually.</p>
 <span><span class="co">## 30                                  22.98</span></span>
 <span><span class="co">## 53                                 108.01</span></span>
 <span><span class="co">## 143                                 61.30</span></span>
-<span><span class="co">## 142                                137.72</span></span></code></pre></div>
-<div class="sourceCode" id="cb574"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">train</span><span class="op">[</span>, <span class="fl">4</span><span class="op">]</span></span>
+<span><span class="co">## 142                                137.72</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">train</span><span class="op">[</span>, <span class="fl">4</span><span class="op">]</span></span>
 <span></span>
 <span><span class="va">model_lars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lars/man/lars.html">lars</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model_lars</span><span class="op">)</span></span>
@@ -760,9 +768,8 @@ we have to do it manually.</p>
 <span><span class="co">## 11 10  3.9    9.73</span></span>
 <span><span class="co">## 12 11  3.9   11.58</span></span>
 <span><span class="co">## 13 10  3.9    9.54</span></span>
-<span><span class="co">## 14 11  3.9   11.00</span></span></code></pre></div>
-<div class="sourceCode" id="cb575"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">model_lars</span></span>
+<span><span class="co">## 14 11  3.9   11.00</span></span>
+<span><span class="va">model_lars</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
 <span><span class="co">## lars(x = x, y = y)</span></span>
@@ -785,16 +792,15 @@ we have to do it manually.</p>
 <span><span class="co">## Step                       10                       11</span></span>
 <span><span class="co">##      Sepal.Length:Sepal.Width Sepal.Width Sepal.Width</span></span>
 <span><span class="co">## Var                         8          -3           3</span></span>
-<span><span class="co">## Step                       12          13          14</span></span></code></pre></div>
-<div class="sourceCode" id="cb576"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">model_lars</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-412-1.png" width="672"></div>
+<span><span class="co">## Step                       12          13          14</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">model_lars</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-408-1.png" width="672"></div>
 <p>the plot shows how variables are added (from left to right to the model)</p>
 <p>find best model (using Mallows’s Cp statistic, see <a href="https://en.wikipedia.org/wiki/Mallows's_Cp" class="uri">https://en.wikipedia.org/wiki/Mallows's_Cp</a>)</p>
-<div class="sourceCode" id="cb577"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb455"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">model_lars</span>, plottype <span class="op">=</span> <span class="st">"Cp"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-413-1.png" width="672"></div>
-<div class="sourceCode" id="cb578"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-409-1.png" width="672"></div>
+<div class="sourceCode" id="cb456"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">best</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.min</a></span><span class="op">(</span><span class="va">model_lars</span><span class="op">$</span><span class="va">Cp</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">model_lars</span>, s <span class="op">=</span> <span class="va">best</span><span class="op">)</span></span>
 <span><span class="co">##                           (Intercept) </span></span>
@@ -820,7 +826,7 @@ we have to do it manually.</p>
 <span><span class="co">## Sepal.Length:Sepal.Width:Petal.Length </span></span>
 <span><span class="co">##                             0.0003151</span></span></code></pre></div>
 <p>make predictions</p>
-<div class="sourceCode" id="cb579"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb457"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span><span class="op">(</span><span class="op">~</span> <span class="va">.</span> <span class="op">+</span> <span class="va">Sepal.Length</span><span class="op">*</span><span class="va">Sepal.Width</span><span class="op">*</span><span class="va">Petal.Length</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">test</span><span class="op">[</span>, <span class="op">-</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model_lars</span>, <span class="va">x_test</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span>, s <span class="op">=</span> <span class="va">best</span><span class="op">)</span></span>
@@ -837,22 +843,19 @@ we have to do it manually.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## $fit</span></span>
 <span><span class="co">##    128     92     50    134      8 </span></span>
-<span><span class="co">## 1.8237 1.5003 0.2505 1.9300 0.2439</span></span></code></pre></div>
-<div class="sourceCode" id="cb580"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">test</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span><span class="op">$</span><span class="va">Petal.Width</span></span>
-<span><span class="co">## [1] 1.8 1.4 0.2 1.5 0.2</span></span></code></pre></div>
-<div class="sourceCode" id="cb581"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/postResample.html">RMSE</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model_lars</span>, <span class="va">x_test</span>, s <span class="op">=</span> <span class="va">best</span><span class="op">)</span><span class="op">$</span><span class="va">fit</span>, <span class="va">test</span><span class="op">$</span><span class="va">Petal.Width</span><span class="op">)</span></span>
-<span><span class="co">## [1] 0.1907</span></span></code></pre></div>
-<div class="sourceCode" id="cb582"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, </span>
+<span><span class="co">## 1.8237 1.5003 0.2505 1.9300 0.2439</span></span>
+<span><span class="va">test</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span><span class="op">$</span><span class="va">Petal.Width</span></span>
+<span><span class="co">## [1] 1.8 1.4 0.2 1.5 0.2</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/postResample.html">RMSE</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model_lars</span>, <span class="va">x_test</span>, s <span class="op">=</span> <span class="va">best</span><span class="op">)</span><span class="op">$</span><span class="va">fit</span>, <span class="va">test</span><span class="op">$</span><span class="va">Petal.Width</span><span class="op">)</span></span>
+<span><span class="co">## [1] 0.1907</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, </span>
 <span>     <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model_lars</span>, <span class="va">x_test</span>, s <span class="op">=</span> <span class="va">best</span><span class="op">)</span><span class="op">$</span><span class="va">fit</span>,</span>
 <span>     xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, </span>
 <span>     xlab <span class="op">=</span> <span class="st">"actual"</span>, ylab <span class="op">=</span> <span class="st">"predicted"</span>,</span>
 <span>     main <span class="op">=</span> <span class="st">"Petal.Width"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-414-1.png" width="672"></div>
-<div class="sourceCode" id="cb583"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-410-1.png" width="672"></div>
+<div class="sourceCode" id="cb458"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>,</span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model_lars</span>, <span class="va">x_test</span>, s <span class="op">=</span> <span class="va">best</span><span class="op">)</span><span class="op">$</span><span class="va">fit</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.9686</span></span></code></pre></div>
@@ -873,7 +876,7 @@ we have to do it manually.</p>
 <span class="header-section-number">8.9</span> Exercises<a class="anchor" aria-label="anchor" href="#exercises-5"><i class="fas fa-link"></i></a>
 </h2>
 <p>We will again use the Palmer penguin data for the exercises.</p>
-<div class="sourceCode" id="cb584"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb459"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/">palmerpenguins</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">penguins</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 6 × 8</span></span>
@@ -896,7 +899,7 @@ of a penguin (<code>body_mass_g</code>).</p></li>
 <li><p>Use stepwise variable selection to remove unnecessary variables.</p></li>
 <li>
 <p>Predict the weight for the following new penguin:</p>
-<div class="sourceCode" id="cb585"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb460"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">new_penguin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
 <span>  species <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="st">"Adelie"</span>, </span>
 <span>    levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Adelie"</span>, <span class="st">"Chinstrap"</span>, <span class="st">"Gentoo"</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -963,7 +966,7 @@ Then use the regression tree to predict the weight for the above penguin.</p></l
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-09-11.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-09-26.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

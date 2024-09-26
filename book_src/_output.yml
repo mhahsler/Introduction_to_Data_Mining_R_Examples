@@ -7,5 +7,3 @@ bookdown::bs4_book:
 bookdown::pdf_book:
   latex_engine: xelatex
   toc_depth: 3
-  keep_tex: TRUE
-  keep_md: TRUE
