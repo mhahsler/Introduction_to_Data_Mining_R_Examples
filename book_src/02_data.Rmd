@@ -1189,10 +1189,52 @@ ggplot(iris, aes(Sepal.Length, Sepal.Width)) +
 
 ## Visualization
 
-We go through the basic visualizations used when working with data.
-For space reasons, this chapter was moved from the
-printed textbook to this 
+Visualization uses several components to convey information:
+
+* Symbols: Circles, dots, lines, bars, ...
+* Position: Axes (labels and units) and the origin (0/0) are important.
+* Length, Size and Area: Should only be used if it faithfully represents
+    information.
+* Color: A color should not overpower another. Limit to 3 or 4 colors.
+* Angle: Human eyes are not good at comparing angles!
+
+All components of the plot need to convey information. E.g., do not use
+color just to make it more colorful. 
+All good visualizations show the important patterns clearly.
+
+For space reasons, the chapter on data exploration and visualization 
+was moved from the printed textbook and can now be found in the 
 [Data Exploration Web Chapter.](https://www-users.cse.umn.edu/~kumar001/dmbook/data_exploration_1st_edition.pdf)
+
+For visualization in R, we will use mainly `ggplot2`. The *gg* in `ggplot2`
+stands for **Grammar of Graphics** introduced by @Wilkinson2005. The
+main idea is that every graph is built from the same basic components:
+
+-   the data,
+-   a coordinate system, and
+-   visual marks representing the data (geoms).
+
+In `ggplot2`, the components are combined using the `+` operator.
+
+```{r eval=FALSE}
+ggplot(data, mapping = aes(x = ..., y = ..., color = ...)) +
+  geom_point()
+```
+
+Since we typically use a Cartesian coordinate system, `ggplot` uses that
+by default. Each `geom_` function uses a `stat_` function to calculate
+what is visualizes. For example, `geom_bar` uses `stat_count` to create
+a bar chart by counting how often each value appears in the data (see
+`? geom_bar`). `geom_point` just uses the stat `"identity"` to display
+the points using the coordinates as they are. 
+
+Additional components like the main title, axis labels, and different scales can
+be also added. A great introduction can
+be found in the [Section on Data
+Visualization](https://r4ds.hadley.nz/data-visualize) [@Wickham2023],
+and very useful is [RStudio's Data Visualization Cheatsheet](https://rstudio.github.io/cheatsheets/html/data-visualization.html).
+
+Next, we go through the basic visualizations used when working with data.
 
 ### Histogram
 

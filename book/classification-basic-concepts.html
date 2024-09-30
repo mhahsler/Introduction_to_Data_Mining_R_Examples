@@ -105,7 +105,7 @@ the data mining textbook is available online:
 <div id="packages-used-in-this-chapter-1" class="section level3 unnumbered">
 <h3>Packages Used in this Chapter<a class="anchor" aria-label="anchor" href="#packages-used-in-this-chapter-1"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb134"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb135"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"caret"</span>, <span class="st">"FSelector"</span>, <span class="st">"lattice"</span>, <span class="st">"mlbench"</span>, </span>
 <span>          <span class="st">"palmerpenguins"</span>, <span class="st">"party"</span>, <span class="st">"pROC"</span>, <span class="st">"rpart"</span>, </span>
 <span>          <span class="st">"rpart.plot"</span>, <span class="st">"tidyverse"</span><span class="op">)</span></span>
@@ -220,7 +220,7 @@ The first 16 columns represent the feature vector <span class="math inline">\(\m
 called type is the class label <span class="math inline">\(y\)</span>.
 We convert the data frame into a tidyverse tibble
 (optional).</p>
-<div class="sourceCode" id="cb135"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb136"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">Zoo</span>, package<span class="op">=</span><span class="st">"mlbench"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Zoo</span><span class="op">)</span></span>
 <span><span class="co">##           hair feathers  eggs  milk airborne aquatic</span></span>
@@ -248,7 +248,7 @@ We convert the data frame into a tidyverse tibble
 animal name as the row names. tibbles from <code>tidyverse</code> do not support
 row names. To keep the animal name you can add a column with the animal
 name.</p>
-<div class="sourceCode" id="cb136"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">Zoo</span>, rownames <span class="op">=</span> <span class="st">"animal"</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 101 × 18</span></span>
@@ -274,7 +274,7 @@ the following I use the data.frame.</p>
 <p>I translate all the TRUE/FALSE values into factors (nominal). This is
 often needed for building models. Always check <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> to make sure
 the data is ready for model learning.</p>
-<div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb138"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Zoo</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/where.html">where</a></span><span class="op">(</span><span class="va">is.logical</span><span class="op">)</span>, </span>
 <span>         <span class="kw">function</span> <span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">x</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -322,14 +322,14 @@ the data is ready for model learning.</p>
 <p>We use here the recursive partitioning implementation which follows largely
 CART and uses the Gini index to make
 splitting decisions and early stopping (also called pre-pruning).</p>
-<div class="sourceCode" id="cb138"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bethatkinson/rpart">rpart</a></span><span class="op">)</span></span></code></pre></div>
 <div id="create-tree" class="section level3" number="3.3.1">
 <h3>
 <span class="header-section-number">3.3.1</span> Create Tree<a class="anchor" aria-label="anchor" href="#create-tree"><i class="fas fa-link"></i></a>
 </h3>
 <p>We create first a tree with the default settings (see <code><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">? rpart.control</a></code>).</p>
-<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb140"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tree_default</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="va">tree_default</span></span>
@@ -361,10 +361,10 @@ or rpart will create a regression tree instead of a decision tree.
 Use <code><a href="https://rdrr.io/r/base/factor.html">as.factor()</a></code> on the column with the class label first, if necessary.</li>
 </ul>
 <p>We can plot the resulting decision tree.</p>
-<div class="sourceCode" id="cb140"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb141"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">tree_default</span>, extra <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-137-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-138-1.png" width="672"></div>
 <p><em>Note:</em> <code>extra=2</code> prints for each leaf node the number of correctly
 classified objects from data and the total number of objects from the
 training data falling into that node (correct/total).</p>
@@ -374,7 +374,7 @@ training data falling into that node (correct/total).</p>
 <span class="header-section-number">3.3.2</span> Make Predictions for New Data<a class="anchor" aria-label="anchor" href="#make-predictions-for-new-data"><i class="fas fa-link"></i></a>
 </h3>
 <p>I will make up my own animal: A lion with feathered wings.</p>
-<div class="sourceCode" id="cb141"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb142"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_animal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>hair <span class="op">=</span> <span class="cn">TRUE</span>, feathers <span class="op">=</span> <span class="cn">TRUE</span>, eggs <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  milk <span class="op">=</span> <span class="cn">TRUE</span>, airborne <span class="op">=</span> <span class="cn">TRUE</span>, aquatic <span class="op">=</span> <span class="cn">FALSE</span>, predator <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  toothed <span class="op">=</span> <span class="cn">TRUE</span>, backbone <span class="op">=</span> <span class="cn">TRUE</span>, breathes <span class="op">=</span> <span class="cn">TRUE</span>, </span>
@@ -382,7 +382,7 @@ training data falling into that node (correct/total).</p>
 <span>  domestic <span class="op">=</span> <span class="cn">FALSE</span>, catsize <span class="op">=</span> <span class="cn">FALSE</span>, type <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
 <p>The data types need to match the original data so we
 change the columns to be factors like in the training set.</p>
-<div class="sourceCode" id="cb142"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb143"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_animal</span> <span class="op">&lt;-</span> <span class="va">my_animal</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/where.html">where</a></span><span class="op">(</span><span class="va">is.logical</span><span class="op">)</span>, </span>
 <span>                <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">x</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -395,7 +395,7 @@ change the columns to be factors like in the training set.</p>
 <span><span class="co">## #   breathes &lt;fct&gt;, venomous &lt;fct&gt;, fins &lt;fct&gt;, legs &lt;dbl&gt;,</span></span>
 <span><span class="co">## #   tail &lt;fct&gt;, domestic &lt;fct&gt;, catsize &lt;fct&gt;, type &lt;fct&gt;</span></span></code></pre></div>
 <p>Next, we make a prediction using the default tree</p>
-<div class="sourceCode" id="cb143"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb144"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">tree_default</span> , <span class="va">my_animal</span>, type <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span></span>
 <span><span class="co">##      1 </span></span>
 <span><span class="co">## mammal </span></span>
@@ -407,7 +407,7 @@ change the columns to be factors like in the training set.</p>
 </h3>
 <p>We will calculate error of the model on the training data manually first,
 so we see how it is calculated.</p>
-<div class="sourceCode" id="cb144"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">tree_default</span>, <span class="va">Zoo</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span> <span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">##          mammal bird reptile fish amphibian insect</span></span>
 <span><span class="co">## aardvark      1    0       0    0         0      0</span></span>
@@ -430,7 +430,7 @@ so we see how it is calculated.</p>
 <span><span class="co">## 7 Levels: mammal bird reptile fish amphibian ... mollusc.et.al</span></span></code></pre></div>
 <p>We can easily tabulate the true and predicted labels to create a
 confusion matrix.</p>
-<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb146"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">confusion_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">Zoo</span>, <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">type</span>, <span class="va">pred</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">confusion_table</span></span>
 <span><span class="co">##                pred</span></span>
@@ -454,7 +454,7 @@ confusion matrix.</p>
 <p>The counts in the diagonal are correct predictions. Off-diagonal
 counts represent errors (i.e., confusions).</p>
 <p>We can summarize the confusion matrix using the accuracy measure.</p>
-<div class="sourceCode" id="cb146"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">correct</span> <span class="op">&lt;-</span> <span class="va">confusion_table</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">correct</span></span>
 <span><span class="co">## [1] 89</span></span>
@@ -465,7 +465,7 @@ counts represent errors (i.e., confusions).</p>
 <span><span class="va">accuracy</span></span>
 <span><span class="co">## [1] 0.8812</span></span></code></pre></div>
 <p>Here is the accuracy calculation as a simple function.</p>
-<div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb148"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">accuracy</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">truth</span>, <span class="va">prediction</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">truth</span>, <span class="va">prediction</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span></span>
@@ -480,7 +480,7 @@ counts represent errors (i.e., confusions).</p>
 </h3>
 <p>The caret package provides a convenient way to create and
 analyze a confusion table including many useful statistics.</p>
-<div class="sourceCode" id="cb148"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/topepo/caret/">caret</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pred</span>, </span>
 <span>                reference <span class="op">=</span> <span class="va">Zoo</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">type</span><span class="op">)</span><span class="op">)</span></span>
@@ -571,7 +571,7 @@ even if it does not improve the tree) and we set the minimum number of
 observations in a node needed to split to the smallest value of 2 (see:
 <code><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">?rpart.control</a></code>). <em>Note:</em> This is not a good idea!
 As we will see later, full trees overfit the training data!</p>
-<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb150"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tree_full</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span> , data <span class="op">=</span> <span class="va">_</span>, </span>
 <span>        control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">rpart.control</a></span><span class="op">(</span>minsplit <span class="op">=</span> <span class="fl">2</span>, cp <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
@@ -579,8 +579,8 @@ As we will see later, full trees overfit the training data!</p>
 <span>           roundint<span class="op">=</span><span class="cn">FALSE</span>,</span>
 <span>           box.palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"Gy"</span>, <span class="st">"Gn"</span>, <span class="st">"Bu"</span>, <span class="st">"Bn"</span>, </span>
 <span>                              <span class="st">"Or"</span>, <span class="st">"Rd"</span>, <span class="st">"Pu"</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-146-1.png" width="672"></div>
-<div class="sourceCode" id="cb150"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-147-1.png" width="672"></div>
+<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tree_full</span></span>
 <span><span class="co">## n= 101 </span></span>
 <span><span class="co">## </span></span>
@@ -607,7 +607,7 @@ As we will see later, full trees overfit the training data!</p>
 <span><span class="co">##               253) legs&lt; 3 2  0 mollusc.et.al (0 0 0 0 0 0 1) *</span></span>
 <span><span class="co">##             127) predator=TRUE 8  0 mollusc.et.al (0 0 0 0 0 0 1) *</span></span></code></pre></div>
 <p>Error on the training set of the full tree</p>
-<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pred_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">tree_full</span>, <span class="va">Zoo</span>, type <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">accuracy</span><span class="op">(</span><span class="va">Zoo</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">type</span><span class="op">)</span>, <span class="va">pred_full</span><span class="op">)</span></span>
@@ -636,7 +636,7 @@ between the default complexity <code>cp = 0.01</code> and a full tree <code>cp =
 picks randomly the proportion <code>p</code> of data to train and uses the rest as
 the validation set. To get a better estimate of the
 error, this process is repeated <code>number</code> times and the errors are averaged.</p>
-<div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,</span>
 <span>    data <span class="op">=</span> <span class="va">_</span> ,</span>
@@ -678,7 +678,7 @@ This is a result of the fact that we only have a very small dataset.</p>
 training set. We typically split the data using random sampling.
 To get reproducible results,
 we set random number generator seed.</p>
-<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span></span></code></pre></div>
 <div id="holdout-method" class="section level3" number="3.6.1">
 <h3>
@@ -687,7 +687,7 @@ we set random number generator seed.</p>
 <p>Test data is not used in the model building process and set aside purely
 for testing the model. Here, we partition data the 80% training and 20%
 testing.</p>
-<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">inTrain</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/createDataPartition.html">createDataPartition</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">Zoo</span><span class="op">$</span><span class="va">type</span>, p <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">Zoo_train</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="va">inTrain</span><span class="op">)</span></span>
 <span><span class="va">Zoo_test</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="va">inTrain</span><span class="op">)</span></span></code></pre></div>
@@ -711,7 +711,7 @@ parallel. To enable multi-core support, <code>caret</code> uses the package
 <code>foreach</code> and you need to load a <code>do</code> backend. For Linux, you can use
 <code>doMC</code> with 4 cores. Windows needs different backend like <code>doParallel</code>
 (see <code>caret</code> cheat sheet above).</p>
-<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Linux backend</span></span>
 <span><span class="co"># library(doMC)</span></span>
 <span><span class="co"># registerDoMC(cores = 4)</span></span>
@@ -734,7 +734,7 @@ we want to perform model selection to pick the best setting.</p>
 <p>We typically use the holdout method to create a test set and then use
 cross validation using the training data for model selection. Let us use
 80% for training and hold out 20% for testing.</p>
-<div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">inTrain</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/createDataPartition.html">createDataPartition</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">Zoo</span><span class="op">$</span><span class="va">type</span>, p <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">Zoo_train</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="va">inTrain</span><span class="op">)</span></span>
 <span><span class="va">Zoo_test</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="va">inTrain</span><span class="op">)</span></span></code></pre></div>
@@ -748,7 +748,7 @@ using accuracy to chose the best model. I set <code>minsplit</code> to 2 since w
 have not much data. <strong>Note:</strong> Parameters used for tuning (in this case
 <code>cp</code>) need to be set using a data.frame in the argument <code>tuneGrid</code>!
 Setting it in control will be ignored.</p>
-<div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb158"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,</span>
 <span>    data <span class="op">=</span> <span class="va">_</span> ,</span>
@@ -784,16 +784,16 @@ value of <code>cp</code> and the reported values for accuracy and Kappa are the
 averages on the validation folds.</p>
 <p>A model using the best tuning parameters and using all the data supplied
 to <code><a href="https://rdrr.io/pkg/caret/man/train.html">train()</a></code> is available as <code>fit$finalModel</code>.</p>
-<div class="sourceCode" id="cb158"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">finalModel</span>, extra <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  box.palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"Gy"</span>, <span class="st">"Gn"</span>, <span class="st">"Bu"</span>, <span class="st">"Bn"</span>, <span class="st">"Or"</span>, <span class="st">"Rd"</span>, <span class="st">"Pu"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-154-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-155-1.png" width="672"></div>
 <p>caret also computes variable importance. By default it uses competing
 splits (splits which would be runners up, but do not get chosen by the
 tree) for rpart models (see <code><a href="https://rdrr.io/pkg/caret/man/varImp.html">? varImp</a></code>). Toothed is the runner up for
 many splits, but it never gets chosen!</p>
-<div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb160"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/varImp.html">varImp</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
 <span><span class="co">## rpart variable importance</span></span>
 <span><span class="co">## </span></span>
@@ -815,7 +815,7 @@ many splits, but it never gets chosen!</p>
 <span><span class="co">## catsizeFALSE      0.0</span></span>
 <span><span class="co">## domesticFALSE     0.0</span></span></code></pre></div>
 <p>Here is the variable importance without competing splits.</p>
-<div class="sourceCode" id="cb160"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">imp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/varImp.html">varImp</a></span><span class="op">(</span><span class="va">fit</span>, compete <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">imp</span></span>
 <span><span class="co">## rpart variable importance</span></span>
@@ -838,13 +838,13 @@ many splits, but it never gets chosen!</p>
 <span><span class="co">## breathesFALSE    0.00</span></span>
 <span><span class="co">## predatorFALSE    0.00</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">imp</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-156-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-157-1.png" width="672"></div>
 <p><strong>Note:</strong> Not all models provide a variable importance function. In this
 case caret might calculate the variable importance by itself and ignore
 the model (see <code><a href="https://rdrr.io/pkg/caret/man/varImp.html">? varImp</a></code>)!</p>
 <p>Now, we can estimate the generalization error of the best model on the
 held out test data.</p>
-<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb162"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, newdata <span class="op">=</span> <span class="va">Zoo_test</span><span class="op">)</span></span>
 <span><span class="va">pred</span></span>
 <span><span class="co">##  [1] mammal        bird          mollusc.et.al bird         </span></span>
@@ -857,7 +857,7 @@ held out test data.</p>
 intervals, kappa and many more evaluation metrics. You need to use
 separate test data to create a confusion matrix based on the
 generalization error.</p>
-<div class="sourceCode" id="cb162"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pred</span>, </span>
 <span>                ref <span class="op">=</span> <span class="va">Zoo_test</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">type</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## Confusion Matrix and Statistics</span></span>
@@ -975,12 +975,12 @@ Always use the generalization error on a test set!</li>
 classifier. We will create fixed sampling scheme (10-folds) so we
 compare the different models using exactly the same folds. It is
 specified as <code>trControl</code> during training.</p>
-<div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb164"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">train_index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/createDataPartition.html">createFolds</a></span><span class="op">(</span><span class="va">Zoo_train</span><span class="op">$</span><span class="va">type</span>, </span>
 <span>                           k <span class="op">=</span> <span class="fl">10</span>, </span>
 <span>                           returnTrain <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Build models</p>
-<div class="sourceCode" id="cb164"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb165"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rpartFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,</span>
 <span>        data <span class="op">=</span> <span class="va">_</span>,</span>
@@ -992,7 +992,7 @@ specified as <code>trControl</code> during training.</p>
 <p><strong>Note:</strong> for kNN we ask <code>train</code> to scale the data using
 <code>preProcess = "scale"</code>. Logicals will be used as 0-1 variables in
 Euclidean distance calculation.</p>
-<div class="sourceCode" id="cb165"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb166"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">knnFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,</span>
 <span>        data <span class="op">=</span> <span class="va">_</span>,</span>
@@ -1003,7 +1003,7 @@ Euclidean distance calculation.</p>
 <span>                                   index <span class="op">=</span> <span class="va">train_index</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p>Compare accuracy over all folds.</p>
-<div class="sourceCode" id="cb166"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">resamps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/resamples.html">resamples</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
 <span>        CART <span class="op">=</span> <span class="va">rpartFit</span>,</span>
 <span>        kNearestNeighbors <span class="op">=</span> <span class="va">knnFit</span></span>
@@ -1035,14 +1035,14 @@ Euclidean distance calculation.</p>
 <p><code>caret</code> provides some visualizations. For
 example, a boxplot to compare the accuracy and kappa distribution (over
 the 10 folds).</p>
-<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb168"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/xyplot.html">bwplot</a></span><span class="op">(</span><span class="va">resamps</span>, layout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-163-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-164-1.png" width="672"></div>
 <p>We see that kNN is performing consistently better on the folds than CART
 (except for some outlier folds).</p>
 <p>Find out if one models is statistically better than the other (is the
 difference in accuracy is not zero).</p>
-<div class="sourceCode" id="cb168"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">difs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span><span class="op">(</span><span class="va">resamps</span><span class="op">)</span></span>
 <span><span class="va">difs</span></span>
 <span><span class="co">## </span></span>
@@ -1088,7 +1088,7 @@ Since different features lead to different models, choosing
 the best set of features is also a type of
 model selection.</p>
 <p>Many feature selection methods are implemented in the FSelector package.</p>
-<div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb170"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/larskotthoff/fselector">FSelector</a></span><span class="op">)</span></span></code></pre></div>
 <div id="univariate-feature-importance-score" class="section level3" number="3.10.1">
 <h3>
@@ -1097,7 +1097,7 @@ model selection.</p>
 <p>These scores measure how related each feature is to the class variable.
 For discrete features (as in our case), the chi-square statistic can be
 used to derive a score.</p>
-<div class="sourceCode" id="cb170"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb171"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/chi.squared.html">chi.squared</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"feature"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1125,17 +1125,17 @@ used to derive a score.</p>
 <span><span class="co">## 16 domestic           0.256</span></span></code></pre></div>
 <p>We can plot the importance in descending order (using <code>reorder</code> to order factor
 levels used by <code>ggplot</code>).</p>
-<div class="sourceCode" id="cb171"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb172"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">weights</span>,</span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">attr_importance</span>, </span>
 <span>      y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">feature</span>, <span class="va">attr_importance</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Importance score"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"Feature"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-167-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-168-1.png" width="672"></div>
 <p>Picking the best features is called the feature ranking approach.
 Here we pick the 5 highest-ranked features.</p>
-<div class="sourceCode" id="cb172"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb173"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/cutoff.html">cutoff.k</a></span><span class="op">(</span><span class="va">weights</span> <span class="op">|&gt;</span> </span>
 <span>                   <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">column_to_rownames</a></span><span class="op">(</span><span class="st">"feature"</span><span class="op">)</span>, </span>
 <span>                   <span class="fl">5</span><span class="op">)</span></span>
@@ -1143,19 +1143,19 @@ Here we pick the 5 highest-ranked features.</p>
 <span><span class="co">## [1] "feathers" "milk"     "backbone" "toothed"  "eggs"</span></span></code></pre></div>
 <p>Use only the selected features to build a model (<code>Fselector</code> provides
 <code>as.simple.formula</code>).</p>
-<div class="sourceCode" id="cb173"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb174"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/as.simple.formula.html">as.simple.formula</a></span><span class="op">(</span><span class="va">subset</span>, <span class="st">"type"</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
 <span><span class="co">## type ~ feathers + milk + backbone + toothed + eggs</span></span>
-<span><span class="co">## &lt;environment: 0x5bf94836f728&gt;</span></span>
+<span><span class="co">## &lt;environment: 0x5f5041b0bf28&gt;</span></span>
 <span><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">m</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-169-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-170-1.png" width="672"></div>
 <p>There are many alternative ways to calculate univariate importance
 scores (see package FSelector). Some of them (also) work for continuous
 features. One example is the information gain ratio based on entropy as
 used in decision tree induction.</p>
-<div class="sourceCode" id="cb174"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/information.gain.html">gain.ratio</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"feature"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1187,7 +1187,7 @@ used in decision tree induction.</p>
 <p>Often, features are related and calculating importance for each feature
 independently is not optimal. We can use greedy search heuristics. For
 example <code>cfs</code> uses correlation/entropy with best first search.</p>
-<div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb176"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/cfs.html">cfs</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="co">##  [1] "hair"     "feathers" "eggs"     "milk"     "toothed" </span></span>
@@ -1201,7 +1201,7 @@ function that builds a model given a subset of features and calculates a
 quality score. We use here the average for 5 bootstrap samples
 (<code>method = "cv"</code> can also be used instead), no tuning (to be faster),
 and the average accuracy as the score.</p>
-<div class="sourceCode" id="cb176"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">evaluator</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">subset</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">model</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/as.simple.formula.html">as.simple.formula</a></span><span class="op">(</span><span class="va">subset</span>, <span class="st">"type"</span><span class="op">)</span>,</span>
@@ -1219,14 +1219,14 @@ and the average accuracy as the score.</p>
 <span>  <span class="va">m</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>Start with all features (but not the class variable <code>type</code>)</p>
-<div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb178"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">features</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html">setdiff</a></span><span class="op">(</span><span class="st">"type"</span><span class="op">)</span></span></code></pre></div>
 <p>There are several (greedy) search strategies available. These run for a
 while so they commented out below. Remove the comment for one at a time
 to try these types of feature selection.</p>
-<div class="sourceCode" id="cb178"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#subset &lt;- backward.search(features, evaluator)</span></span>
 <span><span class="co">#subset &lt;- forward.search(features, evaluator)</span></span>
 <span><span class="co">#subset &lt;- best.first.search(features, evaluator)</span></span>
@@ -1241,18 +1241,18 @@ to try these types of feature selection.</p>
 variables. For example, let us try to predict if an animal is a predator
 given the type. First we use the original encoding of type as a factor
 with several values.</p>
-<div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb180"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tree_predator</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">predator</span> <span class="op">~</span> <span class="va">type</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">tree_predator</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-175-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-176-1.png" width="672"></div>
 <p><strong>Note:</strong> Some splits use multiple values. Building the tree will become
 extremely slow if a factor has many levels (different values) since the
 tree has to check all possible splits into two subsets. This situation
 should be avoided.</p>
 <p>Convert type into a set of 0-1 dummy variables using <code>class2ind</code>. See
 also <code><a href="https://rdrr.io/pkg/caret/man/dummyVars.html">? dummyVars</a></code> in package <code>caret</code>.</p>
-<div class="sourceCode" id="cb180"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb181"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Zoo_train_dummy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/dummyVars.html">class2ind</a></span><span class="op">(</span><span class="va">Zoo_train</span><span class="op">$</span><span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">as.factor</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/add_column.html">add_column</a></span><span class="op">(</span>predator <span class="op">=</span> <span class="va">Zoo_train</span><span class="op">$</span><span class="va">predator</span><span class="op">)</span></span>
@@ -1277,12 +1277,12 @@ also <code><a href="https://rdrr.io/pkg/caret/man/dummyVars.html">? dummyVars</a
 <span>        data <span class="op">=</span> <span class="va">_</span>,</span>
 <span>        control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">rpart.control</a></span><span class="op">(</span>minsplit <span class="op">=</span> <span class="fl">2</span>, cp <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">tree_predator</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-176-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-177-1.png" width="672"></div>
 <p>Using <code>caret</code> on the original factor encoding automatically translates
 factors (here type) into 0-1 dummy variables (e.g., <code>typeinsect = 0</code>).
 The reason is that some models cannot directly use factors and <code>caret</code>
 tries to consistently work with all of them.</p>
-<div class="sourceCode" id="cb181"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb182"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">predator</span> <span class="op">~</span> <span class="va">type</span>, </span>
 <span>        data <span class="op">=</span> <span class="va">_</span>, </span>
@@ -1306,7 +1306,7 @@ tries to consistently work with all of them.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Tuning parameter 'cp' was held constant at a value of 0.01</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">finalModel</span>, extra <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-177-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-178-1.png" width="672"></div>
 <p><em>Note:</em> To use a fixed value for the tuning parameter <code>cp</code>, we have to
 create a tuning grid that only contains that value.</p>
 </div>
@@ -1316,7 +1316,7 @@ create a tuning grid that only contains that value.</p>
 <span class="header-section-number">3.11</span> Exercises*<a class="anchor" aria-label="anchor" href="#exercises-1"><i class="fas fa-link"></i></a>
 </h2>
 <p>We will use again the Palmer penguin data for the exercises.</p>
-<div class="sourceCode" id="cb182"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/">palmerpenguins</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">penguins</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 6 × 8</span></span>
@@ -1404,7 +1404,7 @@ the most important? What variables do not matter?</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-09-26.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-09-30.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

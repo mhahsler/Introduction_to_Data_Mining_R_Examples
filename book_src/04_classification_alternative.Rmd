@@ -15,7 +15,7 @@ better understanding of the model bias that different algorithms have.
 ### Packages Used in this Chapter {.unnumbered}
 
 ```{r setup_04}
-pkgs <- c("basemodels", "C50", "caret", "e1071", "keras3", "klaR", 
+pkgs <- c("basemodels", "C50", "caret", "e1071", "klaR", 
           "lattice", "MASS", "mlbench", "nnet", "palmerpenguins", 
           "randomForest", "rpart", "RWeka", "scales", "tidyverse", 
           "xgboost")
