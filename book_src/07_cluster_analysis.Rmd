@@ -104,7 +104,7 @@ all numeric columns.
 ## I use this till tidyverse implements a scale function
 scale_numeric <- function(x) {
   x |> mutate(across(where(is.numeric), 
-                     function(y) as.vector(scale(y))))
+                     function(y) (y - mean(y, na.rm = TRUE)) / sd(y, na.rm = TRUE)))
 }
 ```
 
@@ -131,13 +131,19 @@ km <- kmeans(ruspini_scaled, centers = 4, nstart = 10)
 km
 ```
 
-`km` is an R object implemented as a list. The clustering vector
-contains the cluster assignment for each data row and can be accessed
+`km` is an R object implemented as a list. 
+
+```{r}
+str(km)
+```
+
+The clustering vector is just a list element
+containing the cluster assignment for each data row and can be accessed
 using `km$cluster`. I add the cluster assignment as a column to the
-scaled dataset (I make it a factor since it represents a nominal label).
+original dataset (I make it a factor since it represents a nominal label).
 
 ```{r }
-ruspini_clustered <- ruspini_scaled |> 
+ruspini_clustered <- ruspini |> 
   add_column(cluster = factor(km$cluster))
 ruspini_clustered
 
@@ -149,6 +155,10 @@ Add the centroids to the plot. Note that the second `geom_points` uses
 not the original data but specifies the centroids as its dataset.
 
 ```{r }
+unscale <- function(x, original_data) {
+  x * sd(original_data, na.rm = TRUE) + mean(original_data, na.rm = TRUE)
+}
+
 centroids <- as_tibble(km$centers, rownames = "cluster")
 centroids
 
@@ -330,8 +340,10 @@ for core cluster)
 
 ## Cluster Evaluation
 
-### Unsupervized Cluster Evaluation
+### Unsupervised Cluster Evaluation
 
+This is also often called internal cluster evaluation since it does not use
+extra external labels.
 The two most popular quality metrics are the within-cluster sum of
 squares (WCSS) used as the optimization objective by
 [$k$-means](https://en.wikipedia.org/wiki/K-means_clustering) and the
