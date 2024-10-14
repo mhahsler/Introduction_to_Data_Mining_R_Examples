@@ -224,42 +224,57 @@ fviz_cluster(kmeans(ruspini_scaled, centers = 8), data = ruspini_scaled,
 ## Agglomerative Hierarchical Clustering
 
 Hierarchical clustering starts with a distance matrix. `dist()` defaults
-to method="Euclidean". **Note:** Distance matrices become very large
-quickly (size and time complexity is $O(n^2)$ where $n$ is the number if
+to `method = "euclidean"`. 
+
+**Notes:** 
+
+* Distance matrices become very large
+quickly (the space complexity is $O(n^2)$ where $n$ is the number if
 data points). It is only possible to calculate and store the matrix for
-small data sets (maybe a few hundred thousand data points) in main
-memory. If your data is too large then you can use sampling.
+small to medium data sets (maybe a few hundred thousand data points) in main
+memory. If your data is too large then you can use sampling to reduce the 
+number of points to cluster.
+* The data needs to be scaled since we compute distances.
+
+
+### Creating a Dendrogram
 
 ```{r }
 d <- dist(ruspini_scaled)
 ```
 
 `hclust()` implements [agglomerative hierarchical
-clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering). We
-cluster using complete link.
+clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering). 
+The linkage function defines how the distance between two clusters (sets of points) 
+is calculated. We specify the complete-link method where the distance between two groups 
+is measured by the distance between the two farthest apart points in the two groups.
 
 ```{r }
 hc <- hclust(d, method = "complete")
 ```
 
 Hierarchical clustering does not return cluster assignments but a
-dendrogram. The standard plot function plots the dendrogram.
+dendrogram object which shows how the objects on the x-axis are successively joined together
+when going up along the y-axis. The y-axis represents the distance at which groups of points
+are joined together. The standard plot function displays the dendrogram.
 
 ```{r }
 plot(hc)
 ```
 
-Use `factoextra` (ggplot version). We can specify the number of clusters
-to visualize how the dendrogram will be cut into clusters.
+The package `factoextra` provides a ggplot function to plot dendrograms. 
 
 ```{r warning=FALSE}
-fviz_dend(hc, k = 4)
+fviz_dend(hc)
 ```
 
 More plotting options for dendrograms, including plotting parts of large
 dendrograms can be found [here.](https://rpubs.com/gaston/dendrograms)
 
-Extract cluster assignments by cutting the dendrogram into four parts
+### Extracting a Partitional Clustering
+
+Partitional clusterings with cluster assignments can be extracted from a dendrogram
+by cutting the dendrogram horizontally using `cutree()`. Here we cut it into four parts
 and add the cluster id to the data.
 
 ```{r }
@@ -267,21 +282,33 @@ clusters <- cutree(hc, k = 4)
 cluster_complete <- ruspini_scaled |>
   add_column(cluster = factor(clusters))
 cluster_complete
+```
 
+The 4 different clusters can be shown in the dendrogram using different colors.  
+
+```{r warning=FALSE}
+fviz_dend(hc, k = 4)
+```
+
+We can also color in the scatterplot.
+
+```{r}
 ggplot(cluster_complete, aes(x, y, color = cluster)) +
   geom_point()
 ```
 
-Try 8 clusters (Note: `fviz_cluster` needs a list with data and the
-cluster labels for hclust)
+The package `factoextra` provides an alternative visualization. Since it needs
+a partition object as the first argument, we create one as a simple list.
 
 ```{r }
 fviz_cluster(list(data = ruspini_scaled, 
-                  cluster = cutree(hc, k = 8)), 
+                  cluster = cutree(hc, k = 4)), 
              geom = "point")
 ```
 
-Clustering with single link
+Here are the results if we use the single-link method to join clusters. 
+Single-link measures the distance between two groups by the 
+by the distance between the two closest points from the two groups.
 
 ```{r }
 hc_single <- hclust(d, method = "single")
@@ -292,51 +319,90 @@ fviz_cluster(list(data = ruspini_scaled,
              geom = "point")
 ```
 
+The most important difference between complete-link and single-link is that 
+complete-link prefers globular clusters and single-link shows chaining 
+(see the staircase pattern in the dendrogram).
+
 ## DBSCAN
+
+
+[DBSCAN](https://en.wikipedia.org/wiki/DBSCAN) stands for "Density-Based
+Spatial Clustering of Applications with Noise." It groups together
+points that are closely packed together and treats points in low-density
+regions as outliers. DBSCAN is implemented in package `dbscan`.
 
 ```{r }
 library(dbscan)
 ```
 
-[DBSCAN](https://en.wikipedia.org/wiki/DBSCAN) stands for "Density-Based
-Spatial Clustering of Applications with Noise." It groups together
-points that are closely packed together and treats points in low-density
-regions as outliers.
+### DBSCAN Parameters 
 
-**Parameters:** minPts defines how many points in the epsilon
-neighborhood are needed to make a point a core point. It is often chosen
-as a smoothing parameter. I use here minPts = 4.
+DBSCAN has two parameters
+that interact with each other. Changing one typically 
+means that the other one also has to be adjusted. 
 
+`minPts` defines how many points are needed in the epsilon
+neighborhood to make a point a core point for a cluster. It is often chosen
+as a smoothing parameter, where larger values smooth the density estimation more 
+but also ignore smaller structures with less then minPts. 
+
+`eps` is the radius of the epsilon neighborhood around a point in which the
+number of points is counted.
+
+Users typically first select minPts. We use here `minPts = 4`.
 To decide on epsilon, the knee in the kNN distance plot is often used.
-Note that minPts contains the point itself, while the k-nearest neighbor
-does not. We therefore have to use k = minPts - 1! The knee is around
-eps = .32.
+All points are sorted by their kNN distance. The idea is that points with
+a low kNN distance are located in a dense area which should become a cluster. 
+Points with a large kNN distance are in a low density area and most 
+likely represent outliers and noise.  
 
 ```{r }
-kNNdistplot(ruspini_scaled, k = 3)
+kNNdistplot(ruspini_scaled, minPts = 4)
 abline(h = .32, col = "red")
 ```
 
-run dbscan
+Note that minPts contains the point itself, while the k-nearest neighbor
+distance calculation does not. 
+The plot uses therefor `k = minPts - 1`.
+
+The knee is visible around `eps = .32` (shown by the manually added red line). 
+The points to the left of the intersection of the
+k-nearest neighbor distance line and the red line are the points that will be 
+core points during clustering at the specified parameters.
+
+### Cluster using DBSCAN
+
+Clustering with `dbscan()` returns a dbscan object.
 
 ```{r }
 db <- dbscan(ruspini_scaled, eps = .32, minPts = 4)
 db
-str(db)
 
+str(db)
+```
+
+The `cluster` element is the cluster assignment with cluster labels. The 
+special cluster label `0` means that the point is noise and not assigned to a 
+cluster.
+
+```{r }
 ggplot(ruspini_scaled |> add_column(cluster = factor(db$cluster)),
   aes(x, y, color = cluster)) + geom_point()
 ```
 
-**Note:** Cluster 0 represents outliers).
+DBSCAN found `r sum(db$cluster == 0)` noise points. `fviz_cluster()` can be 
+used to create a ggplot visualization.
+
+
 
 ```{r }
 fviz_cluster(db, ruspini_scaled, geom = "point")
 ```
 
-Play with eps (neighborhood size) and MinPts (minimum of points needed
-for core cluster)
-
+Different values for `minPts` and `eps` can lead to vastly different clusterings.
+Often, a misspecification leads to all points being noise points or a single cluster.
+Also, if the clusters are not well separated, then DBSCAN has a hard 
+time splitting them.
 
 ## Cluster Evaluation
 
