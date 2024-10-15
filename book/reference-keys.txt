@@ -164,9 +164,13 @@ inspect-clusters
 cluster-profiles
 extract-a-single-cluster
 agglomerative-hierarchical-clustering
+creating-a-dendrogram
+extracting-a-partitional-clustering
 dbscan
+dbscan-parameters
+cluster-using-dbscan
 cluster-evaluation
-unsupervized-cluster-evaluation
+unsupervised-cluster-evaluation
 unsupervised-cluster-evaluation-using-the-proximity-matrix
 determining-the-correct-number-of-clusters
 elbow-method-within-cluster-sum-of-squares
