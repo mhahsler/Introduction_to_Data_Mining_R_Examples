@@ -177,28 +177,27 @@ fviz_cluster(km, data = ruspini_scaled, centroids = TRUE,
              repel = TRUE, ellipse.type = "norm")
 ```
 
-#### Inspect clusters
+### Inspect Clusters
 
 We inspect the clusters created by the 4-cluster k-means solution. The
 following code can be adapted to be used for other clustering methods.
-
-##### Cluster Profiles
 
 Inspect the centroids with horizontal bar charts organized by cluster.
 To group the plots by cluster, we have to change the data format to the
 "long"-format using a pivot operation. I use colors to match the
 clusters in the scatter plots.
 
-```{r }
+```{r, fig.dim = c(8, 3)}
 ggplot(pivot_longer(centroids, 
                     cols = c(x, y), 
                     names_to = "feature"),
+  #aes(x = feature, y = value, fill = cluster)) +
   aes(x = value, y = feature, fill = cluster)) +
   geom_bar(stat = "identity") +
-  facet_grid(rows = vars(cluster))
+  facet_grid(cols = vars(cluster))
 ```
 
-##### Extract a single cluster
+### Extract a Single Cluster
 
 You need is to filter the rows corresponding to the cluster index. The
 next example calculates summary statistics and then plots all data

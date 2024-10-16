@@ -360,16 +360,12 @@ and ellipses for clusters.</p>
 <span><span class="fu"><a href="https://rdrr.io/pkg/factoextra/man/fviz_cluster.html">fviz_cluster</a></span><span class="op">(</span><span class="va">km</span>, data <span class="op">=</span> <span class="va">ruspini_scaled</span>, centroids <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>             repel <span class="op">=</span> <span class="cn">TRUE</span>, ellipse.type <span class="op">=</span> <span class="st">"norm"</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-324-1.png" width="672"></div>
-<div id="inspect-clusters" class="section level4" number="7.2.0.1">
-<h4>
-<span class="header-section-number">7.2.0.1</span> Inspect clusters<a class="anchor" aria-label="anchor" href="#inspect-clusters"><i class="fas fa-link"></i></a>
-</h4>
+<div id="inspect-clusters" class="section level3" number="7.2.1">
+<h3>
+<span class="header-section-number">7.2.1</span> Inspect Clusters<a class="anchor" aria-label="anchor" href="#inspect-clusters"><i class="fas fa-link"></i></a>
+</h3>
 <p>We inspect the clusters created by the 4-cluster k-means solution. The
 following code can be adapted to be used for other clustering methods.</p>
-<div id="cluster-profiles" class="section level5" number="7.2.0.1.1">
-<h5>
-<span class="header-section-number">7.2.0.1.1</span> Cluster Profiles<a class="anchor" aria-label="anchor" href="#cluster-profiles"><i class="fas fa-link"></i></a>
-</h5>
 <p>Inspect the centroids with horizontal bar charts organized by cluster.
 To group the plots by cluster, we have to change the data format to the
 “long”-format using a pivot operation. I use colors to match the
@@ -378,15 +374,16 @@ clusters in the scatter plots.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="va">centroids</span>, </span>
 <span>                    cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>, </span>
 <span>                    names_to <span class="op">=</span> <span class="st">"feature"</span><span class="op">)</span>,</span>
+<span>  <span class="co">#aes(x = feature, y = value, fill = cluster)) +</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">value</span>, y <span class="op">=</span> <span class="va">feature</span>, fill <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span><span class="op">(</span>rows <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="va">cluster</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-325-1.png" width="672"></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="va">cluster</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-325-1.png" width="768"></div>
 </div>
-<div id="extract-a-single-cluster" class="section level5" number="7.2.0.1.2">
-<h5>
-<span class="header-section-number">7.2.0.1.2</span> Extract a single cluster<a class="anchor" aria-label="anchor" href="#extract-a-single-cluster"><i class="fas fa-link"></i></a>
-</h5>
+<div id="extract-a-single-cluster" class="section level3" number="7.2.2">
+<h3>
+<span class="header-section-number">7.2.2</span> Extract a Single Cluster<a class="anchor" aria-label="anchor" href="#extract-a-single-cluster"><i class="fas fa-link"></i></a>
+</h3>
 <p>You need is to filter the rows corresponding to the cluster index. The
 next example calculates summary statistics and then plots all data
 points of cluster 1.</p>
@@ -424,7 +421,6 @@ points of cluster 1.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/factoextra/man/fviz_cluster.html">fviz_cluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">ruspini_scaled</span>, centers <span class="op">=</span> <span class="fl">8</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">ruspini_scaled</span>,</span>
 <span>  centroids <span class="op">=</span> <span class="cn">TRUE</span>,  geom <span class="op">=</span> <span class="st">"point"</span>, ellipse.type <span class="op">=</span> <span class="st">"norm"</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-327-1.png" width="672"></div>
-</div>
 </div>
 </div>
 <div id="agglomerative-hierarchical-clustering" class="section level2" number="7.3">
@@ -1708,7 +1704,12 @@ Create a dendrogram and discuss what it means.</li>
 <li><a class="nav-link" href="#scale-data"><span class="header-section-number">7.1.3</span> Scale data</a></li>
 </ul>
 </li>
-<li><a class="nav-link" href="#k-means"><span class="header-section-number">7.2</span> K-means</a></li>
+<li>
+<a class="nav-link" href="#k-means"><span class="header-section-number">7.2</span> K-means</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#inspect-clusters"><span class="header-section-number">7.2.1</span> Inspect Clusters</a></li>
+<li><a class="nav-link" href="#extract-a-single-cluster"><span class="header-section-number">7.2.2</span> Extract a Single Cluster</a></li>
+</ul>
+</li>
 <li>
 <a class="nav-link" href="#agglomerative-hierarchical-clustering"><span class="header-section-number">7.3</span> Agglomerative Hierarchical Clustering</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#creating-a-dendrogram"><span class="header-section-number">7.3.1</span> Creating a Dendrogram</a></li>
@@ -1762,7 +1763,7 @@ Create a dendrogram and discuss what it means.</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-10-14.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-10-15.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
