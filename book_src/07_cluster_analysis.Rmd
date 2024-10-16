@@ -151,15 +151,21 @@ ggplot(ruspini_clustered, aes(x = x, y = y)) +
   geom_point(aes(color = cluster))
 ```
 
-Add the centroids to the plot. Note that the second `geom_points` uses 
+Add the centroids to the plot. The centroids are scaled, so we need to unscale them 
+to plot them over the original data. The second `geom_points` uses 
 not the original data but specifies the centroids as its dataset.
 
 ```{r }
 unscale <- function(x, original_data) {
-  x * sd(original_data, na.rm = TRUE) + mean(original_data, na.rm = TRUE)
+  if (ncol(x) != ncol(original_data))
+    stop("Function needs matching columns!")
+  x * matrix(apply(original_data, MARGIN = 2, sd, na.rm = TRUE), 
+             byrow = TRUE, nrow = nrow(x), ncol = ncol(x)) + 
+    matrix(apply(original_data, MARGIN = 2, mean, na.rm = TRUE), 
+           byrow = TRUE, nrow = nrow(x), ncol = ncol(x))
 }
 
-centroids <- as_tibble(km$centers, rownames = "cluster")
+centroids <- km$centers %>% unscale(original_data = ruspini) %>% as_tibble(rownames = "cluster")
 centroids
 
 ggplot(ruspini_clustered, aes(x = x, y = y)) + 
@@ -187,7 +193,7 @@ To group the plots by cluster, we have to change the data format to the
 "long"-format using a pivot operation. I use colors to match the
 clusters in the scatter plots.
 
-```{r, fig.dim = c(8, 3)}
+```{r, fig.dim = c(7, 2)}
 ggplot(pivot_longer(centroids, 
                     cols = c(x, y), 
                     names_to = "feature"),
@@ -210,7 +216,7 @@ cluster1
 summary(cluster1)
 
 ggplot(cluster1, aes(x = x, y = y)) + geom_point() +
-  coord_cartesian(xlim = c(-2, 2), ylim = c(-2, 2))
+  coord_cartesian(xlim = c(0, 120), ylim = c(0, 160))
 ```
 
 What happens if we try to cluster with 8 centers?
