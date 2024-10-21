@@ -164,7 +164,7 @@ avoided.</li>
 <span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">)</span>,<span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x</span>, col<span class="op">=</span><span class="va">x</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-393-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-394-1.png" width="672"></div>
 <p>Make the data a little messy and add a useless feature</p>
 <div class="sourceCode" id="cb435"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
@@ -175,7 +175,7 @@ avoided.</li>
 <span>           Species <span class="op">=</span> <span class="va">x</span><span class="op">[</span>,<span class="fl">5</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x</span>, col<span class="op">=</span><span class="va">x</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-394-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-395-1.png" width="672"></div>
 <div class="sourceCode" id="cb436"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">##   Sepal.Length   Sepal.Width     Petal.Length   </span></span>
@@ -268,7 +268,7 @@ to check for homoscedasticity (residual vs predicted value scatter plot should p
 and if the residuals are approximately normally distributed (Q-Q plot should be close to the straight line).</p>
 <div class="sourceCode" id="cb440"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">model1</span>, which <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-398-1.png" width="672"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-398-2.png" width="672"></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-399-1.png" width="672"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-399-2.png" width="672"></p>
 </div>
 <div id="comparing-nested-models" class="section level2" number="8.3">
 <h2>
@@ -531,7 +531,7 @@ See <code><a href="https://rdrr.io/r/stats/formula.html">? formula</a></code>.</
 <span>  xlab <span class="op">=</span> <span class="st">"actual"</span>, ylab <span class="op">=</span> <span class="st">"predicted"</span>,</span>
 <span>  main <span class="op">=</span> <span class="st">"Petal.Width"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-407-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-408-1.png" width="672"></div>
 <div class="sourceCode" id="cb450"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model4</span>, <span class="va">test</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.8636</span></span></code></pre></div>
@@ -647,7 +647,7 @@ function <code>relevel</code> to change which factor is listed first.</p>
 <span>  xlab <span class="op">=</span> <span class="st">"actual"</span>, ylab <span class="op">=</span> <span class="st">"predicted"</span>,</span>
 <span>  main <span class="op">=</span> <span class="st">"Petal.Width"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-410-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-411-1.png" width="672"></div>
 <div class="sourceCode" id="cb454"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model6</span>, <span class="va">test</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.9696</span></span></code></pre></div>
@@ -680,7 +680,7 @@ For example CART:</p>
 <span><span class="co">##     6) Species=versicolor 35  1.5350 1.3310 *</span></span>
 <span><span class="co">##     7) Species=virginica 33  2.6010 2.0420 *</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">model7</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-411-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-412-1.png" width="672"></div>
 <div class="sourceCode" id="cb456"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/postResample.html">RMSE</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model7</span>, <span class="va">test</span><span class="op">)</span>, <span class="va">test</span><span class="op">$</span><span class="va">Petal.Width</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.182</span></span>
@@ -689,7 +689,7 @@ For example CART:</p>
 <span>  xlab <span class="op">=</span> <span class="st">"actual"</span>, ylab <span class="op">=</span> <span class="st">"predicted"</span>,</span>
 <span>  main <span class="op">=</span> <span class="st">"Petal.Width"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-411-2.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-412-2.png" width="672"></div>
 <div class="sourceCode" id="cb457"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model7</span>, <span class="va">test</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.9717</span></span></code></pre></div>
@@ -794,12 +794,12 @@ we have to do it manually.</p>
 <span><span class="co">## Var                         8          -3           3</span></span>
 <span><span class="co">## Step                       12          13          14</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">model_lars</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-413-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-414-1.png" width="672"></div>
 <p>the plot shows how variables are added (from left to right to the model)</p>
 <p>find best model (using Mallows’s Cp statistic, see <a href="https://en.wikipedia.org/wiki/Mallows's_Cp" class="uri">https://en.wikipedia.org/wiki/Mallows's_Cp</a>)</p>
 <div class="sourceCode" id="cb460"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">model_lars</span>, plottype <span class="op">=</span> <span class="st">"Cp"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-414-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-415-1.png" width="672"></div>
 <div class="sourceCode" id="cb461"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">best</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.min</a></span><span class="op">(</span><span class="va">model_lars</span><span class="op">$</span><span class="va">Cp</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">model_lars</span>, s <span class="op">=</span> <span class="va">best</span><span class="op">)</span></span>
@@ -854,7 +854,7 @@ we have to do it manually.</p>
 <span>     xlab <span class="op">=</span> <span class="st">"actual"</span>, ylab <span class="op">=</span> <span class="st">"predicted"</span>,</span>
 <span>     main <span class="op">=</span> <span class="st">"Petal.Width"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-415-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-416-1.png" width="672"></div>
 <div class="sourceCode" id="cb463"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>,</span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model_lars</span>, <span class="va">x_test</span>, s <span class="op">=</span> <span class="va">best</span><span class="op">)</span><span class="op">$</span><span class="va">fit</span><span class="op">)</span></span>
@@ -966,7 +966,7 @@ Then use the regression tree to predict the weight for the above penguin.</p></l
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-10-16.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-10-21.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

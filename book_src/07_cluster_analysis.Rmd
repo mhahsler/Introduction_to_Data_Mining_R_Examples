@@ -422,22 +422,18 @@ squares (WCSS) used as the optimization objective by
 width](https://en.wikipedia.org/wiki/Silhouette_(clustering)). Look at
 `within.cluster.ss` and `avg.silwidth` below.
 
-```{r }
-##library(fpc)
-```
+Some notes about the code: 
 
-Notes: 
-
-* I do not load fpc since the NAMESPACE overwrites dbscan. 
+* I do not load the package `fpc` using `library()` since it would mask the `dbscan()` function in package `dbscan`. Instead I use the namespace operator `::`. 
 * The clustering (second argument below) has to be supplied as a vector
-with numbers (cluster IDs) and cannot be a factor (use `as.integer()` to
-convert the factor to an ID).
+of integers (cluster IDs) and cannot be a factor (to make sure, we can use `as.integer()`).
 
 ```{r }
-fpc::cluster.stats(d, km$cluster)
+# library(fpc)
+fpc::cluster.stats(d, as.integer(km$cluster))
 ```
 
-Read `? cluster.stats` for an explanation of all the available indices.
+Read the man page for `cluster.stats()` for an explanation of all the available indices.
 
 ```{r }
 sapply(
@@ -489,7 +485,7 @@ the color representing the value.
 
 ```{r }
 library(seriation)
-pimage(d, col = bluered(100))
+ggpimage(d)
 ```
 
 Rows and columns are the objects as they are ordered in the data set.
@@ -501,7 +497,7 @@ matrix (rows and columns) using the k-means cluster labels from cluster
 visible.
 
 ```{r }
-pimage(d, order=order(km$cluster), col = bluered(100))
+ggpimage(d, order=order(km$cluster))
 ```
 
 Plot function `dissplot` in package **seriation** rearranges the matrix
@@ -511,7 +507,7 @@ the objects by cluster and then reorders clusters and objects within
 clusters so that more similar objects are closer together.
 
 ```{r }
-dissplot(d, labels = km$cluster, 
+ggdissplot(d, labels = km$cluster, 
          options = list(main = "k-means with k=4"))
 ```
 
@@ -519,13 +515,11 @@ The reordering by `dissplot` makes the misspecification of k visible as
 blocks.
 
 ```{r }
-dissplot(d, 
-         labels = kmeans(ruspini_scaled, centers = 3)$cluster, 
-         col = bluered(100))
+ggdissplot(d, 
+         labels = kmeans(ruspini_scaled, centers = 3)$cluster)
 
-dissplot(d, 
-         labels = kmeans(ruspini_scaled, centers = 9)$cluster, 
-         col = bluered(100))
+ggdissplot(d, 
+         labels = kmeans(ruspini_scaled, centers = 9)$cluster)
 ```
 
 Using `factoextra`
@@ -669,7 +663,7 @@ before using Euclidean distance.
 library(seriation)
 
 d_shapes <- dist(scale(shapes))
-VAT(d_shapes, col = bluered(100))
+ggVAT(d_shapes)
 ```
 
 iVAT uses the largest distances for all possible paths between two
@@ -677,7 +671,7 @@ objects instead of the direct distances to make the block structure
 better visible.
 
 ```{r }
-iVAT(d_shapes, col = bluered(100))
+ggiVAT(d_shapes)
 ```
 
 #### Hopkins statistic
@@ -708,8 +702,8 @@ No point clouds are visible, just noise.
 
 ```{r }
 d_random <- dist(data_random)
-VAT(d_random, col = bluered(100))
-iVAT(d_random, col = bluered(100))
+ggVAT(d_random)
+ggiVAT(d_random)
 get_clust_tendency(data_random, n = 10, graph = FALSE)
 ```
 
@@ -780,7 +774,7 @@ WCSS <- sapply(ks, FUN = function(k) {
 ggplot(tibble(ks, WCSS), aes(ks, WCSS)) + geom_line()
 ```
 
-Looks like it could be 7 clusters
+Looks like it could be 7 clusters?
 
 ```{r }
 km <- kmeans(shapes, centers = 7, nstart = 10)
@@ -790,7 +784,7 @@ ggplot(shapes |> add_column(cluster = factor(km$cluster)),
   geom_point()
 ```
 
-Hierarchical clustering: We use single-link because of the mouth is
+The mouth is an issue for k-means. We could use hierarchical clustering with single-linkage because of the mouth is
 non-convex and chaining may help.
 
 ```{r }
@@ -818,15 +812,15 @@ ggplot(shapes |> add_column(cluster = factor(hc_4)),
   geom_point()
 ```
 
-Compare with ground truth with the [corrected (=adjusted) Rand index
-(ARI)](https://en.wikipedia.org/wiki/Rand_index#Adjusted_Rand_index),
+Compare with ground truth with the [adjusted Rand index
+(ARI, also called corrected Rand index)](https://en.wikipedia.org/wiki/Rand_index#Adjusted_Rand_index),
 the [variation of information (VI)
 index](https://en.wikipedia.org/wiki/Variation_of_information),
 [entropy](https://en.wikipedia.org/wiki/Entropy_(information_theory))
 and
 [purity](https://en.wikipedia.org/wiki/Cluster_analysis#External_evaluation).
 
-`cluster_stats` computes ARI and VI as comparative measures. I define
+`cluster_stats()` computes ARI and VI as comparative measures. I define
 functions for entropy and purity here:
 
 ```{r }
@@ -858,8 +852,8 @@ purity <- function(cluster, truth) {
 }
 ```
 
-calculate measures (for comparison we also use random "clusterings" with
-4 and 6 clusters)
+We calculate the measures and add for comparison two random "clusterings" with
+4 and 6 clusters.
 
 ```{r }
 random_4 <- sample(1:4, nrow(shapes), replace = TRUE)
@@ -899,11 +893,11 @@ Notes:
 -   Hierarchical clustering found the perfect clustering.
 -   Entropy and purity are heavily impacted by the number of clusters
     (more clusters improve the metric).
--   The corrected rand index shows clearly that the random clusterings
+-   The adjusted rand index shows clearly that the random clusterings
     have no relationship with the ground truth (very close to 0). This
     is a very helpful property.
 
-Read `? cluster.stats` for an explanation of all the available indices.
+Read the manual page for `cluster.stats()` for an explanation of all the available indices.
 
 
 ## More Clustering Algorithms*
@@ -915,10 +909,11 @@ Read `? cluster.stats` for an explanation of all the available indices.
 [PAM](https://en.wikipedia.org/wiki/K-medoids) tries to solve the
 $k$-medoids problem. The problem is similar to $k$-means, but uses
 medoids instead of centroids to represent clusters. Like hierarchical
-clustering, it typically works with precomputed distance matrix. An
+clustering, it typically works with a precomputed distance matrix. An
 advantage is that you can use any distance metric not just Euclidean
 distances. **Note:** The medoid is the most central data point in the
-middle of the cluster.
+middle of the cluster. PAM is a lot more computationally expensive compared to 
+k-means.
 
 ```{r }
 library(cluster)
@@ -928,7 +923,11 @@ str(d)
 
 p <- pam(d, k = 4)
 p
+```
 
+Extract the clustering and medoids for visualization.
+
+```{r }
 ruspini_clustered <- ruspini_scaled |> 
   add_column(cluster = factor(p$cluster))
 
@@ -940,7 +939,11 @@ ggplot(ruspini_clustered, aes(x = x, y = y, color = cluster)) +
   geom_point() +
   geom_point(data = medoids, aes(x = x, y = y, color = cluster), 
              shape = 3, size = 10)
+```
 
+
+Alternative visualization using `fviz_cluster()`.
+```{r }
 ## __Note:__ `fviz_cluster` needs the original data.
 fviz_cluster(c(p, list(data = ruspini_scaled)), 
              geom = "point", 
