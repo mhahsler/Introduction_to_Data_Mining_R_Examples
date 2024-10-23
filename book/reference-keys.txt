@@ -28,8 +28,6 @@ principal-components-analysis-pca
 multi-dimensional-scaling-mds
 non-parametric-multidimensional-scaling
 other-nonlinear-dimensionality-reduction-methods
-feature-subset-selection
-discretization
 variable-transformation-standardization
 measures-of-similarity-and-dissimilarity
 minkowsky-distances
@@ -81,7 +79,7 @@ pitfalls-of-model-selection-and-evaluation
 model-comparison
 feature-selection
 univariate-feature-importance-score
-feature-subset-selection-1
+feature-subset-selection
 using-dummy-variables-for-factors
 exercises-1
 classification-alternative-techniques
@@ -170,7 +168,6 @@ dbscan-parameters
 cluster-using-dbscan
 cluster-evaluation
 unsupervised-cluster-evaluation
-unsupervised-cluster-evaluation-using-the-proximity-matrix
 determining-the-correct-number-of-clusters
 elbow-method-within-cluster-sum-of-squares
 average-silhouette-width
@@ -182,7 +179,7 @@ visual-analysis-for-cluster-tendency-assessment-vat
 hopkins-statistic
 data-without-clustering-tendency
 k-means-on-data-without-clustering-tendency
-supervised-measures-of-cluster-validity
+supervised-cluster-evaluation
 more-clustering-algorithms
 partitioning-around-medoids-pam
 gaussian-mixture-models

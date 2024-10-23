@@ -415,6 +415,17 @@ time splitting them.
 
 This is also often called internal cluster evaluation since it does not use
 extra external labels.
+
+We will evaluate the k-means clustering from above.
+
+```{r }
+ggplot(ruspini_scaled, 
+       aes(x, y, color = factor(km$cluster))) + 
+  geom_point()
+
+d <- dist(ruspini_scaled)
+```
+
 The two most popular quality metrics are the within-cluster sum of
 squares (WCSS) used as the optimization objective by
 [$k$-means](https://en.wikipedia.org/wiki/K-means_clustering) and the
@@ -433,18 +444,30 @@ of integers (cluster IDs) and cannot be a factor (to make sure, we can use `as.i
 fpc::cluster.stats(d, as.integer(km$cluster))
 ```
 
+The correlation between the distances and a 0-1-vector cluster incidence matrix is
+called `pearsongamma`. 
+Some numbers are `NULL`. These are measures only available for supervised evaluation.
 Read the man page for `cluster.stats()` for an explanation of all the available indices.
 
+
+We can compare different clusterings.
 ```{r }
 sapply(
   list(
-    km = km$cluster,
-    hc_compl = cutree(hc, k = 4),
-    hc_single = cutree(hc_single, k = 4)
+    km_4 = km$cluster,
+    hc_compl_4 = cutree(hc, k = 4),
+    hc_compl_5 = cutree(hc, k = 5),
+    hc_single_5 = cutree(hc_single, k = 5)
   ),
   FUN = function(x)
-    fpc::cluster.stats(d, x))[c("within.cluster.ss", "avg.silwidth"), ]
+    fpc::cluster.stats(d, x))[c("within.cluster.ss", "avg.silwidth", "pearsongamma", "dunn"), ]
 ```
+
+With 4 clusters, k-means and hierarchical clustering produce 
+exactly the same clustering. While the two different hierarchical methods with 
+5 clusters produce a smaller WCSS, they are actually worse given all three other 
+measures.
+
 
 Next, we look at the silhouette using a 
 silhouette plot.
@@ -464,17 +487,8 @@ ggplot visualization using `factoextra`
 fviz_silhouette(silhouette(km$cluster, d))
 ```
 
-### Unsupervised Cluster Evaluation using the Proximity Matrix
-
-```{r }
-ggplot(ruspini_scaled, 
-       aes(x, y, color = factor(km$cluster))) + 
-  geom_point()
-
-d <- dist(ruspini_scaled)
-```
-
-Inspect the distance matrix between the first 5 objects.
+Unsupervised cluster evaluation can be done by inspecting and visualizing the proximity matrix.
+We can inspect the distance matrix between the first 5 objects.
 
 ```{r }
 as.matrix(d)[1:5, 1:5]
@@ -532,6 +546,12 @@ fviz_dist(d)
 
 ### Determining the Correct Number of Clusters
 
+The user needs to specify the number of clusters for most clustering algorithms.
+[Determining the number of clusters in a data set](https://en.wikipedia.org/wiki/Determining_the_number_of_clusters_in_a_data_set)
+is therefor an important task before we can cluster data. We will apply different methods
+to the scaled Ruspini data set.
+
+
 ```{r }
 ggplot(ruspini_scaled, aes(x, y)) + geom_point()
 
@@ -542,11 +562,11 @@ ks <- 2:10
 
 #### Elbow Method: Within-Cluster Sum of Squares
 
-Calculate the within-cluster sum of squares for different numbers of
+A method often used for k-means is to calculate the within-cluster sum of squares for different numbers of
 clusters and look for the [knee or
 elbow](https://en.wikipedia.org/wiki/Elbow_method_(clustering)) in the
-plot. (`nstart = 5` just repeats k-means 5 times and returns the best
-solution)
+plot. We use `nstart = 5` to restart k-means 5 times and return the best
+solution.
 
 ```{r }
 WCSS <- sapply(ks, FUN = function(k) {
@@ -560,7 +580,8 @@ ggplot(tibble(ks, WCSS), aes(ks, WCSS)) +
 
 #### Average Silhouette Width
 
-Plot the average silhouette width for different number of clusters and
+Another popular method (often preferred for clustering methods starting with a distance matrix) 
+is to plot the average silhouette width for different numbers of clusters and
 look for the maximum in the plot.
 
 ```{r }
@@ -581,8 +602,9 @@ ggplot(tibble(ks, ASW), aes(ks, ASW)) +
 
 #### Dunn Index
 
-Use [Dunn index](https://en.wikipedia.org/wiki/Dunn_index) (another
-internal measure given by min. separation/ max. diameter)
+The [Dunn index](https://en.wikipedia.org/wiki/Dunn_index) is another
+internal measure given by the smallest separation between clusters scaled by 
+the largest cluster diameter.
 
 ```{r }
 DI <- sapply(ks, FUN = function(k) {
@@ -599,8 +621,8 @@ ggplot(tibble(ks, DI), aes(ks, DI)) +
 
 #### Gap Statistic
 
-Compares the change in within-cluster dispersion with that expected from
-a null model (see `? clusGap`). The default method is to choose the
+The [Gap statistic](https://en.wikipedia.org/wiki/Determining_the_number_of_clusters_in_a_data_set#The_gap_statistics)Compares the change in within-cluster dispersion with that expected from
+a null model (see `clusGap()`). The default method is to choose the
 smallest k such that its value Gap(k) is not more than 1 standard error
 away from the first local maximum.
 
@@ -614,7 +636,6 @@ k
 plot(k)
 ```
 
-**Note:** these methods can also be used for hierarchical clustering.
 
 There have been many other methods and indices proposed to determine the
 number of clusters. See, e.g., package
@@ -730,9 +751,9 @@ ggplot(random_clustered, aes(x = x, y = y, color = cluster)) +
 k-means discretizes the space into similarly sized regions.
 
 
-### Supervised Measures of Cluster Validity
+### Supervised Cluster Evaluation
 
-Also called external cluster validation since it uses ground truth information. 
+Also called external cluster validation since it uses ground truth information.
 That is, the
 user has an idea how the data should be grouped. This could be a known
 class label not provided to the clustering algorithm.
@@ -746,7 +767,8 @@ shapes <- mlbench.smiley(n = 500, sd1 = 0.1, sd2 = 0.05)
 plot(shapes)
 ```
 
-Prepare data
+First, we prepare the data and hide the known class label which we will used 
+for evaluation after clustering.
 
 ```{r }
 truth <- as.integer(shapes$class)
@@ -897,7 +919,7 @@ Notes:
     have no relationship with the ground truth (very close to 0). This
     is a very helpful property.
 
-Read the manual page for `cluster.stats()` for an explanation of all the available indices.
+Read the manual page for `fpc::cluster.stats()` for an explanation of all the available indices.
 
 
 ## More Clustering Algorithms*

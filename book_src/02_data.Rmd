@@ -487,8 +487,9 @@ Some popular methods are:
 * [t-distributed stochastic neighbor embedding](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding) (`Rtsne()` in package `Rtsne`) and uniform manifold approximation and projection
 (`umap()` in package `umap`) are used 
 for projecting data to 2 dimensions for visualization.
-* [Word2vec](https://en.wikipedia.org/wiki/Word2vec) (`word2vec` in 
-  package `word2vec`) is used in [natural language processing](https://cran.r-project.org/web/views/NaturalLanguageProcessing.html) to convert words to numeric vectors for similarity calculation.
+* [Word2vec](https://en.wikipedia.org/wiki/Word2vec) (`word2vec()` in 
+  `word2vec`) is used in [natural language processing](https://cran.r-project.org/web/views/NaturalLanguageProcessing.html) to convert words to numeric vectors for similarity calculation.
+```
 
 ### Feature Subset Selection
 

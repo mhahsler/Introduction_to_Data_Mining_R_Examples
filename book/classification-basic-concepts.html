@@ -1147,7 +1147,7 @@ Here we pick the 5 highest-ranked features.</p>
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/as.simple.formula.html">as.simple.formula</a></span><span class="op">(</span><span class="va">subset</span>, <span class="st">"type"</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
 <span><span class="co">## type ~ feathers + milk + backbone + toothed + eggs</span></span>
-<span><span class="co">## &lt;environment: 0x61bddbebc738&gt;</span></span>
+<span><span class="co">## &lt;environment: 0x5aa8b1fe7e30&gt;</span></span>
 <span><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">m</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-170-1.png" width="672"></div>
@@ -1180,9 +1180,9 @@ used in decision tree induction.</p>
 <span><span class="co">## 15 domestic           0.115</span></span>
 <span><span class="co">## 16 predator           0.110</span></span></code></pre></div>
 </div>
-<div id="feature-subset-selection-1" class="section level3" number="3.10.2">
+<div id="feature-subset-selection" class="section level3" number="3.10.2">
 <h3>
-<span class="header-section-number">3.10.2</span> Feature Subset Selection<a class="anchor" aria-label="anchor" href="#feature-subset-selection-1"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.10.2</span> Feature Subset Selection<a class="anchor" aria-label="anchor" href="#feature-subset-selection"><i class="fas fa-link"></i></a>
 </h3>
 <p>Often, features are related and calculating importance for each feature
 independently is not optimal. We can use greedy search heuristics. For
@@ -1382,7 +1382,7 @@ the most important? What variables do not matter?</li>
 <li>
 <a class="nav-link" href="#feature-selection"><span class="header-section-number">3.10</span> Feature Selection*</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#univariate-feature-importance-score"><span class="header-section-number">3.10.1</span> Univariate Feature Importance Score</a></li>
-<li><a class="nav-link" href="#feature-subset-selection-1"><span class="header-section-number">3.10.2</span> Feature Subset Selection</a></li>
+<li><a class="nav-link" href="#feature-subset-selection"><span class="header-section-number">3.10.2</span> Feature Subset Selection</a></li>
 <li><a class="nav-link" href="#using-dummy-variables-for-factors"><span class="header-section-number">3.10.3</span> Using Dummy Variables for Factors</a></li>
 </ul>
 </li>
@@ -1404,7 +1404,7 @@ the most important? What variables do not matter?</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-10-21.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-10-23.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
