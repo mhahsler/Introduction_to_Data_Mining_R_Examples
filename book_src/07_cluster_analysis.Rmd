@@ -843,34 +843,41 @@ and
 [purity](https://en.wikipedia.org/wiki/Cluster_analysis#External_evaluation).
 
 `cluster_stats()` computes ARI and VI as comparative measures. I define
-functions for entropy and purity here:
+functions for the purity and the entropy of a clustering given the ground truth here:
 
 ```{r }
-entropy <- function(cluster, truth) {
-  k <- max(cluster, truth)
-  cluster <- factor(cluster, levels = 1:k)
-  truth <- factor(truth, levels = 1:k)
-  w <- table(cluster)/length(cluster)
-
-  cnts <- sapply(split(truth, cluster), table)
-  p <- sweep(cnts, 1, rowSums(cnts), "/")
-  p[is.nan(p)] <- 0
-  e <- -p * log(p, 2)
-
-  sum(w * rowSums(e, na.rm = TRUE))
+purity <- function(cluster, truth, show_table = FALSE) {
+  if (length(cluster) != length(truth))
+    stop("Cluster vector and ground truth vectors are not of the same length!")
+  
+  # tabulate
+  tbl <- table(cluster, truth)
+  if(show_table)
+    print(tbl)
+  
+  # find majority class
+  majority <- apply(tbl, 1, max)
+  sum(majority) / length(cluster)
 }
 
-purity <- function(cluster, truth) {
-  k <- max(cluster, truth)
-  cluster <- factor(cluster, levels = 1:k)
-  truth <- factor(truth, levels = 1:k)
-  w <- table(cluster)/length(cluster)
+entropy <- function(cluster, truth, show_table = FALSE) {
+  if (length(cluster) != length(truth))
+    stop("Cluster vector and ground truth vectors are not of the same length!")
+  
+  # calculate membership probability of cluster to class
+  tbl <- table(cluster, truth)
+  p <- sweep(tbl, 2, colSums(tbl), "/")
+  
+  if(show_table)
+    print(p)
 
-  cnts <- sapply(split(truth, cluster), table)
-  p <- sweep(cnts, 1, rowSums(cnts), "/")
-  p[is.nan(p)] <- 0
-
-  sum(w * apply(p, 1, max))
+  # calculate cluster entropy
+  e <- -p * log(p, 2)
+  e <- rowSums(e, na.rm = TRUE)
+  
+  # weighted sum over clusters
+  w <- table(cluster) / length(cluster)
+  sum(w * e)
 }
 ```
 
@@ -882,29 +889,36 @@ random_4 <- sample(1:4, nrow(shapes), replace = TRUE)
 random_6 <- sample(1:6, nrow(shapes), replace = TRUE)
 
 r <- rbind(
+  truth = c(
+    unlist(fpc::cluster.stats(d, truth, 
+                              truth, compareonly = TRUE)),
+    purity = purity(truth, truth),
+    entropy = entropy(truth, truth)
+  ),
+  
   kmeans_7 = c(
     unlist(fpc::cluster.stats(d, km$cluster, 
                               truth, compareonly = TRUE)),
-    entropy = entropy(km$cluster, truth),
-    purity = purity(km$cluster, truth)
+    purity = purity(km$cluster, truth),
+    entropy = entropy(km$cluster, truth)
     ),
   hc_4 = c(
     unlist(fpc::cluster.stats(d, hc_4, 
                               truth, compareonly = TRUE)),
-    entropy = entropy(hc_4, truth),
-    purity = purity(hc_4, truth)
+    purity = purity(hc_4, truth),
+    entropy = entropy(hc_4, truth)
     ),
   random_4 = c(
     unlist(fpc::cluster.stats(d, random_4, 
                               truth, compareonly = TRUE)),
-    entropy = entropy(random_4, truth),
-    purity = purity(random_4, truth)
+    purity = purity(random_4, truth),
+    entropy = entropy(random_4, truth)
     ),
   random_6 = c(
     unlist(fpc::cluster.stats(d, random_6, 
                               truth, compareonly = TRUE)),
-    entropy = entropy(random_6, truth),
-    purity = purity(random_6, truth)
+    purity = purity(random_6, truth),
+    entropy = entropy(random_6, truth)
     )
   )
 r
@@ -912,12 +926,15 @@ r
 
 Notes:
 
+-   Combaring the ground truth to itself produces perfect scores.
 -   Hierarchical clustering found the perfect clustering.
 -   Entropy and purity are heavily impacted by the number of clusters
-    (more clusters improve the metric).
+    (more clusters improve the metric) and the fact that the mouth has 41.8% 
+    of all the data points becoming automatically the majority class for purity.
 -   The adjusted rand index shows clearly that the random clusterings
     have no relationship with the ground truth (very close to 0). This
-    is a very helpful property.
+    is a very helpful property and explains why the ARI is the most popular 
+    measure.
 
 Read the manual page for `fpc::cluster.stats()` for an explanation of all the available indices.
 
@@ -1077,15 +1094,15 @@ Outliers can be identified using summary statistics, histograms,
 scatterplots (pairs plots), and boxplots, etc. We use here a pairs plot
 (the diagonal contains smoothed histograms). The outlier is visible as
 the single separate point in the scatter plot and as the long tail of
-the smoothed histogram for `x` (we would expect most observations to
-fall in the range \[-3,3\] in normalized data).
+the smoothed histogram for `x`. Remember, in scaled data, we expect most observations to
+fall in the range $[-3,3]$.
 
 ```{r }
 library("GGally")
 ggpairs(ruspini_scaled_outlier, progress = FALSE)
 ```
 
-The outlier is a problem for k-means
+The outlier messes up the scaling which presents a problem for k-means.
 
 ```{r }
 km <- kmeans(ruspini_scaled_outlier, centers = 4, nstart = 10)
@@ -1108,8 +1125,10 @@ removing outliers before clustering.
 
 The [Local Outlier
 Factor](https://en.wikipedia.org/wiki/Local_outlier_factor) is related
-to concepts of DBSCAN can help to identify potential outliers. Calculate
-the LOF (I choose a local neighborhood size of 10 for density estimation),
+to concepts of DBSCAN can help to identify potential outliers. To calculate
+the LOF, a local neighborhood size (MinPts in DBSCAN) for density estimation 
+needs to be chosen. I use 10 here since I expect my clusters to have each more 
+than 10 points.
 
 ```{r }
 lof <- lof(ruspini_scaled_outlier, minPts= 10)
@@ -1130,7 +1149,7 @@ ggplot(tibble(index = seq_len(length(lof)), lof = sort(lof)),
   geom_hline(yintercept = 1, color = "red", linetype = 2)
 ```
 
-Choose a threshold above 1.
+We choose here a threshold above 2.
 
 ```{r }
 ggplot(ruspini_scaled_outlier |> add_column(outlier = lof >= 2), 
@@ -1138,7 +1157,8 @@ ggplot(ruspini_scaled_outlier |> add_column(outlier = lof >= 2),
   geom_point()
 ```
 
-Analyze the found outliers (they might be interesting data points) and then cluster the data without them.
+You should analyze the found outliers. They are often interesting and important 
+data points. Perform clustering on the regular data without outliers.
 
 ```{r}
 ruspini_scaled_clean <- ruspini_scaled_outlier  |> filter(lof < 2)
