@@ -838,6 +838,7 @@ Compare with ground truth with the [adjusted Rand index
 (ARI, also called corrected Rand index)](https://en.wikipedia.org/wiki/Rand_index#Adjusted_Rand_index),
 the [variation of information (VI)
 index](https://en.wikipedia.org/wiki/Variation_of_information),
+[mutual information (MI)](https://en.wikipedia.org/wiki/Mutual_information),
 [entropy](https://en.wikipedia.org/wiki/Entropy_(information_theory))
 and
 [purity](https://en.wikipedia.org/wiki/Cluster_analysis#External_evaluation).
@@ -926,7 +927,7 @@ r
 
 Notes:
 
--   Combaring the ground truth to itself produces perfect scores.
+-   Comparing the ground truth to itself produces perfect scores.
 -   Hierarchical clustering found the perfect clustering.
 -   Entropy and purity are heavily impacted by the number of clusters
     (more clusters improve the metric) and the fact that the mouth has 41.8% 
