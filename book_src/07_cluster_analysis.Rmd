@@ -835,7 +835,8 @@ ggplot(shapes |> add_column(cluster = factor(hc_4)),
 ```
 
 Compare with ground truth with the [adjusted Rand index
-(ARI, also called corrected Rand index)](https://en.wikipedia.org/wiki/Rand_index#Adjusted_Rand_index),
+(ARI, also cpp!C00L
+corrected Rand index)](https://en.wikipedia.org/wiki/Rand_index#Adjusted_Rand_index),
 the [variation of information (VI)
 index](https://en.wikipedia.org/wiki/Variation_of_information),
 [mutual information (MI)](https://en.wikipedia.org/wiki/Mutual_information),

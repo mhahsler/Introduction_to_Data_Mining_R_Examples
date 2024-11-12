@@ -147,9 +147,9 @@ summary(Zoo)
 
 ## Decision Tree Classifiers
 
-We use here the recursive partitioning implementation which follows largely 
+We use here the recursive partitioning implementation (rpart) which follows largely 
 CART and uses the Gini index to make
-splitting decisions and early stopping (also called pre-pruning).
+splitting decisions and then it uses early stopping (also called pre-pruning).
 
 ```{r }
 library(rpart)
@@ -262,7 +262,7 @@ accuracy <- function(truth, prediction) {
 accuracy(Zoo |> pull(type), pred)
 ```
 
-### Confusion Matrix using Caret 
+### Confusion Matrix for the Resubstitution Error using Caret 
 
 The caret package provides a convenient way to create and 
 analyze a confusion table including many useful statistics.
@@ -283,7 +283,7 @@ to get the most accurate model. This can be achieved by
 changing the algorithms hyperparameter (parameters that 
 change how the algorithm works). We
 set the complexity parameter `cp` to 0 (split
-even if it does not improve the tree) and we set the minimum number of
+even if it does not improve the fit) and we set the minimum number of
 observations in a node needed to split to the smallest value of 2 (see:
 `?rpart.control`). *Note:* This is not a good idea! 
 As we will see later, full trees overfit the training data!
@@ -309,7 +309,7 @@ accuracy(Zoo |> pull(type), pred_full)
 
 We see that the error is smaller then for the pruned tree. This,
 however, does not mean that the model is better. It actually is overfitting 
-the training data (it just memorizes it) and has worse generalization 
+the training data (it just memorizes it) and it likely has worse generalization 
 performance on new data. This effect
 is called overfitting the training data and needs to be avoided.
 
@@ -326,11 +326,12 @@ The error rate on the validation set can then be used to choose
 between several models.
 
 Caret has model selection build into the `train()` function. We will select
-between the default complexity `cp = 0.01` and a full tree `cp = 0` (see `tuneGrid`).
-`trControl` specified how the validation set is obtained. `LGOCV`
+between the default complexity `cp = 0.01` and a full tree `cp = 0` (set via `tuneGrid`).
+`trControl` specified how the validation set is obtained. We use 
+Leave Group Out Cross-Validation (`LGOCV`) which
 picks randomly the proportion `p` of data to train and uses the rest as 
 the validation set. To get a better estimate of the 
-error, this process is repeated `number` times and the errors are averaged.
+error, this process is repeated `number` of times and the errors are averaged.
 
 
 ```{r }
@@ -348,8 +349,10 @@ fit <- Zoo |>
 fit
 ```
 
-We see that in this case, the full tree model performs slightly better. 
-This is a result of the fact that we only have a very small dataset.
+We see that in this case, the full tree model performs slightly better.
+However, given the small dataset, this may not be a significant difference 
+and we will look at a statistical
+test for this later.
 
 ## Model Evaluation
 
@@ -377,9 +380,11 @@ Zoo_test <- Zoo |> slice(-inTrain)
 Now we can train on the test set and get the generalization error on the 
 test set.
 
-### Cross-Validation
+### Cross-Validation Methods
 
-k-fold cross-validation splits the data randomly into $k$ folds. It then
+There are several cross-validation methods that can use the available datsa more efficiently 
+then the holdout method.
+The most popular method is k-fold cross-validation which splits the data randomly into $k$ folds. It then
 holds one fold back for testing and trains on the other $k-1$ folds. This is 
 done with each fold and the resulting statistic (e.g., accuracy) is averaged.
 This method uses the data more efficiently then the holdout method.
@@ -414,7 +419,7 @@ training algorithm works. An example is the complexity parameter
 `cp` for rpart decision trees. Tuning the hyperparameter means that 
 we want to perform model selection to pick the best setting. 
 
-We typically use the holdout method to create a test set and then use 
+We typically first use the holdout method to create a test set and then use 
 cross validation using the training data for model selection. Let us use
 80% for training and hold out 20% for testing.
 
@@ -527,12 +532,12 @@ confusionMatrix(data = pred,
 
 ## Pitfalls of Model Selection and Evaluation
 
-* The training data and the test sets cannot overlap or we will not 
-evaluate the generalization performance. The training set can be come 
-contaminated by things like preprocessing the all the data together.
 * Do not measure the error on the training set or
   use the validation error as a generalization error estimate. 
   Always use the generalization error on a test set!
+* The training data and the test sets cannot overlap or we will not 
+  evaluate the generalization performance. The training set can be come 
+  contaminated by things like preprocessing the all the data together.
 
 ## Model Comparison
 

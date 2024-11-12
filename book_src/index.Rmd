@@ -87,15 +87,15 @@ Michael Hahsler
 
 ```{r echo=FALSE, results='asis'}
 if (knitr::is_latex_output()) {
-  cat('![Creative Commons License](images/by-sa.pdf)&nbsp;')
+  cat('![Creative Commons License](images/by.pdf)&nbsp;')
 } else {
-  cat('![Creative Commons License](images/by-sa_small.png)\\ ')
+  cat('![Creative Commons License](images/by_small.png)\\ ')
 }
 ```
 
 This book is licensed under the [Creative Commons
-Attribution-ShareAlike 4.0 International
-License](http://creativecommons.org/licenses/by-sa/4.0/).
+Attribution 4.0 International
+License](http://creativecommons.org/licenses/by/4.0/).
 
 The cover art is based on
 ["rocks"](https://www.flickr.com/photos/69017177@N00/5063131410) by

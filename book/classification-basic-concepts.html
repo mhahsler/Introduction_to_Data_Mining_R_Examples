@@ -319,9 +319,9 @@ the data is ready for model learning.</p>
 <h2>
 <span class="header-section-number">3.3</span> Decision Tree Classifiers<a class="anchor" aria-label="anchor" href="#decision-tree-classifiers"><i class="fas fa-link"></i></a>
 </h2>
-<p>We use here the recursive partitioning implementation which follows largely
+<p>We use here the recursive partitioning implementation (rpart) which follows largely
 CART and uses the Gini index to make
-splitting decisions and early stopping (also called pre-pruning).</p>
+splitting decisions and then it uses early stopping (also called pre-pruning).</p>
 <div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bethatkinson/rpart">rpart</a></span><span class="op">)</span></span></code></pre></div>
 <div id="create-tree" class="section level3" number="3.3.1">
@@ -474,9 +474,9 @@ counts represent errors (i.e., confusions).</p>
 <span><span class="fu">accuracy</span><span class="op">(</span><span class="va">Zoo</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">type</span><span class="op">)</span>, <span class="va">pred</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.8812</span></span></code></pre></div>
 </div>
-<div id="confusion-matrix-using-caret" class="section level3" number="3.3.4">
+<div id="confusion-matrix-for-the-resubstitution-error-using-caret" class="section level3" number="3.3.4">
 <h3>
-<span class="header-section-number">3.3.4</span> Confusion Matrix using Caret<a class="anchor" aria-label="anchor" href="#confusion-matrix-using-caret"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.3.4</span> Confusion Matrix for the Resubstitution Error using Caret<a class="anchor" aria-label="anchor" href="#confusion-matrix-for-the-resubstitution-error-using-caret"><i class="fas fa-link"></i></a>
 </h3>
 <p>The caret package provides a convenient way to create and
 analyze a confusion table including many useful statistics.</p>
@@ -567,7 +567,7 @@ to get the most accurate model. This can be achieved by
 changing the algorithms hyperparameter (parameters that
 change how the algorithm works). We
 set the complexity parameter <code>cp</code> to 0 (split
-even if it does not improve the tree) and we set the minimum number of
+even if it does not improve the fit) and we set the minimum number of
 observations in a node needed to split to the smallest value of 2 (see:
 <code><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">?rpart.control</a></code>). <em>Note:</em> This is not a good idea!
 As we will see later, full trees overfit the training data!</p>
@@ -614,7 +614,7 @@ As we will see later, full trees overfit the training data!</p>
 <span><span class="co">## [1] 1</span></span></code></pre></div>
 <p>We see that the error is smaller then for the pruned tree. This,
 however, does not mean that the model is better. It actually is overfitting
-the training data (it just memorizes it) and has worse generalization
+the training data (it just memorizes it) and it likely has worse generalization
 performance on new data. This effect
 is called overfitting the training data and needs to be avoided.</p>
 </div>
@@ -631,11 +631,12 @@ model selection.</p>
 The error rate on the validation set can then be used to choose
 between several models.</p>
 <p>Caret has model selection build into the <code><a href="https://rdrr.io/pkg/caret/man/train.html">train()</a></code> function. We will select
-between the default complexity <code>cp = 0.01</code> and a full tree <code>cp = 0</code> (see <code>tuneGrid</code>).
-<code>trControl</code> specified how the validation set is obtained. <code>LGOCV</code>
+between the default complexity <code>cp = 0.01</code> and a full tree <code>cp = 0</code> (set via <code>tuneGrid</code>).
+<code>trControl</code> specified how the validation set is obtained. We use
+Leave Group Out Cross-Validation (<code>LGOCV</code>) which
 picks randomly the proportion <code>p</code> of data to train and uses the rest as
 the validation set. To get a better estimate of the
-error, this process is repeated <code>number</code> times and the errors are averaged.</p>
+error, this process is repeated <code>number</code> of times and the errors are averaged.</p>
 <div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,</span>
@@ -668,7 +669,9 @@ error, this process is repeated <code>number</code> times and the errors are ave
 <span><span class="co">##  the largest value.</span></span>
 <span><span class="co">## The final value used for the model was cp = 0.</span></span></code></pre></div>
 <p>We see that in this case, the full tree model performs slightly better.
-This is a result of the fact that we only have a very small dataset.</p>
+However, given the small dataset, this may not be a significant difference
+and we will look at a statistical
+test for this later.</p>
 </div>
 <div id="model-evaluation" class="section level2" number="3.6">
 <h2>
@@ -694,11 +697,13 @@ testing.</p>
 <p>Now we can train on the test set and get the generalization error on the
 test set.</p>
 </div>
-<div id="cross-validation" class="section level3" number="3.6.2">
+<div id="cross-validation-methods" class="section level3" number="3.6.2">
 <h3>
-<span class="header-section-number">3.6.2</span> Cross-Validation<a class="anchor" aria-label="anchor" href="#cross-validation"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.6.2</span> Cross-Validation Methods<a class="anchor" aria-label="anchor" href="#cross-validation-methods"><i class="fas fa-link"></i></a>
 </h3>
-<p>k-fold cross-validation splits the data randomly into <span class="math inline">\(k\)</span> folds. It then
+<p>There are several cross-validation methods that can use the available datsa more efficiently
+then the holdout method.
+The most popular method is k-fold cross-validation which splits the data randomly into <span class="math inline">\(k\)</span> folds. It then
 holds one fold back for testing and trains on the other <span class="math inline">\(k-1\)</span> folds. This is
 done with each fold and the resulting statistic (e.g., accuracy) is averaged.
 This method uses the data more efficiently then the holdout method.</p>
@@ -731,7 +736,7 @@ parallel. To enable multi-core support, <code>caret</code> uses the package
 training algorithm works. An example is the complexity parameter
 <code>cp</code> for rpart decision trees. Tuning the hyperparameter means that
 we want to perform model selection to pick the best setting.</p>
-<p>We typically use the holdout method to create a test set and then use
+<p>We typically first use the holdout method to create a test set and then use
 cross validation using the training data for model selection. Let us use
 80% for training and hold out 20% for testing.</p>
 <div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
@@ -959,12 +964,12 @@ one very rare value. You may have to remove the variable.</li>
 <span class="header-section-number">3.8</span> Pitfalls of Model Selection and Evaluation<a class="anchor" aria-label="anchor" href="#pitfalls-of-model-selection-and-evaluation"><i class="fas fa-link"></i></a>
 </h2>
 <ul>
-<li>The training data and the test sets cannot overlap or we will not
-evaluate the generalization performance. The training set can be come
-contaminated by things like preprocessing the all the data together.</li>
 <li>Do not measure the error on the training set or
 use the validation error as a generalization error estimate.
 Always use the generalization error on a test set!</li>
+<li>The training data and the test sets cannot overlap or we will not
+evaluate the generalization performance. The training set can be come
+contaminated by things like preprocessing the all the data together.</li>
 </ul>
 </div>
 <div id="model-comparison" class="section level2" number="3.9">
@@ -1147,7 +1152,7 @@ Here we pick the 5 highest-ranked features.</p>
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/as.simple.formula.html">as.simple.formula</a></span><span class="op">(</span><span class="va">subset</span>, <span class="st">"type"</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
 <span><span class="co">## type ~ feathers + milk + backbone + toothed + eggs</span></span>
-<span><span class="co">## &lt;environment: 0x5c0d0b33cac0&gt;</span></span>
+<span><span class="co">## &lt;environment: 0x6522c21006e8&gt;</span></span>
 <span><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">m</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-170-1.png" width="672"></div>
@@ -1365,7 +1370,7 @@ the most important? What variables do not matter?</li>
 <li><a class="nav-link" href="#create-tree"><span class="header-section-number">3.3.1</span> Create Tree</a></li>
 <li><a class="nav-link" href="#make-predictions-for-new-data"><span class="header-section-number">3.3.2</span> Make Predictions for New Data</a></li>
 <li><a class="nav-link" href="#manual-calculation-of-the-resubstitution-error"><span class="header-section-number">3.3.3</span> Manual Calculation of the Resubstitution Error</a></li>
-<li><a class="nav-link" href="#confusion-matrix-using-caret"><span class="header-section-number">3.3.4</span> Confusion Matrix using Caret</a></li>
+<li><a class="nav-link" href="#confusion-matrix-for-the-resubstitution-error-using-caret"><span class="header-section-number">3.3.4</span> Confusion Matrix for the Resubstitution Error using Caret</a></li>
 </ul>
 </li>
 <li><a class="nav-link" href="#model-overfitting"><span class="header-section-number">3.4</span> Model Overfitting</a></li>
@@ -1373,7 +1378,7 @@ the most important? What variables do not matter?</li>
 <li>
 <a class="nav-link" href="#model-evaluation"><span class="header-section-number">3.6</span> Model Evaluation</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#holdout-method"><span class="header-section-number">3.6.1</span> Holdout Method</a></li>
-<li><a class="nav-link" href="#cross-validation"><span class="header-section-number">3.6.2</span> Cross-Validation</a></li>
+<li><a class="nav-link" href="#cross-validation-methods"><span class="header-section-number">3.6.2</span> Cross-Validation Methods</a></li>
 </ul>
 </li>
 <li><a class="nav-link" href="#hyperparameter-tuning"><span class="header-section-number">3.7</span> Hyperparameter Tuning</a></li>
@@ -1404,7 +1409,7 @@ the most important? What variables do not matter?</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-10-25.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-11-12.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

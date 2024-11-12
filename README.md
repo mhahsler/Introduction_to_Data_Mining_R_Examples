@@ -93,9 +93,9 @@ bottom whenever there are R code examples available.
 
 ## License
 
-![Creative Commons BY-SA 4.0 License](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)
+![Creative Commons Attribution 4.0 International License](https://i.creativecommons.org/l/by/4.0/88x31.png)
 All code and documents in this repository are licensed under the 
-[Creative Commons Attribution-ShareAlike 4.0 International license](http://creativecommons.org/licenses/by-sa/4.0/).
+[Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
 
  
 For questions please contact [Michael Hahsler](http://michael.hahsler.net).

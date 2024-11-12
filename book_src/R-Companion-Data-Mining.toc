@@ -30,9 +30,7 @@
 \contentsline {subsubsection}{\numberline {2.3.3.2}Multi-Dimensional Scaling (MDS)}{38}{subsubsection.2.3.3.2}%
 \contentsline {subsubsection}{\numberline {2.3.3.3}Non-Parametric Multidimensional Scaling}{39}{subsubsection.2.3.3.3}%
 \contentsline {subsubsection}{\numberline {2.3.3.4}Other Nonlinear Dimensionality Reduction Methods}{39}{subsubsection.2.3.3.4}%
-\contentsline {subsection}{\numberline {2.3.4}Feature Subset Selection}{40}{subsection.2.3.4}%
-\contentsline {subsection}{\numberline {2.3.5}Discretization}{40}{subsection.2.3.5}%
-\contentsline {subsection}{\numberline {2.3.6}Variable Transformation: Standardization}{45}{subsection.2.3.6}%
+\contentsline {subsection}{\numberline {2.3.4}Variable Transformation: Standardization}{45}{subsection.2.3.4}%
 \contentsline {section}{\numberline {2.4}Measures of Similarity and Dissimilarity}{46}{section.2.4}%
 \contentsline {subsection}{\numberline {2.4.1}Minkowsky Distances}{47}{subsection.2.4.1}%
 \contentsline {subsection}{\numberline {2.4.2}Distances for Binary Data}{48}{subsection.2.4.2}%
@@ -54,16 +52,16 @@
 \contentsline {subsubsection}{\numberline {2.5.6.1}Histograms}{65}{subsubsection.2.5.6.1}%
 \contentsline {subsubsection}{\numberline {2.5.6.2}Kernel Density Estimate (KDE)}{68}{subsubsection.2.5.6.2}%
 \contentsline {section}{\numberline {2.6}Visualization}{69}{section.2.6}%
-\contentsline {subsection}{\numberline {2.6.1}Histogram}{69}{subsection.2.6.1}%
-\contentsline {subsection}{\numberline {2.6.2}Boxplot}{71}{subsection.2.6.2}%
-\contentsline {subsection}{\numberline {2.6.3}Scatter plot}{74}{subsection.2.6.3}%
-\contentsline {subsection}{\numberline {2.6.4}Scatter Plot Matrix}{77}{subsection.2.6.4}%
-\contentsline {subsection}{\numberline {2.6.5}Matrix Visualization}{79}{subsection.2.6.5}%
-\contentsline {subsection}{\numberline {2.6.6}Correlation Matrix}{82}{subsection.2.6.6}%
-\contentsline {subsection}{\numberline {2.6.7}Parallel Coordinates Plot}{85}{subsection.2.6.7}%
-\contentsline {subsection}{\numberline {2.6.8}Star Plot}{87}{subsection.2.6.8}%
-\contentsline {subsection}{\numberline {2.6.9}More Visualizations}{88}{subsection.2.6.9}%
-\contentsline {section}{\numberline {2.7}Exercises*}{88}{section.2.7}%
+\contentsline {subsection}{\numberline {2.6.1}Histogram}{70}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}Boxplot}{72}{subsection.2.6.2}%
+\contentsline {subsection}{\numberline {2.6.3}Scatter plot}{75}{subsection.2.6.3}%
+\contentsline {subsection}{\numberline {2.6.4}Scatter Plot Matrix}{78}{subsection.2.6.4}%
+\contentsline {subsection}{\numberline {2.6.5}Matrix Visualization}{80}{subsection.2.6.5}%
+\contentsline {subsection}{\numberline {2.6.6}Correlation Matrix}{83}{subsection.2.6.6}%
+\contentsline {subsection}{\numberline {2.6.7}Parallel Coordinates Plot}{86}{subsection.2.6.7}%
+\contentsline {subsection}{\numberline {2.6.8}Star Plot}{88}{subsection.2.6.8}%
+\contentsline {subsection}{\numberline {2.6.9}More Visualizations}{89}{subsection.2.6.9}%
+\contentsline {section}{\numberline {2.7}Exercises*}{89}{section.2.7}%
 \contentsline {chapter}{\numberline {3}Classification: Basic Concepts}{91}{chapter.3}%
 \contentsline {subsection}{Packages Used in this Chapter}{91}{section*.4}%
 \contentsline {section}{\numberline {3.1}Basic Concepts}{92}{section.3.1}%
@@ -73,12 +71,12 @@
 \contentsline {subsection}{\numberline {3.3.1}Create Tree}{95}{subsection.3.3.1}%
 \contentsline {subsection}{\numberline {3.3.2}Make Predictions for New Data}{97}{subsection.3.3.2}%
 \contentsline {subsection}{\numberline {3.3.3}Manual Calculation of the Resubstitution Error}{98}{subsection.3.3.3}%
-\contentsline {subsection}{\numberline {3.3.4}Confusion Matrix using Caret}{99}{subsection.3.3.4}%
+\contentsline {subsection}{\numberline {3.3.4}Confusion Matrix for the Resubstitution Error using Caret}{99}{subsection.3.3.4}%
 \contentsline {section}{\numberline {3.4}Model Overfitting}{101}{section.3.4}%
 \contentsline {section}{\numberline {3.5}Model Selection}{103}{section.3.5}%
 \contentsline {section}{\numberline {3.6}Model Evaluation}{104}{section.3.6}%
 \contentsline {subsection}{\numberline {3.6.1}Holdout Method}{104}{subsection.3.6.1}%
-\contentsline {subsection}{\numberline {3.6.2}Cross-Validation}{104}{subsection.3.6.2}%
+\contentsline {subsection}{\numberline {3.6.2}Cross-Validation Methods}{104}{subsection.3.6.2}%
 \contentsline {section}{\numberline {3.7}Hyperparameter Tuning}{105}{section.3.7}%
 \contentsline {section}{\numberline {3.8}Pitfalls of Model Selection and Evaluation}{111}{section.3.8}%
 \contentsline {section}{\numberline {3.9}Model Comparison}{111}{section.3.9}%
@@ -167,35 +165,37 @@
 \contentsline {subsection}{\numberline {7.1.2}Data cleaning}{247}{subsection.7.1.2}%
 \contentsline {subsection}{\numberline {7.1.3}Scale data}{248}{subsection.7.1.3}%
 \contentsline {section}{\numberline {7.2}K-means}{248}{section.7.2}%
-\contentsline {subsubsection}{\numberline {7.2.0.1}Inspect clusters}{252}{subsubsection.7.2.0.1}%
-\contentsline {paragraph}{\numberline {7.2.0.1.1}Cluster Profiles}{252}{paragraph.7.2.0.1.1}%
-\contentsline {paragraph}{\numberline {7.2.0.1.2}Extract a single cluster}{253}{paragraph.7.2.0.1.2}%
+\contentsline {subsection}{\numberline {7.2.1}Inspect Clusters}{252}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}Extract a Single Cluster}{253}{subsection.7.2.2}%
 \contentsline {section}{\numberline {7.3}Agglomerative Hierarchical Clustering}{255}{section.7.3}%
-\contentsline {section}{\numberline {7.4}DBSCAN}{260}{section.7.4}%
-\contentsline {section}{\numberline {7.5}Cluster Evaluation}{263}{section.7.5}%
-\contentsline {subsection}{\numberline {7.5.1}Unsupervized Cluster Evaluation}{263}{subsection.7.5.1}%
-\contentsline {subsection}{\numberline {7.5.2}Unsupervised Cluster Evaluation using the Proximity Matrix}{268}{subsection.7.5.2}%
-\contentsline {subsection}{\numberline {7.5.3}Determining the Correct Number of Clusters}{274}{subsection.7.5.3}%
-\contentsline {subsubsection}{\numberline {7.5.3.1}Elbow Method: Within-Cluster Sum of Squares}{275}{subsubsection.7.5.3.1}%
-\contentsline {subsubsection}{\numberline {7.5.3.2}Average Silhouette Width}{275}{subsubsection.7.5.3.2}%
-\contentsline {subsubsection}{\numberline {7.5.3.3}Dunn Index}{276}{subsubsection.7.5.3.3}%
-\contentsline {subsubsection}{\numberline {7.5.3.4}Gap Statistic}{277}{subsubsection.7.5.3.4}%
-\contentsline {subsection}{\numberline {7.5.4}Clustering Tendency}{278}{subsection.7.5.4}%
-\contentsline {subsubsection}{\numberline {7.5.4.1}Scatter plots}{279}{subsubsection.7.5.4.1}%
-\contentsline {subsubsection}{\numberline {7.5.4.2}Visual Analysis for Cluster Tendency Assessment (VAT)}{279}{subsubsection.7.5.4.2}%
-\contentsline {subsubsection}{\numberline {7.5.4.3}Hopkins statistic}{281}{subsubsection.7.5.4.3}%
-\contentsline {subsubsection}{\numberline {7.5.4.4}Data Without Clustering Tendency}{282}{subsubsection.7.5.4.4}%
-\contentsline {subsubsection}{\numberline {7.5.4.5}k-means on Data Without Clustering Tendency}{284}{subsubsection.7.5.4.5}%
-\contentsline {subsection}{\numberline {7.5.5}Supervised Measures of Cluster Validity}{285}{subsection.7.5.5}%
-\contentsline {section}{\numberline {7.6}More Clustering Algorithms*}{293}{section.7.6}%
-\contentsline {subsection}{\numberline {7.6.1}Partitioning Around Medoids (PAM)}{293}{subsection.7.6.1}%
-\contentsline {subsection}{\numberline {7.6.2}Gaussian Mixture Models}{296}{subsection.7.6.2}%
-\contentsline {subsection}{\numberline {7.6.3}Spectral clustering}{298}{subsection.7.6.3}%
-\contentsline {subsection}{\numberline {7.6.4}Fuzzy C-Means Clustering}{300}{subsection.7.6.4}%
-\contentsline {section}{\numberline {7.7}Outliers in Clustering*}{303}{section.7.7}%
-\contentsline {subsection}{\numberline {7.7.1}Visual inspection of the data}{304}{subsection.7.7.1}%
-\contentsline {subsection}{\numberline {7.7.2}Local Outlier Factor (LOF)}{305}{subsection.7.7.2}%
-\contentsline {section}{\numberline {7.8}Exercises*}{308}{section.7.8}%
+\contentsline {subsection}{\numberline {7.3.1}Creating a Dendrogram}{255}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}Extracting a Partitional Clustering}{257}{subsection.7.3.2}%
+\contentsline {section}{\numberline {7.4}DBSCAN}{261}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}DBSCAN Parameters}{261}{subsection.7.4.1}%
+\contentsline {subsection}{\numberline {7.4.2}Cluster using DBSCAN}{262}{subsection.7.4.2}%
+\contentsline {section}{\numberline {7.5}Cluster Evaluation}{264}{section.7.5}%
+\contentsline {subsection}{\numberline {7.5.1}Unsupervised Cluster Evaluation}{264}{subsection.7.5.1}%
+\contentsline {subsection}{\numberline {7.5.2}Determining the Correct Number of Clusters}{275}{subsection.7.5.2}%
+\contentsline {subsubsection}{\numberline {7.5.2.1}Elbow Method: Within-Cluster Sum of Squares}{276}{subsubsection.7.5.2.1}%
+\contentsline {subsubsection}{\numberline {7.5.2.2}Average Silhouette Width}{277}{subsubsection.7.5.2.2}%
+\contentsline {subsubsection}{\numberline {7.5.2.3}Dunn Index}{278}{subsubsection.7.5.2.3}%
+\contentsline {subsubsection}{\numberline {7.5.2.4}Gap Statistic}{279}{subsubsection.7.5.2.4}%
+\contentsline {subsection}{\numberline {7.5.3}Clustering Tendency}{280}{subsection.7.5.3}%
+\contentsline {subsubsection}{\numberline {7.5.3.1}Scatter plots}{281}{subsubsection.7.5.3.1}%
+\contentsline {subsubsection}{\numberline {7.5.3.2}Visual Analysis for Cluster Tendency Assessment (VAT)}{281}{subsubsection.7.5.3.2}%
+\contentsline {subsubsection}{\numberline {7.5.3.3}Hopkins statistic}{283}{subsubsection.7.5.3.3}%
+\contentsline {subsubsection}{\numberline {7.5.3.4}Data Without Clustering Tendency}{283}{subsubsection.7.5.3.4}%
+\contentsline {subsubsection}{\numberline {7.5.3.5}k-means on Data Without Clustering Tendency}{285}{subsubsection.7.5.3.5}%
+\contentsline {subsection}{\numberline {7.5.4}Supervised Cluster Evaluation}{286}{subsection.7.5.4}%
+\contentsline {section}{\numberline {7.6}More Clustering Algorithms*}{294}{section.7.6}%
+\contentsline {subsection}{\numberline {7.6.1}Partitioning Around Medoids (PAM)}{294}{subsection.7.6.1}%
+\contentsline {subsection}{\numberline {7.6.2}Gaussian Mixture Models}{297}{subsection.7.6.2}%
+\contentsline {subsection}{\numberline {7.6.3}Spectral clustering}{299}{subsection.7.6.3}%
+\contentsline {subsection}{\numberline {7.6.4}Fuzzy C-Means Clustering}{301}{subsection.7.6.4}%
+\contentsline {section}{\numberline {7.7}Outliers in Clustering*}{304}{section.7.7}%
+\contentsline {subsection}{\numberline {7.7.1}Visual inspection of the data}{305}{subsection.7.7.1}%
+\contentsline {subsection}{\numberline {7.7.2}Local Outlier Factor (LOF)}{306}{subsection.7.7.2}%
+\contentsline {section}{\numberline {7.8}Exercises*}{309}{section.7.8}%
 \contentsline {chapter}{\numberline {8}Regression*}{311}{chapter.8}%
 \contentsline {subsection}{Packages Used in this Chapter}{311}{section*.9}%
 \contentsline {section}{\numberline {8.1}Introduction}{311}{section.8.1}%
