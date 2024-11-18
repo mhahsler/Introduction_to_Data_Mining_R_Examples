@@ -1,4 +1,10 @@
-# Version 1.0-1 (xx/xx/2024)
+# Version 1.0-3 (11/12/2024)
+
+NEW
+* Added a PDF version of the book.
+* Reorganized some chapters to fit the textbook structure more closely.
+
+# Version 1.0-1 (06/17/2024)
 
 NEW
 * We added chapters on regression and logistic regression.
