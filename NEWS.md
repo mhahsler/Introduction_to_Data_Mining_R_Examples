@@ -1,7 +1,14 @@
+# Version 1.0-3-1 (xx/x/2024)
+
+CHANGES
+Improved wording for classification and regression.
+
 # Version 1.0-3 (11/12/2024)
 
 NEW
 * Added a PDF version of the book.
+
+CHANGES
 * Reorganized some chapters to fit the textbook structure more closely.
 
 # Version 1.0-1 (06/17/2024)

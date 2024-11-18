@@ -272,9 +272,9 @@ library(caret)
 confusionMatrix(data = pred, 
                 reference = Zoo |> pull(type))
 ```
-**Note:** Calculating accuracy on the training data is not a good idea. 
-Keep on reading!
-
+**Important note:** Calculating accuracy on the training data is not a good idea. 
+A complete example with code for holding out a test set and performing hyperparameter
+selection using cross-validation can be found in section [Hyperparameter Tuning].
 
 ## Model Overfitting
 
@@ -414,6 +414,10 @@ parallel. To enable multi-core support, `caret` uses the package
 
 ## Hyperparameter Tuning
 
+**Note:** This section contains a complete code example of how data should be used.
+It first holds out a test set and then performing hyperparameter selection 
+using cross-validation.
+
 Hyperparameters are parameters that change how a
 training algorithm works. An example is the complexity parameter 
 `cp` for rpart decision trees. Tuning the hyperparameter means that 
@@ -541,8 +545,9 @@ confusionMatrix(data = pred,
 
 ## Model Comparison
 
-We will compare decision trees with a k-nearest neighbors (kNN)
-classifier. We will create fixed sampling scheme (10-folds) so we
+We will compare three models, a majority class baseline classifier, a 
+decision trees with a k-nearest neighbors (kNN)
+classifier. We will create fixed sampling scheme (10-fold cross-validation) so we
 compare the different models using exactly the same folds. It is
 specified as `trControl` during training.
 
@@ -552,7 +557,50 @@ train_index <- createFolds(Zoo_train$type,
                            returnTrain = TRUE)
 ```
 
-Build models
+### Build models
+
+Caret does not provide a baseline classifier, but lets us specify our own models. 
+We define the classifier as a list with the  
+structure needed by Caret's `train()` function (see [use your own model](https://topepo.github.io/caret/using-your-own-model-in-train.html#model-components)  in caret's description). The `fit` component calculates
+the majority class label and the `predict` component just labels every row
+in `newdata` as the majority class.
+
+```{r }
+majority_class_baseline_classifier <- list(label = "Majority Class Baseline Classifier",
+                  library = character(0),
+                  type = "Classification",
+                  parameters = data.frame(parameter = "parameter",
+                                          class = "character",
+                                          label = "parameter"),
+                  grid = function(x, y, len = NULL, search = "grid") 
+                    data.frame(parameter = "none"),
+                  loop = NULL,
+                  fit = function(x, y, wts, param, lev, last, classProbs, ...) {          
+                    tbl <- table(y)
+                    majority <- names(tbl)[which.max(tbl)]
+                    list(majority = majority)
+                    },
+                  predict = function(modelFit, newdata, submodels = NULL) {
+                    rep(modelFit$majority, nrow(newdata))
+                  },
+                  prob = NULL
+                  )
+```  
+  
+We train the model and perform cross-validation.
+```{r}  
+baseline <-  Zoo_train |> 
+  train(type ~ .,
+        data = _,
+        method = majority_class_baseline_classifier,
+	      tuneLength = 1,
+	      trControl = trainControl(method = "cv", 
+	                               index = train_index)
+  )
+```
+
+
+The second model is a default decision tree.
 
 ```{r }
 rpartFit <- Zoo_train |> 
@@ -560,14 +608,17 @@ rpartFit <- Zoo_train |>
         data = _,
         method = "rpart",
         tuneLength = 10,
-        trControl = trainControl(method = "cv", 
+        trControl = trainControl(method = "cv",
                                  index = train_index)
   )
 ```
 
-**Note:** for kNN we ask `train` to scale the data using
-`preProcess = "scale"`. Logicals will be used as 0-1 variables in
-Euclidean distance calculation.
+The third model is a kNN classifier, this classifier will be discussed 
+in the next Chapter. kNN uses the Euclidean distance between objects.
+Logicals will be used as 0-1 variables. To make sure the range of all 
+variables is compatible, we 
+ask `train` to scale the data using
+`preProcess = "scale"`. 
 
 ```{r }
 knnFit <- Zoo_train |> 
@@ -581,11 +632,13 @@ knnFit <- Zoo_train |>
   )
 ```
 
-Compare accuracy over all folds.
+
+Compare accuracy and kappa over all folds.
 
 ```{r }
 resamps <- resamples(list(
-		CART = rpartFit,
+	baseline = baseline,	
+  CART = rpartFit,
 		kNearestNeighbors = knnFit
 		))
 
@@ -600,11 +653,8 @@ the 10 folds).
 bwplot(resamps, layout = c(3, 1))
 ```
 
-We see that kNN is performing consistently better on the folds than CART
-(except for some outlier folds).
-
-Find out if one models is statistically better than the other (is the
-difference in accuracy is not zero).
+We see that the baseline has no predictive power and produces consistently a kappa of 0. KNN performs consistently the best.
+To find out if one models is statistically better than the other, we can use a statistical test.
 
 ```{r }
 difs <- diff(resamps)
@@ -613,12 +663,11 @@ difs
 summary(difs)
 ```
 
-p-values tells you the probability of seeing an even more extreme value
-(difference between accuracy) given that the null hypothesis (difference
-= 0) is true. For a better classifier, the p-value should be less than
+p-values gives us the probability of seeing an even more extreme value
+(difference between accuracy or kappa) given that the null hypothesis (difference
+= 0) is true. For a better classifier, the p-value should be "significant," i.e., less than
 .05 or 0.01. `diff` automatically applies Bonferroni correction for
-multiple comparisons. In this case, kNN seems better but the classifiers
-do not perform statistically differently.
+multiple comparisons. In this case, kNN significantly better than the other classifiers.
 
 ## Feature Selection*
 
@@ -705,9 +754,11 @@ Zoo_train |>
   cfs(type ~ ., data = _)
 ```
 
-Black-box feature selection uses an evaluator function (the black box)
+The disadvantage of this method is that the model we want to train may not use
+correlation/entropy. We can use the actual model using
+as a black-box defined in an evaluator function
 to calculate a score to be maximized. 
-This is typically the best method, since it can use the actual model
+This is typically the best method, since it can use the model
 for selection.
 First, we define an evaluation
 function that builds a model given a subset of features and calculates a

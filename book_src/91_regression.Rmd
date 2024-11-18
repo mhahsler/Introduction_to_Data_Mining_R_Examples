@@ -6,16 +6,17 @@ editor_options:
 
 # Regression*
 
-This chapter introduces the regression problem
+Regression is a statistical method that is not covered in out textbook in the 
+Appendix. It is is important for data mining, that we have added 
+this extra chapter here.  We introduce the regression problem
 and multiple linear regression. In addition,
 alternative models like regression trees and regularized regression
 are discussed.
 
-
 ### Packages Used in this Chapter {.unnumbered}
 
 ```{r setup_linear_regression}
-pkgs <- c('lars')
+pkgs <- c('lars', 'rpart', 'rpart.plot')
   
 pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
 if(length(pkgs_install)) install.packages(pkgs_install)
@@ -34,23 +35,28 @@ The packages used for this chapter are:
 
 ## Introduction
 
-Classification predicts one of a small set of discrete labels (e.g., yes or no). 
+Recall that classification predicts one of a small set of discrete (i.e., nominal) labels (e.g., yes or no, 
+small, medium or large). 
 Regression is also a supervised learning problem, but the goal is to 
 predict the value of a continuous value given a set of predictors. 
 We start with the popular linear regression and will later discuss alternative 
 regression methods.
 
-
 Linear regression models the value of a dependent variable $y$ (also called
-response) as
+the response) as
 as linear function of independent variables $X_1, X_2, ..., X_p$
-(also called regressors, predictors, exogenous variables or covariates).
-Given $n$ observations the model is:
-$$y_i = \beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip} + \epsilon_i $$
+(also called regressors, predictors, exogenous variables, explanatory variables,
+or covariates).
+If we use more than one explanatory variable, then we oten call this 
+multiple or multivariate linear regression.
+Given $n$ observations, the model is:
+$$y_i = \beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip} + \epsilon_i = \beta_0 + \sum_{j = 1}^p{(\beta_jx_{ij} + \epsilon_i)}$$
 
 where $\beta_0$ is the intercept, $\beta$ is a $p$-dimensional parameter
 vector learned from the data, and $\epsilon$ is the error term
-(called residuals).
+(called residuals). This is often also written in vector notation as
+$y = X\beta + \epsilon$ where $y$ and $\beta$ are vectors and $X$ is the matrix
+with the regressors (called design matrix).
 
 Linear regression makes several assumptions:
 
@@ -67,7 +73,9 @@ Linear regression makes several assumptions:
 
 ## A First Linear Regression Model
 
-Load and shuffle data (flowers are in order by species)
+We will use the Iris datasets and try to predict 
+the `Petal.Width` using the other variables. We first
+load and shuffle data since the flowers in the dataset are in order by species.
 
 ```{r}
 data(iris)
@@ -77,7 +85,8 @@ x <- iris[sample(1:nrow(iris)),]
 plot(x, col=x$Species)
 ```
 
-Make the data a little messy and add a useless feature
+The iris data is very clean, so we make the data a little messy by adding a random error
+to each variable and introduce a useless, completely random feature.
 
 ```{r}
 x[,1] <- x[,1] + rnorm(nrow(x))
@@ -92,44 +101,60 @@ summary(x)
 head(x)
 ```
 
-Create some training and learning data
+We split the data into training and test data. Since the data is shuffled, we
+effectively perform holdout sampling. This is often not done in 
+statistical applications, but we use the machine learning approach here. 
 
 ```{r}
 train <- x[1:100,]
 test <- x[101:150,]
 ```
 
-Can we predict Petal.Width using the other variables?
-
-lm uses a formula interface see ?lm for description
+Linear regression is done in R using the `lm()` (linear model) function.
+Like other modeling functions in R, `lm()` uses a formula interface. Here we create a formula
+to predict `Petal.Width` by all other variables other than `Species`.
 
 ```{r}
 model1 <- lm(Petal.Width ~ Sepal.Length
             + Sepal.Width + Petal.Length + useless,
             data = train)
 model1
-coef(model1)
 ```
 
-Summary shows:
-
-* Which coefficients are significantly different from 0
-* R-squared (coefficient of determination): Proportion of the variability of the dependent variable explained by the model. It is better to look at the adjusted R-square (adjusted for number of dependent vars.)
+The result is a model with the fitted $\beta$ coefficients. More information can 
+be displayed using the summary function. 
 
 ```{r}
 summary(model1)
 ```
 
-Plotting the model produces diagnostic plots (see `? plot.lm`). For example
-to check for homoscedasticity (residual vs predicted value scatter plot should produce a close to horizontal line)
-and if the residuals are approximately normally distributed (Q-Q plot should be close to the straight line).
+The summary shows:
+
+* Which coefficients are significantly different from 0. Here only `Petal.Length`
+  is significant and the coefficient for `useless` is very close to 0. 
+  Look at the scatter plot matrix above and see why this is the case.
+* R-squared (coefficient of determination): Proportion (in the range $[0,1]$) of the variability of 
+  the dependent variable explained by the model. It is better to look at the 
+  adjusted R-square (adjusted for number of dependent variables). Typically, 
+  an R-squared of greater than $0.7$ is considered good, but this is just a rule of thumb and 
+  we should rather use a test set for evaluation.
+
+Plotting the model produces diagnostic plots (see `plot.lm()`). For example
+to check for homoscedasticity (the residual vs predicted value scatter plot 
+should produce a close to horizontal line)
+and if the residuals are approximately normally distributed 
+(Q-Q plot should be close to the straight line).
 
 ```{r}
 plot(model1, which = 1:2)
 ```
 
+In this case, the two plots look fine.
+
 ## Comparing Nested Models
-Here we create a simpler model by using only three predictors. 
+Here we perform model selection to compare several linear models. 
+Nested means that all models use a subset of the same set of features.
+We create a simpler model by removing the feature useless from the model above. 
 
 ```{r}
 model2 <- lm(Petal.Width ~ Sepal.Length + 
@@ -147,7 +172,7 @@ model3 <- lm(Petal.Width ~ Sepal.Length +
 summary(model3)
 ```
 
-here is a very simple model:
+Here is a very simple model.
 
 ```{r}
 model4 <- lm(Petal.Width ~ Petal.Length -1,
@@ -155,53 +180,85 @@ model4 <- lm(Petal.Width ~ Petal.Length -1,
 summary(model4)
 ```
 
-Compare models (Null hypothesis: all treatments=models have the same effect). __Note:__ This only works for _nested models._ Models are nested only if one model contains all the predictors of the other model.
+We need a statistical test to compare all these nested models. The appropriate test is called
+[ANOVA](https://en.wikipedia.org/wiki/Analysis_of_variance) (analysis of variance) 
+which is a generalization of the t-test to check if all the treatments 
+(i.e., models) have the same effect. 
+__Important note:__ This only works for _nested models._ Models are nested only if one model contains all the predictors of the other model.
 
 ```{r}
 anova(model1, model2, model3, model4)
 ```
 
-Models 1 is not significantly better than model 2. Model 2 is not significantly better than model 3. Model 3 is not significantly better than model 4! Use model 4 (simplest model)
+
+Models 1 is not significantly better than model 2. Model 2 is not significantly better than model 3. Model 3 is not significantly better than model 4! Use model 4, the simplest model.
+See `anova.lm()` for the manual page for ANOVA for linear models. 
 
 ## Stepwise Variable Selection
-Automatically looks for the smallest AIC (Akaike information criterion)
+Stepwise variable section performs backward (or forward) model selection for linear models
+and uses the smallest AIC ([Akaike information criterion](https://en.wikipedia.org/wiki/Akaike_information_criterion)) to decide 
+what variable to remove and when to stop.
 
 ```{r}
 s1 <- step(lm(Petal.Width ~ . -Species, data = train))
+
 summary(s1)
 ```
 
-## Modeling with Interaction Terms
-What if two variables are only important together? Interaction terms
-are modeled with `:` or `*` in the formula (they are literally multiplied).
-See `? formula`.
+Each table represents one step and shows the AIC when each variable is removed and 
+the one with the smallest AIC (in the first table `useless`) is removed. It stops 
+with a small model that only uses `Petal.Length`.
 
+
+## Modeling with Interaction Terms
+Linear regression models the effect of each predictor separately
+using a $\beta$ coefficient.
+What if two variables are only important together? 
+This is called an interaction between predictors and is modeled using 
+interaction terms.
+In R's `formula()` we can use `:` and `*` 
+to specify interactions. For linear regression, an interaction 
+means that a new predictor is created by multiplying the two original 
+predictors.
+
+We can create a model with an interaction terms between `Sepal.Length`,  `Sepal.Width` and 
+`Petal.Length`.
 ```{r}
 model5 <- step(lm(Petal.Width ~ Sepal.Length * 
                     Sepal.Width * Petal.Length,
              data = train))
+
 summary(model5)
+
 anova(model5, model4)
 ```
-
-Model 5 is not significantly better than model 4
+Some interaction terms are significant in the new model, but ANOVA shows that
+model 5 is not significantly better than model 4
 
 ## Prediction
 
+We preform here a prediction for the held out test set.
+
 ```{r}
 test[1:5,]
+
 test[1:5,]$Petal.Width
+
 predict(model4, test[1:5,])
 ```
 
-Calculate the root-mean-square error (RMSE): less is better
+The most used error measure for regression is the 
+[RMSE](https://en.wikipedia.org/wiki/Root_mean_square_deviation)
+root-mean-square error.
 
 ```{r}
 RMSE <- function(predicted, true) mean((predicted-true)^2)^.5
+
 RMSE(predict(model4, test), test$Petal.Width)
 ```
 
-Compare predicted vs. actual values
+We can also visualize the quality of the prediction using a simple scatter plot of
+predicted vs. actual values.
 
 ```{r}
 plot(test[,"Petal.Width"], predict(model4, test),
@@ -211,10 +268,14 @@ plot(test[,"Petal.Width"], predict(model4, test),
 abline(0,1, col="red")
 cor(test[,"Petal.Width"], predict(model4, test))
 ```
+Perfect predictions would be on the red line, the farther they are away, 
+the larger the error.
+
 
 ## Using Nominal Variables
 
-Dummy coding is used for factors
+[Dummy variables](https://en.wikipedia.org/wiki/Dummy_variable_(statistics)) also 
+called one-hot encoding in machine learning is used for factors
 (i.e., levels are translated into individual 0-1 variable).
 The first level of factors is automatically used as the reference and
 the other levels are presented as 0-1 dummy variables called contrasts.
@@ -223,68 +284,101 @@ the other levels are presented as 0-1 dummy variables called contrasts.
 levels(train$Species)
 ```
 
-`model.matrix` is used internally to create the dummy coding.
+`model.matrix()` is used internally to create dummy variables when the design matrix 
+for the regression is created..
 
 ```{r}
 head(model.matrix(Petal.Width ~ ., data=train))
 ```
 
 Note that there is no dummy variable for species Setosa, because it is
-used as the reference. It is often useful to set the reference level.
+used as the reference (when the other two dummy variables are 0). 
+It is often useful to set the reference level.
 A simple way is to use the
-function `relevel` to change which factor is listed first.
+function `relevel()` to change which factor is listed first.
+
+Let us perform model selection using AIC on the training data and then evaluate 
+the final model on the held out test set to estimate the generalization error. 
 
 ```{r}
 model6 <- step(lm(Petal.Width ~ ., data=train))
 model6
-summary(model6)
 
+summary(model6)
+```
+
+```{r}
 RMSE(predict(model6, test), test$Petal.Width)
+
 plot(test[,"Petal.Width"], predict(model6, test),
   xlim=c(0,3), ylim=c(0,3), 
   xlab = "actual", ylab = "predicted",
   main = "Petal.Width")
 abline(0,1, col="red")
+
 cor(test[,"Petal.Width"], predict(model6, test))
 ```
+We see that the `Species` variable provides information to improve the regression model.
+
 
 ## Alternative Regression Models
 ### Regression Trees
 
-Many models we use for classification can also perform regression
-to produce piece-wise predictors.
-For example CART:
+Many models used for classification can also perform regression.
+For example CART implemented in rpart performs regression 
+by estimating a value for each leaf note.
+Regression is always performed by `rpart()` when the response variable 
+is not a `factor()`.
 
 ```{r}
 library(rpart)
 library(rpart.plot)
+
 model7 <- rpart(Petal.Width ~ ., data = train,
   control = rpart.control(cp = 0.01))
 model7
-rpart.plot(model7)
 
+rpart.plot(model7)
+```
+The regression tree shows the predicted value in as the top number in the node.
+Also, remember that tree-based models automatically variable selection
+by choosing the splits.
+
+Let's evaluate the regression tree by calulating the RMSE.
+
+```{r}
 RMSE(predict(model7, test), test$Petal.Width)
+```
+
+And visualize the quality. 
+
+```{r}
 plot(test[,"Petal.Width"], predict(model7, test),
   xlim = c(0,3), ylim = c(0,3), 
   xlab = "actual", ylab = "predicted",
   main = "Petal.Width")
 abline(0,1, col = "red")
+
 cor(test[,"Petal.Width"], predict(model7, test))
 ```
 
-__Note:__ This is not a nested model of the linear regressions so we cannot
-do ANOVA to compare the models!
+The plot and the correlation coefficient indicate that the model is very good.
+In the plot we see an important property of this method which is that it predicts
+exactly the same value when the data falls in the same leaf node.
+
 
 ### Regularized Regression
-LASSO and LAR try to reduce the number of parameters using a
-regularization term (see `lars` in package lars and https://en.wikipedia.org/wiki/Elastic_net_regularization)
+[LASSO](https://en.wikipedia.org/wiki/Lasso_(statistics)) (least absolute shrinkage and selection operator)
+uses regularization to reduce the number of parameters. An implementation is called 
+[elastic net regularization](https://en.wikipedia.org/wiki/Elastic_net_regularization) 
+which is implemented in the function `lars()` in package lars).
 
 ```{r}
 library(lars)
 ```
 
-create a design matrix (with dummy variables and interaction terms).
-`lm` did this automatically for us, but for this `lars` implementation
+We create a design matrix (with dummy variables and interaction terms).
+`lm()` did this automatically for us, but for this `lars()` implementation
 we have to do it manually.
 
 ```{r}
@@ -292,32 +386,56 @@ x <- model.matrix(~ . + Sepal.Length*Sepal.Width*Petal.Length ,
   data = train[, -4])
 head(x)
 y <- train[, 4]
-
-model_lars <- lars(x, y)
-summary(model_lars)
-model_lars
-plot(model_lars)
 ```
 
-the plot shows how variables are added (from left to right to the model)
+```{r}
+model_lars <- lars(x, y)
 
-find best model (using Mallows's Cp statistic, see https://en.wikipedia.org/wiki/Mallows's_Cp)
+plot(model_lars)
+model_lars
+```
+
+
+
+The fitted model's plot shows how variables are added (from left to right to the model).
+The text output shoes that `Petal.Length` is the most important variable added to the model in step 1.
+Then `Speciesvirginica` is added and so on. 
+This creates a sequence of nested models where one variable is added at a time.
+To select the best model [Mallows's Cp statistic](https://en.wikipedia.org/wiki/Mallows's_Cp)
+can be used.
 
 ```{r}
 plot(model_lars, plottype = "Cp")
+
 best <- which.min(model_lars$Cp)
+
 coef(model_lars, s = best)
 ```
+The variables that are not selected have a $\beta$ coefficient of 0.
 
-make predictions
+To make predictions with this model, we first have to convert the test data 
+into a design matrix with the dummy variables and interaction terms.  
 
 ```{r}
 x_test <- model.matrix(~ . + Sepal.Length*Sepal.Width*Petal.Length,
   data = test[, -4])
-predict(model_lars, x_test[1:5,], s = best)
-test[1:5, ]$Petal.Width
+head(x_test)
+```
+Now we can compute the predictions.
 
+```{r}
+predict(model_lars, x_test[1:5,], s = best)
+```
+
+The prediction is the `fit` element. We can calculate the RMSE.
+
+```{r}
 RMSE(predict(model_lars, x_test, s = best)$fit, test$Petal.Width)
+```
+
+And visualize the prediction.
+
+```{r}
 plot(test[,"Petal.Width"], 
      predict(model_lars, x_test, s = best)$fit,
      xlim=c(0,3), ylim=c(0,3), 
@@ -327,12 +445,15 @@ abline(0,1, col = "red")
 cor(test[,"Petal.Width"],
     predict(model_lars, x_test, s = best)$fit)
 ```
+The model shows good predictive power on the test set.
+
 
 ### Other Types of Regression
 
-* Robust regression: robust against violation of assumptions like heteroscedasticity and outliers (`roblm` and `robglm` in package robustbase)
-* Generalized linear models (`glm`). An example is logistic regression discussed in the next chapter.
-* Nonlinear least squares (`nlm`)
+* Robust regression: robust against violation of assumptions like heteroscedasticity and outliers 
+  (`robustbase::roblm()` and `robustbase::robglm`)
+* Generalized linear models (`glm()`). An example is logistic regression discussed in the next chapter.
+* Nonlinear least squares (`nlm()`).
 
 ## Exercises
 

@@ -554,8 +554,9 @@ analyze a confusion table including many useful statistics.</p>
 <span><span class="co">## Detection Rate                      0.099</span></span>
 <span><span class="co">## Detection Prevalence                0.178</span></span>
 <span><span class="co">## Balanced Accuracy                   0.956</span></span></code></pre></div>
-<p><strong>Note:</strong> Calculating accuracy on the training data is not a good idea.
-Keep on reading!</p>
+<p><strong>Important note:</strong> Calculating accuracy on the training data is not a good idea.
+A complete example with code for holding out a test set and performing hyperparameter
+selection using cross-validation can be found in section <a href="classification-basic-concepts.html#hyperparameter-tuning">Hyperparameter Tuning</a>.</p>
 </div>
 </div>
 <div id="model-overfitting" class="section level2" number="3.4">
@@ -732,6 +733,9 @@ parallel. To enable multi-core support, <code>caret</code> uses the package
 <h2>
 <span class="header-section-number">3.7</span> Hyperparameter Tuning<a class="anchor" aria-label="anchor" href="#hyperparameter-tuning"><i class="fas fa-link"></i></a>
 </h2>
+<p><strong>Note:</strong> This section contains a complete code example of how data should be used.
+It first holds out a test set and then performing hyperparameter selection
+using cross-validation.</p>
 <p>Hyperparameters are parameters that change how a
 training algorithm works. An example is the complexity parameter
 <code>cp</code> for rpart decision trees. Tuning the hyperparameter means that
@@ -976,28 +980,71 @@ contaminated by things like preprocessing the all the data together.</li>
 <h2>
 <span class="header-section-number">3.9</span> Model Comparison<a class="anchor" aria-label="anchor" href="#model-comparison"><i class="fas fa-link"></i></a>
 </h2>
-<p>We will compare decision trees with a k-nearest neighbors (kNN)
-classifier. We will create fixed sampling scheme (10-folds) so we
+<p>We will compare three models, a majority class baseline classifier, a
+decision trees with a k-nearest neighbors (kNN)
+classifier. We will create fixed sampling scheme (10-fold cross-validation) so we
 compare the different models using exactly the same folds. It is
 specified as <code>trControl</code> during training.</p>
 <div class="sourceCode" id="cb164"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">train_index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/createDataPartition.html">createFolds</a></span><span class="op">(</span><span class="va">Zoo_train</span><span class="op">$</span><span class="va">type</span>, </span>
 <span>                           k <span class="op">=</span> <span class="fl">10</span>, </span>
 <span>                           returnTrain <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>Build models</p>
+<div id="build-models" class="section level3" number="3.9.1">
+<h3>
+<span class="header-section-number">3.9.1</span> Build models<a class="anchor" aria-label="anchor" href="#build-models"><i class="fas fa-link"></i></a>
+</h3>
+<p>Caret does not provide a baseline classifier, but lets us specify our own models.
+We define the classifier as a list with the<br>
+structure needed by Caret’s <code><a href="https://rdrr.io/pkg/caret/man/train.html">train()</a></code> function (see <a href="https://topepo.github.io/caret/using-your-own-model-in-train.html#model-components">use your own model</a> in caret’s description). The <code>fit</code> component calculates
+the majority class label and the <code>predict</code> component just labels every row
+in <code>newdata</code> as the majority class.</p>
 <div class="sourceCode" id="cb165"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">majority_class_baseline_classifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Majority Class Baseline Classifier"</span>,</span>
+<span>                  library <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>                  type <span class="op">=</span> <span class="st">"Classification"</span>,</span>
+<span>                  parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>parameter <span class="op">=</span> <span class="st">"parameter"</span>,</span>
+<span>                                          class <span class="op">=</span> <span class="st">"character"</span>,</span>
+<span>                                          label <span class="op">=</span> <span class="st">"parameter"</span><span class="op">)</span>,</span>
+<span>                  grid <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">len</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">search</span> <span class="op">=</span> <span class="st">"grid"</span><span class="op">)</span> </span>
+<span>                    <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>parameter <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span>,</span>
+<span>                  loop <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                  fit <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">wts</span>, <span class="va">param</span>, <span class="va">lev</span>, <span class="va">last</span>, <span class="va">classProbs</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>          </span>
+<span>                    <span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+<span>                    <span class="va">majority</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span><span class="op">(</span><span class="va">tbl</span><span class="op">)</span><span class="op">]</span></span>
+<span>                    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>majority <span class="op">=</span> <span class="va">majority</span><span class="op">)</span></span>
+<span>                    <span class="op">}</span>,</span>
+<span>                  predict <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">modelFit</span>, <span class="va">newdata</span>, <span class="va">submodels</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
+<span>                    <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="va">modelFit</span><span class="op">$</span><span class="va">majority</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">newdata</span><span class="op">)</span><span class="op">)</span></span>
+<span>                  <span class="op">}</span>,</span>
+<span>                  prob <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>                  <span class="op">)</span></span></code></pre></div>
+<p>We train the model and perform cross-validation.</p>
+<div class="sourceCode" id="cb166"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">baseline</span> <span class="op">&lt;-</span>  <span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,</span>
+<span>        data <span class="op">=</span> <span class="va">_</span>,</span>
+<span>        method <span class="op">=</span> <span class="va">majority_class_baseline_classifier</span>,</span>
+<span>          tuneLength <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>          trControl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/trainControl.html">trainControl</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"cv"</span>, </span>
+<span>                                   index <span class="op">=</span> <span class="va">train_index</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<p>The second model is a default decision tree.</p>
+<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rpartFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,</span>
 <span>        data <span class="op">=</span> <span class="va">_</span>,</span>
 <span>        method <span class="op">=</span> <span class="st">"rpart"</span>,</span>
 <span>        tuneLength <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>        trControl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/trainControl.html">trainControl</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"cv"</span>, </span>
+<span>        trControl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/trainControl.html">trainControl</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"cv"</span>,</span>
 <span>                                 index <span class="op">=</span> <span class="va">train_index</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><strong>Note:</strong> for kNN we ask <code>train</code> to scale the data using
-<code>preProcess = "scale"</code>. Logicals will be used as 0-1 variables in
-Euclidean distance calculation.</p>
-<div class="sourceCode" id="cb166"><pre class="downlit sourceCode r">
+<p>The third model is a kNN classifier, this classifier will be discussed
+in the next Chapter. kNN uses the Euclidean distance between objects.
+Logicals will be used as 0-1 variables. To make sure the range of all
+variables is compatible, we
+ask <code>train</code> to scale the data using
+<code>preProcess = "scale"</code>.</p>
+<div class="sourceCode" id="cb168"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">knnFit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>,</span>
 <span>        data <span class="op">=</span> <span class="va">_</span>,</span>
@@ -1007,10 +1054,11 @@ Euclidean distance calculation.</p>
 <span>          trControl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/trainControl.html">trainControl</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"cv"</span>, </span>
 <span>                                   index <span class="op">=</span> <span class="va">train_index</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p>Compare accuracy over all folds.</p>
-<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
+<p>Compare accuracy and kappa over all folds.</p>
+<div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">resamps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/resamples.html">resamples</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>        CART <span class="op">=</span> <span class="va">rpartFit</span>,</span>
+<span>    baseline <span class="op">=</span> <span class="va">baseline</span>,    </span>
+<span>  CART <span class="op">=</span> <span class="va">rpartFit</span>,</span>
 <span>        kNearestNeighbors <span class="op">=</span> <span class="va">knnFit</span></span>
 <span>        <span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -1019,44 +1067,46 @@ Euclidean distance calculation.</p>
 <span><span class="co">## Call:</span></span>
 <span><span class="co">## summary.resamples(object = resamps)</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Models: CART, kNearestNeighbors </span></span>
+<span><span class="co">## Models: baseline, CART, kNearestNeighbors </span></span>
 <span><span class="co">## Number of resamples: 10 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Accuracy </span></span>
 <span><span class="co">##                     Min. 1st Qu. Median   Mean 3rd Qu.</span></span>
-<span><span class="co">## CART              0.6667   0.750 0.7778 0.7890  0.8512</span></span>
-<span><span class="co">## kNearestNeighbors 0.7500   0.875 0.8990 0.9076  1.0000</span></span>
-<span><span class="co">##                    Max. NA's</span></span>
-<span><span class="co">## CART              0.875    0</span></span>
-<span><span class="co">## kNearestNeighbors 1.000    0</span></span>
+<span><span class="co">## baseline          0.3333  0.3409 0.3750 0.4060  0.4688</span></span>
+<span><span class="co">## CART              0.6667  0.7500 0.7778 0.7890  0.8512</span></span>
+<span><span class="co">## kNearestNeighbors 0.7500  0.8750 0.8990 0.9076  1.0000</span></span>
+<span><span class="co">##                     Max. NA's</span></span>
+<span><span class="co">## baseline          0.5714    0</span></span>
+<span><span class="co">## CART              0.8750    0</span></span>
+<span><span class="co">## kNearestNeighbors 1.0000    0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Kappa </span></span>
 <span><span class="co">##                     Min. 1st Qu. Median   Mean 3rd Qu.</span></span>
+<span><span class="co">## baseline          0.0000  0.0000 0.0000 0.0000  0.0000</span></span>
 <span><span class="co">## CART              0.5909  0.6800 0.7188 0.7227  0.7706</span></span>
 <span><span class="co">## kNearestNeighbors 0.6800  0.8315 0.8713 0.8816  1.0000</span></span>
 <span><span class="co">##                     Max. NA's</span></span>
+<span><span class="co">## baseline          0.0000    0</span></span>
 <span><span class="co">## CART              0.8298    0</span></span>
 <span><span class="co">## kNearestNeighbors 1.0000    0</span></span></code></pre></div>
 <p><code>caret</code> provides some visualizations. For
 example, a boxplot to compare the accuracy and kappa distribution (over
 the 10 folds).</p>
-<div class="sourceCode" id="cb168"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb170"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/xyplot.html">bwplot</a></span><span class="op">(</span><span class="va">resamps</span>, layout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-164-1.png" width="672"></div>
-<p>We see that kNN is performing consistently better on the folds than CART
-(except for some outlier folds).</p>
-<p>Find out if one models is statistically better than the other (is the
-difference in accuracy is not zero).</p>
-<div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-166-1.png" width="672"></div>
+<p>We see that the baseline has no predictive power and produces consistently a kappa of 0. KNN performs consistently the best.
+To find out if one models is statistically better than the other, we can use a statistical test.</p>
+<div class="sourceCode" id="cb171"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">difs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span><span class="op">(</span><span class="va">resamps</span><span class="op">)</span></span>
 <span><span class="va">difs</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
 <span><span class="co">## diff.resamples(x = resamps)</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Models: CART, kNearestNeighbors </span></span>
+<span><span class="co">## Models: baseline, CART, kNearestNeighbors </span></span>
 <span><span class="co">## Metrics: Accuracy, Kappa </span></span>
-<span><span class="co">## Number of differences: 1 </span></span>
+<span><span class="co">## Number of differences: 3 </span></span>
 <span><span class="co">## p-value adjustment: bonferroni</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">difs</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
@@ -1068,20 +1118,22 @@ difference in accuracy is not zero).</p>
 <span><span class="co">## Lower diagonal: p-value for H0: difference = 0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Accuracy </span></span>
-<span><span class="co">##                   CART    kNearestNeighbors</span></span>
-<span><span class="co">## CART                      -0.119           </span></span>
-<span><span class="co">## kNearestNeighbors 0.00768                  </span></span>
+<span><span class="co">##                   baseline CART   kNearestNeighbors</span></span>
+<span><span class="co">## baseline                   -0.383 -0.502           </span></span>
+<span><span class="co">## CART              4.10e-08        -0.119           </span></span>
+<span><span class="co">## kNearestNeighbors 7.05e-07 0.023                   </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Kappa </span></span>
-<span><span class="co">##                   CART    kNearestNeighbors</span></span>
-<span><span class="co">## CART                      -0.159           </span></span>
-<span><span class="co">## kNearestNeighbors 0.00538</span></span></code></pre></div>
-<p>p-values tells you the probability of seeing an even more extreme value
-(difference between accuracy) given that the null hypothesis (difference
-= 0) is true. For a better classifier, the p-value should be less than
+<span><span class="co">##                   baseline CART   kNearestNeighbors</span></span>
+<span><span class="co">## baseline                   -0.723 -0.882           </span></span>
+<span><span class="co">## CART              6.18e-10        -0.159           </span></span>
+<span><span class="co">## kNearestNeighbors 6.35e-09 0.0161</span></span></code></pre></div>
+<p>p-values gives us the probability of seeing an even more extreme value
+(difference between accuracy or kappa) given that the null hypothesis (difference
+= 0) is true. For a better classifier, the p-value should be “significant,” i.e., less than
 .05 or 0.01. <code>diff</code> automatically applies Bonferroni correction for
-multiple comparisons. In this case, kNN seems better but the classifiers
-do not perform statistically differently.</p>
+multiple comparisons. In this case, kNN significantly better than the other classifiers.</p>
+</div>
 </div>
 <div id="feature-selection" class="section level2" number="3.10">
 <h2>
@@ -1093,7 +1145,7 @@ Since different features lead to different models, choosing
 the best set of features is also a type of
 model selection.</p>
 <p>Many feature selection methods are implemented in the FSelector package.</p>
-<div class="sourceCode" id="cb170"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb172"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/larskotthoff/fselector">FSelector</a></span><span class="op">)</span></span></code></pre></div>
 <div id="univariate-feature-importance-score" class="section level3" number="3.10.1">
 <h3>
@@ -1102,7 +1154,7 @@ model selection.</p>
 <p>These scores measure how related each feature is to the class variable.
 For discrete features (as in our case), the chi-square statistic can be
 used to derive a score.</p>
-<div class="sourceCode" id="cb171"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb173"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/chi.squared.html">chi.squared</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"feature"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1130,17 +1182,17 @@ used to derive a score.</p>
 <span><span class="co">## 16 domestic           0.256</span></span></code></pre></div>
 <p>We can plot the importance in descending order (using <code>reorder</code> to order factor
 levels used by <code>ggplot</code>).</p>
-<div class="sourceCode" id="cb172"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb174"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">weights</span>,</span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">attr_importance</span>, </span>
 <span>      y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">feature</span>, <span class="va">attr_importance</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"Importance score"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"Feature"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-168-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-170-1.png" width="672"></div>
 <p>Picking the best features is called the feature ranking approach.
 Here we pick the 5 highest-ranked features.</p>
-<div class="sourceCode" id="cb173"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/cutoff.html">cutoff.k</a></span><span class="op">(</span><span class="va">weights</span> <span class="op">|&gt;</span> </span>
 <span>                   <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">column_to_rownames</a></span><span class="op">(</span><span class="st">"feature"</span><span class="op">)</span>, </span>
 <span>                   <span class="fl">5</span><span class="op">)</span></span>
@@ -1148,19 +1200,19 @@ Here we pick the 5 highest-ranked features.</p>
 <span><span class="co">## [1] "feathers" "milk"     "backbone" "toothed"  "eggs"</span></span></code></pre></div>
 <p>Use only the selected features to build a model (<code>Fselector</code> provides
 <code>as.simple.formula</code>).</p>
-<div class="sourceCode" id="cb174"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb176"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/as.simple.formula.html">as.simple.formula</a></span><span class="op">(</span><span class="va">subset</span>, <span class="st">"type"</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
 <span><span class="co">## type ~ feathers + milk + backbone + toothed + eggs</span></span>
-<span><span class="co">## &lt;environment: 0x6522c21006e8&gt;</span></span>
+<span><span class="co">## &lt;environment: 0x5ea716924fd0&gt;</span></span>
 <span><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">m</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-170-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-172-1.png" width="672"></div>
 <p>There are many alternative ways to calculate univariate importance
 scores (see package FSelector). Some of them (also) work for continuous
 features. One example is the information gain ratio based on entropy as
 used in decision tree induction.</p>
-<div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/information.gain.html">gain.ratio</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"feature"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1192,21 +1244,23 @@ used in decision tree induction.</p>
 <p>Often, features are related and calculating importance for each feature
 independently is not optimal. We can use greedy search heuristics. For
 example <code>cfs</code> uses correlation/entropy with best first search.</p>
-<div class="sourceCode" id="cb176"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb178"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/cfs.html">cfs</a></span><span class="op">(</span><span class="va">type</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="co">##  [1] "hair"     "feathers" "eggs"     "milk"     "toothed" </span></span>
 <span><span class="co">##  [6] "backbone" "breathes" "fins"     "legs"     "tail"</span></span></code></pre></div>
-<p>Black-box feature selection uses an evaluator function (the black box)
+<p>The disadvantage of this method is that the model we want to train may not use
+correlation/entropy. We can use the actual model using
+as a black-box defined in an evaluator function
 to calculate a score to be maximized.
-This is typically the best method, since it can use the actual model
+This is typically the best method, since it can use the model
 for selection.
 First, we define an evaluation
 function that builds a model given a subset of features and calculates a
 quality score. We use here the average for 5 bootstrap samples
 (<code>method = "cv"</code> can also be used instead), no tuning (to be faster),
 and the average accuracy as the score.</p>
-<div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">evaluator</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">subset</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">model</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/as.simple.formula.html">as.simple.formula</a></span><span class="op">(</span><span class="va">subset</span>, <span class="st">"type"</span><span class="op">)</span>,</span>
@@ -1224,14 +1278,14 @@ and the average accuracy as the score.</p>
 <span>  <span class="va">m</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>Start with all features (but not the class variable <code>type</code>)</p>
-<div class="sourceCode" id="cb178"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb180"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">features</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html">setdiff</a></span><span class="op">(</span><span class="st">"type"</span><span class="op">)</span></span></code></pre></div>
 <p>There are several (greedy) search strategies available. These run for a
 while so they commented out below. Remove the comment for one at a time
 to try these types of feature selection.</p>
-<div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb181"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#subset &lt;- backward.search(features, evaluator)</span></span>
 <span><span class="co">#subset &lt;- forward.search(features, evaluator)</span></span>
 <span><span class="co">#subset &lt;- best.first.search(features, evaluator)</span></span>
@@ -1246,18 +1300,18 @@ to try these types of feature selection.</p>
 variables. For example, let us try to predict if an animal is a predator
 given the type. First we use the original encoding of type as a factor
 with several values.</p>
-<div class="sourceCode" id="cb180"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb182"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tree_predator</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">predator</span> <span class="op">~</span> <span class="va">type</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">tree_predator</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-176-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-178-1.png" width="672"></div>
 <p><strong>Note:</strong> Some splits use multiple values. Building the tree will become
 extremely slow if a factor has many levels (different values) since the
 tree has to check all possible splits into two subsets. This situation
 should be avoided.</p>
 <p>Convert type into a set of 0-1 dummy variables using <code>class2ind</code>. See
 also <code><a href="https://rdrr.io/pkg/caret/man/dummyVars.html">? dummyVars</a></code> in package <code>caret</code>.</p>
-<div class="sourceCode" id="cb181"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Zoo_train_dummy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/dummyVars.html">class2ind</a></span><span class="op">(</span><span class="va">Zoo_train</span><span class="op">$</span><span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">as.factor</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/add_column.html">add_column</a></span><span class="op">(</span>predator <span class="op">=</span> <span class="va">Zoo_train</span><span class="op">$</span><span class="va">predator</span><span class="op">)</span></span>
@@ -1282,12 +1336,12 @@ also <code><a href="https://rdrr.io/pkg/caret/man/dummyVars.html">? dummyVars</a
 <span>        data <span class="op">=</span> <span class="va">_</span>,</span>
 <span>        control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">rpart.control</a></span><span class="op">(</span>minsplit <span class="op">=</span> <span class="fl">2</span>, cp <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">tree_predator</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-177-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-179-1.png" width="672"></div>
 <p>Using <code>caret</code> on the original factor encoding automatically translates
 factors (here type) into 0-1 dummy variables (e.g., <code>typeinsect = 0</code>).
 The reason is that some models cannot directly use factors and <code>caret</code>
 tries to consistently work with all of them.</p>
-<div class="sourceCode" id="cb182"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb184"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/caret/man/train.html">train</a></span><span class="op">(</span><span class="va">predator</span> <span class="op">~</span> <span class="va">type</span>, </span>
 <span>        data <span class="op">=</span> <span class="va">_</span>, </span>
@@ -1306,12 +1360,12 @@ tries to consistently work with all of them.</p>
 <span><span class="co">## Summary of sample sizes: 83, 83, 83, 83, 83, 83, ... </span></span>
 <span><span class="co">## Resampling results:</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##   Accuracy  Kappa </span></span>
-<span><span class="co">##   0.5635    0.1166</span></span>
+<span><span class="co">##   Accuracy  Kappa  </span></span>
+<span><span class="co">##   0.5397    0.08794</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Tuning parameter 'cp' was held constant at a value of 0.01</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">finalModel</span>, extra <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-178-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-180-1.png" width="672"></div>
 <p><em>Note:</em> To use a fixed value for the tuning parameter <code>cp</code>, we have to
 create a tuning grid that only contains that value.</p>
 </div>
@@ -1321,7 +1375,7 @@ create a tuning grid that only contains that value.</p>
 <span class="header-section-number">3.11</span> Exercises*<a class="anchor" aria-label="anchor" href="#exercises-1"><i class="fas fa-link"></i></a>
 </h2>
 <p>We will use again the Palmer penguin data for the exercises.</p>
-<div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb185"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/">palmerpenguins</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">penguins</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 6 × 8</span></span>
@@ -1383,7 +1437,9 @@ the most important? What variables do not matter?</li>
 </li>
 <li><a class="nav-link" href="#hyperparameter-tuning"><span class="header-section-number">3.7</span> Hyperparameter Tuning</a></li>
 <li><a class="nav-link" href="#pitfalls-of-model-selection-and-evaluation"><span class="header-section-number">3.8</span> Pitfalls of Model Selection and Evaluation</a></li>
-<li><a class="nav-link" href="#model-comparison"><span class="header-section-number">3.9</span> Model Comparison</a></li>
+<li>
+<a class="nav-link" href="#model-comparison"><span class="header-section-number">3.9</span> Model Comparison</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#build-models"><span class="header-section-number">3.9.1</span> Build models</a></li></ul>
+</li>
 <li>
 <a class="nav-link" href="#feature-selection"><span class="header-section-number">3.10</span> Feature Selection*</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#univariate-feature-importance-score"><span class="header-section-number">3.10.1</span> Univariate Feature Importance Score</a></li>
@@ -1409,7 +1465,7 @@ the most important? What variables do not matter?</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-11-12.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-11-15.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
