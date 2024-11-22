@@ -41,8 +41,8 @@ to suggest improvements.
 | 5. [Association Analysis: Basic Concepts](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/association-analysis-basic-concepts.html)  | [PDF](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap5_basic_association_analysis.pdf), [PowerPoint](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap5_basic_association_analysis.pptx)  | [5. Association Analysis](https://www-users.cs.umn.edu/~kumar001/dmbook/ch5_association_analysis.pdf) |
 | 6. [Association Analysis: Advanced Concepts](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/association-analysis-advanced-concepts.html) | - | - |
 | 7. [Cluster Analysis: Basic Concepts](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/cluster-analysis.html) | [PDF](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap7_basic_cluster_analysis.pdf), [PowerPoint](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap7_basic_cluster_analysis.pptx) | [7. Cluster Analysis](https://www-users.cs.umn.edu/~kumar001/dmbook/ch7_clustering.pdf) | 
-| 8. [Regression](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/regression.html) | - | - | 
-| 9. [Logistic Regression](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/logistic-regression-1.html) | - | - | 
+| 8. [Regression](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/regression.html) | - | [Appendix D](https://www-users.cse.umn.edu/~kumar001/dmbook/appendices_2ed.pdf) | 
+| 9. [Logistic Regression](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/logistic-regression-1.html) | - | (covered in Chapter 4.6) | 
 
 ## Interactive Help
 

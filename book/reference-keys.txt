@@ -96,6 +96,7 @@ support-vector-machines
 ensemble-methods
 random-forest
 gradient-boosted-decision-trees-xgboost
+model-comparison-1
 class-imbalance
 option-1-use-the-data-as-is-and-hope-for-the-best
 option-2-balance-data-with-resampling
@@ -103,7 +104,7 @@ option-3-build-a-larger-tree-and-use-predicted-probabilities
 create-a-biased-classifier
 plot-the-roc-curve
 option-4-use-a-cost-sensitive-classifier
-model-comparison-1
+model-comparison-2
 comparing-decision-boundaries-of-popular-classification-techniques
 iris-dataset
 nearest-neighbor-classifier-1

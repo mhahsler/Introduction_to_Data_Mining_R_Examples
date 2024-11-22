@@ -91,23 +91,7 @@ Zoo_train <- Zoo |> slice(inTrain)
 Zoo_test <- Zoo |> slice(-inTrain)
 ```
 
-`train()` is aware of the tunable hyperparameters of each method and 
-automatically performs model selection using a validation set. 
-We will use for all models the same validation sets by
-creating a fixed sampling scheme (10-folds). This will help when we can compare the fitted models later.
-
-```{r }
-train_index <- createFolds(Zoo_train$type, 
-                           k = 10, 
-                           returnTrain = TRUE)
-```
-
-The fixed folds are used in `train()` with the argument
-`trControl = trainControl(method = "cv", index = train_index))`. If
-you don't need fixed folds, then remove `index = train_index` in the
-code below.
-
-For help with building models in caret see: `? train`
+For hyperparameter tuning, we will use 10-fold cross-validation.
 
 **Note:** Be careful if you have many `NA` values in your data.
 `train()` and cross-validation many fail in some cases. If that is the
@@ -125,8 +109,7 @@ rulesFit <- Zoo_train |> train(type ~ .,
   method = "PART",
   data = _,
   tuneLength = 5,
-  trControl = trainControl(method = "cv", 
-                           index = train_index))
+  trControl = trainControl(method = "cv"))
 rulesFit
 ```
 The model selection results are shown in the table. This is the selected model:
@@ -157,8 +140,7 @@ knnFit <- Zoo_train |> train(type ~ .,
   data = _,
   preProcess = "scale",
   tuneGrid = data.frame(k = c(1, 3, 5, 7, 9)),
-	trControl = trainControl(method = "cv", 
-	                         index = train_index))
+	trControl = trainControl(method = "cv"))
 knnFit
 ```
 
@@ -181,8 +163,7 @@ NBFit <- train(x = as.data.frame(Zoo_train[, -ncol(Zoo_train)]),
                method = "nb",
                tuneGrid = data.frame(fL = c(.2, .5, 1, 5), 
                                      usekernel = TRUE, adjust = 1),
-               trControl = trainControl(method = "cv", 
-                                        index = train_index))
+               trControl = trainControl(method = "cv"))
 NBFit
 ```
 
@@ -228,8 +209,7 @@ logRegFit <- Zoo_train |> train(type ~ .,
   method = "multinom",
   data = _,
   trace = FALSE, # suppress some output
-	trControl = trainControl(method = "cv", 
-	                         index = train_index))
+	trControl = trainControl(method = "cv"))
 logRegFit
 ```
 
@@ -252,8 +232,7 @@ nnetFit <- Zoo_train |> train(type ~ .,
   method = "nnet",
   data = _,
 	tuneLength = 5,
-	trControl = trainControl(method = "cv", 
-	                         index = train_index),
+	trControl = trainControl(method = "cv"),
   trace = FALSE # no progress output
   )
 nnetFit
@@ -282,8 +261,7 @@ svmFit <- Zoo_train |> train(type ~.,
   method = "svmLinear",
   data = _,
 	tuneLength = 5,
-	trControl = trainControl(method = "cv", 
-	                         index = train_index))
+	trControl = trainControl(method = "cv"))
 svmFit
 ```
 
@@ -309,8 +287,7 @@ randomForestFit <- Zoo_train |> train(type ~ .,
   method = "rf",
   data = _,
 	tuneLength = 5,
-	trControl = trainControl(method = "cv", 
-	                         index = train_index))
+	trControl = trainControl(method = "cv"))
 randomForestFit
 ```
 
@@ -345,8 +322,7 @@ xgboostFit <- Zoo_train |> train(type ~ .,
   method = "xgbTree",
   data = _,
   tuneLength = 5,
-  trControl = trainControl(method = "cv", 
-                           index = train_index),
+  trControl = trainControl(method = "cv"),
   tuneGrid = expand.grid(
     nrounds = 20,
     max_depth = 3,
@@ -365,6 +341,49 @@ is shown.
 ```{r }
 xgboostFit$finalModel
 ```
+
+### Model Comparison
+
+
+```{r }
+resamps <- resamples(list(
+  PART = rulesFit,
+	kNearestNeighbors = knnFit,
+  NBayes = NBFit,
+  logReg = logRegFit,
+  ANN = nnetFit,
+  SVM = svmFit,
+  RandomForest = randomForestFit,
+  XGBoost = xgboostFit
+	))
+
+summary(resamps)
+```
+
+```{r}
+bwplot(resamps, layout = c(3, 1))
+
+difs <- diff(resamps)
+summary(difs)
+```
+
+All model perform similar on this easy dataset. Note that multiple comparison 
+(Bonferroni correction) reduces the significance. If we compare only one weaker with
+a stronger model,
+then it shows that they are significantly different.
+
+```{r }
+resamps <- resamples(list(
+  ANN = nnetFit,
+  RandomForest = randomForestFit
+	))
+
+bwplot(resamps, layout = c(3, 1))
+
+difs <- diff(resamps)
+summary(difs)
+```
+
 
 ## Class Imbalance
 
@@ -543,9 +562,10 @@ fit <- training_reptile |>
         data = _,
         method = "rpart",
         tuneLength = 10,
-        trControl = trainControl(method = "cv",
-        classProbs = TRUE,  ## for predict with type="prob"
-        summaryFunction=twoClassSummary),  ## for ROC
+        trControl = trainControl(
+                        method = "cv",
+                        classProbs = TRUE,  ## for predict with type="prob"
+                        summaryFunction=twoClassSummary),  ## for ROC
         metric = "ROC",
         control = rpart.control(minsplit = 3))
 fit
@@ -574,7 +594,7 @@ reptile. The data set is small and this works better with more data.
 ```{r }
 prob <- predict(fit, testing_reptile, type = "prob")
 tail(prob)
-pred <- ifelse(prob[,"reptile"]>=0.01, "reptile", "nonreptile") |> 
+pred <- ifelse(prob[,"reptile"] >= 0.01, "reptile", "nonreptile") |> 
   as.factor()
 
 confusionMatrix(data = pred,
@@ -663,8 +683,8 @@ baselineFit <- Zoo_train |> train(type ~ .,
   data = _,
   strategy = "constant",
   constant = "mammal",
-  trControl = trainControl(method = "cv", 
-                           index = train_index))
+  trControl = trainControl(method = "cv" 
+                           ))
 baselineFit
 ```
 
@@ -737,7 +757,9 @@ may perform better for certain datasets. In this section, we visualize the
 decision boundaries found by several popular classification methods.
 
 The following function defines a plot that adds the decision boundary 
-(black lines) and classification confidence (color intensity) by evaluating 
+(black lines) and the difference between the classification probability 
+of the two best classes
+(color intensity; indifference is 0 shown as white) by evaluating 
 the classifier
 at evenly spaced grid points. Note that low resolution will make
 evaluation faster but it also will make the decision boundary look like it has
@@ -781,35 +803,41 @@ decisionplot <- function(model, data, class_var,
   # guess how to get class labels from predict
   # (unfortunately not very consistent between models)
   cl <- predict(model, g, type = predict_type[1])
-  
+    
   prob <- NULL
   if(is.list(cl)) { # LDA returns a list
     prob <- cl$posterior
     cl <- cl$class
-  } else
+  } else if (inherits(model, "svm")) 
+    prob <- attr(predict(model, g, probability = TRUE), "probabilities")
+  else 
     if(!is.na(predict_type[2]))
       try(prob <- predict(model, g, type = predict_type[2]))
   
   # We visualize the difference in probability/score between
   # the winning class and the second best class. We only use
   # probability if the classifier's predict function supports it.
-  max_prob <- 1
+  delta_prob <- 1
   if(!is.null(prob))
+    
     try({
+      if (any(rowSums(prob) != 1))
+        prob <- cbind(prob, 1 - rowSums(prob))
+    
       max_prob <- t(apply(prob, MARGIN = 1, sort, decreasing = TRUE))
-      max_prob <- max_prob[,1] - max_prob[,2]
+      delta_prob <- max_prob[,1] - max_prob[,2]
     }, silent = TRUE) 
   
   cl <- factor(cl, levels = levels(y))
   
   g <- g |> add_column(prediction = cl, 
-                       probability = max_prob)
+                       delta_prob = delta_prob)
   
   ggplot(g, mapping = aes(
     x = .data[[colnames(g)[1]]], 
     y = .data[[colnames(g)[2]]])) +
     geom_raster(mapping = aes(fill = prediction, 
-                              alpha = probability)) +
+                              alpha = delta_prob)) +
     geom_contour(mapping = aes(z = as.numeric(prediction)), 
       bins = length(levels(cl)), 
       linewidth = .5, 
@@ -820,8 +848,7 @@ decisionplot <- function(model, data, class_var,
       shape = .data[[class_var]]), 
       alpha = .7) + 
     scale_alpha_continuous(range = c(0,1), 
-                           limits = c(0,1), 
-                           guide = "none") +  
+                           limits = c(0,1)) + 
     labs(subtitle = paste("Training accuracy:", round(acc, 2)))
 }
 ```
@@ -864,11 +891,11 @@ decisionplot(model, x, class_var = "Species") +
 
 model <- x |> caret::knn3(Species ~ ., data = _, k = 3)
 decisionplot(model, x, class_var = "Species") + 
-  labs(title = "kNN (3 neighbor)")
+  labs(title = "kNN (3 neighbors)")
 
 model <- x |> caret::knn3(Species ~ ., data = _, k = 9)
 decisionplot(model, x, class_var = "Species") + 
-  labs(title = "kNN (9 neighbor)")
+  labs(title = "kNN (9 neighbors)")
 ```
 
 Increasing $k$ smooths the decision boundary. At $k=1$, we see white
@@ -877,6 +904,9 @@ Here, the algorithm randomly chooses a class during prediction resulting
 in the meandering decision boundary. The predictions in that area are
 not stable and every time we ask for a class, we may get a different
 class.
+
+Note: The crazy lines in white areas are an artifact of the visualization. Here the
+classifier randomly selects a class.
 
 #### Naive Bayes Classifier
 
@@ -889,6 +919,8 @@ decisionplot(model, x, class_var = "Species",
   labs(title = "Naive Bayes")
 ```
 
+The GBN finds a good model with the advantage that no hyperparameters are needed.
+
 #### Linear Discriminant Analysis
 
 LDA finds linear decision boundaries.
@@ -898,6 +930,8 @@ model <- x |> MASS::lda(Species ~ ., data = _)
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "LDA")
 ```
+
+Linear decision boundaries work for this dataset so LDA works well.
 
 #### Multinomial Logistic Regression
 
@@ -909,6 +943,7 @@ model <- x |> nnet::multinom(Species ~., data = _)
 decisionplot(model, x, class_var = "Species") + 
   labs(titel = "Multinomial Logistic Regression")
 ```
+
 
 #### Decision Trees
 
@@ -939,34 +974,41 @@ decisionplot(model, x, class_var = "Species") +
   labs(title = "Random Forest")
 ```
 
+For the default settings for Random forest, the model seems to overfit the 
+training data. More data would probably alleviate this issue.
+
 #### Support Vector Machine
 
 Compare SVMs with different kernel functions. 
 
 ```{r }
 model <- x |> e1071::svm(Species ~ ., data = _, 
-                         kernel = "linear")
+                         kernel = "linear", probability = TRUE)
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "SVM (linear kernel)")
 
 model <- x |> e1071::svm(Species ~ ., data = _, 
-                         kernel = "radial")
+                         kernel = "radial", probability = TRUE)
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "SVM (radial kernel)")
 
 model <- x |> e1071::svm(Species ~ ., data = _, 
-                         kernel = "polynomial")
+                         kernel = "polynomial", probability = TRUE)
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "SVM (polynomial kernel)")
 
 model <- x |> e1071::svm(Species ~ ., data = _, 
-                         kernel = "sigmoid")
+                         kernel = "sigmoid", probability = TRUE)
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "SVM (sigmoid kernel)")
 ```
 
-Most kernels do well only the sigmoid kernel seems to find a
-very strange decision boundary.
+
+The linear SVM (without a kernel) produces straight lines and works well on the iris data.
+Most kernels do also well, only the sigmoid kernel seems to find a
+very strange decision boundary which indicates that the data does not have a
+linear decision boundary 
+in the projected space.
 
 
 
@@ -977,30 +1019,55 @@ different number of
 neurons for the hidden layer.
 
 ```{r }
-model <-x |> nnet::nnet(Species ~ ., data = _, 
+set.seed(1234)
+
+model <- x |> nnet::nnet(Species ~ ., data = _, 
                         size = 1, trace = FALSE)
 decisionplot(model, x, class_var  = "Species", 
              predict_type = c("class", "raw")) + 
-  labs(title = "NN (1 neuron)")
+  labs(title = "ANN (1 neuron)")
 
-model <-x |> nnet::nnet(Species ~ ., data = _, 
+model <- x |> nnet::nnet(Species ~ ., data = _, 
                         size = 2, trace = FALSE)
 decisionplot(model, x, class_var  = "Species", 
              predict_type = c("class", "raw")) + 
-  labs(title = "NN (2 neurons)")
+  labs(title = "ANN (2 neurons)")
 
-model <-x |> nnet::nnet(Species ~ ., data = _, 
+model <- x |> nnet::nnet(Species ~ ., data = _, 
                         size = 4, trace = FALSE)
 decisionplot(model, x, class_var  = "Species", 
              predict_type = c("class", "raw")) + 
-  labs(title = "NN (4 neurons)")
+  labs(title = "ANN (4 neurons)")
 
-model <-x |> nnet::nnet(Species ~ ., data = _, 
-                        size = 10, trace = FALSE)
+model <- x |> nnet::nnet(Species ~ ., data = _, 
+                        size = 6, trace = FALSE)
 decisionplot(model, x, class_var  = "Species", 
              predict_type = c("class", "raw")) + 
-  labs(title = "NN (10 neurons)")
+  labs(title = "ANN (6 neurons)")
+
+model <- x |> nnet::nnet(Species ~ ., data = _, 
+                        size = 20, trace = FALSE)
+decisionplot(model, x, class_var  = "Species", 
+             predict_type = c("class", "raw")) + 
+  labs(title = "ANN (20 neurons)")
+
+model <- x |> nnet::nnet(Species ~ ., data = _, 
+                        size = 100, trace = FALSE)
+decisionplot(model, x, class_var  = "Species", 
+             predict_type = c("class", "raw")) + 
+  labs(title = "ANN (100 neurons)")
+
+model <- x |> nnet::nnet(Species ~ ., data = _, 
+                        size = 100, trace = FALSE)
+decisionplot(model, x, class_var  = "Species", 
+             predict_type = c("class", "raw")) + 
+  labs(title = "ANN 2nd try (100 neurons)")
 ```
+
+For this simple data set, 2 neurons produce the best classifier. 
+The model starts to overfit with 6 or more neurons. I ran the ANN twice with 100 
+neurons, the two different decision boundaries indicate that the variability of
+the ANN with so many neurons is high.
 
 ### Circle Dataset
 
@@ -1039,7 +1106,7 @@ decisionplot(model, x, class_var = "class") +
 
 model <- x |> caret::knn3(class ~ ., data = _, k = 10)
 decisionplot(model, x, class_var = "class") + 
-  labs(title = "kNN (10 neighbor)")
+  labs(title = "kNN (10 neighbors)")
 ```
 
 k-Nearest does not find a smooth decision boundary, but tends to 
@@ -1095,7 +1162,7 @@ decisionplot(model, x, class_var = "class") +
   labs(title = "CART")
 
 model <- x |> rpart::rpart(class ~ ., data = _,
-  control = rpart::rpart.control(cp = 0.001, minsplit = 1))
+  control = rpart::rpart.control(cp = 0, minsplit = 1))
 decisionplot(model, x, class_var = "class") + 
   labs(title = "CART (overfitting)")
 
@@ -1125,28 +1192,29 @@ Compare SVMs with different kernels.
 
 ```{r }
 model <- x |> e1071::svm(class ~ ., data = _, 
-                         kernel = "linear")
+                         kernel = "linear", probability = TRUE)
 decisionplot(model, x, class_var = "class") + 
   labs(title = "SVM (linear kernel)")
 
 model <- x |> e1071::svm(class ~ ., data = _, 
-                         kernel = "radial")
+                         kernel = "radial", probability = TRUE)
 decisionplot(model, x, class_var = "class") + 
   labs(title = "SVM (radial kernel)")
 
 model <- x |> e1071::svm(class ~ ., data = _, 
-                         kernel = "polynomial")
+                         kernel = "polynomial", probability = TRUE)
 decisionplot(model, x, class_var = "class") + 
   labs(title = "SVM (polynomial kernel)")
 
 model <- x |> e1071::svm(class ~ ., data = _, 
-                         kernel = "sigmoid")
+                         kernel = "sigmoid", probability = TRUE)
 decisionplot(model, x, class_var = "class") + 
   labs(title = "SVM (sigmoid kernel)")
 ```
 
-SMV with a radial kernel performs well, the other kernels have issues 
-with the data.
+A linear SVM does not work on this data set. An SMV with a radial kernel performs 
+well, the other kernels have issues with finding a linear decision boundary in the 
+projected space.
 
 #### Single Layer Feed-forward Neural Networks
 
@@ -1155,24 +1223,27 @@ different number of
 neurons for the hidden layer.
 
 ```{r }
-model <-x |> nnet::nnet(class ~ ., data = _, size = 1, trace = FALSE)
+model <- x |> nnet::nnet(class ~ ., data = _, size = 1, trace = FALSE)
 decisionplot(model, x, class_var = "class", 
-  predict_type = c("class")) + labs(title = "NN (1 neuron)")
+  predict_type = c("class", "raw")) + labs(title = "ANN (1 neuron)")
 
-model <-x |> nnet::nnet(class ~ ., data = _, size = 2, trace = FALSE)
+model <- x |> nnet::nnet(class ~ ., data = _, size = 2, trace = FALSE)
 decisionplot(model, x, class_var = "class", 
-  predict_type = c("class")) + labs(title = "NN (2 neurons)")
+  predict_type = c("class", "raw")) + labs(title = "ANN (2 neurons)")
 
-model <-x |> nnet::nnet(class ~ ., data = _, size = 4, trace = FALSE)
+model <- x |> nnet::nnet(class ~ ., data = _, size = 4, trace = FALSE)
 decisionplot(model, x, class_var = "class", 
-  predict_type = c("class")) + labs(title = "NN (4 neurons)")
+  predict_type = c("class", "raw")) + labs(title = "ANN (4 neurons)")
 
-model <-x |> nnet::nnet(class ~ ., data = _, size = 10, trace = FALSE)
+model <- x |> nnet::nnet(class ~ ., data = _, size = 6, trace = FALSE)
 decisionplot(model, x, class_var = "class", 
-  predict_type = c("class")) + labs(title = "NN (10 neurons)")
+  predict_type = c("class", "raw")) + labs(title = "ANN (6 neurons)")
+model <- x |> nnet::nnet(class ~ ., data = _, size = 20, trace = FALSE)
+decisionplot(model, x, class_var = "class", 
+  predict_type = c("class", "raw")) + labs(title = "ANN (20 neurons)")
 ```
 
-The plots show that a network with 4 neurons performs well, while
+The plots show that a network with 4 and 6 neurons performs well, while
 a larger number of neurons leads to overfitting the training data.
 
 ## More Information on Classification with R

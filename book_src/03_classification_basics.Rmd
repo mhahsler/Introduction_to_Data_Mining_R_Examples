@@ -547,15 +547,10 @@ confusionMatrix(data = pred,
 
 We will compare three models, a majority class baseline classifier, a 
 decision trees with a k-nearest neighbors (kNN)
-classifier. We will create fixed sampling scheme (10-fold cross-validation) so we
-compare the different models using exactly the same folds. It is
-specified as `trControl` during training.
-
-```{r }
-train_index <- createFolds(Zoo_train$type, 
-                           k = 10, 
-                           returnTrain = TRUE)
-```
+classifier. We will use 10-fold cross-validation for hyper parameter tuning. 
+Caret's `train()` function refits the selected model on all of the training data and
+performs cross-validation to estimate the generalization error. These cross-validation 
+results can be used to compare models statistically. 
 
 ### Build models
 
@@ -593,9 +588,8 @@ baseline <-  Zoo_train |>
   train(type ~ .,
         data = _,
         method = majority_class_baseline_classifier,
-	      tuneLength = 1,
-	      trControl = trainControl(method = "cv", 
-	                               index = train_index)
+	      tuneLength = 1, ### there are no hyperparameters
+	      trControl = trainControl(method = "cv")
   )
 ```
 
@@ -608,8 +602,7 @@ rpartFit <- Zoo_train |>
         data = _,
         method = "rpart",
         tuneLength = 10,
-        trControl = trainControl(method = "cv",
-                                 index = train_index)
+        trControl = trainControl(method = "cv")
   )
 ```
 
@@ -627,13 +620,12 @@ knnFit <- Zoo_train |>
         method = "knn",
         preProcess = "scale",
 	      tuneLength = 10,
-	      trControl = trainControl(method = "cv", 
-	                               index = train_index)
+	      trControl = trainControl(method = "cv")
   )
 ```
 
 
-Compare accuracy and kappa over all folds.
+Compare the accuracy and kappa distributions of the final model over all folds.
 
 ```{r }
 resamps <- resamples(list(
@@ -667,7 +659,9 @@ p-values gives us the probability of seeing an even more extreme value
 (difference between accuracy or kappa) given that the null hypothesis (difference
 = 0) is true. For a better classifier, the p-value should be "significant," i.e., less than
 .05 or 0.01. `diff` automatically applies Bonferroni correction for
-multiple comparisons. In this case, kNN significantly better than the other classifiers.
+multiple comparisons to adjust the p-value upwards. In this case, CART and kNN perform significantly better 
+than the baseline classifiers. The difference between CART and kNN is only 
+significant at the 0.05 level, so kNN might be slightly better. 
 
 ## Feature Selection*
 
