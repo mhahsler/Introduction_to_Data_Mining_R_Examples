@@ -104,7 +104,6 @@ option-3-build-a-larger-tree-and-use-predicted-probabilities
 create-a-biased-classifier
 plot-the-roc-curve
 option-4-use-a-cost-sensitive-classifier
-model-comparison-2
 comparing-decision-boundaries-of-popular-classification-techniques
 iris-dataset
 nearest-neighbor-classifier-1
@@ -207,7 +206,7 @@ exercises-5
 logistic-regression-1
 introduction-2
 data-preparation-1
-create-a-logistic-regression-model
+a-first-logistic-regression-model
 stepwise-variable-selection-1
 calculate-the-response
 check-classification-performance

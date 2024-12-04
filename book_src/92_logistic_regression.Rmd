@@ -19,34 +19,36 @@ source("_common.R")
 ## Introduction
 
 Logistic regression contains the word regression, but it is actually a 
-probabilistic statistical classification
-model to predict a binary outcome (a probability) given a set of features.
+probabilistic, statistical classification
+model to predict the probability $p$ of a binary outcome given a set of features.
 It is a very powerful model that can be fit very quickly. It is one of the 
 first classification models you should try on new data.
 
-
-Logistic regression can be thought of as a linear regression with the
+Logistic regression is a [generalized linear model](https://en.wikipedia.org/wiki/Generalized_linear_model) 
+with the logit as the link function and a binomial error model. It can 
+be thought of as a linear regression with the
 log odds ratio (logit) 
 of the binary outcome as the dependent variable:
 
-$$logit(p) = ln(\frac{p}{1-p}) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...$$
+$$logit(p) = ln\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...$$
 
-
+The logit function links the probability p to the linear regression by converting 
+the logit into a number in the probability range $[0,1]$.
 ```{r}
 logit  <- function(p) log(p/(1-p))
-x <- seq(0, 1, length.out = 100)
-plot(x, logit(x), type = "l")
-abline(v=0.5, lty = 2)
-abline(h=0, lty = 2)
+p <- seq(0, 1, length.out = 100)
+plot(logit(p), p, type = "l")
+abline(h = 0.5, lty = 2)
+abline(v = 0, lty = 2)
 ```
 
 
-This is equivalent to modeling the probability of the outcome $p$ by
+This is equivalent to modeling the probability of the outcome $p$ by:
 
 $$ p = \frac{e^{\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...}}{1 +  e^{\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...}} = \frac{1}{1+e^{-(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...)}}$$
 
 ## Data Preparation
-Load and shuffle data. We also add a useless variable to see if the logistic regression removes it.
+We load and shuffle the data. We also add a useless variable to see if the logistic regression removes it.
 
 ```{r}
 data(iris)
@@ -56,25 +58,25 @@ x <- iris[sample(1:nrow(iris)),]
 x <- cbind(x, useless = rnorm(nrow(x)))
 ```
 
-Make Species into a binary classification problem so we will
-classify if a flower is of species Virginica
+We create a binary classification problem by
+classify if a flower is of species Virginica.
 
 ```{r}
 x$virginica <- x$Species == "virginica"
 x$Species <- NULL
-plot(x, col=x$virginica+1)
+plot(x, col=x$virginica + 1)
 ```
 
-## Create a Logistic Regression Model
+## A first Logistic Regression Model
 Logistic regression is a generalized linear model (GLM) with logit as the
 link function and a binomial error model.
 
 ```{r}
 model <- glm(virginica ~ .,
-  family = binomial(logit), data=x)
+  family = binomial(logit), data = x)
 ```
 
-About the warning: glm.fit: fitted probabilities numerically 0 or 1 occurred means that the data is possibly linearly separable.
+*About the warning:* glm.fit: fitted probabilities numerically 0 or 1 occurred means that the data is possibly linearly separable.
 
 ```{r}
 model
@@ -86,7 +88,8 @@ Check which features are significant?
 summary(model)
 ```
 
-AIC can be used for model selection
+AIC ([Akaike information criterion](https://en.wikipedia.org/wiki/Akaike_information_criterion)) 
+is a measure of how good the model is. Smaller is better. It can be used for model selection.
 
 ## Stepwise Variable Selection
 
@@ -109,10 +112,18 @@ from. To get a generalization error estimate you should use a test set or
 cross-validation!
 
 ```{r}
-pr <- predict(model2, x, type="response")
-round(pr, 2)
-hist(pr, breaks=20)
-hist(pr[x$virginica==TRUE], col="red", breaks=20, add=TRUE)
+pr <- predict(model2, x, type = "response")
+round(pr[1:10], 2)
+```
+
+The response is the predicted probability of the flower being of species 
+virginica. The probabilities of the first 10 flowers are shown. Below is 
+a histogram of predicted probabilities. The color is used to show the 
+examples that have the true class virginica.
+
+```{r}
+hist(pr, breaks = 20, main = "Predicted Probability vs. True Class")
+hist(pr[x$virginica == TRUE], col = "red", breaks = 20, add = TRUE)
 ```
 
 ## Check Classification Performance
@@ -124,23 +135,22 @@ We calculate the predicted class by checking if the probability is larger than
 pred <- pr > .5
 ```
 
-Now er can create a confusion table and calculate the accuracy.
+Now we can create a confusion table and calculate the accuracy.
 ```{r}
-tbl <- table(actual = x$virginica, predicted = pr>.5)
+tbl <- table(predicted = pred, actual = x$virginica)
 tbl
 
 sum(diag(tbl))/sum(tbl)
 ```
 
-We can also use caret's more advanced function `confusionMatrix()`. Our code
-above uses `logical` vectors.
-but foo caret, we need to make sure that both, the reference and the predictions
-are coded as `factor`.
+We can also use caret's more advanced function `caret::confusionMatrix()`. Our code
+above uses `logical` vectors. For caret, we need to make sure that both, 
+the reference and the predictions are coded as `factor`.
 
 ```{r }
 caret::confusionMatrix(
-  reference = factor(x$virginica, levels = c(TRUE, FALSE)), 
-  data = factor(pr>.5, levels = c(TRUE, FALSE)))
+  reference = factor(x$virginica, labels = c("Yes", "No"), levels = c(TRUE, FALSE)), 
+  data = factor(pred, labels = c("Yes", "No"), levels = c(TRUE, FALSE)))
 ```
 
 We see that the model performs well with a very high accuracy and kappa value.

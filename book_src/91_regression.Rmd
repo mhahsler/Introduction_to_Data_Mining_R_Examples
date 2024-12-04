@@ -45,22 +45,30 @@ regression methods.
 Linear regression models the value of a dependent variable $y$ (also called
 the response) as
 as linear function of independent variables $X_1, X_2, ..., X_p$
-(also called regressors, predictors, exogenous variables, explanatory variables,
+(also called the regressors, predictors, exogenous variables, explanatory variables,
 or covariates).
-If we use more than one explanatory variable, then we oten call this 
+If we use more than one explanatory variable, then we often call this 
 multiple or multivariate linear regression.
-Given $n$ observations, the model is:
-$$y_i = \beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip} + \epsilon_i = \beta_0 + \sum_{j = 1}^p{(\beta_jx_{ij} + \epsilon_i)}$$
+The linear regression model is:
+$$\hat{y}_i = f(\mathbf{x}_i) = \beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip} + \epsilon_i = \beta_0 + \sum_{j = 1}^p{(\beta_jx_{ij} + \epsilon_i)},$$
 
-where $\beta_0$ is the intercept, $\beta$ is a $p$-dimensional parameter
+where $\beta_0$ is the intercept, $\boldsymbol{\beta}$ is a $p+1$-dimensional parameter
 vector learned from the data, and $\epsilon$ is the error term
-(called residuals). This is often also written in vector notation as
-$y = X\beta + \epsilon$ where $y$ and $\beta$ are vectors and $X$ is the matrix
-with the regressors (called design matrix).
+(called the residuals). This is often also written in vector notation as
+$$\hat{\mathbf{y}} = \mathbf{X} \boldsymbol{\beta} + \epsilon,$$ 
+where $\hat{\mathbf{y}}$ 
+and $\boldsymbol{\beta}$ are vectors and $\mathbf{X}$ is the matrix
+with the covariates (called the design matrix).
 
-Linear regression makes several assumptions:
+The error that is often minimized in regression problems is the squared error defined
+as:
 
-* _Weak exogeneity:_ Predictor variables are assumed to be error free.
+$$SE= \sum_i (y_i - f(\mathbf{x}_i))^2$$
+
+The parameter vector is found by minimizing the squared error the training data.
+
+Linear regression makes several assumptions that should be checked:
+
 * _Linearity:_ There is a linear relationship between dependent
   and independent variables.
 * _Homoscedasticity:_ The variance of the error ($\epsilon$)
@@ -69,7 +77,7 @@ Linear regression makes several assumptions:
 * _No multicollinearity of predictors:_ Predictors cannot be
   perfectly correlated or the parameter vector cannot be identified. _Note_
   that highly correlated predictors lead to unstable results and should be
-  avoided.
+  avoided using, e.g., variable selection.
 
 ## A First Linear Regression Model
 
@@ -139,11 +147,13 @@ The summary shows:
   an R-squared of greater than $0.7$ is considered good, but this is just a rule of thumb and 
   we should rather use a test set for evaluation.
 
-Plotting the model produces diagnostic plots (see `plot.lm()`). For example
-to check for homoscedasticity (the residual vs predicted value scatter plot 
-should produce a close to horizontal line)
-and if the residuals are approximately normally distributed 
-(Q-Q plot should be close to the straight line).
+Plotting the model produces diagnostic plots (see `plot.lm()`). For example,
+to check that the error term has a mean of 0 and is homoscedastic, 
+the residual vs. predicted value scatter plot 
+should have a red line that stays clode to 0 and 
+not look like a funnel where they are increasing when the fitted values increase.
+To check if the residuals are approximately normally distributed,
+the Q-Q plot should be close to the straight diagonal line.
 
 ```{r}
 plot(model1, which = 1:2)
@@ -344,7 +354,7 @@ The regression tree shows the predicted value in as the top number in the node.
 Also, remember that tree-based models automatically variable selection
 by choosing the splits.
 
-Let's evaluate the regression tree by calulating the RMSE.
+Let's evaluate the regression tree by calculating the RMSE.
 
 ```{r}
 RMSE(predict(model7, test), test$Petal.Width)

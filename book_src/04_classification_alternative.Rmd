@@ -342,11 +342,32 @@ is shown.
 xgboostFit$finalModel
 ```
 
-### Model Comparison
 
+## Model Comparison
+
+We first create a weak baseline model that always predicts the the majority 
+class mammal.
+
+```{r }
+baselineFit <- Zoo_train |> train(type ~ .,
+  method = basemodels::dummyClassifier,
+  data = _,
+  strategy = "constant",
+  constant = "mammal",
+  trControl = trainControl(method = "cv" 
+                           ))
+baselineFit
+```
+
+The kappa of 0 clearly indicates that the baseline model has no power.
+
+
+We collect the performance metrics from the models trained on the same
+data.
 
 ```{r }
 resamps <- resamples(list(
+  baseline = baselineFit,
   PART = rulesFit,
 	kNearestNeighbors = knnFit,
   NBayes = NBFit,
@@ -355,35 +376,49 @@ resamps <- resamples(list(
   SVM = svmFit,
   RandomForest = randomForestFit,
   XGBoost = xgboostFit
-	))
-
-summary(resamps)
+    ))
+resamps
 ```
 
-```{r}
-bwplot(resamps, layout = c(3, 1))
-
-difs <- diff(resamps)
-summary(difs)
-```
-
-All model perform similar on this easy dataset. Note that multiple comparison 
-(Bonferroni correction) reduces the significance. If we compare only one weaker with
-a stronger model,
-then it shows that they are significantly different.
+The summary statistics shows the performance. We see that all
+methods do well on this easy data set, only the baseline model performs 
+as expected poorly.
 
 ```{r }
-resamps <- resamples(list(
-  ANN = nnetFit,
-  RandomForest = randomForestFit
-	))
+summary(resamps)
 
+library(lattice)
 bwplot(resamps, layout = c(3, 1))
+```
 
+Perform inference about differences between models. For each metric, all
+pair-wise differences are computed and tested to assess if the
+difference is equal to zero. By default Bonferroni correction for
+multiple comparison is used. Differences are shown in the upper triangle
+and p-values are in the lower triangle.
+
+```{r }
 difs <- diff(resamps)
 summary(difs)
 ```
 
+All perform similarly well except the baseline model (differences in the first row
+are negative and the p-values in the first column are \<.05 indicating
+that the null-hypothesis of a difference of 0 can be rejected).
+Most models do similarly well on the data. We choose here the random
+forest model and evaluate its generalization performance on the held-out
+test set.
+
+```{r }
+pr <- predict(randomForestFit, Zoo_test)
+pr
+```
+
+Calculate the confusion matrix for the held-out test data.
+
+```{r }
+confusionMatrix(pr, reference = Zoo_test$type)
+```
 
 ## Class Imbalance
 
@@ -400,16 +435,22 @@ library(rpart.plot)
 data(Zoo, package = "mlbench")
 ```
 
-Class distribution
+You always need to check if you have a class imbalance problem. Just look at the class
+distribution.
 
 ```{r }
 ggplot(Zoo, aes(y = type)) + geom_bar()
 ```
 
-To create an imbalanced problem, we want to decide if an animal is an
-reptile. First, we change the class variable to make it into a binary
-reptile/no reptile classification problem. **Note:** We use here the
-training data for testing. You should use a separate testing data set!
+We see that there is moderate class imbalance with very many mammals and few
+amphibians and reptiles in the data set. If we build a classifier, then 
+it is very likely that it will not perform well for identifying amphibians 
+or reptiles. 
+
+
+Deciding if an animal is a reptile is a very class imbalanced problem.
+We set up this problem by changing the class variable to make it into a binary
+reptile/non-reptile classification problem.
 
 ```{r }
 Zoo_reptile <- Zoo |> 
@@ -421,17 +462,23 @@ Zoo_reptile <- Zoo |>
 Do not forget to make the class variable a factor (a nominal variable)
 or you will get a regression tree instead of a classification tree.
 
+By checking the class distribution, we see that classification model is now
+highly imbalances with only 5 reptiles vs. 96 non-reptiles.
+
+
 ```{r }
 summary(Zoo_reptile)
 ```
-
-See if we have a class imbalance problem.
 
 ```{r }
 ggplot(Zoo_reptile, aes(y = type)) + geom_bar()
 ```
 
-Create test and training data. I use here a 50/50 split to make sure
+The graph shows that the data is highly imbalanced. We will try several 
+different options in the next few subsections.
+
+We split the data into test and training data so we can evaluate how well the 
+classifiers for the different options work. I use here a 50/50 split to make sure
 that the test set has some samples of the rare reptile class.
 
 ```{r }
@@ -441,9 +488,6 @@ inTrain <- createDataPartition(y = Zoo_reptile$type, p = .5)[[1]]
 training_reptile <- Zoo_reptile |> slice(inTrain)
 testing_reptile <- Zoo_reptile |> slice(-inTrain)
 ```
-
-the new class variable is clearly not balanced. This is a problem for
-building a tree!
 
 ### Option 1: Use the Data As Is and Hope For The Best
 
@@ -456,15 +500,16 @@ fit <- training_reptile |>
 ```
 
 **Warnings:** "There were missing values in resampled performance
-measures." means that some test folds did not contain examples of both
-classes. This is very likely with class imbalance and small datasets.
+measures." means that some test folds used in hyper parameter tuning 
+did not contain examples of both
+classes. This is very likely with strong class imbalance and small datasets.
 
 ```{r }
 fit
 rpart.plot(fit$finalModel, extra = 2)
 ```
 
-the tree predicts everything as non-reptile. Have a look at the error on
+The tree predicts everything as non-reptile. Have a look at the error on
 the test set.
 
 ```{r }
@@ -478,7 +523,8 @@ identify any positive (reptile). If the cost of missing a positive is
 much larger than the cost associated with misclassifying a negative,
 then accuracy is not a good measure! By dealing with imbalance, we are
 **not** concerned with accuracy, but we want to increase the
-sensitivity, i.e., the chance to identify positive examples.
+sensitivity, i.e., the chance to identify positive examples. 
+**This approach does not work!**
 
 **Note:** The positive class value (the one that you want to detect) is
 set manually to reptile using `positive = "reptile"`. Otherwise
@@ -649,8 +695,8 @@ fit <- training_reptile |>
         trControl = trainControl(method = "cv"))
 ```
 
-The warning "There were missing values in resampled performance
-measures" means that some folds did not contain any reptiles (because of
+The warning *"There were missing values in resampled performance
+measures"* means that some folds did not contain any reptiles (because of
 the class imbalance) and thus the performance measures could not be
 calculates.
 
@@ -672,81 +718,6 @@ implementation) do not have the ability to consider misclassification
 cost.
 
 
-## Model Comparison
-
-We first create a weak baseline model that always predicts the the majority 
-class mammal.
-
-```{r }
-baselineFit <- Zoo_train |> train(type ~ .,
-  method = basemodels::dummyClassifier,
-  data = _,
-  strategy = "constant",
-  constant = "mammal",
-  trControl = trainControl(method = "cv" 
-                           ))
-baselineFit
-```
-
-The kappa of 0 clearly indicates that the baseline model has no power.
-
-
-We collect the performance metrics from the models trained on the same
-data.
-
-```{r }
-resamps <- resamples(list(
-  baseline = baselineFit,
-  SVM = svmFit,
-  KNN = knnFit,
-  rules = rulesFit,
-  randomForest = randomForestFit,
-  xgboost = xgboostFit,
-  NeuralNet = nnetFit
-    ))
-resamps
-```
-
-The summary statistics shows the performance. We see that all
-methods do well on this easy data set, only the baseline model performs 
-as expected poorly.
-
-```{r }
-summary(resamps)
-
-library(lattice)
-bwplot(resamps, layout = c(3, 1))
-```
-
-Perform inference about differences between models. For each metric, all
-pair-wise differences are computed and tested to assess if the
-difference is equal to zero. By default Bonferroni correction for
-multiple comparison is used. Differences are shown in the upper triangle
-and p-values are in the lower triangle.
-
-```{r }
-difs <- diff(resamps)
-summary(difs)
-```
-
-All perform similarly well except the baseline model (differences in the first row
-are negative and the p-values in the first column are \<.05 indicating
-that the null-hypothesis of a difference of 0 can be rejected).
-
-Most models do similarly well on the data. We choose here the random
-forest model and evaluate its generalization performance on the held-out
-test set.
-
-```{r }
-pr <- predict(randomForestFit, Zoo_test)
-pr
-```
-
-Calculate the confusion matrix for the held-out test data.
-
-```{r }
-confusionMatrix(pr, reference = Zoo_test$type)
-```
 
 ## Comparing Decision Boundaries of Popular Classification Techniques*
 
