@@ -142,7 +142,7 @@ values no item is created.</p>
 <span class="header-section-number">6.2</span> Handling Continuous Attributes<a class="anchor" aria-label="anchor" href="#handling-continuous-attributes"><i class="fas fa-link"></i></a>
 </h2>
 <p>Continuous variables cannot directly be represented as items and need to be
-discretized first (see [Discretization] in Chapter 2).
+discretized first (see <a href="data.html#discretization">Discretization</a> in Chapter 2).
 An item resulting from discretization might be <code>age&gt;18</code> and
 the column contains only <code>TRUE</code> or <code>FALSE</code>. Alternatively, it can be a factor
 with levels <code>age&lt;=18</code>, <code>⁠50=&gt;age&gt;18</code>⁠ and <code>age&gt;50</code>. These will be automatically
@@ -326,7 +326,7 @@ during aggregation.</p>
 <span><span class="co">## set item appearances ...[0 item(s)] done [0.00s].</span></span>
 <span><span class="co">## set transactions ...[55 item(s), 9835 transaction(s)] done [0.00s].</span></span>
 <span><span class="co">## sorting and recoding items ... [47 item(s)] done [0.00s].</span></span>
-<span><span class="co">## creating transaction tree ... done [0.00s].</span></span>
+<span><span class="co">## creating transaction tree ... done [0.01s].</span></span>
 <span><span class="co">## checking subsets of size 1 2 3 4 5 6 done [0.01s].</span></span>
 <span><span class="co">## writing ... [243 rule(s)] done [0.00s].</span></span>
 <span><span class="co">## creating S4 object  ... done [0.00s].</span></span>
@@ -390,12 +390,12 @@ including items from multiple levels.</p>
 <span><span class="co">## Absolute minimum support count: 49 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## set item appearances ...[0 item(s)] done [0.00s].</span></span>
-<span><span class="co">## set transactions ...[224 item(s), 9835 transaction(s)] done [0.01s].</span></span>
+<span><span class="co">## set transactions ...[224 item(s), 9835 transaction(s)] done [0.02s].</span></span>
 <span><span class="co">## sorting and recoding items ... [167 item(s)] done [0.00s].</span></span>
-<span><span class="co">## creating transaction tree ... done [0.00s].</span></span>
-<span><span class="co">## checking subsets of size 1 2 3 4 5 6 7 8 done [0.05s].</span></span>
+<span><span class="co">## creating transaction tree ... done [0.01s].</span></span>
+<span><span class="co">## checking subsets of size 1 2 3 4 5 6 7 8 done [0.08s].</span></span>
 <span><span class="co">## writing ... [21200 rule(s)] done [0.00s].</span></span>
-<span><span class="co">## creating S4 object  ... done [0.00s].</span></span>
+<span><span class="co">## creating S4 object  ... done [0.01s].</span></span>
 <span><span class="va">rules</span></span>
 <span><span class="co">## set of 21200 rules</span></span></code></pre></div>
 <p>Mining rules with group-level items added will
@@ -575,7 +575,7 @@ from frequent sequence patterns using <code><a href="https://rdrr.io/pkg/arules/
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-12-04.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-12-16.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

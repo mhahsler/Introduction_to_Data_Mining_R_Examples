@@ -1021,7 +1021,7 @@ summary(m)
 plot(m, what = "classification")
 ```
 
-### Spectral clustering
+### Spectral Clustering
 
 [Spectral clustering](https://en.wikipedia.org/wiki/Spectral_clustering)
 works by embedding the data points of the partitioning problem into the
@@ -1039,6 +1039,18 @@ ggplot(ruspini_scaled |>
        aes(x, y, color = cluster)) + 
   geom_point()
 ```
+
+### Deep Clustering Methods
+
+[Deep clustering](https://arxiv.org/pdf/2210.04142) is often used for high-dimensional data.
+It uses a deep autoencoder to learn a cluster-friendly representation
+of the data before applying a standard clustering algorithm (e.g., k-means)
+on the embedded data.
+The autoencoder 
+is typically implemented using [keras](https://keras3.posit.co/)
+and the autoencoder's loss function is modified to include 
+the clustering loss which will make the embedding more clusterable. 
+
 
 ### Fuzzy C-Means Clustering
 
@@ -1065,6 +1077,7 @@ ggplot()  +
     legend_name = "Membership") + 
   coord_equal()
 ```
+
 
 
 ## Outliers in Clustering*

@@ -6,4 +6,4 @@ bookdown::bs4_book:
 
 bookdown::pdf_book:
   latex_engine: xelatex
-  toc_depth: 3
+  toc_depth: 4

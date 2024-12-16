@@ -296,18 +296,16 @@ More sophisticated sampling procedures are implemented in the package
 ### Dimensionality Reduction
 
 The number of features is often called the dimensional of the data following the 
-idea that each feature (at least the numeric features) can be seen as an axis of the data. High-dimensional data is harder to analyze by the user (e.g., visualize). 
+idea that each feature (at least the numeric features) can be seen as an axis of the data. 
+High-dimensional data is harder to analyze by the user (e.g., visualize). 
 It also is problematic for many data mining algorithms since it requires more memory 
 and computational resources. 
 
 [Dimensionality reduction](https://en.wikipedia.org/wiki/Dimensionality_reduction)
  tries to represent high-dimensional data in a low-dimensional space so that the 
 low-dimensional representation retains some meaningful properties (e.g., information about similarity or distances) of the original data. Dimensionality reduction is 
-used for visualization and as a prepossessing technique before using data mining 
-models.
-
-A special case of dimensionality reduction is feature selection (see 
-[Feature Selection*] in Chapter 3).
+used for visualization and as a prepossessing technique before using other 
+data mining methods like clustering and classification. 
 
 #### Principal Components Analysis (PCA)
 
@@ -431,10 +429,6 @@ indicating that they are close to uncorrelated. Sepal.Length is
 correlated to all other variables and represented by both, PC1 and PC2
 in the projection.
 
-There exist other methods to embed data from higher dimensions into a
-lower-dimensional space. A popular method to project data into lower
-dimensions for visualization is **t-distributed stochastic neighbor
-embedding (t-SNE)** available in package `Rtsne`.
 
 #### Multi-Dimensional Scaling (MDS)
 
@@ -477,19 +471,25 @@ Non-parametric multidimensional scaling performs MDS while relaxing the
 need of linear relationships. Methods are available in package `MASS` as
 functions `isoMDS()` (implements [isoMAP](https://en.wikipedia.org/wiki/Isomap)) and `sammon()`.
 
-#### Other Nonlinear Dimensionality Reduction Methods
+#### Embeddings: Nonlinear Dimensionality Reduction Methods
 
 [Nonlinear dimensionality reduction](https://en.wikipedia.org/wiki/Nonlinear_dimensionality_reduction)
-is also called manifold learning or creating a low-Dimensional embedding.
-Many methods are available with varying properties exist. 
+is also called manifold learning or creating a low-dimensional embedding.
+These methods have become very popular
+and many methods with varying properties exist. 
 Some popular methods are:
 
-* [t-distributed stochastic neighbor embedding](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding) (`Rtsne()` in package `Rtsne`) and uniform manifold approximation and projection
-(`umap()` in package `umap`) are used 
-for projecting data to 2 dimensions for visualization.
+* [t-distributed stochastic neighbor embedding](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding) 
+  (`Rtsne()` in package `Rtsne`) and uniform manifold approximation and projection
+  (`umap()` in package `umap`) are used 
+  for projecting data to 2 dimensions for visualization.
+* [Autoencoders](https://en.wikipedia.org/wiki/Autoencoder) is a type of 
+  artificial neural network used to learn an efficient representation (encoding) 
+  for a set of data by minimizing the reconstruction error. 
+  In R, autoencoders are typically created using the `keras` package.
 * [Word2vec](https://en.wikipedia.org/wiki/Word2vec) (`word2vec()` in 
-  `word2vec`) is used in [natural language processing](https://cran.r-project.org/web/views/NaturalLanguageProcessing.html) to convert words to numeric vectors for similarity calculation.
-```
+  `word2vec`) is used in [natural language processing](https://cran.r-project.org/web/views/NaturalLanguageProcessing.html) 
+  to convert words to numeric vectors for similarity calculation.
 
 ### Feature Subset Selection
 

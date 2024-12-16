@@ -1407,7 +1407,7 @@ against overfitting.</p>
 </div>
 <div id="spectral-clustering" class="section level3" number="7.6.3">
 <h3>
-<span class="header-section-number">7.6.3</span> Spectral clustering<a class="anchor" aria-label="anchor" href="#spectral-clustering"><i class="fas fa-link"></i></a>
+<span class="header-section-number">7.6.3</span> Spectral Clustering<a class="anchor" aria-label="anchor" href="#spectral-clustering"><i class="fas fa-link"></i></a>
 </h3>
 <p><a href="https://en.wikipedia.org/wiki/Spectral_clustering">Spectral clustering</a>
 works by embedding the data points of the partitioning problem into the
@@ -1461,9 +1461,22 @@ matrix. Then uses a simple clustering method like k-means.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-381-1.png" width="672"></div>
 </div>
-<div id="fuzzy-c-means-clustering" class="section level3" number="7.6.4">
+<div id="deep-clustering-methods" class="section level3" number="7.6.4">
 <h3>
-<span class="header-section-number">7.6.4</span> Fuzzy C-Means Clustering<a class="anchor" aria-label="anchor" href="#fuzzy-c-means-clustering"><i class="fas fa-link"></i></a>
+<span class="header-section-number">7.6.4</span> Deep Clustering Methods<a class="anchor" aria-label="anchor" href="#deep-clustering-methods"><i class="fas fa-link"></i></a>
+</h3>
+<p><a href="https://arxiv.org/pdf/2210.04142">Deep clustering</a> is often used for high-dimensional data.
+It uses a deep autoencoder to learn a cluster-friendly representation
+of the data before applying a standard clustering algorithm (e.g., k-means)
+on the embedded data.
+The autoencoder
+is typically implemented using <a href="https://keras3.posit.co/">keras</a>
+and the autoencoder’s loss function is modified to include
+the clustering loss which will make the embedding more clusterable.</p>
+</div>
+<div id="fuzzy-c-means-clustering" class="section level3" number="7.6.5">
+<h3>
+<span class="header-section-number">7.6.5</span> Fuzzy C-Means Clustering<a class="anchor" aria-label="anchor" href="#fuzzy-c-means-clustering"><i class="fas fa-link"></i></a>
 </h3>
 <p>The <a href="https://en.wikipedia.org/wiki/Fuzzy_clustering">fuzzy clustering</a>
 version of the k-means clustering problem. Each data point has a degree
@@ -1782,8 +1795,9 @@ Create a dendrogram and discuss what it means.</li>
 <a class="nav-link" href="#more-clustering-algorithms"><span class="header-section-number">7.6</span> More Clustering Algorithms*</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#partitioning-around-medoids-pam"><span class="header-section-number">7.6.1</span> Partitioning Around Medoids (PAM)</a></li>
 <li><a class="nav-link" href="#gaussian-mixture-models"><span class="header-section-number">7.6.2</span> Gaussian Mixture Models</a></li>
-<li><a class="nav-link" href="#spectral-clustering"><span class="header-section-number">7.6.3</span> Spectral clustering</a></li>
-<li><a class="nav-link" href="#fuzzy-c-means-clustering"><span class="header-section-number">7.6.4</span> Fuzzy C-Means Clustering</a></li>
+<li><a class="nav-link" href="#spectral-clustering"><span class="header-section-number">7.6.3</span> Spectral Clustering</a></li>
+<li><a class="nav-link" href="#deep-clustering-methods"><span class="header-section-number">7.6.4</span> Deep Clustering Methods</a></li>
+<li><a class="nav-link" href="#fuzzy-c-means-clustering"><span class="header-section-number">7.6.5</span> Fuzzy C-Means Clustering</a></li>
 </ul>
 </li>
 <li>
@@ -1810,7 +1824,7 @@ Create a dendrogram and discuss what it means.</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-12-04.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2024-12-16.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

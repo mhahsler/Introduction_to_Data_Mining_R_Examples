@@ -27,7 +27,9 @@ dimensionality-reduction
 principal-components-analysis-pca
 multi-dimensional-scaling-mds
 non-parametric-multidimensional-scaling
-other-nonlinear-dimensionality-reduction-methods
+embeddings-nonlinear-dimensionality-reduction-methods
+feature-subset-selection
+discretization
 variable-transformation-standardization
 measures-of-similarity-and-dissimilarity
 minkowsky-distances
@@ -80,7 +82,7 @@ model-comparison
 build-models
 feature-selection
 univariate-feature-importance-score
-feature-subset-selection
+feature-subset-selection-1
 using-dummy-variables-for-factors
 exercises-1
 classification-alternative-techniques
@@ -185,6 +187,7 @@ more-clustering-algorithms
 partitioning-around-medoids-pam
 gaussian-mixture-models
 spectral-clustering
+deep-clustering-methods
 fuzzy-c-means-clustering
 outliers-in-clustering
 visual-inspection-of-the-data
