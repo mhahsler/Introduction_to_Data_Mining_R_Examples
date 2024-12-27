@@ -1,4 +1,8 @@
+
 # R Companion for Introduction to Data Mining
+[![DOI](https://jose.theoj.org/papers/10.21105/jose.00223/status.svg)](https://doi.org/10.21105/jose.00223)
+![GitHub Release](https://img.shields.io/github/v/release/mhahsler/Introduction_to_Data_Mining_R_Examples)
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 <a href="https://www-users.cs.umn.edu/~kumar001/dmbook/index.php">
   <img src="assets/book_small_e2.jpg" align="right">
@@ -21,8 +25,8 @@ The slides and examples are used in my course _CS 5/7331 Data Mining_ taught at
 code examples are now compiled into the free online book [An R Companion for
 Introduction to Data
 Mining](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/)
-which is published under the Creative Commons Attribution-ShareAlike license and you can
-share and adapt them freely. Please open an [issue](issues)  for corrections or
+which is published under the Creative Commons Attribution license and you can
+share and adapt them freely. Please open an [issue](issues) for corrections or
 to suggest improvements. 
 
 
@@ -85,7 +89,16 @@ bottom whenever there are R code examples available.
 * Datasets for projects can be found at 
   [https://www.kaggle.com/datasets](https://www.kaggle.com/datasets)
 
-## How To Cite This Book
+## How To Cite This Resource and Book
+
+Cite the complete resource as:
+
+> Hahsler, M., (2024). An R Companion for Introduction to Data Mining. 
+> Journal of Open Source Education, 7(82), 223, 
+> https://doi.org/10.21105/jose.00223
+
+
+Cite the book as:
 
 > Michael Hahsler (2024). _An R Companion for Introduction to Data Mining._ 
 > figshare. DOI: [10.6084/m9.figshare.26750404](http://doi.org/10.6084/m9.figshare.26750404), 
