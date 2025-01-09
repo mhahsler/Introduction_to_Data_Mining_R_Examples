@@ -18,7 +18,7 @@ The second part of this chapter deals with data exploration and visualization.
 ```{r setup_02}
 pkgs <- c("arules", "caret", "factoextra", "GGally", 
           "ggcorrplot", "hexbin", "palmerpenguins", "plotly", 
-          "proxy", "seriation", "tidyverse")
+          "proxy", "Rtsne", "seriation", "tidyverse")
 
 pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
 if(length(pkgs_install)) install.packages(pkgs_install)
@@ -307,6 +307,12 @@ low-dimensional representation retains some meaningful properties (e.g., informa
 used for visualization and as a prepossessing technique before using other 
 data mining methods like clustering and classification. 
 
+Recently, data embeddings using artificial neural networks have become very popular.
+These approaches can not only reduce the dimensionality of the data, but 
+learn a better representation of various kinds of data (e.g., text). As such
+these approaches can be seen as automatically engineering features from the 
+high-dimensional original data.
+
 #### Principal Components Analysis (PCA)
 
 [PCA](https://en.wikipedia.org/wiki/Principal_component_analysis)
@@ -475,21 +481,50 @@ functions `isoMDS()` (implements [isoMAP](https://en.wikipedia.org/wiki/Isomap))
 
 [Nonlinear dimensionality reduction](https://en.wikipedia.org/wiki/Nonlinear_dimensionality_reduction)
 is also called manifold learning or creating a low-dimensional embedding.
-These methods have become very popular
-and many methods with varying properties exist. 
-Some popular methods are:
+These methods have become very popular to support visualizing high-dimensional data,
+mine text by converting words into numeric vectors that can be used as features in models, 
+and as a method to automatically create features for data mining models by finding an efficient 
+representation. Popular methods are:
 
-* [t-distributed stochastic neighbor embedding](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding) 
+* Visualization: [t-distributed stochastic neighbor embedding](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding) 
   (`Rtsne()` in package `Rtsne`) and uniform manifold approximation and projection
   (`umap()` in package `umap`) are used 
-  for projecting data to 2 dimensions for visualization.
-* [Autoencoders](https://en.wikipedia.org/wiki/Autoencoder) is a type of 
-  artificial neural network used to learn an efficient representation (encoding) 
-  for a set of data by minimizing the reconstruction error. 
-  In R, autoencoders are typically created using the `keras` package.
-* [Word2vec](https://en.wikipedia.org/wiki/Word2vec) (`word2vec()` in 
+  for projecting data to 2 dimensions for visualization. Here is an example of 
+  embedding the 4-dimensional iris data using tsne. The embedding algorithm 
+  requires unique data points.
+  
+  ```{r }
+  iris_distinct <- iris |> distinct(Sepal.Length, Sepal.Width, 
+                                    Petal.Length, Petal.Width, 
+                                    .keep_all = TRUE)
+  
+  tsne <- Rtsne::Rtsne(iris_distinct |> select(-Species))
+  
+  emb <- data.frame(tsne$Y, Species = iris_distinct$Species)
+  ggplot(emb, aes(X1, X2, color = Species)) + geom_point()
+  ```
+
+  We see that the embedding separates the class Setosa very well from the other 
+  two species indicating that the flowers are very different.
+
+* Text mining: [Word2vec](https://en.wikipedia.org/wiki/Word2vec) (`word2vec()` in 
   `word2vec`) is used in [natural language processing](https://cran.r-project.org/web/views/NaturalLanguageProcessing.html) 
-  to convert words to numeric vectors for similarity calculation.
+  to convert words to numeric vectors that represent similarities between words. 
+  These vectors can be used as features for data mining models for clustering
+  and classification. Other popular methods for text embedding are 
+  [GloVe](https://nlp.stanford.edu/projects/glove/) and 
+  [BERT](https://en.wikipedia.org/wiki/BERT_(language_model)). 
+
+* Representation learning: [Autoencoders](https://en.wikipedia.org/wiki/Autoencoder) 
+  are artificial neural networks used to learn an efficient representation (encoding) 
+  for a set of data by minimizing the reconstruction error. This new representation
+  can be seen as a way to automatically creating features that describe the 
+  important characteristics of the data while reducing noise. This representation
+  often helps models to learn better.
+  In R, autoencoders are typically created using 
+  the [`keras` package](https://keras3.posit.co/). Creating an
+  autoencoder requires some work. You will 
+  need to decide on the network topology and have sufficient training data.
 
 ### Feature Subset Selection
 
