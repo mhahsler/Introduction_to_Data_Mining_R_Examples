@@ -50,7 +50,7 @@ or covariates).
 If we use more than one explanatory variable, then we often call this 
 multiple or multivariate linear regression.
 The linear regression model is:
-$$\hat{y}_i = f(\mathbf{x}_i) = \beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip} + \epsilon_i = \beta_0 + \sum_{j = 1}^p{(\beta_jx_{ij} + \epsilon_i)},$$
+$$\hat{y}_i = f(\mathbf{x}_i) = \beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip} + \epsilon_i = \beta_0 + \sum_{j = 1}^p{\left(\beta_jx_{ij}\right) + \epsilon_i},$$
 
 where $\beta_0$ is the intercept, $\boldsymbol{\beta}$ is a $p+1$-dimensional parameter
 vector learned from the data, and $\epsilon$ is the error term
@@ -118,7 +118,8 @@ train <- x[1:100,]
 test <- x[101:150,]
 ```
 
-Linear regression is done in R using the `lm()` (linear model) function.
+Linear regression is done in R using the `lm()` (linear model) function which is
+part of the R core package `stats`.
 Like other modeling functions in R, `lm()` uses a formula interface. Here we create a formula
 to predict `Petal.Width` by all other variables other than `Species`.
 

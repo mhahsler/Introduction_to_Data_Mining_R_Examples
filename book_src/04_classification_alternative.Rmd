@@ -201,8 +201,7 @@ binary variable. Since we have data with several
 classes, we use [multinomial logistic regression](https://en.wikipedia.org/wiki/Multinomial_logistic_regression), 
 also called a log-linear model
 which is an extension of logistic regresses for multi-class problems.
-Caret can use method `"multinom"` which uses an implementation
-in package `nnet` for penalized multinomial regression.
+Caret uses `nnet::multinom()` which implements penalized multinomial regression.
 
 ```{r }
 logRegFit <- Zoo_train |> train(type ~ .,
@@ -216,7 +215,9 @@ logRegFit
 ```{r }
 logRegFit$finalModel
 ```
-The coefficients are log-odds ratios. A negative log-odds ratio means that the odds go down with an increase in
+The coefficients are log odds ratios
+measured against the default class (here mammal).
+A negative log odds ratio means that the odds go down with an increase in
 the value of the predictor.  A predictor with a
 positive log-odds ratio increases the odds. For example,
 in the model above, `hair=TRUE` has a negative coefficient for 

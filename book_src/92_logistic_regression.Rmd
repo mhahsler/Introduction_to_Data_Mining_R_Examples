@@ -9,23 +9,34 @@ editor_options:
 This chapter introduces the popular classification method 
 logistic regression.
 
-### Packages Used in this Chapter {.unnumbered}
-This chapter only uses R's base functionality and does not need extra packages.
+```{r setup_logreg}
+pkgs <- c("glmnet", "caret")
 
-```{r setup_log_reg, include=FALSE}
+pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
+if(length(pkgs_install)) install.packages(pkgs_install)
+```
+
+The packages used for this chapter are: 
+
+`r format_pkgs(pkgs)`
+
+```{r setup_logreg-2, include=FALSE}
 source("_common.R")
+source("format_pkgs.R")
+all_pkgs <- union(all_pkgs, pkgs)
 ```
 
 ## Introduction
 
 Logistic regression contains the word regression, but it is actually a 
-probabilistic, statistical classification
+statistical classification
 model to predict the probability $p$ of a binary outcome given a set of features.
-It is a very powerful model that can be fit very quickly. It is one of the 
+It is a very powerful classification model that can be fit very quickly. It is one of the 
 first classification models you should try on new data.
 
 Logistic regression is a [generalized linear model](https://en.wikipedia.org/wiki/Generalized_linear_model) 
-with the logit as the link function and a binomial error model. It can 
+with the logit as the link function and a binomial error distribution. 
+It can 
 be thought of as a linear regression with the
 log odds ratio (logit) 
 of the binary outcome as the dependent variable:
@@ -33,7 +44,8 @@ of the binary outcome as the dependent variable:
 $$logit(p) = ln\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...$$
 
 The logit function links the probability p to the linear regression by converting 
-the logit into a number in the probability range $[0,1]$.
+a number in the probability range $[0,1]$ to the range $[-\infty,+\infty]$.
+
 ```{r}
 logit  <- function(p) log(p/(1-p))
 p <- seq(0, 1, length.out = 100)
@@ -42,10 +54,26 @@ abline(h = 0.5, lty = 2)
 abline(v = 0, lty = 2)
 ```
 
+The figure above shows actually the inverse of the logit function.
+The inverse of the logit function is called [logistic (or sigmoid) function](https://en.wikipedia.org/wiki/Logistic_function) ($\sigma(\cdot)$) which is 
+often used in ML, and especially for artificial neural networks, 
+to squash the set of real numbers to the $[0,1]$ interval.
+Using the inverse function, we see that the probability of the outcome $p$ 
+is modeled by the logistic function of the linear regression:
 
-This is equivalent to modeling the probability of the outcome $p$ by:
+$$ p = \frac{e^{\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...}}{1 +  e^{\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...}} = \frac{1}{1+e^{-(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...)}} = \sigma(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...)$$
 
-$$ p = \frac{e^{\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...}}{1 +  e^{\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...}} = \frac{1}{1+e^{-(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...)}}$$
+After the $\boldsymbol{\beta} = (\beta_0, \beta_1,...)$ parameter vector is fitted using training data by
+minimizing the log loss (i.e., cross-entropy loss), 
+the equation above can be used to predict
+the probability $p$ given a new data point $\mathbf{x} = (x_1, x_2, ...)$. If the predicted $p > .5$
+then we predict that the event happens, otherwise we predict that it does not happen.
+
+The outcome itself is binary and therefore has a Bernoulli distribution. Since we have 
+multiple examples in our data we draw several times from this distribution resulting
+in a Binomial distribution for the number of successful events drawn. Logistic 
+regression therefore uses a logit link function to link the probability of the event 
+to the linear regression and the distribution family is Binomial.
 
 ## Data Preparation
 We load and shuffle the data. We also add a useless variable to see if the logistic regression removes it.
@@ -59,17 +87,28 @@ x <- cbind(x, useless = rnorm(nrow(x)))
 ```
 
 We create a binary classification problem by
-classify if a flower is of species Virginica.
+asking if a flower is of species Virginica or not.
+We create new logical variable called `virginica` and remove the 
+`Species` column.
 
 ```{r}
 x$virginica <- x$Species == "virginica"
 x$Species <- NULL
+```
+
+We can visualize the data using a scatter plot matrix and use the color red for 
+`virginica == TRUE` and black for the other flowers.
+
+
+```{r}
 plot(x, col=x$virginica + 1)
 ```
 
 ## A first Logistic Regression Model
 Logistic regression is a generalized linear model (GLM) with logit as the
-link function and a binomial error model.
+link function and a binomial distribution. The `glm()` function is provided by 
+the R core package `stats` which is installed with R and automatically loads
+when R is started.
 
 ```{r}
 model <- glm(virginica ~ .,
@@ -91,7 +130,23 @@ summary(model)
 AIC ([Akaike information criterion](https://en.wikipedia.org/wiki/Akaike_information_criterion)) 
 is a measure of how good the model is. Smaller is better. It can be used for model selection.
 
+The parameter estimates in the coefficients table are log odds. The `*` and `.`
+indicate if the effect of the parameter is significantly different from 0.
+Positive numbers 
+mean that increasing the variable increases the predicted probability 
+and negative numbers mean that the probability decreases. For example,
+observing a larger Petal.Length increases the predicted probability for the flower to
+be of class Virginica. This effect is significant and you can 
+verify it in the scatter plot above. For Petal.Length, the red dots have 
+larger values than
+the black dots.
+
 ## Stepwise Variable Selection
+
+Only two variables were flagged as significant. We can remove insignificant 
+variables by trying to remove one variable at a time 
+as long as the model does not significantly deteriorate (according to the AIC).
+This variable selection process is done automatically by the `step()` function.
 
 ```{r}
 model2 <- step(model, data = x)
@@ -117,9 +172,9 @@ round(pr[1:10], 2)
 ```
 
 The response is the predicted probability of the flower being of species 
-virginica. The probabilities of the first 10 flowers are shown. Below is 
+Virginica. The probabilities of the first 10 flowers are shown. Below is 
 a histogram of predicted probabilities. The color is used to show the 
-examples that have the true class virginica.
+examples that have the true class Virginica.
 
 ```{r}
 hist(pr, breaks = 20, main = "Predicted Probability vs. True Class")
@@ -128,8 +183,11 @@ hist(pr[x$virginica == TRUE], col = "red", breaks = 20, add = TRUE)
 
 ## Check Classification Performance
 
-We calculate the predicted class by checking if the probability is larger than
-.5. 
+Here we perform in-sample evaluation on the training set. To get an estimate for
+generalization error, we should calculate the performance on a held out test set.
+
+The predicted class is calculated by checking if the predicted probability 
+is larger than .5.  
 
 ```{r }
 pred <- pr > .5
@@ -157,7 +215,7 @@ We see that the model performs well with a very high accuracy and kappa value.
 
 ## Regularized Logistic Regression
 
-Glmnet fits generalized linear models (including logistic regression) 
+`glmnet::glmnet()` fits generalized linear models (including logistic regression) 
 using regularization via penalized maximum likelihood.
 The regularization parameter $\lambda$ is a hyperparameter and 
 glmnet can use cross-validation to find an appropriate 
@@ -197,6 +255,43 @@ predict(fit, newx = X[1:5,], s = fit$lambda.1se, type = "class")
 Glmnet provides supports many types of 
 generalized linear models. Examples can be found in the
 article [An Introduction to glmnet](https://glmnet.stanford.edu/articles/glmnet.html).
+
+## Multinomial Logistic Regression
+
+Regular logistic regression predicts only one outcome of a binary event represented 
+by two classes. Extending this model to data with more than two classes
+is called [multinomial logistic regression](https://en.wikipedia.org/wiki/Multinomial_logistic_regression), 
+(or log-linear model). 
+A popular implementation uses simple artificial neural networks.
+Regular logistic regression is equivalent to a single neuron with a 
+sigmoid (i.e., logistic) activation function optimized with cross-entropy loss.
+For multinomial logistic regression, one neuron is used for each class and the 
+probability distribution is calculated with the softmax activation.
+This extension is implemented in `nnet::multinom()`.
+
+```{r}
+set.seed(100)
+x <- iris[sample(1:nrow(iris)), ]
+
+model <- nnet::multinom(Species ~., data = x)
+model
+```
+We get a $\boldsymbol{\beta}$ vector with weights for two of the three classes. 
+The third class is used as the default class with all weights set to 0. This can
+be interpreted as comparing the log odds of each of the two classes with the 
+default class. A positive number means that increasing the variable makes the 
+class more likely and a negative number means the opposite.
+
+Predict the class for the first 5 flowers in the training data. 
+
+```{r}
+x[1:5, ]
+predict(model, x[1:5,])
+```
+
+The package glmnet implements also multinomial logistic regression using
+`glmnet(..., family = "multinomial")`.
+
 
 ## Exercises
 

@@ -94,7 +94,7 @@ like Python are:
 
 ### Vectors
 
-The basic data structure in R is a vector of real numbers.
+The basic data structure in R is a vector of real numbers called `numeric`.
 Scalars do not exist, they are just vectors of length 1. 
 
 We can combine values into a vector using the combine function `c()`. 
@@ -112,31 +112,30 @@ the colon operator in the form `from:to`.
 3:10
 ```
 
-More complicated sequences can be created using `seq()` or one of
-the related functions starting with `seq_`.
+More complicated sequences can be created using `seq()`.
 
 ```{r }
 y <- seq(from = 0, to = 1, length.out = 5)
 y
 ```
 
-### Vectorized Operations
+#### Vectorized Operations
 
 Operations are vectorized and applied to each element, 
-so loops are typically not necessary.
+so loops are typically not necessary in R.
 
 ```{r }
 x + 1
 ```
 
-Comparisons are also vectorized are performed element-wise. They 
+Comparisons are also vectorized and are performed element-wise. They 
 return a `logical` vector (R's name for the datatype Boolean).
 
 ```{r }
 x > y
 ```
 
-### Subsetting Vectors
+#### Subsetting Vectors
 
 We can select vector elements using the `[` operator like in other
 programming languages but the index always starts at 1.
@@ -147,7 +146,7 @@ We can select elements 1 through 3 using an index sequence.
 x[1:3]
 ```
 
-Negative indices remove elements. We can select al but the first element.
+Negative indices remove elements. We can select all but the first element.
 ```{r}
 x[-1]
 ```
@@ -167,6 +166,66 @@ x[!is.finite(x)] <- NA
 x
 ```
 
+Another useful thing is that vectors and many other data structures in R support 
+names. For example, we can store the count of cars with different colors in the 
+following way.
+
+```{r}
+counts <- c(12, 5, 18, 13)
+names(counts) <- c("black", "red", "white", "silver")
+
+counts
+```
+
+Names can then be used for subsetting and we do not have to remember what entry 
+is associated with what color.
+
+```{r}
+counts[c("red", "silver")]
+```
+
+### Lists
+
+Lists can store a sequence of elements of different datatypes.
+
+```{r}
+lst <- list(name = "Fred", wife = "Mary", no.children = 3,
+  child.ages = c(4, 7, 9))
+lst
+```
+
+Elements can be accessed by index or name.
+
+```{r}
+lst[[2]]
+lst$child.ages
+```
+
+Many functions in R return a list.
+
+### Data Frames
+
+A data frame looks like a spread sheet and represents a matrix-like structure
+with rows and columns where different columns can contain different data types.
+
+```{r}
+df <-  data.frame(name = c("Michael", "Mark", "Maggie"), 
+                  children = c(2, 0, 2))
+df
+```
+
+Data frames are stored as a list of columns. We can access elements using
+matrix subsetting (missing indices mean the whole row or column) or list 
+subsetting. Here are some examples
+
+```{r}
+df[1,1]
+df[, 2]
+df$name
+```
+
+Data frames are the most important way to represent data for data mining.
+
 ### Functions
 
 Functions work like in many other languages. However, they also operate
@@ -183,10 +242,11 @@ The value of the last evaluated expression in the function body is
 automatically returned by the function. The function can also 
 explicitly use `return(return_value)`. 
 
-Calling the increment function on vector `x`.
+Calling the increment function on vector with the numbers 1 through 10.
 
 ```{r }
-inc(x, by = 2)
+v <- 1:10
+inc(v, by = 2)
 ```
 
 Before you implement your own function, check if R does not already provide an
@@ -197,7 +257,7 @@ R has many built-in functions like `min()`, `max()`, `mean()`, and
 ### Strings
 
 R uses `character` vectors where the datatype `character` represents a string 
-and not like in other programming language for a single character. 
+and not like in other programming language just a single character. 
 R accepts double or single quotation marks to delimit strings.
 
 ```{r }
@@ -227,7 +287,7 @@ plot(x, y)
 ```
 
 Other plot functions are `pairs()`, `hist()`, `barplot()`. In this book,
-we will focus on plots created with the ggplot2 package.
+we will focus on plots created with the ggplot2 package introduced below.
 
 ### Objects
 
@@ -299,9 +359,9 @@ Examples and detailed documentation can be found on
 work well together by sharing design principles and data structures.
 `tidyverse` also includes `ggplot2` [@R-ggplot2] for visualization.
 
-In this book, we will use
+In this book, we will typically use
 
--   often tidyverse tibbles to replace R's built-in data.frames,
+-   tidyverse tibbles to replace R's built-in data.frames,
 -   the pipe operator `|>` to chain functions together, and
 -   data transformation functions like `filter()`, `arrange()`,
     `select()`, `group_by()`, and `mutate()` provided by the tidyverse
@@ -310,18 +370,21 @@ In this book, we will use
 A good introduction can be found in the [Section on Data
 Transformation](https://r4ds.hadley.nz/data-transform) [@Wickham2023].
 
-Load the tidyverse packages.
+To use tidyverse, we first have to load the tidyverse meta package.
 
 ```{r}
 library(tidyverse)
 ```
 
+Conflicts may indicate that base R functionality is changed by 
+tidyverse packages.
+
 ### Tibbles
 
-Here is a short example That analyses the vitamin C content of different
-fruits. that will get you familiar with the basic syntax. Data tables in
-R are called data.frames. Tidyverse introduces its own version called
-tibbles. We create a tibble with the price in dollars per pound and the
+Tibbles are tidyverse's replacement for R's data.frame. 
+Here is a short example that analyses the vitamin C content of different
+fruits that will get you familiar with the basic syntax. 
+We create a tibble with the price in dollars per pound and the
 vitamin C content in milligrams (mg) per pound for five different fruits.
 
 
@@ -334,11 +397,14 @@ fruit <- tibble(
 fruit
 ```
 
+Next, we will transform the data to find affordable fruits with 
+a high vitamin C content and then visualize the data.
+
 ### Transformations
 
 We can modify the table by adding a column with the vitamin C (in mg) 
 that a dollar buys using `mutate()`. Then we filter only rows with
-fruit that provides more than 20 mg, and finally we arrange the data
+fruit that provides more than 20 mg per dollar, and finally we arrange the data
 rows by the vitamin C per dollar from largest to smallest.
 
 ```{r }
@@ -372,7 +438,7 @@ affordable_vitamin_c_sources |>
 ```
 
 We can also calculate statistics for groups by first grouping the data
-wirh `group_by()`. Here 
+with `group_by()`. Here 
 we produce statistics for fruit types.
 
 ```{r }

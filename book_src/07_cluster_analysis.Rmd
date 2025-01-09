@@ -104,7 +104,7 @@ all numeric columns.
 ## I use this till tidyverse implements a scale function
 scale_numeric <- function(x) {
   x |> mutate(across(where(is.numeric), 
-                     function(y) (y - mean(y, na.rm = TRUE)) / sd(y, na.rm = TRUE)))
+                function(y) (y - mean(y, na.rm = TRUE)) / sd(y, na.rm = TRUE)))
 }
 ```
 
@@ -165,7 +165,9 @@ unscale <- function(x, original_data) {
            byrow = TRUE, nrow = nrow(x), ncol = ncol(x))
 }
 
-centroids <- km$centers %>% unscale(original_data = ruspini) %>% as_tibble(rownames = "cluster")
+centroids <- km$centers %>% 
+                unscale(original_data = ruspini) %>% 
+                as_tibble(rownames = "cluster")
 centroids
 
 ggplot(ruspini_clustered, aes(x = x, y = y)) + 
@@ -460,7 +462,10 @@ sapply(
     hc_single_5 = cutree(hc_single, k = 5)
   ),
   FUN = function(x)
-    fpc::cluster.stats(d, x))[c("within.cluster.ss", "avg.silwidth", "pearsongamma", "dunn"), ]
+    fpc::cluster.stats(d, x))[c("within.cluster.ss", 
+                                "avg.silwidth", 
+                                "pearsongamma", 
+                                "dunn"), ]
 ```
 
 With 4 clusters, k-means and hierarchical clustering produce 
