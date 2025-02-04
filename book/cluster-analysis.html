@@ -7,7 +7,7 @@
 <title>Chapter 7 Cluster Analysis | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
 <meta name="description" content="This chapter introduces cluster analysis using K-means, hierarchical clustering and DBSCAN. We will discuss how to choose the number of clusters and how to evaluate the quality clusterings. In...">
-<meta name="generator" content="bookdown 0.40 with bs4_book()">
+<meta name="generator" content="bookdown 0.42 with bs4_book()">
 <meta property="og:title" content="Chapter 7 Cluster Analysis | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -120,7 +120,7 @@ the data mining textbook is available online:
 <em>cluster</em> <span class="citation">(<a href="references.html#ref-R-cluster">Maechler et al. 2024</a>)</span>
 </li>
 <li>
-<em>dbscan</em> <span class="citation">(<a href="references.html#ref-R-dbscan">Hahsler and Piekenbrock 2024</a>)</span>
+<em>dbscan</em> <span class="citation">(<a href="references.html#ref-R-dbscan">Hahsler and Piekenbrock 2025</a>)</span>
 </li>
 <li>
 <em>e1071</em> <span class="citation">(<a href="references.html#ref-R-e1071">Meyer et al. 2024</a>)</span>
@@ -238,7 +238,7 @@ all numeric columns.</p>
 <code class="sourceCode R"><span><span class="co">## I use this till tidyverse implements a scale function</span></span>
 <span><span class="va">scale_numeric</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/where.html">where</a></span><span class="op">(</span><span class="va">is.numeric</span><span class="op">)</span>, </span>
-<span>                     <span class="kw">function</span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">(</span><span class="va">y</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">y</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">y</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>                <span class="kw">function</span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">(</span><span class="va">y</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">y</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">y</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb362"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ruspini_scaled</span> <span class="op">&lt;-</span> <span class="va">ruspini</span> <span class="op">|&gt;</span> </span>
@@ -345,7 +345,9 @@ not the original data but specifies the centroids as its dataset.</p>
 <span>           byrow <span class="op">=</span> <span class="cn">TRUE</span>, nrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="va">centroids</span> <span class="op">&lt;-</span> <span class="va">km</span><span class="op">$</span><span class="va">centers</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">unscale</span><span class="op">(</span>original_data <span class="op">=</span> <span class="va">ruspini</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"cluster"</span><span class="op">)</span></span>
+<span><span class="va">centroids</span> <span class="op">&lt;-</span> <span class="va">km</span><span class="op">$</span><span class="va">centers</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>                <span class="fu">unscale</span><span class="op">(</span>original_data <span class="op">=</span> <span class="va">ruspini</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>                <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"cluster"</span><span class="op">)</span></span>
 <span><span class="va">centroids</span></span>
 <span><span class="co">## # A tibble: 4 × 3</span></span>
 <span><span class="co">##   cluster     x     y</span></span>
@@ -783,7 +785,10 @@ Read the man page for <code>cluster.stats()</code> for an explanation of all the
 <span>    hc_single_5 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/cutree.html">cutree</a></span><span class="op">(</span><span class="va">hc_single</span>, k <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span>    <span class="fu">fpc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/fpc/man/cluster.stats.html">cluster.stats</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"within.cluster.ss"</span>, <span class="st">"avg.silwidth"</span>, <span class="st">"pearsongamma"</span>, <span class="st">"dunn"</span><span class="op">)</span>, <span class="op">]</span></span>
+<span>    <span class="fu">fpc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/fpc/man/cluster.stats.html">cluster.stats</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"within.cluster.ss"</span>, </span>
+<span>                                <span class="st">"avg.silwidth"</span>, </span>
+<span>                                <span class="st">"pearsongamma"</span>, </span>
+<span>                                <span class="st">"dunn"</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="co">##                   km_4   hc_compl_4 hc_compl_5 hc_single_5</span></span>
 <span><span class="co">## within.cluster.ss 10.09  10.09      8.314      7.791      </span></span>
 <span><span class="co">## avg.silwidth      0.7368 0.7368     0.6642     0.6886     </span></span>
@@ -1585,14 +1590,6 @@ of membership to for each cluster.</p>
 <div class="sourceCode" id="cb433"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"scatterpie"</span><span class="op">)</span></span>
 <span><span class="co">## scatterpie v0.2.4 Learn more at https://yulab-smu.top/</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Please cite:</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## D Wang, G Chen, L Li, S Wen, Z Xie, X Luo, L</span></span>
-<span><span class="co">## Zhan, S Xu, J Li, R Wang, Q Wang, G Yu. Reducing language</span></span>
-<span><span class="co">## barriers, promoting information absorption, and</span></span>
-<span><span class="co">## communication using fanyi. Chinese Medical Journal. 2024,</span></span>
-<span><span class="co">## 137(16):1950-1956. doi: 10.1097/CM9.0000000000003242</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span>  <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/scatterpie/man/geom-scatterpie.html">geom_scatterpie</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">ruspini_scaled</span>, <span class="va">cluster_cmeans</span><span class="op">$</span><span class="va">membership</span><span class="op">)</span>,</span>
@@ -1824,7 +1821,7 @@ Create a dendrogram and discuss what it means.</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-01-09.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-02-03.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

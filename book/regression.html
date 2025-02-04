@@ -7,7 +7,7 @@
 <title>Chapter 8 Regression* | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
 <meta name="description" content="Regression is a statistical method that is not covered in out textbook in the Appendix. It is is important for data mining, that we have added this extra chapter here. We introduce the regression...">
-<meta name="generator" content="bookdown 0.40 with bs4_book()">
+<meta name="generator" content="bookdown 0.42 with bs4_book()">
 <meta property="og:title" content="Chapter 8 Regression* | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -117,7 +117,7 @@ are discussed.</p>
 <em>lars</em> <span class="citation">(<a href="references.html#ref-R-lars">Hastie and Efron 2022</a>)</span>
 </li>
 <li>
-<em>rpart</em> <span class="citation">(<a href="references.html#ref-R-rpart">Therneau and Atkinson 2023</a>)</span>
+<em>rpart</em> <span class="citation">(<a href="references.html#ref-R-rpart">Therneau and Atkinson 2025</a>)</span>
 </li>
 <li>
 <em>rpart.plot</em> <span class="citation">(<a href="references.html#ref-R-rpart.plot">Milborrow 2024</a>)</span>
@@ -142,7 +142,7 @@ or covariates).
 If we use more than one explanatory variable, then we often call this
 multiple or multivariate linear regression.
 The linear regression model is:
-<span class="math display">\[\hat{y}_i = f(\mathbf{x}_i) = \beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip} + \epsilon_i = \beta_0 + \sum_{j = 1}^p{(\beta_jx_{ij} + \epsilon_i)},\]</span></p>
+<span class="math display">\[\hat{y}_i = f(\mathbf{x}_i) = \beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip} + \epsilon_i = \beta_0 + \sum_{j = 1}^p{\left(\beta_jx_{ij}\right) + \epsilon_i},\]</span></p>
 <p>where <span class="math inline">\(\beta_0\)</span> is the intercept, <span class="math inline">\(\boldsymbol{\beta}\)</span> is a <span class="math inline">\(p+1\)</span>-dimensional parameter
 vector learned from the data, and <span class="math inline">\(\epsilon\)</span> is the error term
 (called the residuals). This is often also written in vector notation as
@@ -1079,7 +1079,7 @@ Then use the regression tree to predict the weight for the above penguin.</p></l
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-01-09.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-02-03.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

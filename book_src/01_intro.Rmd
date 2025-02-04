@@ -189,7 +189,7 @@ counts[c("red", "silver")]
 Lists can store a sequence of elements of different datatypes.
 
 ```{r}
-lst <- list(name = "Fred", wife = "Mary", no.children = 3,
+lst <- list(name = "Fred", spouse = "Mary", no.children = 3,
   child.ages = c(4, 7, 9))
 lst
 ```

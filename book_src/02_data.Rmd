@@ -120,6 +120,13 @@ function `summary()`.
 summary(iris)
 ```
 
+
+Feature names will be used in plots and analysis so having understandable 
+feature names is part of data quality.
+Iris's names are good but for most datasets, you may need to change 
+the names using either `rownames()`
+or `rename()`.
+
 You can also summarize 
 individual columns using tidyverse's dplyr functions.
 
@@ -198,9 +205,15 @@ clean.data <- iris |>
 summary(clean.data)
 ```
 
-Note that one non-unique case is gone leaving only 149 flowers. The data
-did not contain missing values, but if it did, they would also have been
-dropped. Typically, you should spend a lot more time on data cleaning.
+The iris dataset has no missing values, but one non-unique case is gone 
+leaving only 149 flowers. Since only 1 out of 150 flowers in the dataset was 
+affected, results on the remaining data will give very similar results to the 
+complete data.
+
+Typically, you should spend a lot more time on data cleaning.
+It is important to always describe how you clean the data, 
+and how many objects are removed. You need to argue that conclusions based on
+only the remaining data are still valid.
 
 ## Data Preprocessing
 
@@ -660,7 +673,21 @@ distance matrix.
 
 The [Minkowsky
 distance](https://en.wikipedia.org/wiki/Minkowski_distance) is a family
-of metric distances including Euclidean and Manhattan distance. To avoid
+of distances including Euclidean and Manhattan distance. It is defined
+between two feature vectors $\mathbf{x} = (x_1, x_2, ..., x_n)$ and 
+$\mathbf{y} = (y_1, y_2, ..., y_n)$ as
+
+$$
+d(\mathbf{x},\mathbf{y}) = \left(\sum_{i=1}^n |x_i - y_i|^p\right)^{\frac{1}{p}} = ||\mathbf{x}-\mathbf{y}||_p. 
+$$
+Where the power $p$ is a positive integer. This type of distance is also called 
+a $p$-norm written as $L^p$. Special values for $p$ are:
+
+* $p = 1$: Manhattan distance
+* $p = 2$: Euclidean distance
+* $p = \infty$: Maximum norm (only the largest component distance counts)
+
+To avoid
 one feature to dominate the distance calculation, scaled data is
 typically used. We select the first 5 flowers for this example.
 

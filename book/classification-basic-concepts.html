@@ -7,7 +7,7 @@
 <title>Chapter 3 Classification: Basic Concepts | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
 <meta name="description" content="This chapter introduces decision trees for classification and discusses how models are built and evaluated. The corresponding chapter of the data mining textbook is available online: Chapter 3:...">
-<meta name="generator" content="bookdown 0.40 with bs4_book()">
+<meta name="generator" content="bookdown 0.42 with bs4_book()">
 <meta property="og:title" content="Chapter 3 Classification: Basic Concepts | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -118,7 +118,7 @@ the data mining textbook is available online:
 <em>basemodels</em> <span class="citation">(<a href="references.html#ref-R-basemodels">Y.-J. Chen et al. 2023</a>)</span>
 </li>
 <li>
-<em>caret</em> <span class="citation">(<a href="references.html#ref-R-caret">Kuhn 2023</a>)</span>
+<em>caret</em> <span class="citation">(<a href="references.html#ref-R-caret">Kuhn 2024</a>)</span>
 </li>
 <li>
 <em>FSelector</em> <span class="citation">(<a href="references.html#ref-R-FSelector">Romanski, Kotthoff, and Schratz 2023</a>)</span>
@@ -139,7 +139,7 @@ the data mining textbook is available online:
 <em>pROC</em> <span class="citation">(<a href="references.html#ref-R-pROC">Robin et al. 2023</a>)</span>
 </li>
 <li>
-<em>rpart</em> <span class="citation">(<a href="references.html#ref-R-rpart">Therneau and Atkinson 2023</a>)</span>
+<em>rpart</em> <span class="citation">(<a href="references.html#ref-R-rpart">Therneau and Atkinson 2025</a>)</span>
 </li>
 <li>
 <em>rpart.plot</em> <span class="citation">(<a href="references.html#ref-R-rpart.plot">Milborrow 2024</a>)</span>
@@ -1248,7 +1248,7 @@ Here we pick the 5 highest-ranked features.</p>
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/as.simple.formula.html">as.simple.formula</a></span><span class="op">(</span><span class="va">subset</span>, <span class="st">"type"</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
 <span><span class="co">## type ~ feathers + milk + backbone + toothed + eggs</span></span>
-<span><span class="co">## &lt;environment: 0x5ccf6abb5600&gt;</span></span>
+<span><span class="co">## &lt;environment: 0x5b564299ed40&gt;</span></span>
 <span><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">m</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-177-1.png" width="672"></div>
@@ -1509,7 +1509,7 @@ the most important? What variables do not matter?</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-01-09.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-02-03.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
