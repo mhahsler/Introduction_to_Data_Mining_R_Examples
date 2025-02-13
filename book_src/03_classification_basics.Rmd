@@ -11,7 +11,7 @@ how models are built and evaluated.
 
 The corresponding chapter of 
 the data mining textbook is available online: 
-[Chapter 3: Classification: Basic Concepts and Techniques.](https://www-users.cs.umn.edu/~kumar001/dmbook/ch3_classification.pdf)
+[Chapter 3: Classification: Basic Concepts and Techniques.](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/ch3_classification.pdf)
 
 ### Packages Used in this Chapter {.unnumbered}
 

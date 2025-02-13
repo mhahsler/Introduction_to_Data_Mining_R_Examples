@@ -101,7 +101,7 @@
 how models are built and evaluated.</p>
 <p>The corresponding chapter of
 the data mining textbook is available online:
-<a href="https://www-users.cs.umn.edu/~kumar001/dmbook/ch3_classification.pdf">Chapter 3: Classification: Basic Concepts and Techniques.</a></p>
+<a href="https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/ch3_classification.pdf">Chapter 3: Classification: Basic Concepts and Techniques.</a></p>
 <div id="packages-used-in-this-chapter-1" class="section level3 unnumbered">
 <h3>Packages Used in this Chapter<a class="anchor" aria-label="anchor" href="#packages-used-in-this-chapter-1"><i class="fas fa-link"></i></a>
 </h3>
@@ -1248,7 +1248,7 @@ Here we pick the 5 highest-ranked features.</p>
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/as.simple.formula.html">as.simple.formula</a></span><span class="op">(</span><span class="va">subset</span>, <span class="st">"type"</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
 <span><span class="co">## type ~ feathers + milk + backbone + toothed + eggs</span></span>
-<span><span class="co">## &lt;environment: 0x5b564299ed40&gt;</span></span>
+<span><span class="co">## &lt;environment: 0x5efd094ee568&gt;</span></span>
 <span><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">m</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-177-1.png" width="672"></div>
@@ -1509,7 +1509,7 @@ the most important? What variables do not matter?</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-02-03.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-02-13.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

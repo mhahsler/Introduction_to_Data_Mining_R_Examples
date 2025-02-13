@@ -12,7 +12,7 @@ using visualization techniques is demonstrated.
 
 The corresponding chapter of 
 the data mining textbook is available online: 
-[Chapter 5: Association Analysis: Basic Concepts and Algorithms.](https://www-users.cs.umn.edu/~kumar001/dmbook/ch5_association_analysis.pdf)
+[Chapter 5: Association Analysis: Basic Concepts and Algorithms.](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/ch5_association_analysis.pdf)
 
 ### Packages Used in this Chapter {.unnumbered}
 

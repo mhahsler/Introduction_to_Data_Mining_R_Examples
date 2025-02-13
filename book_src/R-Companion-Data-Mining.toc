@@ -25,7 +25,7 @@
 \contentsline {section}{\numberline {2.3}Data Preprocessing}{31}{section.2.3}%
 \contentsline {subsection}{\numberline {2.3.1}Aggregation}{31}{subsection.2.3.1}%
 \contentsline {subsection}{\numberline {2.3.2}Sampling}{31}{subsection.2.3.2}%
-\contentsline {subsubsection}{\numberline {2.3.2.1}Random Sampling}{31}{subsubsection.2.3.2.1}%
+\contentsline {subsubsection}{\numberline {2.3.2.1}Random Sampling}{32}{subsubsection.2.3.2.1}%
 \contentsline {subsubsection}{\numberline {2.3.2.2}Stratified Sampling}{33}{subsubsection.2.3.2.2}%
 \contentsline {subsection}{\numberline {2.3.3}Dimensionality Reduction}{34}{subsection.2.3.3}%
 \contentsline {subsubsection}{\numberline {2.3.3.1}Principal Components Analysis (PCA)}{35}{subsubsection.2.3.3.1}%
@@ -39,33 +39,33 @@
 \contentsline {subsection}{\numberline {2.4.1}Minkowsky Distances}{50}{subsection.2.4.1}%
 \contentsline {subsection}{\numberline {2.4.2}Distances for Binary Data}{51}{subsection.2.4.2}%
 \contentsline {subsubsection}{\numberline {2.4.2.1}Hamming Distance}{51}{subsubsection.2.4.2.1}%
-\contentsline {subsubsection}{\numberline {2.4.2.2}Jaccard Index}{51}{subsubsection.2.4.2.2}%
+\contentsline {subsubsection}{\numberline {2.4.2.2}Jaccard Index}{52}{subsubsection.2.4.2.2}%
 \contentsline {subsection}{\numberline {2.4.3}Distances for Mixed Data}{52}{subsection.2.4.3}%
-\contentsline {subsubsection}{\numberline {2.4.3.1}Gower's Coefficient}{52}{subsubsection.2.4.3.1}%
+\contentsline {subsubsection}{\numberline {2.4.3.1}Gower's Coefficient}{53}{subsubsection.2.4.3.1}%
 \contentsline {subsubsection}{\numberline {2.4.3.2}Using Euclidean Distance with Mixed Data}{53}{subsubsection.2.4.3.2}%
-\contentsline {subsection}{\numberline {2.4.4}More Proximity Measures}{54}{subsection.2.4.4}%
-\contentsline {section}{\numberline {2.5}Data Exploration*}{55}{section.2.5}%
+\contentsline {subsection}{\numberline {2.4.4}More Proximity Measures}{55}{subsection.2.4.4}%
+\contentsline {section}{\numberline {2.5}Data Exploration*}{56}{section.2.5}%
 \contentsline {subsection}{\numberline {2.5.1}Basic statistics}{56}{subsection.2.5.1}%
-\contentsline {subsection}{\numberline {2.5.2}Grouped Operations and Calculations}{57}{subsection.2.5.2}%
+\contentsline {subsection}{\numberline {2.5.2}Grouped Operations and Calculations}{58}{subsection.2.5.2}%
 \contentsline {subsection}{\numberline {2.5.3}Tabulate data}{59}{subsection.2.5.3}%
-\contentsline {subsection}{\numberline {2.5.4}Percentiles (Quantiles)}{61}{subsection.2.5.4}%
+\contentsline {subsection}{\numberline {2.5.4}Percentiles (Quantiles)}{62}{subsection.2.5.4}%
 \contentsline {subsection}{\numberline {2.5.5}Correlation}{62}{subsection.2.5.5}%
 \contentsline {subsubsection}{\numberline {2.5.5.1}Pearson Correlation}{62}{subsubsection.2.5.5.1}%
 \contentsline {subsubsection}{\numberline {2.5.5.2}Rank Correlation}{65}{subsubsection.2.5.5.2}%
-\contentsline {subsection}{\numberline {2.5.6}Density}{67}{subsection.2.5.6}%
-\contentsline {subsubsection}{\numberline {2.5.6.1}Histograms}{68}{subsubsection.2.5.6.1}%
-\contentsline {subsubsection}{\numberline {2.5.6.2}Kernel Density Estimate (KDE)}{71}{subsubsection.2.5.6.2}%
-\contentsline {section}{\numberline {2.6}Visualization}{72}{section.2.6}%
-\contentsline {subsection}{\numberline {2.6.1}Histogram}{73}{subsection.2.6.1}%
-\contentsline {subsection}{\numberline {2.6.2}Boxplot}{75}{subsection.2.6.2}%
-\contentsline {subsection}{\numberline {2.6.3}Scatter plot}{78}{subsection.2.6.3}%
-\contentsline {subsection}{\numberline {2.6.4}Scatter Plot Matrix}{81}{subsection.2.6.4}%
-\contentsline {subsection}{\numberline {2.6.5}Matrix Visualization}{83}{subsection.2.6.5}%
-\contentsline {subsection}{\numberline {2.6.6}Correlation Matrix}{86}{subsection.2.6.6}%
-\contentsline {subsection}{\numberline {2.6.7}Parallel Coordinates Plot}{89}{subsection.2.6.7}%
-\contentsline {subsection}{\numberline {2.6.8}Star Plot}{91}{subsection.2.6.8}%
-\contentsline {subsection}{\numberline {2.6.9}More Visualizations}{92}{subsection.2.6.9}%
-\contentsline {section}{\numberline {2.7}Exercises*}{92}{section.2.7}%
+\contentsline {subsection}{\numberline {2.5.6}Density}{68}{subsection.2.5.6}%
+\contentsline {subsubsection}{\numberline {2.5.6.1}Histograms}{69}{subsubsection.2.5.6.1}%
+\contentsline {subsubsection}{\numberline {2.5.6.2}Kernel Density Estimate (KDE)}{72}{subsubsection.2.5.6.2}%
+\contentsline {section}{\numberline {2.6}Visualization}{73}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Histogram}{74}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}Boxplot}{76}{subsection.2.6.2}%
+\contentsline {subsection}{\numberline {2.6.3}Scatter plot}{79}{subsection.2.6.3}%
+\contentsline {subsection}{\numberline {2.6.4}Scatter Plot Matrix}{82}{subsection.2.6.4}%
+\contentsline {subsection}{\numberline {2.6.5}Matrix Visualization}{84}{subsection.2.6.5}%
+\contentsline {subsection}{\numberline {2.6.6}Correlation Matrix}{87}{subsection.2.6.6}%
+\contentsline {subsection}{\numberline {2.6.7}Parallel Coordinates Plot}{90}{subsection.2.6.7}%
+\contentsline {subsection}{\numberline {2.6.8}Star Plot}{92}{subsection.2.6.8}%
+\contentsline {subsection}{\numberline {2.6.9}More Visualizations}{93}{subsection.2.6.9}%
+\contentsline {section}{\numberline {2.7}Exercises*}{93}{section.2.7}%
 \contentsline {chapter}{\numberline {3}Classification: Basic Concepts}{95}{chapter.3}%
 \contentsline {subsection}{Packages Used in this Chapter}{95}{section*.4}%
 \contentsline {section}{\numberline {3.1}Basic Concepts}{96}{section.3.1}%
@@ -198,32 +198,32 @@
 \contentsline {subsection}{\numberline {7.6.3}Spectral Clustering}{309}{subsection.7.6.3}%
 \contentsline {subsection}{\numberline {7.6.4}Deep Clustering Methods}{311}{subsection.7.6.4}%
 \contentsline {subsection}{\numberline {7.6.5}Fuzzy C-Means Clustering}{311}{subsection.7.6.5}%
-\contentsline {section}{\numberline {7.7}Outliers in Clustering*}{315}{section.7.7}%
+\contentsline {section}{\numberline {7.7}Outliers in Clustering*}{314}{section.7.7}%
 \contentsline {subsection}{\numberline {7.7.1}Visual inspection of the data}{315}{subsection.7.7.1}%
-\contentsline {subsection}{\numberline {7.7.2}Local Outlier Factor (LOF)}{317}{subsection.7.7.2}%
-\contentsline {section}{\numberline {7.8}Exercises*}{320}{section.7.8}%
-\contentsline {chapter}{\numberline {8}Regression*}{323}{chapter.8}%
-\contentsline {subsection}{Packages Used in this Chapter}{323}{section*.9}%
-\contentsline {section}{\numberline {8.1}Introduction}{323}{section.8.1}%
-\contentsline {section}{\numberline {8.2}A First Linear Regression Model}{324}{section.8.2}%
-\contentsline {section}{\numberline {8.3}Comparing Nested Models}{330}{section.8.3}%
-\contentsline {section}{\numberline {8.4}Stepwise Variable Selection}{332}{section.8.4}%
-\contentsline {section}{\numberline {8.5}Modeling with Interaction Terms}{333}{section.8.5}%
-\contentsline {section}{\numberline {8.6}Prediction}{335}{section.8.6}%
-\contentsline {section}{\numberline {8.7}Using Nominal Variables}{337}{section.8.7}%
-\contentsline {section}{\numberline {8.8}Alternative Regression Models}{340}{section.8.8}%
-\contentsline {subsection}{\numberline {8.8.1}Regression Trees}{340}{subsection.8.8.1}%
-\contentsline {subsection}{\numberline {8.8.2}Regularized Regression}{342}{subsection.8.8.2}%
-\contentsline {subsection}{\numberline {8.8.3}Other Types of Regression}{348}{subsection.8.8.3}%
-\contentsline {section}{\numberline {8.9}Exercises}{348}{section.8.9}%
-\contentsline {chapter}{\numberline {9}Logistic Regression*}{351}{chapter.9}%
-\contentsline {section}{\numberline {9.1}Introduction}{351}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Data Preparation}{353}{section.9.2}%
-\contentsline {section}{\numberline {9.3}A first Logistic Regression Model}{354}{section.9.3}%
-\contentsline {section}{\numberline {9.4}Stepwise Variable Selection}{356}{section.9.4}%
-\contentsline {section}{\numberline {9.5}Calculate the Response}{358}{section.9.5}%
-\contentsline {section}{\numberline {9.6}Check Classification Performance}{358}{section.9.6}%
-\contentsline {section}{\numberline {9.7}Regularized Logistic Regression}{360}{section.9.7}%
-\contentsline {section}{\numberline {9.8}Multinomial Logistic Regression}{361}{section.9.8}%
-\contentsline {section}{\numberline {9.9}Exercises}{362}{section.9.9}%
-\contentsline {chapter}{References}{365}{chapter*.10}%
+\contentsline {subsection}{\numberline {7.7.2}Local Outlier Factor (LOF)}{316}{subsection.7.7.2}%
+\contentsline {section}{\numberline {7.8}Exercises*}{319}{section.7.8}%
+\contentsline {chapter}{\numberline {8}Regression*}{321}{chapter.8}%
+\contentsline {subsection}{Packages Used in this Chapter}{321}{section*.9}%
+\contentsline {section}{\numberline {8.1}Introduction}{321}{section.8.1}%
+\contentsline {section}{\numberline {8.2}A First Linear Regression Model}{322}{section.8.2}%
+\contentsline {section}{\numberline {8.3}Comparing Nested Models}{328}{section.8.3}%
+\contentsline {section}{\numberline {8.4}Stepwise Variable Selection}{330}{section.8.4}%
+\contentsline {section}{\numberline {8.5}Modeling with Interaction Terms}{331}{section.8.5}%
+\contentsline {section}{\numberline {8.6}Prediction}{333}{section.8.6}%
+\contentsline {section}{\numberline {8.7}Using Nominal Variables}{335}{section.8.7}%
+\contentsline {section}{\numberline {8.8}Alternative Regression Models}{338}{section.8.8}%
+\contentsline {subsection}{\numberline {8.8.1}Regression Trees}{338}{subsection.8.8.1}%
+\contentsline {subsection}{\numberline {8.8.2}Regularized Regression}{340}{subsection.8.8.2}%
+\contentsline {subsection}{\numberline {8.8.3}Other Types of Regression}{346}{subsection.8.8.3}%
+\contentsline {section}{\numberline {8.9}Exercises}{346}{section.8.9}%
+\contentsline {chapter}{\numberline {9}Logistic Regression*}{349}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Introduction}{349}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Data Preparation}{351}{section.9.2}%
+\contentsline {section}{\numberline {9.3}A first Logistic Regression Model}{352}{section.9.3}%
+\contentsline {section}{\numberline {9.4}Stepwise Variable Selection}{354}{section.9.4}%
+\contentsline {section}{\numberline {9.5}Calculate the Response}{356}{section.9.5}%
+\contentsline {section}{\numberline {9.6}Check Classification Performance}{356}{section.9.6}%
+\contentsline {section}{\numberline {9.7}Regularized Logistic Regression}{358}{section.9.7}%
+\contentsline {section}{\numberline {9.8}Multinomial Logistic Regression}{359}{section.9.8}%
+\contentsline {section}{\numberline {9.9}Exercises}{360}{section.9.9}%
+\contentsline {chapter}{References}{363}{chapter*.10}%

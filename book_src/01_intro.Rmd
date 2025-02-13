@@ -50,9 +50,9 @@ you can learn more about R and the used packages.
 
 ## Used Software
 
-To use this book you need to have
+To use this book, you need to have the current version of
 [R](https://cran.r-project.org/) and [RStudio
-Desktop](https://www.rstudio.com/products/rstudio/) installed.
+Desktop](https://posit.co/products/open-source/rstudio/) installed.
 
 Each book chapter will use a set of packages that must be installed. The
 installation code can be found at the beginning of each chapter. Here is

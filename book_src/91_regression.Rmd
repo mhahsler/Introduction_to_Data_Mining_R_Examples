@@ -6,9 +6,11 @@ editor_options:
 
 # Regression*
 
-Regression is a statistical method that is not covered in out textbook in the 
-Appendix. It is is important for data mining, that we have added 
-this extra chapter here.  We introduce the regression problem
+Regression is an important statistical method that is covered 
+the freely available [Appendix D](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/appendices_2ed.pdf)
+of the data mining textbook.
+
+In this extra chapter, we introduce the regression problem
 and multiple linear regression. In addition,
 alternative models like regression trees and regularized regression
 are discussed.
