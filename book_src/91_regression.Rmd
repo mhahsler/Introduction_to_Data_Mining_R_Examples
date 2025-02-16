@@ -4,7 +4,7 @@ editor_options:
     wrap: 72
 ---
 
-# Regression*
+# Regression
 
 Regression is an important statistical method that is covered 
 the freely available [Appendix D](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/appendices_2ed.pdf)

@@ -188,13 +188,13 @@ Bayesian networks are not covered here. R has very good
 support for modeling with Bayesian Networks. An example is
 the package [bnlearn](https://www.bnlearn.com/).
 
-## Logistic regression
+## Logistic Regression {#logreg}
 
 Logistic regression is a very powerful classification method 
 and should always be tried as 
 one of the first models. 
-A detailed discussion with more code is available in Section 
-[Logistic Regression*].
+A detailed discussion with more code is available in section 
+[Logistic Regression] in the Appendix.
 
 Regular logistic regression predicts only one outcome coded as a 
 binary variable. Since we have data with several

@@ -15,8 +15,8 @@ annotated R code examples to complement the textbook. To make following
 along easier, we follow the chapters in data mining textbook which is
 organized by the main data mining tasks:
 
-2.  [Data] covers types of data and also includes data preparation and
-    exploratory data analysis in the chapter.
+2.  [Data] covers types of data. We also include data preparation and
+    exploratory data analysis in Appendix A [Data Exploration and Visualization].
 
 3.  [Classification: Basic Concepts] introduces the purpose of 
     classification, basic classifiers using decision trees,
@@ -38,9 +38,11 @@ organized by the main data mining tasks:
         k-means, hierarchical clustering, DBSCAN and how to evaluate
         clustering results.
 
-For completeness, we have added chapters on [Regression*] and on
-[Logistic Regression*]. Sections in this book followed by an asterisk
-contain code examples for methods that are not described in the data
+For completeness, we have added sections on [Regression] and on
+[Logistic Regression] to the Appendix. 
+
+Sections with names followed by an asterisk
+contain code examples for methods that are not included in the data
 mining textbook.
 
 This book assumes that you are
