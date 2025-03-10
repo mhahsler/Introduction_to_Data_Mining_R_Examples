@@ -121,7 +121,7 @@ y <- seq(from = 0, to = 1, length.out = 5)
 y
 ```
 
-#### Vectorized Operations
+### Vectorized Operations
 
 Operations are vectorized and applied to each element, 
 so loops are typically not necessary in R.
@@ -137,7 +137,7 @@ return a `logical` vector (R's name for the datatype Boolean).
 x > y
 ```
 
-#### Subsetting Vectors
+### Subsetting
 
 We can select vector elements using the `[` operator like in other
 programming languages but the index always starts at 1.
@@ -167,6 +167,8 @@ infinite values.
 x[!is.finite(x)] <- NA
 x
 ```
+
+### Names
 
 Another useful thing is that vectors and many other data structures in R support 
 names. For example, we can store the count of cars with different colors in the 
@@ -212,7 +214,7 @@ with rows and columns where different columns can contain different data types.
 
 ```{r}
 df <-  data.frame(name = c("Michael", "Mark", "Maggie"), 
-                  children = c(2, 0, 2))
+                  children = c(2, 0, 2), age = c(40, 30, 50))
 df
 ```
 
@@ -228,33 +230,21 @@ df$name
 
 Data frames are the most important way to represent data for data mining.
 
-### Functions
+### Matrices
 
-Functions work like in many other languages. However, they also operate
-vectorized and arguments can be specified positional or by named. An
-increment function can be defined as:
-
-```{r }
-inc <- function(x, by = 1) { 
-    x + by 
-  }
-```
-
-The value of the last evaluated expression in the function body is 
-automatically returned by the function. The function can also 
-explicitly use `return(return_value)`. 
-
-Calling the increment function on vector with the numbers 1 through 10.
+A matrix is similar to a data frame but it only contains values of the same data type.
+Some data mining algorithms require a numeric matrix as the input. The numeric part of
+Data frames can be coerced into a matrix. In the following example we cast the last two columns
+of `df` into a matrix. Column names are taken from the data frame and we add manually row names.
 
 ```{r }
-v <- 1:10
-inc(v, by = 2)
+x <- as.matrix(df[, -1])
+rownames(x) <- df[, 1]
+x
 ```
 
-Before you implement your own function, check if R does not already provide an
-implementation.
-R has many built-in functions like `min()`, `max()`, `mean()`, and
-`sum()`.
+Data type coercion functions in R start with `as.`. Examples as `as.logical()`,
+ `as.data.frame()`, `as.list()`, etc.
 
 ### Strings
 
@@ -280,16 +270,7 @@ vector's length. The special case where one vector has one element is
 particularly often used. We have used it already above in the expression
 `x + 1` where one is recycled for each element in `x`.
 
-### Plotting
 
-Basic plotting in Base-R is done by calling `plot()`.
-
-```{r }
-plot(x, y)
-```
-
-Other plot functions are `pairs()`, `hist()`, `barplot()`. In this book,
-we will focus on plots created with the ggplot2 package introduced below.
 
 ### Objects
 
@@ -328,6 +309,48 @@ It is often useful to know what information it stored in an object.
 ```{r}
 str(x)
 ```
+
+### Functions
+
+Functions work like in many other languages. However, they also operate
+vectorized and arguments can be specified positional or by named. An
+increment function can be defined as:
+
+```{r }
+inc <- function(x, by = 1) { 
+    x + by 
+  }
+```
+
+The value of the last evaluated expression in the function body is 
+automatically returned by the function. The function can also 
+explicitly use `return(return_value)`. 
+
+Calling the increment function on vector with the numbers 1 through 10.
+
+```{r }
+v <- 1:10
+inc(v, by = 2)
+```
+
+Before you implement your own function, check if R does not already provide an
+implementation.
+R has many built-in functions like `min()`, `max()`, `mean()`, and
+`sum()`.
+
+
+### Plotting
+
+Basic plotting in Base-R is done by calling `plot()`.
+
+```{r eval=FALSE}
+plot(x, y)
+```
+
+Other plot functions are `pairs()`, `hist()`, `barplot()`. In this book,
+we will focus on plots created with the ggplot2 package introduced below.
+
+### More on R
 
 There is much to learn about R. It is highly recommended to go through
 the official
@@ -478,18 +501,19 @@ main idea is that every graph is built from the same basic components:
 -   a coordinate system, and
 -   visual marks representing the data (geoms).
 
-In `ggplot2`, the components are combined using the `+` operator.
+The main plotting function is `ggplot()`. The components of the plot 
+are combined using the `+` operator.
 
 ```{r eval=FALSE}
 ggplot(data, mapping = aes(x = ..., y = ..., color = ...)) +
   geom_point()
 ```
 
-Since we typically use a Cartesian coordinate system, `ggplot` uses that
+Since we typically use a Cartesian coordinate system, `ggplot()` uses that
 by default. Each `geom_` function uses a `stat_` function to calculate
-what is visualizes. For example, `geom_bar` uses `stat_count` to create
+what is visualizes. For example, `geom_bar()` uses `stat_count()` to create
 a bar chart by counting how often each value appears in the data (see
-`? geom_bar`). `geom_point` just uses the stat `"identity"` to display
+`? geom_bar`). `geom_point()` just uses the stat `"identity"` to display
 the points using the coordinates as they are. A great introduction can
 be found in the [Section on Data
 Visualization](https://r4ds.hadley.nz/data-visualize) [@Wickham2023],

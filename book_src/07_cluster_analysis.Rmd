@@ -1084,45 +1084,54 @@ ggplot()  +
 ```
 
 
+## Scale Issues in Clustering*
+
+To demonstrate this issue, I will use the unscaled Ruspini dataset and assume that
+we measure x in millimeters and y in meters. I do this by multiplying x by 1000. 
+
+```{r}
+ruspini_scale_issue <- ruspini |> mutate(x = x * 1000)
+summary(ruspini_scale_issue)
+```
+
+If we cluster the data now, then the algorithm fails!
+
+```{r}
+km <- kmeans(ruspini_scale_issue, centers = 4)
+```
+
+```{r}
+ruspini_clustered <- ruspini_scale_issue |> 
+  add_column(cluster = factor(km$cluster))
+
+ggplot(ruspini_clustered, aes(x = x, y = y)) + 
+  geom_point(aes(color = cluster))
+```
+
+The clusters form vertical bands across the whole plot. 
+The reason is that the large numeric differences for the x-axis 
+overpower the relatively small differences in the y-axis when distances are 
+calculated. This issue can be avoided by scaling all variables first.
+
 
 ## Outliers in Clustering*
 
 Most clustering algorithms perform complete assignment (i.e., all data
 points need to be assigned to a cluster). Outliers will affect the
-clustering. It is useful to identify outliers and remove strong outliers
-prior to clustering. A density based method to identify outlier is
-[LOF](https://en.wikipedia.org/wiki/Local_outlier_factor) (Local Outlier
-Factor). It is related to dbscan and compares the density around a point
-with the densities around its neighbors (you have to specify the
-neighborhood size $k$). The LOF value for a regular data point is 1. The
-larger the LOF value gets, the more likely the point is an outlier.
+clustering. 
 
 ```{r }
 library(dbscan)
 ```
 
-Add a clear outlier to the scaled Ruspini dataset that is 10 standard
+To show this effect, we add a clear outlier to the scaled Ruspini dataset that is 10 standard
 deviations above the average for the x axis.
 
 ```{r }
 ruspini_scaled_outlier <- ruspini_scaled |> add_case(x=10,y=0)
 ```
 
-### Visual inspection of the data
-
-Outliers can be identified using summary statistics, histograms,
-scatterplots (pairs plots), and boxplots, etc. We use here a pairs plot
-(the diagonal contains smoothed histograms). The outlier is visible as
-the single separate point in the scatter plot and as the long tail of
-the smoothed histogram for `x`. Remember, in scaled data, we expect most observations to
-fall in the range $[-3,3]$.
-
-```{r }
-library("GGally")
-ggpairs(ruspini_scaled_outlier, progress = FALSE)
-```
-
-The outlier messes up the scaling which presents a problem for k-means.
+The outlier presents a problem for k-means.
 
 ```{r }
 km <- kmeans(ruspini_scaled_outlier, centers = 4, nstart = 10)
@@ -1137,15 +1146,74 @@ ggplot(ruspini_scaled_outlier_km, aes(x = x, y = y, color = cluster)) +
              shape = 3, size = 10)
 ```
 
-This problem can be fixed by increasing the number of clusters and
-removing small clusters in a post-processing step or by identifying and
-removing outliers before clustering.
+Often, outliers become their own clusters.
 
-### Local Outlier Factor (LOF)
+To avoid this problem we can
+
+* increasing the number of cluster and removing small clusters in a post-processing step, or 
+* by identify and remove outliers before clustering.
+
+
+Here is the result with one additional cluster.
+```{r }
+km <- kmeans(ruspini_scaled_outlier, centers = 5, nstart = 10)
+ruspini_scaled_outlier_km <- ruspini_scaled_outlier|>
+  add_column(cluster = factor(km$cluster))
+centroids <- as_tibble(km$centers, rownames = "cluster")
+
+ggplot(ruspini_scaled_outlier_km, aes(x = x, y = y, color = cluster)) + 
+  geom_point() +
+  geom_point(data = centroids, 
+             aes(x = x, y = y, color = cluster), 
+             shape = 3, size = 10)
+```
+
+
+Methods to identify outliers are summary statistics, visual inspection,
+and outlier scores like the Local Outlier Factor (LOF) discussed in the following 
+sections.
+
+### Visual Inspection of the Data
+
+Outliers can be identified using summary statistics, histograms,
+scatterplots (pairs plots), and boxplots, etc. We use here a pairs plot
+(the diagonal contains smoothed histograms). The outlier is visible as
+the single separate point in the scatter plot and as the long tail of
+the smoothed histogram for `x`. Remember, in scaled data, we expect most observations to
+fall in the range $[-3,3]$.
+
+```{r }
+library("GGally")
+ggpairs(ruspini_scaled_outlier, progress = FALSE)
+```
+
+The x value of the outlier point is 10 standard deviations larger than the average
+point. We can find the row number by  
+
+```{r}
+which(ruspini_scaled_outlier$x > 3)
+```
+
+and then manually remove it.
+
+
+### Local Outlier Factor
 
 The [Local Outlier
-Factor](https://en.wikipedia.org/wiki/Local_outlier_factor) is related
-to concepts of DBSCAN can help to identify potential outliers. To calculate
+Factor (LOF)](https://en.wikipedia.org/wiki/Local_outlier_factor) is related
+to concepts of DBSCAN can help to identify potential outliers.
+LOF compares the density of a data point to its neighboring data points. 
+If a data point has a much lower density than its neighbors, it has a high LOF score and is considered an outlier. 
+
+It is useful to identify outliers and remove strong outliers
+prior to clustering. A density based method to identify outlier is
+[LOF](https://en.wikipedia.org/wiki/Local_outlier_factor) (Local Outlier
+Factor). It is related to dbscan and compares the density around a point
+with the densities around its neighbors (you have to specify the
+neighborhood size $k$). The LOF value for a regular data point is 1. The
+larger the LOF value gets, the more likely the point is an outlier.
+
+To calculate
 the LOF, a local neighborhood size (MinPts in DBSCAN) for density estimation 
 needs to be chosen. I use 10 here since I expect my clusters to have each more 
 than 10 points.
@@ -1165,8 +1233,7 @@ Plot the points sorted by increasing LOF and look for a knee.
 ```{r }
 ggplot(tibble(index = seq_len(length(lof)), lof = sort(lof)), 
        aes(index, lof)) +
-  geom_line() +
-  geom_hline(yintercept = 1, color = "red", linetype = 2)
+  geom_line()
 ```
 
 We choose here a threshold above 2.
