@@ -57,7 +57,7 @@ The found set of association rules is then used reason about the data.
 
 You can read the free sample chapter from the textbook [@Tan2005]:
 [Chapter 5. Association Analysis: Basic Concepts and
-Algorithms](https://www-users.cs.umn.edu/~kumar001/dmbook/ch5_association_analysis.pdf)
+Algorithms](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/ch5_association_analysis.pdf)
 
 ### The arules Package
 

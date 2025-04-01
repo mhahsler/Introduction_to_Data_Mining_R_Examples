@@ -66,14 +66,14 @@ where $y$ is a number instead of a label.
 Linear regression is a very popular supervised learning model
 which is taught in almost any introductory statistics course.
 Code examples for regression are available in the extra Chapter
-[Regression*].
+[Regression].
 
 This chapter will introduce decision trees, model evaluation and comparison, feature selection,
 and then explore methods to handle the class imbalance problem.
 
 You can read the free sample chapter from the textbook [@Tan2005]:
 [Chapter 3. Classification: Basic Concepts and
-Techniques](https://www-users.cs.umn.edu/~kumar001/dmbook/ch3_classification.pdf)
+Techniques](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/ch3_classification.pdf)
 
 ## General Framework for Classification
 
@@ -126,11 +126,11 @@ name.
 
 ```{r }
 library(tidyverse)
-as_tibble(Zoo, rownames = "animal")
+Zoo <- as_tibble(Zoo, rownames = "animal")
+Zoo
 ```
 
-You will have to remove the animal column before learning a model! In
-the following I use the data.frame.
+You will have to remove the animal column before learning a model since it is a unique identifier!
 
 I translate all the TRUE/FALSE values into factors (nominal). This is
 often needed for building models. Always check `summary()` to make sure
@@ -157,7 +157,15 @@ library(rpart)
 
 ### Create Tree 
 
-We create first a tree with the default settings (see `? rpart.control`).
+We create first a tree with the default settings (see `? rpart.control`). It is 
+very important to not use the identifier column or the algorithm will only use this
+column and potentially run out of memory.
+
+```{r }
+Zoo <- Zoo |> select(-animal)
+```
+
+Alternatively, you can use `. - animal` as the formula below.
 
 ```{r }
 tree_default <- Zoo |> 

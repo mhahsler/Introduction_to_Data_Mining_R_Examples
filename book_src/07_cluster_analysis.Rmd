@@ -47,7 +47,7 @@ Clustering is often used for exploratory analysis or to preprocess data by group
 
 You can read the free sample chapter from the textbook [@Tan2005]:
 [Chapter 7. Cluster Analysis: Basic Concepts and
-Algorithms](https://www-users.cs.umn.edu/~kumar001/dmbook/ch7_clustering.pdf)
+Algorithms](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/ch7_clustering.pdf)
 
 ### Data Preparation
 
