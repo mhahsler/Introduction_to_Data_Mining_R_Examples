@@ -18,7 +18,7 @@ better understanding of the model bias that different algorithms have.
 pkgs <- c("basemodels", "C50", "caret", "e1071", "klaR", 
           "lattice", "MASS", "mlbench", "nnet", "palmerpenguins", 
           "randomForest", "rpart", "RWeka", "scales", "tidyverse", 
-          "xgboost")
+          "xgboost", "sampling")
 
 pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
 if(length(pkgs_install)) install.packages(pkgs_install)
