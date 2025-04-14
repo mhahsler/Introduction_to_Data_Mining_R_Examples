@@ -942,6 +942,8 @@ generalization error.</p>
 <span><span class="co">## Detection Rate                      0.111</span></span>
 <span><span class="co">## Detection Prevalence                0.111</span></span>
 <span><span class="co">## Balanced Accuracy                   1.000</span></span></code></pre></div>
+<p>Definitions of the additional statistics by class (including alternative names) can be found
+in caret’s <a href="https://rdrr.io/cran/caret/man/confusionMatrix.html">confusion matrix man page</a>.</p>
 <p><strong>Some notes</strong></p>
 <ul>
 <li>Many classification algorithms and <code>train</code> in caret do not deal well
@@ -1248,7 +1250,7 @@ Here we pick the 5 highest-ranked features.</p>
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/as.simple.formula.html">as.simple.formula</a></span><span class="op">(</span><span class="va">subset</span>, <span class="st">"type"</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
 <span><span class="co">## type ~ feathers + milk + backbone + toothed + eggs</span></span>
-<span><span class="co">## &lt;environment: 0x556969e78638&gt;</span></span>
+<span><span class="co">## &lt;environment: 0x561f34530c98&gt;</span></span>
 <span><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">m</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-123-1.png" width="672"></div>
@@ -1509,7 +1511,7 @@ the most important? What variables do not matter?</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-04-01.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-04-09.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

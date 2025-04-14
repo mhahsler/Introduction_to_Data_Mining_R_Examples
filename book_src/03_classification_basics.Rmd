@@ -519,6 +519,10 @@ confusionMatrix(data = pred,
                 ref = Zoo_test |> pull(type))
 ```
 
+Definitions of the additional statistics by class (including alternative names) can be found 
+in caret's [confusion matrix man page](https://rdrr.io/cran/caret/man/confusionMatrix.html).
+
+
 **Some notes**
 
 -   Many classification algorithms and `train` in caret do not deal well
