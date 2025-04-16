@@ -4,7 +4,7 @@ editor_options:
     wrap: 72
 ---
 
-# Logistic Regression
+# Logistic Regression {#appendix_logistic_regression}
 
 This chapter introduces the popular classification method 
 logistic regression more in detail. Logistic regression is introduced

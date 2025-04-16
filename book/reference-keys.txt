@@ -201,7 +201,7 @@ parallel-coordinates-plot
 star-plot
 more-visualizations
 exercises-5
-regression
+appendix_regression
 introduction-1
 a-first-linear-regression-model
 comparing-nested-models
@@ -212,9 +212,10 @@ using-nominal-variables
 alternative-regression-models
 regression-trees
 regularized-regression
+anns
 other-types-of-regression
 exercises-6
-logistic-regression
+appendix_logistic_regression
 introduction-2
 data-preparation-1
 a-first-logistic-regression-model

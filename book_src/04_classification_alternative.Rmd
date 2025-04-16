@@ -194,7 +194,7 @@ Logistic regression is a very powerful classification method
 and should always be tried as 
 one of the first models. 
 A detailed discussion with more code is available in section 
-[Logistic Regression] in the Appendix.
+[Logistic Regression](#appendix_logistic_regression) in the Appendix.
 
 Regular logistic regression predicts only one outcome coded as a 
 binary variable. Since we have data with several

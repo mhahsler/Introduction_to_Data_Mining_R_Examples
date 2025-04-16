@@ -85,8 +85,8 @@
 <li><a class="" href="cluster-analysis.html"><span class="header-section-number">7</span> Cluster Analysis</a></li>
 <li class="book-part">Appendix</li>
 <li><a class="" href="data-exploration-and-visualization.html"><span class="header-section-number">A</span> Data Exploration and Visualization</a></li>
-<li><a class="active" href="regression.html"><span class="header-section-number">B</span> Regression</a></li>
-<li><a class="" href="logistic-regression.html"><span class="header-section-number">C</span> Logistic Regression</a></li>
+<li><a class="active" href="appendix_regression.html"><span class="header-section-number">B</span> Regression</a></li>
+<li><a class="" href="appendix_logistic_regression.html"><span class="header-section-number">C</span> Logistic Regression</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -95,9 +95,9 @@
         </div>
       </nav>
 </div>
-  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="regression" class="section level1" number="9">
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="appendix_regression" class="section level1" number="9">
 <h1>
-<span class="header-section-number">B</span> Regression<a class="anchor" aria-label="anchor" href="#regression"><i class="fas fa-link"></i></a>
+<span class="header-section-number">B</span> Regression<a class="anchor" aria-label="anchor" href="#appendix_regression"><i class="fas fa-link"></i></a>
 </h1>
 <p>Regression is an important statistical method that is covered
 the freely available <a href="https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/appendices_2ed.pdf">Appendix D</a>
@@ -110,7 +110,7 @@ are discussed.</p>
 <h3>Packages Used in this Chapter<a class="anchor" aria-label="anchor" href="#packages-used-in-this-chapter-7"><i class="fas fa-link"></i></a>
 </h3>
 <div class="sourceCode" id="cb452"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'lars'</span>, <span class="st">'rpart'</span>, <span class="st">'rpart.plot'</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'lars'</span>, <span class="st">'rpart'</span>, <span class="st">'rpart.plot'</span>, <span class="st">'nnet'</span><span class="op">)</span></span>
 <span>  </span>
 <span><span class="va">pkgs_install</span> <span class="op">&lt;-</span> <span class="va">pkgs</span><span class="op">[</span><span class="op">!</span><span class="op">(</span><span class="va">pkgs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span>,<span class="st">"Package"</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">pkgs_install</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="va">pkgs_install</span><span class="op">)</span></span></code></pre></div>
@@ -118,6 +118,9 @@ are discussed.</p>
 <ul>
 <li>
 <em>lars</em> <span class="citation">(<a href="references.html#ref-R-lars">Hastie and Efron 2022</a>)</span>
+</li>
+<li>
+<em>nnet</em> <span class="citation">(<a href="references.html#ref-R-nnet">Ripley 2025</a>)</span>
 </li>
 <li>
 <em>rpart</em> <span class="citation">(<a href="references.html#ref-R-rpart">Therneau and Atkinson 2025</a>)</span>
@@ -1103,12 +1106,12 @@ Then use the regression tree to predict the weight for the above penguin.</p></l
 </div>
   <div class="chapter-nav">
 <div class="prev"><a href="data-exploration-and-visualization.html"><span class="header-section-number">A</span> Data Exploration and Visualization</a></div>
-<div class="next"><a href="logistic-regression.html"><span class="header-section-number">C</span> Logistic Regression</a></div>
+<div class="next"><a href="appendix_logistic_regression.html"><span class="header-section-number">C</span> Logistic Regression</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
 <li>
-<a class="nav-link" href="#regression"><span class="header-section-number">B</span> Regression</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#packages-used-in-this-chapter-7">Packages Used in this Chapter</a></li></ul>
+<a class="nav-link" href="#appendix_regression"><span class="header-section-number">B</span> Regression</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#packages-used-in-this-chapter-7">Packages Used in this Chapter</a></li></ul>
 </li>
 <li><a class="nav-link" href="#introduction-1"><span class="header-section-number">B.1</span> Introduction</a></li>
 <li><a class="nav-link" href="#a-first-linear-regression-model"><span class="header-section-number">B.2</span> A First Linear Regression Model</a></li>

@@ -85,8 +85,8 @@
 <li><a class="" href="cluster-analysis.html"><span class="header-section-number">7</span> Cluster Analysis</a></li>
 <li class="book-part">Appendix</li>
 <li><a class="" href="data-exploration-and-visualization.html"><span class="header-section-number">A</span> Data Exploration and Visualization</a></li>
-<li><a class="" href="regression.html"><span class="header-section-number">B</span> Regression</a></li>
-<li><a class="" href="logistic-regression.html"><span class="header-section-number">C</span> Logistic Regression</a></li>
+<li><a class="" href="appendix_regression.html"><span class="header-section-number">B</span> Regression</a></li>
+<li><a class="" href="appendix_logistic_regression.html"><span class="header-section-number">C</span> Logistic Regression</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -179,7 +179,7 @@ where <span class="math inline">\(y\)</span> is a number instead of a label.
 Linear regression is a very popular supervised learning model
 which is taught in almost any introductory statistics course.
 Code examples for regression are available in the extra Chapter
-<a href="regression.html#regression">Regression</a>.</p>
+<a href="appendix_regression.html#appendix_regression">Regression</a>.</p>
 <p>This chapter will introduce decision trees, model evaluation and comparison, feature selection,
 and then explore methods to handle the class imbalance problem.</p>
 <p>You can read the free sample chapter from the textbook <span class="citation">(<a href="references.html#ref-Tan2005">Tan, Steinbach, and Kumar 2005</a>)</span>:
@@ -1250,7 +1250,7 @@ Here we pick the 5 highest-ranked features.</p>
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/as.simple.formula.html">as.simple.formula</a></span><span class="op">(</span><span class="va">subset</span>, <span class="st">"type"</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
 <span><span class="co">## type ~ feathers + milk + backbone + toothed + eggs</span></span>
-<span><span class="co">## &lt;environment: 0x561f34530c98&gt;</span></span>
+<span><span class="co">## &lt;environment: 0x55b1da42e5d0&gt;</span></span>
 <span><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">m</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-123-1.png" width="672"></div>
@@ -1511,7 +1511,7 @@ the most important? What variables do not matter?</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-04-09.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-04-16.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

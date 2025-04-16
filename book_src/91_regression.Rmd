@@ -4,7 +4,7 @@ editor_options:
     wrap: 72
 ---
 
-# Regression
+# Regression {#appendix_regression}
 
 Regression is an important statistical method that is covered 
 the freely available [Appendix D](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/appendices_2ed.pdf)
@@ -18,7 +18,7 @@ are discussed.
 ### Packages Used in this Chapter {.unnumbered}
 
 ```{r setup_linear_regression}
-pkgs <- c('lars', 'rpart', 'rpart.plot')
+pkgs <- c('lars', 'rpart', 'rpart.plot', 'nnet')
   
 pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
 if(length(pkgs_install)) install.packages(pkgs_install)
@@ -83,7 +83,7 @@ Linear regression makes several assumptions that should be checked:
 
 ## A First Linear Regression Model
 
-We will use the Iris datasets and try to predict 
+We will use the Iris dataset and try to predict 
 the `Petal.Width` using the other variables. We first
 load and shuffle data since the flowers in the dataset are in order by species.
 
@@ -95,7 +95,7 @@ x <- iris[sample(1:nrow(iris)),]
 plot(x, col=x$Species)
 ```
 
-The iris data is very clean, so we make the data a little messy by adding a random error
+The Iris data is very clean, so we make the data a little messy by adding a random error
 to each variable and introduce a useless, completely random feature.
 
 ```{r}
@@ -360,19 +360,20 @@ by choosing the splits.
 Let's evaluate the regression tree by calculating the RMSE.
 
 ```{r}
-RMSE(predict(model7, test), test$Petal.Width)
+pred <- predict(model7, test)
+RMSE(pred, test$Petal.Width)
 ```
 
 And visualize the quality. 
 
 ```{r}
-plot(test[,"Petal.Width"], predict(model7, test),
+plot(test[,"Petal.Width"], pred,
   xlim = c(0,3), ylim = c(0,3), 
   xlab = "actual", ylab = "predicted",
   main = "Petal.Width")
 abline(0,1, col = "red")
 
-cor(test[,"Petal.Width"], predict(model7, test))
+cor(test[,"Petal.Width"], pred)
 ```
 
 The plot and the correlation coefficient indicate that the model is very good.
@@ -382,9 +383,15 @@ exactly the same value when the data falls in the same leaf node.
 
 ### Regularized Regression
 [LASSO](https://en.wikipedia.org/wiki/Lasso_(statistics)) (least absolute shrinkage and selection operator)
-uses regularization to reduce the number of parameters. An implementation is called 
-[elastic net regularization](https://en.wikipedia.org/wiki/Elastic_net_regularization) 
-which is implemented in the function `lars()` in package lars).
+uses L1 regularization to reduce to perform automatic variable selection.
+The regularization adds a penalty for the L1 norm of the parameter vector $\boldsymbol{\beta}$ (i.e., the summ of all
+parameter values)
+to the optimization. Increasing the weight of this penalty term (the weight is called $\lambda$) 
+results in more and more weights being pushed to 0 which effectively reduces the number of 
+parameters used in the regression.
+An implementation called 
+the [elastic net](https://en.wikipedia.org/wiki/Elastic_net_regularization) 
+is available as the function `lars()` in package `lars`.
 
 ```{r}
 library(lars)
@@ -443,22 +450,60 @@ predict(model_lars, x_test[1:5,], s = best)
 The prediction is the `fit` element. We can calculate the RMSE.
 
 ```{r}
-RMSE(predict(model_lars, x_test, s = best)$fit, test$Petal.Width)
+pred <- predict(model_lars, x_test, s = best)$fit
+RMSE(pred, test$Petal.Width)
 ```
 
 And visualize the prediction.
 
 ```{r}
 plot(test[,"Petal.Width"], 
-     predict(model_lars, x_test, s = best)$fit,
+     pred,
      xlim=c(0,3), ylim=c(0,3), 
      xlab = "actual", ylab = "predicted",
      main = "Petal.Width")
 abline(0,1, col = "red")
+
 cor(test[,"Petal.Width"],
-    predict(model_lars, x_test, s = best)$fit)
+    pred)
 ```
 The model shows good predictive power on the test set.
+
+
+### ANNs
+
+Regression can be performed using [artificial neural networks](https://en.wikipedia.org/wiki/Neural_network_(machine_learning)) 
+with typically a linear final layer. 
+We will create a network using a single hidden layer 
+with 3 neurons (a manually tuned hyper parameter) and a linear output layer (set via `linout`).
+
+```{r}
+library(nnet)
+
+model_nnet <- nnet(Petal.Width ~ ., data = train, size = 3, linout = TRUE)
+model_nnet
+```
+
+```{r}
+pred <- predict(model_nnet, test)
+RMSE(pred, test$Petal.Width)
+```
+
+And visualize the quality. 
+
+```{r}
+plot(test[,"Petal.Width"], pred,
+  xlim = c(0,3), ylim = c(0,3), 
+  xlab = "actual", ylab = "predicted",
+  main = "Petal.Width")
+abline(0,1, col = "red")
+
+cor(test[,"Petal.Width"], pred)
+```
+_Note:_ It is often necessary to scale the inputs to the ANN so it can learn effectively. 
+It is very popular to scale all inputs 
+to the ranges $[0,1]$ or $[-1,1]$. The ranges of the Iris dataset are fine, so
+there was no need for scaling.
 
 
 ### Other Types of Regression

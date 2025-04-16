@@ -38,8 +38,8 @@ organized by the main data mining tasks:
         k-means, hierarchical clustering, DBSCAN and how to evaluate
         clustering results.
 
-For completeness, we have added sections on [Regression] and on
-[Logistic Regression] to the Appendix. 
+For completeness, we have added sections on [Regression](#appendix_regression) and on
+[Logistic Regression](#appendix_logistic_regression) to the Appendix. 
 
 Sections with names followed by an asterisk
 contain code examples for methods that are not included in the data
