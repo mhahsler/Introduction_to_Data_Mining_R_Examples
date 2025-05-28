@@ -125,6 +125,9 @@ mine-using-templates
 compact-representation-of-frequent-itemsets
 association-rule-visualization
 static-visualizations
+scatterplot
+grouped-matrix-plot
+gaph-based-visualization
 interactive-visualizations
 interactive-inspect-with-sorting-filtering-and-paging
 scatter-plot
