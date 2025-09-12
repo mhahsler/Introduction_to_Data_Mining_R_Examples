@@ -411,15 +411,41 @@ Load the `arulesViz` library.
 
 ```{r }
 library(arulesViz)
+library(tidyverse)
 ```
 
-Default scatterplot
+Create rules for the Zoo dataset converting the legs variable into a binary 
+indicator.
+
+```{r }
+data(Zoo, package = "mlbench")
+Zoo_has_legs <- Zoo |> mutate(legs = legs > 0)
+trans <- transactions(Zoo_has_legs)
+trans
+```
+
+```{r}
+rules <- apriori(trans, 
+                 parameter = list(support = 0.05, 
+                                  confidence = 0.9))
+
+quality(rules) <- cbind(quality(rules),
+  interestMeasure(rules, measure = c("phi", "gini"),
+    trans = trans))
+
+rules
+```
+
+
+#### Scatterplot
+The default plot for association rules is a support/confidence scatterplot.
 
 ```{r }
 plot(rules)
 ```
 
-Note that some jitter (randomly move points) was added to show how many
+Each rules is represented by a point. Note that some jitter (randomly move points) 
+was added to show how many
 rules have the same confidence and support value. Without jitter:
 
 ```{r }
@@ -428,24 +454,48 @@ plot(rules, control = list(jitter = 0))
 plot(rules, shading = "order")
 ```
 
-Grouped plot
+#### Grouped Matrix Plot
+The grouped matrix plot tries to group rules with a similar relationship between the rule's LHS and RHS and 
+represents the groups support and lift using a balloon plot. 
+Grouping is performed using clustering. Groups are organized such 
+that the most interesting rules appear to the top left corner.  
 
 ```{r fig.height=7}
-plot(rules, method = "grouped")
+set.seed(1234)
+plot(rules, method = "grouped matrix")
 ```
+
+The most interesting rules are about thre relationship between fins, eggs and 5 more 
+items and the type fish.
+
 
 This plot can also be used interactively using the parameter 
 `engine = "interactive"`.
 
+#### Gaph-based Visualization
+Graph-based techniques visualize association rules using vertices and edges,
+where vertices typically represent items or itemsets and edges indicate relationships
+in terms of rules. Interest measures are typically added to the plot as labels on the
+edges or by color or width of the arrows displaying the edges.
 
-As a graph
 
 ```{r }
 plot(rules, method = "graph")
 plot(rules |> head(by = "phi", n = 100), method = "graph")
 ```
+We see that the automatic graph layout organizes the rules roughly into three groups 
+representing the three most frequent animal types: birds, mammals and fish.
+we can also see that birds and mammals share items like breathes while birds and 
+fish share eggs.
+
 
 ### Interactive Visualizations
+
+Interactive visualizations let the user explore the large number of 
+rules and itemsets and learn about the structure of the data. The overview article
+[arulesViz: Interactive Visualization of Association Rules with R](https://journal.r-project.org/archive/2017/RJ-2017-047/RJ-2017-047.pdf)
+provides an indepth discussion of interactive association rule visualization.
+
 
 We will use the association rules mined from the Iris dataset for the
 following examples.
@@ -480,6 +530,10 @@ rules
 
 #### Interactive Inspect With Sorting, Filtering and Paging
 
+An interactive table that lets the user sort and filter the rules
+is a very effective exploration tool. We can quickly find the highest 
+lift rules and filter by interesting items in the LHS and RHS of the rules.
+
 ```{r eval = knitr::is_html_output()}
 inspectDT(rules,options = list(scrollX = TRUE))
 ```
@@ -506,7 +560,9 @@ cat('_The resulting interactive plot can be seen in the [online version of this 
 
 #### Matrix Visualization
 
-Plot rules as a matrix using an interactive html widget.
+The rules are organized in a matrix where the columns represent unique LHS itemsets and
+the rows are the RHS items.  Hovering over rules shows rule information.
+
 
 ```{r eval = knitr::is_html_output()}
 plot(rules, method = "matrix", engine = "html") 
@@ -520,7 +576,10 @@ cat('_The resulting interactive plot can be seen in the [online version of this 
 
 #### Visualization as Graph
 
-Plot rules as a graph using an interactive html widget. *Note:* the used
+Plot rules as an interactive graph with items as rectangular vertices and rules as circular vertices.
+Hovering over a vertex shows additional information. On most devices, the mouse wheel 
+lets the user zoom in and out of the graph.
+*Note:* the used
 javascript library does not do well with too many graph nodes, so plot
 selects the top 100 rules only (with a warning).
 

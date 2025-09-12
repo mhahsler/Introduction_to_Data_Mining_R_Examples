@@ -241,7 +241,8 @@ groups.
 
 [Sampling](https://en.wikipedia.org/wiki/Sampling_(statistics)) is often
 used in data mining to reduce the dataset size before modeling or
-visualization.
+visualization. Another application is to split data randomly into training and testing 
+data for working with supervised models (e.g., classification models).
 
 #### Random Sampling
 
