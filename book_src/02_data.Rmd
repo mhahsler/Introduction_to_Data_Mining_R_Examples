@@ -659,14 +659,16 @@ Negative values mean smaller than the average and positive values mean larger th
 
 ## Measures of Similarity and Dissimilarity
 
-Proximities help with quantifying how similar two objects are. 
-[Similariy](https://en.wikipedia.org/wiki/Similarity_(geometry)) is a concept from geometry.
-The best-known 
-way to define similarity is Euclidean distance, but proximities can be measured in
-different ways depending on the information we have about the objects.
+Proximities help with quantifying how similar two objects are.
+Remember, objects are rows in our data. We call one row the feature vector for the object.
 
-R stores proximity as dissimilarities/distances matrices. Similarities
-are first converted to dissimilarities. Distances are symmetric, i.e.,
+[Similariy](https://en.wikipedia.org/wiki/Similarity_(geometry)) is a concept from geometry.
+It is the opposite of dissimilarity. The best-known 
+way to measure dissimilarity is [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance), but [dissimilarity and similarity](https://en.wikipedia.org/wiki/Similarity_measure) can be measured in many different ways depending on the information we have about the objects.
+
+R stores similarity information always as a dissimilarities/distances matrices. 
+Similarities are converted to dissimilarities. 
+Distances are symmetric, i.e.,
 the distance from A to B is the same as the distance from B to A. R
 therefore stores only a triangle (typically the lower triangle) of the
 distance matrix.
@@ -676,18 +678,18 @@ distance matrix.
 The [Minkowsky
 distance](https://en.wikipedia.org/wiki/Minkowski_distance) is a family
 of distances including Euclidean and Manhattan distance. It is defined
-between two feature vectors $\mathbf{x} = (x_1, x_2, ..., x_n)$ and 
-$\mathbf{y} = (y_1, y_2, ..., y_n)$ as
+between two feature vectors $\mathbf{p} = (p_1, p_2, ..., p_n)$ and 
+$\mathbf{y} = (q_1, q_2, ..., q_n)$ as
 
 $$
-d(\mathbf{x},\mathbf{y}) = \left(\sum_{i=1}^n |x_i - y_i|^p\right)^{\frac{1}{p}} = ||\mathbf{x}-\mathbf{y}||_p. 
+d(\mathbf{p},\mathbf{q}) = \left(\sum_{i=1}^n |p_i - q_i|^r\right)^{\frac{1}{r}} = ||\mathbf{q}-\mathbf{q}||_r. 
 $$
-Where the power $p$ is a positive integer. This type of distance is also called 
-a $p$-norm written as $L^p$. Special values for $p$ are:
+Where the power $r$ is a positive integer. This type of distance is also called 
+a $r$-norm written as $L^r$. Special values for $r$ are:
 
-* $p = 1$: Manhattan distance
-* $p = 2$: Euclidean distance
-* $p = \infty$: Maximum norm (only the largest component distance counts)
+* $r = 1$: Manhattan distance
+* $r = 2$: Euclidean distance
+* $r = \infty$: Maximum norm (only the largest component distance counts)
 
 To avoid
 one feature to dominate the distance calculation, scaled data is
