@@ -7,7 +7,7 @@
 <title>C Logistic Regression | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
 <meta name="description" content="This chapter introduces the popular classification method logistic regression more in detail. Logistic regression is introduced as an alternative classification method in Chapter 4 of Introduction...">
-<meta name="generator" content="bookdown 0.43 with bs4_book()">
+<meta name="generator" content="bookdown 0.44 with bs4_book()">
 <meta property="og:title" content="C Logistic Regression | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -113,7 +113,7 @@ as an alternative classification method in Chapter 4 of Introduction to Data Min
 <em>caret</em> <span class="citation">(<a href="references.html#ref-R-caret">Kuhn 2024</a>)</span>
 </li>
 <li>
-<em>glmnet</em> <span class="citation">(<a href="references.html#ref-R-glmnet">Friedman et al. 2023</a>)</span>
+<em>glmnet</em> <span class="citation">(<a href="references.html#ref-R-glmnet">Friedman et al. 2025</a>)</span>
 </li>
 </ul>
 <div id="introduction-2" class="section level2" number="10.1">
@@ -433,11 +433,15 @@ value. glmnet does not have a function interface, so we have
 to supply a matrix for <code>X</code> and a vector of responses for <code>y</code>.</p>
 <div class="sourceCode" id="cb515"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://glmnet.stanford.edu">glmnet</a></span><span class="op">)</span></span>
-<span><span class="co">## Loaded glmnet 4.1-8</span></span>
+<span><span class="co">## Loaded glmnet 4.1-10</span></span>
 <span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">as.matrix</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">$</span><span class="va">virginica</span></span>
 <span></span>
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glmnet.stanford.edu/reference/cv.glmnet.html">cv.glmnet</a></span><span class="op">(</span><span class="va">X</span>, <span class="va">y</span>, family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(seq(nfolds), length = N): partial argument</span></span>
+<span><span class="co">## match of 'length' to 'length.out'</span></span>
+<span><span class="co">## Warning in seq.default(0, length = nlambda): partial</span></span>
+<span><span class="co">## argument match of 'length' to 'length.out'</span></span>
 <span><span class="va">fit</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:  cv.glmnet(x = X, y = y, family = "binomial") </span></span>
@@ -453,13 +457,13 @@ lambda that gives the most regularized model such that the cross-validated error
 <div class="sourceCode" id="cb516"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">fit</span>, s <span class="op">=</span> <span class="va">fit</span><span class="op">$</span><span class="va">lambda.1se</span><span class="op">)</span></span>
 <span><span class="co">## 6 x 1 sparse Matrix of class "dgCMatrix"</span></span>
-<span><span class="co">##                   s1</span></span>
-<span><span class="co">## (Intercept)  -16.961</span></span>
-<span><span class="co">## Sepal.Length   .    </span></span>
-<span><span class="co">## Sepal.Width   -1.766</span></span>
-<span><span class="co">## Petal.Length   2.197</span></span>
-<span><span class="co">## Petal.Width    6.820</span></span>
-<span><span class="co">## useless        .</span></span></code></pre></div>
+<span><span class="co">##              s=0.00664</span></span>
+<span><span class="co">## (Intercept)    -16.961</span></span>
+<span><span class="co">## Sepal.Length     .    </span></span>
+<span><span class="co">## Sepal.Width     -1.766</span></span>
+<span><span class="co">## Petal.Length     2.197</span></span>
+<span><span class="co">## Petal.Width      6.820</span></span>
+<span><span class="co">## useless          .</span></span></code></pre></div>
 <p>A dot means 0. We see that the predictors Sepal.Length and
 useless are not used in the prediction giving a models similar to
 stepwise variable selection above.</p>
@@ -468,11 +472,11 @@ what regularization to use and that we want to predict a class
 label.</p>
 <div class="sourceCode" id="cb517"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, newx <span class="op">=</span> <span class="va">X</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span>, s <span class="op">=</span> <span class="va">fit</span><span class="op">$</span><span class="va">lambda.1se</span>, type <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span></span>
-<span><span class="co">##     s1     </span></span>
-<span><span class="co">## 102 "TRUE" </span></span>
-<span><span class="co">## 112 "TRUE" </span></span>
-<span><span class="co">## 4   "FALSE"</span></span>
-<span><span class="co">## 55  "FALSE"</span></span>
+<span><span class="co">##     s=0.00664</span></span>
+<span><span class="co">## 102 "TRUE"   </span></span>
+<span><span class="co">## 112 "TRUE"   </span></span>
+<span><span class="co">## 4   "FALSE"  </span></span>
+<span><span class="co">## 55  "FALSE"  </span></span>
 <span><span class="co">## 70  "FALSE"</span></span></code></pre></div>
 <p>Glmnet provides supports many types of
 generalized linear models. Examples can be found in the
@@ -614,7 +618,7 @@ confusion table and calculate the accuracy and discuss how well the model works.
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-05-06.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-09-19.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

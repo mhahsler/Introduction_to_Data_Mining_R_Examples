@@ -7,7 +7,7 @@
 <title>Chapter 4 Classification: Alternative Techniques | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
 <meta name="description" content="This chapter introduces different types of classifiers. It also discusses the important problem of class imbalance in data and options to deal with it. In addition, this chapter compares visually...">
-<meta name="generator" content="bookdown 0.43 with bs4_book()">
+<meta name="generator" content="bookdown 0.44 with bs4_book()">
 <meta property="og:title" content="Chapter 4 Classification: Alternative Techniques | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -133,7 +133,7 @@ better understanding of the model bias that different algorithms have.</p>
 <em>klaR</em> <span class="citation">(<a href="references.html#ref-R-klaR">Roever et al. 2023</a>)</span>
 </li>
 <li>
-<em>lattice</em> <span class="citation">(<a href="references.html#ref-R-lattice">Sarkar 2023</a>)</span>
+<em>lattice</em> <span class="citation">(<a href="references.html#ref-R-lattice">Sarkar 2025</a>)</span>
 </li>
 <li>
 <em>MASS</em> <span class="citation">(<a href="references.html#ref-R-MASS">Ripley and Venables 2025</a>)</span>
@@ -157,13 +157,13 @@ better understanding of the model bias that different algorithms have.</p>
 <em>RWeka</em> <span class="citation">(<a href="references.html#ref-R-RWeka">Hornik 2023</a>)</span>
 </li>
 <li>
-<em>sampling</em> <span class="citation">(<a href="references.html#ref-R-sampling">Tillé and Matei 2023</a>)</span>
+<em>sampling</em> <span class="citation">(<a href="references.html#ref-R-sampling">Tillé and Matei 2025</a>)</span>
 </li>
 <li>
-<em>scales</em> <span class="citation">(<a href="references.html#ref-R-scales">Wickham, Pedersen, and Seidel 2023</a>)</span>
+<em>scales</em> <span class="citation">(<a href="references.html#ref-R-scales">Wickham, Pedersen, and Seidel 2025</a>)</span>
 </li>
 <li>
-<em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse">Wickham 2023c</a>)</span>
+<em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse">Wickham 2023b</a>)</span>
 </li>
 <li>
 <em>xgboost</em> <span class="citation">(<a href="references.html#ref-R-xgboost">T. Chen et al. 2025</a>)</span>
@@ -478,6 +478,8 @@ Caret uses <code><a href="https://rdrr.io/pkg/nnet/man/multinom.html">nnet::mult
 <span>  data <span class="op">=</span> <span class="va">_</span>,</span>
 <span>  trace <span class="op">=</span> <span class="cn">FALSE</span>, <span class="co"># suppress some output</span></span>
 <span>    trControl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/trainControl.html">trainControl</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"cv"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## Warning in seq.default(-1, -4, length = len - 1): partial</span></span>
+<span><span class="co">## argument match of 'length' to 'length.out'</span></span>
 <span><span class="va">logRegFit</span></span>
 <span><span class="co">## Penalized Multinomial Regression </span></span>
 <span><span class="co">## </span></span>
@@ -565,6 +567,8 @@ a single hidden layer.</p>
 <span>    trControl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/trainControl.html">trainControl</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"cv"</span><span class="op">)</span>,</span>
 <span>  trace <span class="op">=</span> <span class="cn">FALSE</span> <span class="co"># no progress output</span></span>
 <span>  <span class="op">)</span></span>
+<span><span class="co">## Warning in seq.default(-1, -4, length = len - 1): partial</span></span>
+<span><span class="co">## argument match of 'length' to 'length.out'</span></span>
 <span><span class="va">nnetFit</span></span>
 <span><span class="co">## Neural Network </span></span>
 <span><span class="co">## </span></span>
@@ -1020,6 +1024,9 @@ forest model and evaluate its generalization performance on the held-out
 test set.</p>
 <div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">randomForestFit</span>, <span class="va">Zoo_test</span><span class="op">)</span></span>
+<span><span class="co">## Warning in model.matrix.default(Terms, m, contrasts =</span></span>
+<span><span class="co">## object$contrasts): partial argument match of 'contrasts' to</span></span>
+<span><span class="co">## 'contrasts.arg'</span></span>
 <span><span class="va">pr</span></span>
 <span><span class="co">##  [1] mammal        fish          mollusc.et.al fish         </span></span>
 <span><span class="co">##  [5] mammal        insect        mammal        mammal       </span></span>
@@ -1233,6 +1240,9 @@ that the test set has some samples of the rare reptile class.</p>
 <span>        data <span class="op">=</span> <span class="va">_</span>,</span>
 <span>        method <span class="op">=</span> <span class="st">"rpart"</span>,</span>
 <span>        trControl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/trainControl.html">trainControl</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"cv"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## Warning in seq.default(min(initialFit[, "CP"]),</span></span>
+<span><span class="co">## max(initialFit[, "CP"]), : partial argument match of</span></span>
+<span><span class="co">## 'length' to 'length.out'</span></span>
 <span><span class="co">## Warning in nominalTrainWorkflow(x = x, y = y, wts =</span></span>
 <span><span class="co">## weights, info = trainInfo, : There were missing values in</span></span>
 <span><span class="co">## resampled performance measures.</span></span></code></pre></div>
@@ -1264,6 +1274,12 @@ the test set.</p>
 <div class="sourceCode" id="cb172"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">testing_reptile</span><span class="op">)</span>,</span>
 <span>                ref <span class="op">=</span> <span class="va">testing_reptile</span><span class="op">$</span><span class="va">type</span>, positive <span class="op">=</span> <span class="st">"reptile"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in model.matrix.default(Terms, m, contrasts =</span></span>
+<span><span class="co">## object$contrasts): partial argument match of 'contrasts' to</span></span>
+<span><span class="co">## 'contrasts.arg'</span></span>
+<span><span class="co">## Warning in confusionMatrix.default(data = predict(fit,</span></span>
+<span><span class="co">## testing_reptile), : partial argument match of 'ref' to</span></span>
+<span><span class="co">## 'reference'</span></span>
 <span><span class="co">## Confusion Matrix and Statistics</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##             Reference</span></span>
@@ -1338,7 +1354,26 @@ will be chosen several times).</p>
 <span>        method <span class="op">=</span> <span class="st">"rpart"</span>,</span>
 <span>        trControl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/trainControl.html">trainControl</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"cv"</span><span class="op">)</span>,</span>
 <span>        control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">rpart.control</a></span><span class="op">(</span>minsplit <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
 <span><span class="va">fit</span></span>
 <span><span class="co">## CART </span></span>
 <span><span class="co">## </span></span>
@@ -1367,6 +1402,12 @@ we check the model on the unbalanced testing data.</p>
 <div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">testing_reptile</span><span class="op">)</span>,</span>
 <span>                ref <span class="op">=</span> <span class="va">testing_reptile</span><span class="op">$</span><span class="va">type</span>, positive <span class="op">=</span> <span class="st">"reptile"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in model.matrix.default(Terms, m, contrasts =</span></span>
+<span><span class="co">## object$contrasts): partial argument match of 'contrasts' to</span></span>
+<span><span class="co">## 'contrasts.arg'</span></span>
+<span><span class="co">## Warning in confusionMatrix.default(data = predict(fit,</span></span>
+<span><span class="co">## testing_reptile), : partial argument match of 'ref' to</span></span>
+<span><span class="co">## 'reference'</span></span>
 <span><span class="co">## Confusion Matrix and Statistics</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##             Reference</span></span>
@@ -1419,9 +1460,34 @@ in the data since the test set has only a few reptiles).</p>
 <span>        method <span class="op">=</span> <span class="st">"rpart"</span>,</span>
 <span>        trControl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/trainControl.html">trainControl</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"cv"</span><span class="op">)</span>,</span>
 <span>        control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">rpart.control</a></span><span class="op">(</span>minsplit <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">testing_reptile</span><span class="op">)</span>,</span>
 <span>                ref <span class="op">=</span> <span class="va">testing_reptile</span><span class="op">$</span><span class="va">type</span>, positive <span class="op">=</span> <span class="st">"reptile"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in model.matrix.default(Terms, m, contrasts =</span></span>
+<span><span class="co">## object$contrasts): partial argument match of 'contrasts' to</span></span>
+<span><span class="co">## 'contrasts.arg'</span></span>
+<span><span class="co">## Warning in confusionMatrix.default(data = predict(fit,</span></span>
+<span><span class="co">## testing_reptile), : partial argument match of 'ref' to</span></span>
+<span><span class="co">## 'reference'</span></span>
 <span><span class="co">## Confusion Matrix and Statistics</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##             Reference</span></span>
@@ -1474,6 +1540,9 @@ probabilities since I want to predict probabilities later.</p>
 <span>                        summaryFunction<span class="op">=</span><span class="va">twoClassSummary</span><span class="op">)</span>,  <span class="co">## for ROC</span></span>
 <span>        metric <span class="op">=</span> <span class="st">"ROC"</span>,</span>
 <span>        control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">rpart.control</a></span><span class="op">(</span>minsplit <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## Warning in seq.default(min(initialFit[, "CP"]),</span></span>
+<span><span class="co">## max(initialFit[, "CP"]), : partial argument match of</span></span>
+<span><span class="co">## 'length' to 'length.out'</span></span>
 <span><span class="co">## Warning in nominalTrainWorkflow(x = x, y = y, wts =</span></span>
 <span><span class="co">## weights, info = trainInfo, : There were missing values in</span></span>
 <span><span class="co">## resampled performance measures.</span></span>
@@ -1498,6 +1567,12 @@ probabilities since I want to predict probabilities later.</p>
 <div class="sourceCode" id="cb178"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">testing_reptile</span><span class="op">)</span>,</span>
 <span>                ref <span class="op">=</span> <span class="va">testing_reptile</span><span class="op">$</span><span class="va">type</span>, positive <span class="op">=</span> <span class="st">"reptile"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in model.matrix.default(Terms, m, contrasts =</span></span>
+<span><span class="co">## object$contrasts): partial argument match of 'contrasts' to</span></span>
+<span><span class="co">## 'contrasts.arg'</span></span>
+<span><span class="co">## Warning in confusionMatrix.default(data = predict(fit,</span></span>
+<span><span class="co">## testing_reptile), : partial argument match of 'ref' to</span></span>
+<span><span class="co">## 'reference'</span></span>
 <span><span class="co">## Confusion Matrix and Statistics</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##             Reference</span></span>
@@ -1542,6 +1617,9 @@ reptiles from training then the observation will be classified as a
 reptile. The data set is small and this works better with more data.</p>
 <div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">testing_reptile</span>, type <span class="op">=</span> <span class="st">"prob"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in model.matrix.default(Terms, m, contrasts =</span></span>
+<span><span class="co">## object$contrasts): partial argument match of 'contrasts' to</span></span>
+<span><span class="co">## 'contrasts.arg'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">prob</span><span class="op">)</span></span>
 <span><span class="co">##      nonreptile reptile</span></span>
 <span><span class="co">## tuna     1.0000 0.00000</span></span>
@@ -1555,6 +1633,9 @@ reptile. The data set is small and this works better with more data.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pred</span>,</span>
 <span>                ref <span class="op">=</span> <span class="va">testing_reptile</span><span class="op">$</span><span class="va">type</span>, positive <span class="op">=</span> <span class="st">"reptile"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in confusionMatrix.default(data = pred, ref =</span></span>
+<span><span class="co">## testing_reptile$type, : partial argument match of 'ref' to</span></span>
+<span><span class="co">## 'reference'</span></span>
 <span><span class="co">## Confusion Matrix and Statistics</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##             Reference</span></span>
@@ -1617,7 +1698,10 @@ closer to one, the better).</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Data: prob[, "reptile"] in 48 controls (testing_reptile$type == "reptile" FALSE) &lt; 2 cases (testing_reptile$type == "reptile" TRUE).</span></span>
 <span><span class="co">## Area under the curve: 0.766</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/pROC/man/ggroc.html">ggroc</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_abline</a></span><span class="op">(</span>intercept <span class="op">=</span> <span class="fl">1</span>, slope <span class="op">=</span> <span class="fl">1</span>, color <span class="op">=</span> <span class="st">"darkgrey"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/pkg/pROC/man/ggroc.html">ggroc</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_abline</a></span><span class="op">(</span>intercept <span class="op">=</span> <span class="fl">1</span>, slope <span class="op">=</span> <span class="fl">1</span>, color <span class="op">=</span> <span class="st">"darkgrey"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in scale_x_continuous(..., transform =</span></span>
+<span><span class="co">## transform_reverse()): partial argument match of 'lim' to</span></span>
+<span><span class="co">## 'limits'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-176-1.png" width="672"></div>
 </div>
 </div>
@@ -1646,6 +1730,9 @@ a cost of 100 compared to the cost for FP of 1.</p>
 <span>        method <span class="op">=</span> <span class="st">"rpart"</span>,</span>
 <span>        parms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>loss <span class="op">=</span> <span class="va">cost</span><span class="op">)</span>,</span>
 <span>        trControl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/trainControl.html">trainControl</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"cv"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## Warning in seq.default(min(initialFit[, "CP"]),</span></span>
+<span><span class="co">## max(initialFit[, "CP"]), : partial argument match of</span></span>
+<span><span class="co">## 'length' to 'length.out'</span></span>
 <span><span class="co">## Warning in nominalTrainWorkflow(x = x, y = y, wts =</span></span>
 <span><span class="co">## weights, info = trainInfo, : There were missing values in</span></span>
 <span><span class="co">## resampled performance measures.</span></span></code></pre></div>
@@ -1675,6 +1762,12 @@ calculates.</p>
 <div class="sourceCode" id="cb184"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">testing_reptile</span><span class="op">)</span>,</span>
 <span>                ref <span class="op">=</span> <span class="va">testing_reptile</span><span class="op">$</span><span class="va">type</span>, positive <span class="op">=</span> <span class="st">"reptile"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in model.matrix.default(Terms, m, contrasts =</span></span>
+<span><span class="co">## object$contrasts): partial argument match of 'contrasts' to</span></span>
+<span><span class="co">## 'contrasts.arg'</span></span>
+<span><span class="co">## Warning in confusionMatrix.default(data = predict(fit,</span></span>
+<span><span class="co">## testing_reptile), : partial argument match of 'ref' to</span></span>
+<span><span class="co">## 'reference'</span></span>
 <span><span class="co">## Confusion Matrix and Statistics</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##             Reference</span></span>
@@ -1861,17 +1954,50 @@ You could use <code><a href="https://ggplot2.tidyverse.org/reference/geom_jitter
 <div class="sourceCode" id="cb188"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">caret</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/knn3.html">knn3</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, k <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"kNN (1 neighbor)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"kNN (1 neighbor)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in model.matrix.default(delete.response(Terms),</span></span>
+<span><span class="co">## newdata, contrasts = object$contrasts): partial argument</span></span>
+<span><span class="co">## match of 'contrasts' to 'contrasts.arg'</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span>
+<span><span class="co">## Warning in model.matrix.default(delete.response(Terms),</span></span>
+<span><span class="co">## newdata, contrasts = object$contrasts): partial argument</span></span>
+<span><span class="co">## match of 'contrasts' to 'contrasts.arg'</span></span>
+<span><span class="co">## Warning in model.matrix.default(delete.response(Terms),</span></span>
+<span><span class="co">## newdata, contrasts = object$contrasts): partial argument</span></span>
+<span><span class="co">## match of 'contrasts' to 'contrasts.arg'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-182-1.png" width="672"></div>
 <div class="sourceCode" id="cb189"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">caret</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/knn3.html">knn3</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, k <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"kNN (3 neighbors)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"kNN (3 neighbors)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in model.matrix.default(delete.response(Terms),</span></span>
+<span><span class="co">## newdata, contrasts = object$contrasts): partial argument</span></span>
+<span><span class="co">## match of 'contrasts' to 'contrasts.arg'</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span>
+<span><span class="co">## Warning in model.matrix.default(delete.response(Terms),</span></span>
+<span><span class="co">## newdata, contrasts = object$contrasts): partial argument</span></span>
+<span><span class="co">## match of 'contrasts' to 'contrasts.arg'</span></span>
+<span><span class="co">## Warning in model.matrix.default(delete.response(Terms),</span></span>
+<span><span class="co">## newdata, contrasts = object$contrasts): partial argument</span></span>
+<span><span class="co">## match of 'contrasts' to 'contrasts.arg'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-182-2.png" width="672"></div>
 <div class="sourceCode" id="cb190"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">caret</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/knn3.html">knn3</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, k <span class="op">=</span> <span class="fl">9</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"kNN (9 neighbors)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"kNN (9 neighbors)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in model.matrix.default(delete.response(Terms),</span></span>
+<span><span class="co">## newdata, contrasts = object$contrasts): partial argument</span></span>
+<span><span class="co">## match of 'contrasts' to 'contrasts.arg'</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span>
+<span><span class="co">## Warning in model.matrix.default(delete.response(Terms),</span></span>
+<span><span class="co">## newdata, contrasts = object$contrasts): partial argument</span></span>
+<span><span class="co">## match of 'contrasts' to 'contrasts.arg'</span></span>
+<span><span class="co">## Warning in model.matrix.default(delete.response(Terms),</span></span>
+<span><span class="co">## newdata, contrasts = object$contrasts): partial argument</span></span>
+<span><span class="co">## match of 'contrasts' to 'contrasts.arg'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-182-3.png" width="672"></div>
 <p>Increasing <span class="math inline">\(k\)</span> smooths the decision boundary. At <span class="math inline">\(k=1\)</span>, we see white
 areas around points where flowers of two classes are in the same spot.
@@ -1891,7 +2017,9 @@ classifier randomly selects a class.</p>
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">e1071</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/naiveBayes.html">naiveBayes</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span>, </span>
 <span>             predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Naive Bayes"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Naive Bayes"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-183-1.png" width="672"></div>
 <p>The GBN finds a good model with the advantage that no hyperparameters are needed.</p>
 </div>
@@ -1903,7 +2031,9 @@ classifier randomly selects a class.</p>
 <div class="sourceCode" id="cb192"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/lda.html">lda</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"LDA"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"LDA"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-184-1.png" width="672"></div>
 <p>Linear decision boundaries work for this dataset so LDA works well.</p>
 </div>
@@ -1930,7 +2060,11 @@ to problems with more than two classes.</p>
 <span><span class="co">## final  value 55.212479 </span></span>
 <span><span class="co">## stopped after 100 iterations</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>titel <span class="op">=</span> <span class="st">"Multinomial Logistic Regression"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>titel <span class="op">=</span> <span class="st">"Multinomial Logistic Regression"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span>
+<span><span class="co">## Ignoring unknown labels:</span></span>
+<span><span class="co">## • titel : "Multinomial Logistic Regression"</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-185-1.png" width="672"></div>
 </div>
 <div id="decision-trees" class="section level4" number="4.12.1.5">
@@ -1941,18 +2075,30 @@ to problems with more than two classes.</p>
 <div class="sourceCode" id="cb194"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">rpart</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"CART"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"CART"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-186-1.png" width="672"></div>
 <div class="sourceCode" id="cb195"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">rpart</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu">rpart</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">rpart.control</a></span><span class="op">(</span>cp <span class="op">=</span> <span class="fl">0.001</span>, minsplit <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"CART (overfitting)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"CART (overfitting)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-186-2.png" width="672"></div>
 <div class="sourceCode" id="cb196"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">C50</span><span class="fu">::</span><span class="fu"><a href="https://topepo.github.io/C5.0/reference/C5.0.html">C5.0</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"C5.0"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"C5.0"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in seq.default(along = naIndex): partial argument</span></span>
+<span><span class="co">## match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = naIndex): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span>
+<span><span class="co">## Warning in seq.default(along = naIndex): partial argument</span></span>
+<span><span class="co">## match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = naIndex): partial argument</span></span>
+<span><span class="co">## match of 'along' to 'along.with'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-186-3.png" width="672"></div>
 </div>
 <div id="ensemble-random-forest" class="section level4" number="4.12.1.6">
@@ -1962,8 +2108,12 @@ to problems with more than two classes.</p>
 <p>Use an ensemble method.</p>
 <div class="sourceCode" id="cb197"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">randomForest</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/randomForest/man/randomForest.html">randomForest</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
+<span><span class="co">## Warning in seq.default(along = m): partial argument match</span></span>
+<span><span class="co">## of 'along' to 'along.with'</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Random Forest"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Random Forest"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-187-1.png" width="672"></div>
 <p>For the default settings for Random forest, the model seems to overfit the
 training data. More data would probably alleviate this issue.</p>
@@ -1977,25 +2127,33 @@ training data. More data would probably alleviate this issue.</p>
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">e1071</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, </span>
 <span>                         kernel <span class="op">=</span> <span class="st">"linear"</span>, probability <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (linear kernel)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (linear kernel)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-188-1.png" width="672"></div>
 <div class="sourceCode" id="cb199"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">e1071</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, </span>
 <span>                         kernel <span class="op">=</span> <span class="st">"radial"</span>, probability <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (radial kernel)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (radial kernel)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-188-2.png" width="672"></div>
 <div class="sourceCode" id="cb200"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">e1071</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, </span>
 <span>                         kernel <span class="op">=</span> <span class="st">"polynomial"</span>, probability <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (polynomial kernel)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (polynomial kernel)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-188-3.png" width="672"></div>
 <div class="sourceCode" id="cb201"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">e1071</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, </span>
 <span>                         kernel <span class="op">=</span> <span class="st">"sigmoid"</span>, probability <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"Species"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (sigmoid kernel)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (sigmoid kernel)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-188-4.png" width="672"></div>
 <p>The linear SVM (without a kernel) produces straight lines and works well on the iris data.
 Most kernels do also well, only the sigmoid kernel seems to find a
@@ -2017,49 +2175,63 @@ neurons for the hidden layer.</p>
 <span>                        size <span class="op">=</span> <span class="fl">1</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var  <span class="op">=</span> <span class="st">"Species"</span>, </span>
 <span>             predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (1 neuron)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (1 neuron)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-189-1.png" width="672"></div>
 <div class="sourceCode" id="cb203"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">nnet</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, </span>
 <span>                        size <span class="op">=</span> <span class="fl">2</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var  <span class="op">=</span> <span class="st">"Species"</span>, </span>
 <span>             predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (2 neurons)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (2 neurons)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-189-2.png" width="672"></div>
 <div class="sourceCode" id="cb204"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">nnet</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, </span>
 <span>                        size <span class="op">=</span> <span class="fl">4</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var  <span class="op">=</span> <span class="st">"Species"</span>, </span>
 <span>             predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (4 neurons)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (4 neurons)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-189-3.png" width="672"></div>
 <div class="sourceCode" id="cb205"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">nnet</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, </span>
 <span>                        size <span class="op">=</span> <span class="fl">6</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var  <span class="op">=</span> <span class="st">"Species"</span>, </span>
 <span>             predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (6 neurons)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (6 neurons)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-189-4.png" width="672"></div>
 <div class="sourceCode" id="cb206"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">nnet</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, </span>
 <span>                        size <span class="op">=</span> <span class="fl">20</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var  <span class="op">=</span> <span class="st">"Species"</span>, </span>
 <span>             predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (20 neurons)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (20 neurons)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-189-5.png" width="672"></div>
 <div class="sourceCode" id="cb207"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">nnet</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, </span>
 <span>                        size <span class="op">=</span> <span class="fl">100</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var  <span class="op">=</span> <span class="st">"Species"</span>, </span>
 <span>             predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (100 neurons)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (100 neurons)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-189-6.png" width="672"></div>
 <div class="sourceCode" id="cb208"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">nnet</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, </span>
 <span>                        size <span class="op">=</span> <span class="fl">100</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var  <span class="op">=</span> <span class="st">"Species"</span>, </span>
 <span>             predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN 2nd try (100 neurons)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN 2nd try (100 neurons)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-189-7.png" width="672"></div>
 <p>For this simple data set, 2 neurons produce the best classifier.
 The model starts to overfit with 6 or more neurons. I ran the ANN twice with 100
@@ -2112,12 +2284,34 @@ the optimal decision boundary is a circle around the class in the center.</p>
 <div class="sourceCode" id="cb210"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">caret</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/knn3.html">knn3</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, k <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"kNN (1 neighbor)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"kNN (1 neighbor)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in model.matrix.default(delete.response(Terms),</span></span>
+<span><span class="co">## newdata, contrasts = object$contrasts): partial argument</span></span>
+<span><span class="co">## match of 'contrasts' to 'contrasts.arg'</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span>
+<span><span class="co">## Warning in model.matrix.default(delete.response(Terms),</span></span>
+<span><span class="co">## newdata, contrasts = object$contrasts): partial argument</span></span>
+<span><span class="co">## match of 'contrasts' to 'contrasts.arg'</span></span>
+<span><span class="co">## Warning in model.matrix.default(delete.response(Terms),</span></span>
+<span><span class="co">## newdata, contrasts = object$contrasts): partial argument</span></span>
+<span><span class="co">## match of 'contrasts' to 'contrasts.arg'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-191-1.png" width="672"></div>
 <div class="sourceCode" id="cb211"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">caret</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/knn3.html">knn3</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, k <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"kNN (10 neighbors)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"kNN (10 neighbors)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in model.matrix.default(delete.response(Terms),</span></span>
+<span><span class="co">## newdata, contrasts = object$contrasts): partial argument</span></span>
+<span><span class="co">## match of 'contrasts' to 'contrasts.arg'</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span>
+<span><span class="co">## Warning in model.matrix.default(delete.response(Terms),</span></span>
+<span><span class="co">## newdata, contrasts = object$contrasts): partial argument</span></span>
+<span><span class="co">## match of 'contrasts' to 'contrasts.arg'</span></span>
+<span><span class="co">## Warning in model.matrix.default(delete.response(Terms),</span></span>
+<span><span class="co">## newdata, contrasts = object$contrasts): partial argument</span></span>
+<span><span class="co">## match of 'contrasts' to 'contrasts.arg'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-191-2.png" width="672"></div>
 <p>k-Nearest does not find a smooth decision boundary, but tends to
 overfit the training data at low values for <span class="math inline">\(k\)</span>.</p>
@@ -2131,7 +2325,9 @@ overfit the training data at low values for <span class="math inline">\(k\)</spa
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">e1071</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/naiveBayes.html">naiveBayes</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span>, </span>
 <span>  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"naive Bayes"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"naive Bayes"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-192-1.png" width="672"></div>
 </div>
 <div id="linear-discriminant-analysis-1" class="section level4" number="4.12.2.3">
@@ -2142,7 +2338,9 @@ overfit the training data at low values for <span class="math inline">\(k\)</spa
 linear.</p>
 <div class="sourceCode" id="cb213"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/lda.html">lda</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
-<span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"LDA"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"LDA"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-193-1.png" width="672"></div>
 </div>
 <div id="multinomial-logistic-regression-1" class="section level4" number="4.12.2.4">
@@ -2158,7 +2356,11 @@ to problems with more than two classes.</p>
 <span><span class="co">## final  value 346.308371 </span></span>
 <span><span class="co">## converged</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>titel <span class="op">=</span> <span class="st">"Multinomial Logistic Regression"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>titel <span class="op">=</span> <span class="st">"Multinomial Logistic Regression"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span>
+<span><span class="co">## Ignoring unknown labels:</span></span>
+<span><span class="co">## • titel : "Multinomial Logistic Regression"</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-194-1.png" width="672"></div>
 <p>Logistic regression also tries to find a linear
 decision boundary and fails.</p>
@@ -2171,18 +2373,30 @@ decision boundary and fails.</p>
 <div class="sourceCode" id="cb215"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">rpart</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"CART"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"CART"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-195-1.png" width="672"></div>
 <div class="sourceCode" id="cb216"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">rpart</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu">rpart</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">rpart.control</a></span><span class="op">(</span>cp <span class="op">=</span> <span class="fl">0</span>, minsplit <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"CART (overfitting)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"CART (overfitting)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-195-2.png" width="672"></div>
 <div class="sourceCode" id="cb217"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">C50</span><span class="fu">::</span><span class="fu"><a href="https://topepo.github.io/C5.0/reference/C5.0.html">C5.0</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"C5.0"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"C5.0"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in seq.default(along = naIndex): partial argument</span></span>
+<span><span class="co">## match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = naIndex): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span>
+<span><span class="co">## Warning in seq.default(along = naIndex): partial argument</span></span>
+<span><span class="co">## match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = naIndex): partial argument</span></span>
+<span><span class="co">## match of 'along' to 'along.with'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-195-3.png" width="672"></div>
 <p>Decision trees do well with the restriction that they can only create
 cuts parallel to the axes.</p>
@@ -2205,8 +2419,12 @@ cuts parallel to the axes.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">##     margin</span></span>
 <span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/randomForest/man/randomForest.html">randomForest</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
+<span><span class="co">## Warning in seq.default(along = m): partial argument match</span></span>
+<span><span class="co">## of 'along' to 'along.with'</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Random Forest"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Random Forest"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-196-1.png" width="672"></div>
 </div>
 <div id="support-vector-machine-1" class="section level4" number="4.12.2.7">
@@ -2219,27 +2437,35 @@ cuts parallel to the axes.</p>
 <span>                         kernel <span class="op">=</span> <span class="st">"linear"</span>, probability <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (linear kernel)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span>
 <span><span class="co">## Warning: Computation failed in `stat_contour()`.</span></span>
-<span><span class="co">## Caused by error in `if (zero_range(range)) ...`:</span></span>
-<span><span class="co">## ! missing value where TRUE/FALSE needed</span></span></code></pre></div>
+<span><span class="co">## Caused by error in `zero_range()`:</span></span>
+<span><span class="co">## ! `x` must be length 1 or 2</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-197-1.png" width="672"></div>
 <div class="sourceCode" id="cb220"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">e1071</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, </span>
 <span>                         kernel <span class="op">=</span> <span class="st">"radial"</span>, probability <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (radial kernel)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (radial kernel)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-197-2.png" width="672"></div>
 <div class="sourceCode" id="cb221"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">e1071</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, </span>
 <span>                         kernel <span class="op">=</span> <span class="st">"polynomial"</span>, probability <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (polynomial kernel)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (polynomial kernel)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-197-3.png" width="672"></div>
 <div class="sourceCode" id="cb222"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">e1071</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, </span>
 <span>                         kernel <span class="op">=</span> <span class="st">"sigmoid"</span>, probability <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (sigmoid kernel)"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"SVM (sigmoid kernel)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-197-4.png" width="672"></div>
 <p>A linear SVM does not work on this data set. An SMV with a radial kernel performs
 well, the other kernels have issues with finding a linear decision boundary in the
@@ -2255,27 +2481,37 @@ neurons for the hidden layer.</p>
 <div class="sourceCode" id="cb223"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">nnet</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, size <span class="op">=</span> <span class="fl">1</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span>, </span>
-<span>  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (1 neuron)"</span><span class="op">)</span></span></code></pre></div>
+<span>  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (1 neuron)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-198-1.png" width="672"></div>
 <div class="sourceCode" id="cb224"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">nnet</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, size <span class="op">=</span> <span class="fl">2</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span>, </span>
-<span>  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (2 neurons)"</span><span class="op">)</span></span></code></pre></div>
+<span>  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (2 neurons)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-198-2.png" width="672"></div>
 <div class="sourceCode" id="cb225"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">nnet</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, size <span class="op">=</span> <span class="fl">4</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span>, </span>
-<span>  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (4 neurons)"</span><span class="op">)</span></span></code></pre></div>
+<span>  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (4 neurons)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-198-3.png" width="672"></div>
 <div class="sourceCode" id="cb226"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">nnet</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, size <span class="op">=</span> <span class="fl">6</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span>, </span>
-<span>  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (6 neurons)"</span><span class="op">)</span></span></code></pre></div>
+<span>  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (6 neurons)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-198-4.png" width="672"></div>
 <div class="sourceCode" id="cb227"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> <span class="fu">nnet</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">_</span>, size <span class="op">=</span> <span class="fl">20</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu">decisionplot</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, class_var <span class="op">=</span> <span class="st">"class"</span>, </span>
-<span>  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (20 neurons)"</span><span class="op">)</span></span></code></pre></div>
+<span>  predict_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"class"</span>, <span class="st">"raw"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"ANN (20 neurons)"</span><span class="op">)</span></span>
+<span><span class="co">## Warning in rep(ys, time = resolution): partial argument</span></span>
+<span><span class="co">## match of 'time' to 'times'</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-198-5.png" width="672"></div>
 <p>The plots show that a network with 4 and 6 neurons performs well, while
 a larger number of neurons leads to overfitting the training data.</p>
@@ -2384,7 +2620,7 @@ models?</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-05-06.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-09-19.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

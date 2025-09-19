@@ -7,7 +7,7 @@
 <title>Chapter 6 Association Analysis: Advanced Concepts | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
 <meta name="description" content="This chapter discusses a few advanced concepts of association analysis. First, we look at how categorical and continuous attributes are converted into items. The we look at integrating item...">
-<meta name="generator" content="bookdown 0.43 with bs4_book()">
+<meta name="generator" content="bookdown 0.44 with bs4_book()">
 <meta property="og:title" content="Chapter 6 Association Analysis: Advanced Concepts | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -120,7 +120,7 @@ Finally, sequence pattern mining is introduced.</p>
 <em>arulesSequences</em> <span class="citation">(<a href="references.html#ref-R-arulesSequences">Buchta and Hahsler 2024</a>)</span>
 </li>
 <li>
-<em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse">Wickham 2023c</a>)</span>
+<em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse">Wickham 2023b</a>)</span>
 </li>
 </ul>
 </div>
@@ -286,6 +286,8 @@ the 55 level2 categories</p>
 <p>We can now compare an original transaction with the aggregated transaction.</p>
 <div class="sourceCode" id="cb295"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Groceries</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## Warning in seq.default(length = NCOL(transactionInfo)):</span></span>
+<span><span class="co">## partial argument match of 'length' to 'length.out'</span></span>
 <span><span class="co">##     items                 </span></span>
 <span><span class="co">## [1] {citrus fruit,        </span></span>
 <span><span class="co">##      semi-finished bread, </span></span>
@@ -296,6 +298,8 @@ the 55 level2 categories</p>
 <span><span class="co">##      coffee}              </span></span>
 <span><span class="co">## [3] {whole milk}</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">Groceries_level2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## Warning in seq.default(length = NCOL(transactionInfo)):</span></span>
+<span><span class="co">## partial argument match of 'length' to 'length.out'</span></span>
 <span><span class="co">##     items                    </span></span>
 <span><span class="co">## [1] {bread and backed goods, </span></span>
 <span><span class="co">##      fruit,                  </span></span>
@@ -328,11 +332,13 @@ during aggregation.</p>
 <span><span class="co">## set item appearances ...[0 item(s)] done [0.00s].</span></span>
 <span><span class="co">## set transactions ...[55 item(s), 9835 transaction(s)] done [0.00s].</span></span>
 <span><span class="co">## sorting and recoding items ... [47 item(s)] done [0.00s].</span></span>
-<span><span class="co">## creating transaction tree ... done [0.01s].</span></span>
-<span><span class="co">## checking subsets of size 1 2 3 4 5 6 done [0.01s].</span></span>
+<span><span class="co">## creating transaction tree ... done [0.00s].</span></span>
+<span><span class="co">## checking subsets of size 1 2 3 4 5 6 done [0.00s].</span></span>
 <span><span class="co">## writing ... [243 rule(s)] done [0.00s].</span></span>
 <span><span class="co">## creating S4 object  ... done [0.00s].</span></span>
 <span><span class="va">rules</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span>, by <span class="op">=</span> <span class="st">"support"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">## Warning in seq.default(length = NCOL(quality)): partial</span></span>
+<span><span class="co">## argument match of 'length' to 'length.out'</span></span>
 <span><span class="co">##     lhs                          rhs             support confidence coverage  lift count</span></span>
 <span><span class="co">## [1] {bread and backed goods,                                                            </span></span>
 <span><span class="co">##      cheese,                                                                            </span></span>
@@ -355,6 +361,8 @@ for details.</p>
 <div class="sourceCode" id="cb297"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Groceries_multilevel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/hierarchy.html">addAggregate</a></span><span class="op">(</span><span class="va">Groceries</span>, <span class="st">"level2"</span><span class="op">)</span></span>
 <span><span class="va">Groceries_multilevel</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">## Warning in seq.default(length = NCOL(transactionInfo)):</span></span>
+<span><span class="co">## partial argument match of 'length' to 'length.out'</span></span>
 <span><span class="co">##     items                     </span></span>
 <span><span class="co">## [1] {citrus fruit,            </span></span>
 <span><span class="co">##      semi-finished bread,     </span></span>
@@ -394,10 +402,10 @@ including items from multiple levels.</p>
 <span><span class="co">## set item appearances ...[0 item(s)] done [0.00s].</span></span>
 <span><span class="co">## set transactions ...[224 item(s), 9835 transaction(s)] done [0.01s].</span></span>
 <span><span class="co">## sorting and recoding items ... [167 item(s)] done [0.00s].</span></span>
-<span><span class="co">## creating transaction tree ... done [0.01s].</span></span>
-<span><span class="co">## checking subsets of size 1 2 3 4 5 6 7 8 done [0.09s].</span></span>
+<span><span class="co">## creating transaction tree ... done [0.00s].</span></span>
+<span><span class="co">## checking subsets of size 1 2 3 4 5 6 7 8 done [0.03s].</span></span>
 <span><span class="co">## writing ... [21200 rule(s)] done [0.00s].</span></span>
-<span><span class="co">## creating S4 object  ... done [0.01s].</span></span>
+<span><span class="co">## creating S4 object  ... done [0.00s].</span></span>
 <span><span class="va">rules</span></span>
 <span><span class="co">## set of 21200 rules</span></span></code></pre></div>
 <p>Mining rules with group-level items added will
@@ -411,6 +419,8 @@ can be used to filter these spurious rules or itemsets.</p>
 <span><span class="va">rules</span></span>
 <span><span class="co">## set of 838 rules</span></span>
 <span><span class="va">rules</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">3</span>, by <span class="op">=</span> <span class="st">"lift"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/arules/man/inspect.html">inspect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">## Warning in seq.default(length = NCOL(quality)): partial</span></span>
+<span><span class="co">## argument match of 'length' to 'length.out'</span></span>
 <span><span class="co">##     lhs                           rhs                        support confidence coverage  lift count</span></span>
 <span><span class="co">## [1] {whole milk,                                                                                    </span></span>
 <span><span class="co">##      whipped/sour cream,                                                                            </span></span>
@@ -577,7 +587,7 @@ from frequent sequence patterns using <code><a href="https://rdrr.io/pkg/arules/
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-05-06.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-09-19.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

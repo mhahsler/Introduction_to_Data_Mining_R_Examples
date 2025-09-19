@@ -7,7 +7,7 @@
 <title>Chapter 3 Classification: Basic Concepts | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
 <meta name="description" content="This chapter introduces decision trees for classification and discusses how models are built and evaluated. The corresponding chapter of the data mining textbook is available online: Chapter 3:...">
-<meta name="generator" content="bookdown 0.43 with bs4_book()">
+<meta name="generator" content="bookdown 0.44 with bs4_book()">
 <meta property="og:title" content="Chapter 3 Classification: Basic Concepts | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -126,7 +126,7 @@ the data mining textbook is available online:
 <em>FSelector</em> <span class="citation">(<a href="references.html#ref-R-FSelector">Romanski, Kotthoff, and Schratz 2023</a>)</span>
 </li>
 <li>
-<em>lattice</em> <span class="citation">(<a href="references.html#ref-R-lattice">Sarkar 2023</a>)</span>
+<em>lattice</em> <span class="citation">(<a href="references.html#ref-R-lattice">Sarkar 2025</a>)</span>
 </li>
 <li>
 <em>mlbench</em> <span class="citation">(<a href="references.html#ref-R-mlbench">Leisch and Dimitriadou 2024</a>)</span>
@@ -138,16 +138,16 @@ the data mining textbook is available online:
 <em>party</em> <span class="citation">(<a href="references.html#ref-R-party">Hothorn et al. 2025</a>)</span>
 </li>
 <li>
-<em>pROC</em> <span class="citation">(<a href="references.html#ref-R-pROC">Robin et al. 2023</a>)</span>
+<em>pROC</em> <span class="citation">(<a href="references.html#ref-R-pROC">Robin et al. 2025</a>)</span>
 </li>
 <li>
 <em>rpart</em> <span class="citation">(<a href="references.html#ref-R-rpart">Therneau and Atkinson 2025</a>)</span>
 </li>
 <li>
-<em>rpart.plot</em> <span class="citation">(<a href="references.html#ref-R-rpart.plot">Milborrow 2024</a>)</span>
+<em>rpart.plot</em> <span class="citation">(<a href="references.html#ref-R-rpart.plot">Milborrow 2025</a>)</span>
 </li>
 <li>
-<em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse">Wickham 2023c</a>)</span>
+<em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse">Wickham 2023b</a>)</span>
 </li>
 </ul>
 <p>In the examples in this book, we use the popular machine learning R package <a href="https://topepo.github.io/caret/"><code>caret</code></a>. It makes preparing
@@ -652,7 +652,26 @@ error, this process is repeated <code>number</code> of times and the errors are 
 <span>                             p <span class="op">=</span> <span class="fl">0.8</span>, </span>
 <span>                             number <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
 <span>    tuneLength <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
 <span><span class="va">fit</span></span>
 <span><span class="co">## CART </span></span>
 <span><span class="co">## </span></span>
@@ -768,7 +787,26 @@ Setting it in control will be ignored.</p>
 <span>    control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.control.html">rpart.control</a></span><span class="op">(</span>minsplit <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, <span class="co"># we have little data</span></span>
 <span>    trControl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/trainControl.html">trainControl</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"cv"</span>, number <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
 <span>    tuneLength <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
 <span><span class="va">fit</span></span>
 <span><span class="co">## CART </span></span>
 <span><span class="co">## </span></span>
@@ -829,6 +867,8 @@ many splits, but it never gets chosen!</p>
 <p>Here is the variable importance without competing splits.</p>
 <div class="sourceCode" id="cb112"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">imp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/varImp.html">varImp</a></span><span class="op">(</span><span class="va">fit</span>, compete <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">## Warning in code$varImp(object$finalModel, ...): partial</span></span>
+<span><span class="co">## argument match of 'compete' to 'competes'</span></span>
 <span><span class="va">imp</span></span>
 <span><span class="co">## rpart variable importance</span></span>
 <span><span class="co">## </span></span>
@@ -858,6 +898,9 @@ the model (see <code><a href="https://rdrr.io/pkg/caret/man/varImp.html">? varIm
 held out test data.</p>
 <div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, newdata <span class="op">=</span> <span class="va">Zoo_test</span><span class="op">)</span></span>
+<span><span class="co">## Warning in model.matrix.default(Terms, m, contrasts =</span></span>
+<span><span class="co">## object$contrasts): partial argument match of 'contrasts' to</span></span>
+<span><span class="co">## 'contrasts.arg'</span></span>
 <span><span class="va">pred</span></span>
 <span><span class="co">##  [1] mammal        bird          mollusc.et.al bird         </span></span>
 <span><span class="co">##  [5] mammal        mammal        insect        bird         </span></span>
@@ -872,6 +915,9 @@ generalization error.</p>
 <div class="sourceCode" id="cb114"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pred</span>, </span>
 <span>                ref <span class="op">=</span> <span class="va">Zoo_test</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">type</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## Warning in confusionMatrix.default(data = pred, ref =</span></span>
+<span><span class="co">## pull(Zoo_test, type)): partial argument match of 'ref' to</span></span>
+<span><span class="co">## 'reference'</span></span>
 <span><span class="co">## Confusion Matrix and Statistics</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##                Reference</span></span>
@@ -1029,6 +1075,29 @@ class mammal.</p>
 <span>        tuneLength <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>        trControl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/trainControl.html">trainControl</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"cv"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
+<span><span class="co">## Warning in seq.default(min(initialFit[, "CP"]),</span></span>
+<span><span class="co">## max(initialFit[, "CP"]), : partial argument match of</span></span>
+<span><span class="co">## 'length' to 'length.out'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
+<span><span class="co">## Warning in seq.default(along = submodels$cp): partial</span></span>
+<span><span class="co">## argument match of 'along' to 'along.with'</span></span>
 <span><span class="va">rpartFit</span></span>
 <span><span class="co">## CART </span></span>
 <span><span class="co">## </span></span>
@@ -1250,7 +1319,7 @@ Here we pick the 5 highest-ranked features.</p>
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/as.simple.formula.html">as.simple.formula</a></span><span class="op">(</span><span class="va">subset</span>, <span class="st">"type"</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
 <span><span class="co">## type ~ feathers + milk + backbone + toothed + eggs</span></span>
-<span><span class="co">## &lt;environment: 0x5569b80f2570&gt;</span></span>
+<span><span class="co">## &lt;environment: 0x650287a7da20&gt;</span></span>
 <span><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">m</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-123-1.png" width="672"></div>
@@ -1511,7 +1580,7 @@ the most important? What variables do not matter?</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-05-06.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-09-19.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
