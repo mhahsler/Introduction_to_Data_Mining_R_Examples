@@ -679,7 +679,7 @@ The [Minkowsky
 distance](https://en.wikipedia.org/wiki/Minkowski_distance) is a family
 of distances including Euclidean and Manhattan distance. It is defined
 between two feature vectors $\mathbf{p} = (p_1, p_2, ..., p_n)$ and 
-$\mathbf{y} = (q_1, q_2, ..., q_n)$ as
+$\mathbf{q} = (q_1, q_2, ..., q_n)$ as
 
 $$
 d(\mathbf{p},\mathbf{q}) = \left(\sum_{i=1}^n |p_i - q_i|^r\right)^{\frac{1}{r}} = ||\mathbf{q}-\mathbf{q}||_r. 
