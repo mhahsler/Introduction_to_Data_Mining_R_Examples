@@ -46,7 +46,7 @@ to suggest improvements.
 | 7. [Cluster Analysis: Basic Concepts](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/cluster-analysis.html) | [PDF](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap7_basic_cluster_analysis.pdf), [PowerPoint](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap7_basic_cluster_analysis.pptx) | [7. Cluster Analysis](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/ch7_clustering.pdf) | 
 | A [Exploring Data and Visualization](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/data-exploration-and-visualization.html)  | [PDF](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap2_exploration.pdf), [PowerPoint](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap2_exploration.pptx) | Web Chapter [Exploring Data](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/data_exploration_1st_edition.pdf)  | 
 | B [Regression](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/appendix_regression.html) | - | [Appendix D](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/appendices_2ed.pdf) | 
-| C [Logistic Regression](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/appendix_logistic-regression.html) | - | (covered in Chapter 4.6) | 
+| C [Logistic Regression](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/appendix_logistic_regression.html) | - | (covered in Chapter 4.6) | 
 
 ## Interactive Help
 
@@ -84,7 +84,7 @@ mining.
 ## Instructor Resources
 
 * PowerPoint presentation files for a data mining course can be found in the
-  repository directory [slides](slides).  The slides have an R symbol at the
+  repository directory [slides](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples/tree/master/slides).  The slides have an R symbol at the
 bottom whenever there are R code examples available.
 * Datasets for projects can be found at 
   [https://www.kaggle.com/datasets](https://www.kaggle.com/datasets)
