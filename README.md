@@ -45,8 +45,8 @@ to suggest improvements.
 | 6. [Association Analysis: Advanced Concepts](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/association-analysis-advanced-concepts.html) | - | - |
 | 7. [Cluster Analysis: Basic Concepts](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/cluster-analysis.html) | [PDF](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap7_basic_cluster_analysis.pdf), [PowerPoint](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap7_basic_cluster_analysis.pptx) | [7. Cluster Analysis](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/ch7_clustering.pdf) | 
 | A [Exploring Data and Visualization](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/data-exploration-and-visualization.html)  | [PDF](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap2_exploration.pdf), [PowerPoint](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/slides/chap2_exploration.pptx) | Web Chapter [Exploring Data](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/data_exploration_1st_edition.pdf)  | 
-| B [Regression](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/regression.html) | - | [Appendix D](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/appendices_2ed.pdf) | 
-| C [Logistic Regression](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/logistic-regression.html) | - | (covered in Chapter 4.6) | 
+| B [Regression](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/appendix_regression.html) | - | [Appendix D](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/appendices_2ed.pdf) | 
+| C [Logistic Regression](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/appendix_logistic-regression.html) | - | (covered in Chapter 4.6) | 
 
 ## Interactive Help
 
@@ -59,7 +59,7 @@ to suggest improvements.
 You need to install:
 
 * [R](https://cran.r-project.org/)
-* [R Studio Desktop](https://posit.co/products/open-source/rstudio/)
+* [R Studio Desktop](https://posit.co/downloads/)
 
 Each book chapter will use a set of packages that must be installed. The
 installation is done directly in R and the installation code can be found at
