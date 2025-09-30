@@ -104,11 +104,15 @@ Cite the book as:
 > figshare. DOI: [10.6084/m9.figshare.26750404](http://doi.org/10.6084/m9.figshare.26750404), 
 > URL: https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/
 
-## License
+Please contact [Michael Hahsler](http://michael.hahsler.net) for questions, comments, and improvement suggestions.
+You can also report an issue or submit a pull request on the 
+[GitHub repository](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples).
 
-![Creative Commons Attribution 4.0 International License](https://i.creativecommons.org/l/by/4.0/88x31.png)
-All code and documents in this repository are licensed under the 
+## Copyright and License
+
+&copy; 2024 [Michael Hahsler](http://michael.hahsler.net). All code and documents in this repository are licensed under the 
 [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
 
+![Creative Commons Attribution 4.0 International License](https://i.creativecommons.org/l/by/4.0/88x31.png)
  
-For questions please contact [Michael Hahsler](http://michael.hahsler.net).
+
