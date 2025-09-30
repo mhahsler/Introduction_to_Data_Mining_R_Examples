@@ -453,7 +453,9 @@ For space reasons, the chapter on data exploration and visualization
 was moved from the printed textbook and can now be found in the 
 [Data Exploration Web Chapter.](https://www-users.cse.umn.edu/~kumar001/dmbook/data_exploration_1st_edition.pdf)
 
-For visualization in R, we will use mainly `ggplot2`. The *gg* in `ggplot2`
+
+The most important R-base plot functions are `plot()`, `barplot()`, `hist()`, and `pairs()`. 
+Here, we will use mainly the more flexible `ggplot2` library. The *gg* in `ggplot2`
 stands for **Grammar of Graphics** introduced by @Wilkinson2005. The
 main idea is that every graph is built from the same basic components:
 
@@ -486,6 +488,12 @@ Next, we go through the basic visualizations used when working with data.
 ### Histogram
 
 Histograms show the distribution of a single continuous feature.
+
+```{r}
+hist(iris$Petal.Width)
+```
+
+The ggplot equivalent uses the histogram geometry.
 
 ```{r }
 ggplot(iris, aes(Petal.Width)) + geom_histogram(bins = 20)
@@ -562,6 +570,12 @@ ggplot(iris_long_scaled, aes(name, value)) +
 ### Scatter plot
 
 Scatter plots show the relationship between two continuous features.
+
+```{r}
+plot(iris$Petal.Length, iris$Sepal.Length, col = iris$Species)
+```
+
+ggplot uses the point geometry.
 
 ```{r }
 ggplot(iris, aes(x = Petal.Length, y = Sepal.Length)) + 
