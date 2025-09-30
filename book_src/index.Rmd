@@ -93,7 +93,7 @@ if (knitr::is_latex_output()) {
 }
 ```
 
-This book is licensed under the [Creative Commons
+&copy; 2024 Michael Hahsler. This book is licensed under the [Creative Commons
 Attribution 4.0 International
 License](http://creativecommons.org/licenses/by/4.0/).
 
