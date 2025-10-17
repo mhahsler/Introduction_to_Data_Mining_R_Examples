@@ -102,7 +102,7 @@
 <p>This chapter introduces the popular classification method
 logistic regression more in detail. Logistic regression is introduced
 as an alternative classification method in Chapter 4 of Introduction to Data Mining.</p>
-<div class="sourceCode" id="cb504"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb503"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"glmnet"</span>, <span class="st">"caret"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">pkgs_install</span> <span class="op">&lt;-</span> <span class="va">pkgs</span><span class="op">[</span><span class="op">!</span><span class="op">(</span><span class="va">pkgs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span>,<span class="st">"Package"</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></span>
@@ -134,13 +134,13 @@ of the binary outcome as the dependent variable:</p>
 <p><span class="math display">\[logit(p) = ln\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...\]</span></p>
 <p>The logit function links the probability p to the linear regression by converting
 a number in the probability range <span class="math inline">\([0,1]\)</span> to the range <span class="math inline">\([-\infty,+\infty]\)</span>.</p>
-<div class="sourceCode" id="cb505"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb504"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">logit</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">p</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">p</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, length.out <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu">logit</span><span class="op">(</span><span class="va">p</span><span class="op">)</span>, <span class="va">p</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">0.5</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v <span class="op">=</span> <span class="fl">0</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-450-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-449-1.png" width="672"></div>
 <p>The figure above shows actually the inverse of the logit function.
 The inverse of the logit function is called <a href="https://en.wikipedia.org/wiki/Logistic_function">logistic (or sigmoid) function</a> (<span class="math inline">\(\sigma(\cdot)\)</span>) which is
 often used in ML, and especially for artificial neural networks,
@@ -164,7 +164,7 @@ to the linear regression and the distribution family is Binomial.</p>
 <span class="header-section-number">C.2</span> Data Preparation<a class="anchor" aria-label="anchor" href="#data-preparation-1"><i class="fas fa-link"></i></a>
 </h2>
 <p>We load and shuffle the data. We also add a useless variable to see if the logistic regression removes it.</p>
-<div class="sourceCode" id="cb506"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb505"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span> <span class="co"># for reproducability</span></span>
 <span></span>
@@ -174,14 +174,14 @@ to the linear regression and the distribution family is Binomial.</p>
 asking if a flower is of species Virginica or not.
 We create new logical variable called <code>virginica</code> and remove the
 <code>Species</code> column.</p>
-<div class="sourceCode" id="cb507"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb506"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="va">virginica</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">$</span><span class="va">Species</span> <span class="op">==</span> <span class="st">"virginica"</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="va">Species</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span></code></pre></div>
 <p>We can visualize the data using a scatter plot matrix and use the color red for
 <code>virginica == TRUE</code> and black for the other flowers.</p>
-<div class="sourceCode" id="cb508"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb507"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x</span>, col<span class="op">=</span><span class="va">x</span><span class="op">$</span><span class="va">virginica</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-453-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-452-1.png" width="672"></div>
 </div>
 <div id="a-first-logistic-regression-model" class="section level2" number="10.3">
 <h2>
@@ -191,13 +191,13 @@ We create new logical variable called <code>virginica</code> and remove the
 link function and a binomial distribution. The <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code> function is provided by
 the R core package <code>stats</code> which is installed with R and automatically loads
 when R is started.</p>
-<div class="sourceCode" id="cb509"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb508"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">virginica</span> <span class="op">~</span> <span class="va">.</span>,</span>
 <span>  family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span><span class="op">(</span><span class="va">logit</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">## Warning: glm.fit: fitted probabilities numerically 0 or 1</span></span>
 <span><span class="co">## occurred</span></span></code></pre></div>
 <p><em>About the warning:</em> glm.fit: fitted probabilities numerically 0 or 1 occurred means that the data is possibly linearly separable.</p>
-<div class="sourceCode" id="cb510"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb509"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:  glm(formula = virginica ~ ., family = binomial(logit), data = x)</span></span>
@@ -212,7 +212,7 @@ when R is started.</p>
 <span><span class="co">## Null Deviance:       191 </span></span>
 <span><span class="co">## Residual Deviance: 11.9  AIC: 23.9</span></span></code></pre></div>
 <p>Check which features are significant?</p>
-<div class="sourceCode" id="cb511"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb510"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
@@ -258,7 +258,7 @@ the black dots.</p>
 variables by trying to remove one variable at a time
 as long as the model does not significantly deteriorate (according to the AIC).
 This variable selection process is done automatically by the <code><a href="https://rdrr.io/r/stats/step.html">step()</a></code> function.</p>
-<div class="sourceCode" id="cb512"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb511"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/step.html">step</a></span><span class="op">(</span><span class="va">model</span>, data <span class="op">=</span> <span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">## Start:  AIC=23.88</span></span>
 <span><span class="co">## virginica ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width + </span></span>
@@ -351,7 +351,7 @@ other two predictors.</p>
 <p><strong>Note:</strong> we do here in-sample testing on the data we learned the data
 from. To get a generalization error estimate you should use a test set or
 cross-validation!</p>
-<div class="sourceCode" id="cb513"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb512"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model2</span>, <span class="va">x</span>, type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">pr</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">##  102  112    4   55   70   98  135    7   43  140 </span></span>
@@ -360,10 +360,10 @@ cross-validation!</p>
 Virginica. The probabilities of the first 10 flowers are shown. Below is
 a histogram of predicted probabilities. The color is used to show the
 examples that have the true class Virginica.</p>
-<div class="sourceCode" id="cb514"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb513"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">pr</span>, breaks <span class="op">=</span> <span class="fl">20</span>, main <span class="op">=</span> <span class="st">"Predicted Probability vs. True Class"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">pr</span><span class="op">[</span><span class="va">x</span><span class="op">$</span><span class="va">virginica</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"red"</span>, breaks <span class="op">=</span> <span class="fl">20</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-459-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-458-1.png" width="672"></div>
 </div>
 <div id="check-classification-performance" class="section level2" number="10.6">
 <h2>
@@ -373,10 +373,10 @@ examples that have the true class Virginica.</p>
 generalization error, we should calculate the performance on a held out test set.</p>
 <p>The predicted class is calculated by checking if the predicted probability
 is larger than .5.</p>
-<div class="sourceCode" id="cb515"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb514"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pred</span> <span class="op">&lt;-</span> <span class="va">pr</span> <span class="op">&gt;</span> <span class="fl">.5</span></span></code></pre></div>
 <p>Now we can create a confusion table and calculate the accuracy.</p>
-<div class="sourceCode" id="cb516"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb515"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span>predicted <span class="op">=</span> <span class="va">pred</span>, actual <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">virginica</span><span class="op">)</span></span>
 <span><span class="va">tbl</span></span>
 <span><span class="co">##          actual</span></span>
@@ -388,7 +388,7 @@ is larger than .5.</p>
 <p>We can also use caret’s more advanced function <code><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">caret::confusionMatrix()</a></code>. Our code
 above uses <code>logical</code> vectors. For caret, we need to make sure that both,
 the reference and the predictions are coded as <code>factor</code>.</p>
-<div class="sourceCode" id="cb517"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb516"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">caret</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span></span>
 <span>  reference <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">virginica</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Yes"</span>, <span class="st">"No"</span><span class="op">)</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>, </span>
 <span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">pred</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Yes"</span>, <span class="st">"No"</span><span class="op">)</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -431,7 +431,7 @@ The regularization parameter <span class="math inline">\(\lambda\)</span> is a h
 glmnet can use cross-validation to find an appropriate
 value. glmnet does not have a function interface, so we have
 to supply a matrix for <code>X</code> and a vector of responses for <code>y</code>.</p>
-<div class="sourceCode" id="cb518"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb517"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://glmnet.stanford.edu">glmnet</a></span><span class="op">)</span></span>
 <span><span class="co">## Loaded glmnet 4.1-10</span></span>
 <span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/proxy/man/dist.html">as.matrix</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span>
@@ -454,7 +454,7 @@ to supply a matrix for <code>X</code> and a vector of responses for <code>y</cod
 <p>There are several selection rules for lambda, we look at the
 coefficients of the logistic regression using the
 lambda that gives the most regularized model such that the cross-validated error is within one standard error of the minimum cross-validated error.</p>
-<div class="sourceCode" id="cb519"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb518"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">fit</span>, s <span class="op">=</span> <span class="va">fit</span><span class="op">$</span><span class="va">lambda.1se</span><span class="op">)</span></span>
 <span><span class="co">## 6 x 1 sparse Matrix of class "dgCMatrix"</span></span>
 <span><span class="co">##              s=0.00664</span></span>
@@ -470,7 +470,7 @@ stepwise variable selection above.</p>
 <p>A predict function is provided. We need to specify
 what regularization to use and that we want to predict a class
 label.</p>
-<div class="sourceCode" id="cb520"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb519"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, newx <span class="op">=</span> <span class="va">X</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span>, s <span class="op">=</span> <span class="va">fit</span><span class="op">$</span><span class="va">lambda.1se</span>, type <span class="op">=</span> <span class="st">"class"</span><span class="op">)</span></span>
 <span><span class="co">##     s=0.00664</span></span>
 <span><span class="co">## 102 "TRUE"   </span></span>
@@ -496,7 +496,7 @@ sigmoid (i.e., logistic) activation function optimized with cross-entropy loss.
 For multinomial logistic regression, one neuron is used for each class and the
 probability distribution is calculated with the softmax activation.
 This extension is implemented in <code><a href="https://rdrr.io/pkg/nnet/man/multinom.html">nnet::multinom()</a></code>.</p>
-<div class="sourceCode" id="cb521"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb520"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span></span>
 <span></span>
@@ -535,7 +535,7 @@ be interpreted as comparing the log odds of each of the two classes with the
 default class. A positive number means that increasing the variable makes the
 class more likely and a negative number means the opposite.</p>
 <p>Predict the class for the first 5 flowers in the training data.</p>
-<div class="sourceCode" id="cb522"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb521"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span></span>
 <span><span class="co">##     Sepal.Length Sepal.Width Petal.Length Petal.Width</span></span>
 <span><span class="co">## 102          5.8         2.7          5.1         1.9</span></span>
@@ -560,7 +560,7 @@ class more likely and a negative number means the opposite.</p>
 <span class="header-section-number">C.9</span> Exercises<a class="anchor" aria-label="anchor" href="#exercises-7"><i class="fas fa-link"></i></a>
 </h2>
 <p>We will again use the Palmer penguin data for the exercises.</p>
-<div class="sourceCode" id="cb523"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb522"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/">palmerpenguins</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">penguins</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 6 × 8</span></span>
@@ -618,7 +618,7 @@ confusion table and calculate the accuracy and discuss how well the model works.
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-10-15.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-10-17.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

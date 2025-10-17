@@ -158,9 +158,12 @@ dbscan-parameters
 cluster-using-dbscan
 cluster-evaluation
 unsupervised-cluster-evaluation
+visual-methods
+evaluation-metrics
 determining-the-correct-number-of-clusters
 elbow-method-within-cluster-sum-of-squares
 average-silhouette-width
+similarity-matrix-visualization
 dunn-index
 gap-statistic
 clustering-tendency
@@ -178,7 +181,7 @@ deep-clustering-methods
 fuzzy-c-means-clustering
 scale-issues-in-clustering
 outliers-in-clustering
-visual-inspection-of-the-data
+visual-identification-of-outliers
 local-outlier-factor
 exercises-4
 data-exploration-and-visualization

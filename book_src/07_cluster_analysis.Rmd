@@ -420,13 +420,57 @@ extra external labels.
 
 We will evaluate the k-means clustering from above.
 
+
+#### Visual Methods
+For data in 2 dimensions, a scatter plot will show if the clusters look right.
 ```{r }
 ggplot(ruspini_scaled, 
        aes(x, y, color = factor(km$cluster))) + 
   geom_point()
-
-d <- dist(ruspini_scaled)
 ```
+For data with more dimensions or with columns containing nominal/ordinal data,
+we cannot look at the scatter plot. However, we can visualize a reordered similarity/dissimilarity
+matrix. 
+
+First, we calculate a distance matrix and 
+ inspect the distance matrix between the first 5 objects.
+
+```{r}
+d <- dist(ruspini_scaled)
+
+as.matrix(d)[1:5, 1:5]
+```
+
+
+Matrix visualizations with reordering are provided in package `seriation`.
+Matrix visualization creates 
+a false-color image where each value in the matrix as a pixel with the color representing the value.
+
+```{r}
+library(seriation)
+
+pimage(d, main = "Unordered")
+
+pimage(d, order = order(km$cluster), main = "Reordered by cluster")
+```
+Remember, the rows and columns in the matrix represent the objects (rows of the original
+data).
+The reordered distance matrix has the objects ordered by cluster (all points in cluster 1 followed
+by all points in cluster 2, and so on). 
+The matrix visualization shows a clear block structure indicating that the points within
+each cluster are close together (low distance), while the other clusters are farther away.
+
+An advanced version of this plot is called a dissimilarity plot. It reorders rows and
+columns based on cluster labels and adds lines for cluster borders. It also
+presents average distance values above the diagonal to make the structure between clusters
+easier to evaluate.
+
+```{r}
+dissplot(d, km$cluster)
+```
+
+
+#### Evaluation Metrics
 
 The two most popular quality metrics are the within-cluster sum of
 squares (WCSS) used as the optimization objective by
@@ -435,19 +479,27 @@ squares (WCSS) used as the optimization objective by
 width](https://en.wikipedia.org/wiki/Silhouette_(clustering)). Look at
 `within.cluster.ss` and `avg.silwidth` below.
 
-Some notes about the code: 
-
-* I do not load the package `fpc` using `library()` since it would mask the `dbscan()` function in package `dbscan`. Instead I use the namespace operator `::`. 
-* The clustering (second argument below) has to be supplied as a vector
-of integers (cluster IDs) and cannot be a factor (to make sure, we can use `as.integer()`).
+A comprehensive set of evaluation metric is calculated by `cluster.stats()` in 
+package `fpc`.
 
 ```{r }
 # library(fpc)
 fpc::cluster.stats(d, as.integer(km$cluster))
 ```
 
-The correlation between the distances and a 0-1-vector cluster incidence matrix is
-called `pearsongamma`. 
+Some notes about the code: 
+
+* I do not load the package `fpc` using `library()` since it would mask the `dbscan()` function in package `dbscan`. Instead I use the namespace operator `::`. 
+* The clustering (second argument below) has to be supplied as a vector
+of integers (cluster IDs) and cannot be a factor (to make sure, we can use `as.integer()`).
+
+Most metrics are easy to identify by their name. Some important metrics are:
+
+* `cluster.size`: vector of cluster sizes
+* `within.cluster.ss`:  within clusters sum of squares (k-means objective function). 
+* `avg.silwidth`: average silhouette width
+* `pearsongamma`: correlation between the distances and a 0-1-vector cluster incidence matrix.
+
 Some numbers are `NULL`. These are measures only available for supervised evaluation.
 Read the man page for `cluster.stats()` for an explanation of all the available indices.
 
@@ -491,62 +543,6 @@ ggplot visualization using `factoextra`
 ```{r }
 fviz_silhouette(silhouette(km$cluster, d))
 ```
-
-Unsupervised cluster evaluation can be done by inspecting and visualizing the proximity matrix.
-We can inspect the distance matrix between the first 5 objects.
-
-```{r }
-as.matrix(d)[1:5, 1:5]
-```
-
-A false-color image visualizes each value in the matrix as a pixel with
-the color representing the value.
-
-```{r }
-library(seriation)
-ggpimage(d)
-```
-
-Rows and columns are the objects as they are ordered in the data set.
-The diagonal represents the distance between an object and itself and
-has by definition a distance of 0 (dark line). Visualizing the unordered
-distance matrix does not show much structure, but we can reorder the
-matrix (rows and columns) using the k-means cluster labels from cluster
-1 to 4. A clear block structure representing the clusters becomes
-visible.
-
-```{r }
-ggpimage(d, order=order(km$cluster))
-```
-
-Plot function `dissplot` in package **seriation** rearranges the matrix
-and adds lines and cluster labels. In the lower half of the plot, it
-shows average dissimilarities between clusters. The function organizes
-the objects by cluster and then reorders clusters and objects within
-clusters so that more similar objects are closer together.
-
-```{r }
-ggdissplot(d, labels = km$cluster, 
-         options = list(main = "k-means with k=4"))
-```
-
-The reordering by `dissplot` makes the misspecification of k visible as
-blocks.
-
-```{r }
-ggdissplot(d, 
-         labels = kmeans(ruspini_scaled, centers = 3)$cluster)
-
-ggdissplot(d, 
-         labels = kmeans(ruspini_scaled, centers = 9)$cluster)
-```
-
-Using `factoextra`
-
-```{r }
-fviz_dist(d)
-```
-
 
 
 ### Determining the Correct Number of Clusters
@@ -604,6 +600,42 @@ ggplot(tibble(ks, ASW), aes(ks, ASW)) +
   geom_line() +
   geom_vline(xintercept = best_k, color = "red", linetype = 2)
 ```
+
+#### Similarity Matrix Visualization
+
+We can visualize a similarity matrix reordered by cluster labels to visually determine if the number of clusters is 
+a good fit for the data.
+Package `seriation` provides a dissimilarity plot to make this easy.
+
+```{r }
+ggdissplot(d, labels = km$cluster, 
+         options = list(main = "k-means with k=4"))
+```
+
+
+The plot reorders rows and
+columns based on cluster labels and adds lines for cluster borders. It also
+presents average distance values above the diagonal to make the structure between clusters
+easier to evaluate. Above, we see a clear structure with
+the four clusters.
+
+Next, we look at two examples wherethe number of clusters
+was misspecified.
+
+```{r }
+ggdissplot(d, 
+         labels = kmeans(ruspini_scaled, centers = 3, nstart = 5)$cluster)
+
+ggdissplot(d, 
+         labels = kmeans(ruspini_scaled, centers = 9, nstart = 5)$cluster)
+```
+In the example with 3 clusters, we see that the plot
+shows two separated triangles for the largest cluster 
+indicating that it contains two separate structures which should be their own clusters. For the example with
+9 clusters, the plot tries to rearrange the clusters into 
+four larger blocks indicating that the number of clusters 
+shoulsd be 4.
+
 
 #### Dunn Index
 
@@ -1193,7 +1225,7 @@ Methods to identify outliers are summary statistics, visual inspection,
 and outlier scores like the Local Outlier Factor (LOF) discussed in the following 
 sections.
 
-### Visual Inspection of the Data
+### Visual Identification of Outliers
 
 Outliers can be identified using summary statistics, histograms,
 scatterplots (pairs plots), and boxplots, etc. We use here a pairs plot
