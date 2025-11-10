@@ -488,6 +488,16 @@ Next, we go through the basic visualizations used when working with data.
 ### Histogram
 
 Histograms show the distribution of a single continuous feature.
+The x-axis cuts the variable into discrete buckets and the y-axis
+shows how many observations fall into each bucket. 
+This plot should 
+be used to inspect each continuous variable to:
+
+* Detect outliers (i.e., single observation that is very far to the right in the plot) 
+or recording mistakes (e.g., a too large frequency at 0 may indicate that missing 
+values were by mistake converted to 0). 
+* Understand the distribution. Do we have a single normal distribution or are
+there several peaks which can indicate that there multiple groups in the data.  
 
 ```{r}
 hist(iris$Petal.Width)
@@ -499,7 +509,11 @@ The ggplot equivalent uses the histogram geometry.
 ggplot(iris, aes(Petal.Width)) + geom_histogram(bins = 20)
 ```
 
-If the data contains groups, then the group information can be easily 
+The plot shows not just a single normal distribution, but at least two peaks indicating that
+the data may be a mixture of two or three different groups. 
+
+We know that the Iris data set contains three groups (types of iris) and we have 
+a variable indicating the group. This group information can be easily 
 added as an aesthetic to the histogram.
 
 ```{r }
@@ -531,6 +545,11 @@ ggplot(iris, aes(Species, Sepal.Length)) +
   geom_boxplot()
 ```
 
+The Iris data has very few outliers and only the group Virginica shows a 
+single dot. We can also see that the box for Setosa is much lower then the other
+two, indicating that this group has a much smaller sepal length.
+
+
 The group-wise medians can also be calculated directly.
 
 ```{r }
@@ -558,6 +577,13 @@ range. The data can be scaled first to compare the distributions.
 
 ```{r }
 library(tidyr)
+
+
+scale_numeric <- function(x) 
+  x |> 
+  mutate(across(where(is.numeric), 
+                function(y) (y - mean(y, na.rm = TRUE)) / sd(y, na.rm = TRUE)))
+
 iris_long_scaled <- iris |> 
   scale_numeric() |> 
   mutate(id = row_number()) |> pivot_longer(1:4)
@@ -582,9 +608,17 @@ ggplot(iris, aes(x = Petal.Length, y = Sepal.Length)) +
   geom_point(aes(color = Species))
 ```
 
-We can add a regression using `geom_smooth` with the 
-linear model method to show that there is a 
-linear relationship between the two variables. A confidence interval 
+We see that Setosa flowers are well separated from the other two flowers. It
+would be easy to identify them by a simple threshold of 2.5 cm on petal length.
+The other two species are closer to each other and mix somewhat together.
+Outliers would be single points that are far from other points. This data set does not 
+contain outliers.
+
+We can also identify correlation between the variables using this plot. Here,
+we see that Sepal length tends to increase when petal length increases 
+indicating a positive linear correlation between the variables.
+This relationship can be visualized by adding a regression line using `geom_smooth` with the 
+linear model method ("lm"). A confidence interval 
 for the regression is also shown. 
 This can be suppressed using `se = FALSE`.
 
@@ -603,7 +637,10 @@ ggplot(iris, aes(x = Petal.Length, y = Sepal.Length)) +
   geom_smooth(method = "lm", aes(color = Species))
 ```
 
-The same can be achieved by using the color aesthetic in the `qqplot` call,
+We see that within the groups Versicolor and Virginica there is a much stronger 
+linear relationship then for the group Setosa.
+
+The same can be achieved by using the color aesthetic in the `ggplot` call,
 then it applies to all geoms.
 
 ### Scatter Plot Matrix
@@ -694,19 +731,41 @@ cm1 <- iris |>
 cm1
 ```
 
-Package `ggcorrplot` provides a visualization for correlation matrices.
+Package `ggcorrplot` provides a ggplot-based visualization for correlation matrices.
 
 ```{r }
 library(ggcorrplot)
 ggcorrplot(cm1)
 ```
 
-Package `seriation` provides a reordered version for this plot using a
-heatmap.
+Package `seriation` provides a method to reorder the variables in the 
+correlation matrix so groups of highly correlated variables become 
+easier to see.
 
 ```{r }
-gghmap(cm1, prop = TRUE)
+cm1 |> permute(order = "AOE") |> ggcorrplot()
 ```
+
+
+We would assume that as flowers grow, all measurements increase.
+The visualization shows that sepal length, petal length, and petal width are 
+highly correlated with each other. 
+Interestingly, sepal width has a negative correlation to the other
+variables which seems to contradict the initial assumption. However, calculating 
+correlation matrices for each group independently show that this is 
+just an artifact resulting from group Setosa having a very large sepal width.
+
+```{r }
+iris_by_group <- split(iris, f = iris$Species)
+lapply(iris_by_group, FUN = function(x) x |> 
+         select(-Species) |> 
+         as.matrix() |> 
+         cor() |> 
+         permute(order = "AOE") |> 
+         ggcorrplot()
+)
+```
+
 
 Correlations can also be calculates between objects by transposing the
 data matrix.

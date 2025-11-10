@@ -224,10 +224,12 @@ Next, we make a prediction using the default tree
 predict(tree_default , my_animal, type = "class")
 ```
 
-### Manual Calculation of the Resubstitution Error
+### Calculation of the Resubstitution Error
 
 We will calculate error of the model on the training data manually first,
-so we see how it is calculated.
+so we see how it is calculated. The over all error (i.e., number of incorrectly 
+classified examples) can be broken down into the error for each class. This information
+is typically presented in the form of a _confusion matrix_.
 
 ```{r }
 predict(tree_default, Zoo) |> head ()
@@ -254,7 +256,11 @@ correct <- confusion_table |> diag() |> sum()
 correct
 error <- confusion_table |> sum() - correct
 error
+```
 
+Accuracy is just 1 $-$ error rate and give the proportion of correctly classified 
+examples.
+```{r}
 accuracy <- correct / (correct + error)
 accuracy
 ```
@@ -262,25 +268,29 @@ accuracy
 Here is the accuracy calculation as a simple function.
 
 ```{r }
-accuracy <- function(truth, prediction) {
+accuracy <- function(prediction, truth) {
     tbl <- table(truth, prediction)
     sum(diag(tbl))/sum(tbl)
 }
 
-accuracy(Zoo |> pull(type), pred)
+accuracy(pred, Zoo |> pull(type))
 ```
 
-### Confusion Matrix for the Resubstitution Error using Caret 
-
-The caret package provides a convenient way to create and 
-analyze a confusion table including many useful statistics.
+The caret package provides a convenient way to calculate and 
+analyze classification errors with the confusion matrix. It only needs the
+predicted class labels and the correct class labels as the reference.
 
 ```{r }
 library(caret)
 confusionMatrix(data = pred, 
                 reference = Zoo |> pull(type))
 ```
-**Important note:** Calculating accuracy on the training data is not a good idea. 
+
+In addition to the confusion matrix, it also includes
+additional statistics and measures. Details can be found in the [Model Evaluation]
+section.
+
+**Important note: Calculating accuracy on the training data is not a good idea!** 
 A complete example with code for holding out a test set and performing hyperparameter
 selection using cross-validation can be found in section [Hyperparameter Tuning].
 
@@ -312,7 +322,7 @@ Error on the training set of the full tree
 ```{r }
 pred_full <- predict(tree_full, Zoo, type = "class")
 
-accuracy(Zoo |> pull(type), pred_full)
+accuracy(pred_full, Zoo |> pull(type))
 ```
 
 We see that the error is smaller then for the pruned tree. This,
