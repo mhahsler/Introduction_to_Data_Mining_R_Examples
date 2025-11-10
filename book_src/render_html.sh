@@ -1,5 +1,7 @@
 #!/usr/bin/env Rscript
 
+options(warnPartialMatchArgs = FALSE)
+
 params <- commandArgs(trailingOnly=TRUE)
 
 pkgs <- "bookdown"
