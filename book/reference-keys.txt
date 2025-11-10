@@ -53,8 +53,7 @@ the-zoo-dataset
 decision-tree-classifiers
 create-tree
 make-predictions-for-new-data
-manual-calculation-of-the-resubstitution-error
-confusion-matrix-for-the-resubstitution-error-using-caret
+calculation-of-the-resubstitution-error
 model-overfitting
 model-selection
 model-evaluation
