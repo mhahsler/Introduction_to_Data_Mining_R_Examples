@@ -553,11 +553,13 @@ sensitivity/specificity will not be correctly calculated.
 
 ### Option 2: Balance Data With Resampling
 
-We use stratified sampling with replacement (to oversample the
-minority/positive class). You could also use SMOTE (in package **DMwR**)
-or other sampling strategies (e.g., from package **unbalanced**). We use
-50+50 observations here (**Note:** many samples of the positive/minority class
-will be chosen several times).
+A popular choice is to balance the class distribution by using [stratified sampling](https://en.wikipedia.org/wiki/Stratified_sampling) with replacement to oversample the
+minority/positive class. Other options include [SMOTE](https://en.wikipedia.org/wiki/Synthetic_minority_oversampling_technique) (in package **DMwR**)
+or other sampling strategies (e.g., from package **unbalanced**). 
+
+Here, we use stratified sampling with
+50 observations per class. **Note:** many samples of the positive/minority class
+will be chosen several times.
 
 ```{r }
 library(sampling)
@@ -586,7 +588,7 @@ rpart.plot(fit$finalModel, extra = 2)
 ```
 
 The resulting tree has a reasonable accuracy/kappa on the balanced data.  
-Howevver, the real data does not have the distribution of the balanced data, so 
+However, the real data does not have the distribution of the balanced data, so 
 we check the model on the unbalanced testing data.
 
 ```{r }
@@ -594,13 +596,13 @@ confusionMatrix(data = predict(fit, testing_reptile),
                 ref = testing_reptile$type, positive = "reptile")
 ```
 
-**The accuracy is below the no information rate!** However,
-kappa (improvement of accuracy over randomness) has increased. More importantly,
+**The accuracy is below the no information rate and
+kappa is close to 0!** However,
 sensitivity (the
 ability to identify reptiles) is now one meaning that the classifier is able to 
 identify all reptiles.
 
-There is a tradeoff between sensitivity and specificity (how many of the
+We have to make a tradeoff between sensitivity (identifying reptiles) and specificity (how many of the
 identified animals are really reptiles). The tradeoff can be controlled
 using the sample proportions. We can sample more reptiles to increase
 sensitivity at the cost of lower specificity (this effect cannot be seen

@@ -121,7 +121,11 @@ ggplot(Zoo, aes(legs)) + geom_bar()
 Zoo$legs |> table()
 ```
 
-Possible solution: Make legs into has/does not have legs
+There are several ways how we can convert a continuous value into discrete items
+
+#### Alternative Encodings for Continuous Values
+
+**Alternative 1:** Make legs into has/does not have legs
 
 ```{r }
 Zoo_has_legs <- Zoo |> mutate(legs = legs > 0)
@@ -129,16 +133,13 @@ ggplot(Zoo_has_legs, aes(legs)) + geom_bar()
 Zoo_has_legs$legs |> table()
 ```
 
-**Alternatives:**
-
-Use each unique value as an item:
+**Alternative 2:** Use each unique value as an item.
 
 ```{r }
 Zoo_unique_leg_values <- Zoo |> mutate(legs = factor(legs))
 Zoo_unique_leg_values$legs |> head()
 ```
-
-Use the discretize function (see
+**Alternative 3:** Use the discretize function (see
     [`? discretize`](https://www.rdocumentation.org/packages/arules/topics/discretize)
     and [discretization in the code for Chapter
     2](chap2.html#discretize-features)):
@@ -150,58 +151,72 @@ Zoo_discretized_legs <- Zoo |> mutate(
 table(Zoo_discretized_legs$legs)
 ```
 
-Convert data into a set of transactions
+In the following we will use **Alternative 1** where the legs item indicates if 
+the animal has legs. We convert this data set into a set of transactions.
 
 ```{r }
 trans <- transactions(Zoo_has_legs)
 trans
 ```
 
-#### Inspect Transactions
+#### Inspecting Transactions
+
+It is very important to check that the conversion to transactions worked as 
+intended.
 
 ```{r }
 summary(trans)
 ```
 
-Look at created items. They are still called column names since the
-transactions are actually stored as a large sparse logical matrix (see
-below).
+Look at the created items. They are also called columns names since the
+transactions are stored as a large, sparse logical matrix.
 
 ```{r }
 colnames(trans)
 ```
 
-Compare with the original features (column names) from Zoo
+Compare this to the original features (column names) from Zoo.
 
 ```{r }
 colnames(Zoo)
 ```
 
-Look at a (first) few transactions as a matrix. 1 indicates the presence
-of an item.
+We see that the nominal variable type was converted into several items, one for
+each value.
+
+We can also look at a (first) few transactions as a logical matrix. `TRUE` 
+indicates the presence of an item.
 
 ```{r }
 as(trans, "matrix")[1:3,]
 ```
 
-Look at the transactions as sets of items
-
-```{r }
-inspect(trans[1:3])
-```
-
-Plot the binary matrix. Dark dots represent 1s.
+The matrix is large. We can get a visual impression by plot the binary matrix
+as an image. Dark dots represent items (`TRUE` values in the matrix).
 
 ```{r }
 image(trans)
 ```
 
-Look at the relative frequency (=support) of items in the data set. Here
-we look at the 10 most frequent items.
+Since each transaction typically only contains a small number of items, 
+it is often more convenient to inspect transactions as sets of items.
+
+```{r }
+inspect(trans[1:3])
+```
+
+It is often also interesting to 
+look at the relative frequency (=support) of items in the data set. Here
+we look at the 20 most frequent items.
 
 ```{r }
 itemFrequencyPlot(trans,topN = 20)
+```
 
+The bar chart only works well for a small number of items.
+The frequenct distribution over all items can also be shown as a line graph.
+
+```{r }
 ggplot(
   tibble(
     Support = sort(itemFrequency(trans, type = "absolute"), 
@@ -211,7 +226,12 @@ ggplot(
   geom_line()
 ```
 
-**Alternative encoding:** Also create items for FALSE (use factor)
+#### Negative Items 
+
+The typical transaction encoding focuses on items for features that the animals have. 
+We can also create items for missing features (e.g., the animal does *not* lay eggs).
+This can be easily done by converting the logical values into factors.
+Now we have a nominal variable with thwo values which will be converted into two items.
 
 ```{r }
 sapply(Zoo_has_legs, class)
@@ -244,30 +264,33 @@ as(vertical, "matrix")[1:10, 1:5]
 
 ## Frequent Itemset Generation
 
-For this dataset we have already a huge number of possible itemsets
+Even for the small Zoo dataset, we have already a large number of possible itemsets.
 
 ```{r }
 2^ncol(trans)
 ```
 
-Find frequent itemsets (target="frequent") with the default settings.
+Finding frequent itemsets uses the parameter `target = "frequent"` (the default target
+is to directly mine rules).
 
 ```{r }
 its <- apriori(trans, parameter=list(target = "frequent"))
 its
 ```
 
-Default minimum support is .1 (10%). **Note:** We use here a very small
-data set. For larger datasets the default minimum support might be to
+The default minimum support is .1 (10%). **Note:** The Zoo data set is very small with very few 
+items. For larger datasets, the default minimum support might be too
 low and you may run out of memory. You probably want to start out with a
 higher minimum support like .5 (50%) and then work your way down.
+
+We can calculate the support needed to find itemsets that effect at least 5 animals.
 
 ```{r }
 5/nrow(trans)
 ```
 
-In order to find itemsets that effect 5 animals I need to go down to a
-support of about 5%.
+This shows that we need to go down to a
+minimum support of about 5%.
 
 ```{r }
 its <- apriori(trans, parameter=list(target = "frequent", 
@@ -275,15 +298,14 @@ its <- apriori(trans, parameter=list(target = "frequent",
 its
 ```
 
-Sort by support
+We will get many itemsets. We can sort them by support, and show the top 10 itemsets.
 
 ```{r }
 its <- sort(its, by = "support")
 its |> head(n = 10) |> inspect()
 ```
 
-Look at frequent itemsets with many items (set breaks manually since
-Automatically chosen breaks look bad)
+We can also look at the largest frequent itemsets. Large means here many items.
 
 ```{r }
 ggplot(tibble(`Itemset Size` = factor(size(its))), 
@@ -302,39 +324,66 @@ We use the APRIORI algorithm (see
 ```{r }
 rules <- apriori(trans, 
                  parameter = list(support = 0.05, 
-                                         confidence = 0.9))
+                                  confidence = 0.9))
 length(rules)
+```
 
+```{r }
 rules |> head() |> inspect()
 rules |> head() |> quality()
 ```
 
-Look at rules with highest lift
+It is common to sort rules by the lift measure and inspect the rules with the largest lift.
 
 ```{r }
 rules <- sort(rules, by = "lift")
 rules |> head(n = 10) |> inspect()
 ```
 
-Create rules using the alternative encoding (with "FALSE" item)
+We see that most high-lift rules are about fish. The reason may be since fish 
+have very specific features that are very different from the other animal types
+in the data.
+
+As a comparison, we show next what rules are generated if we include 
+negative items in the transactions.
 
 ```{r }
 r <- apriori(trans_factors)
 r
-print(object.size(r), unit = "Mb")
+```
 
+This encoding creates very dense data (i.e., each transaction contains many items).
+This leads to finding many rules and may lead to the algorithm running out of memory.
+This is how much memory the rule set uses.
+
+```{r}
+print(object.size(r), unit = "Mb")
+```
+
+Let's inspect the top 10 lift rules.
+
+```{r }
 inspect(r[1:10])
 r |> head(n = 10, by = "lift") |> inspect()
 ```
 
-### Calculate Additional Interest Measures
+The rules are similar, but now show 
+that fish do not breathe (air) or give milk. It is often benficial to introduce
+negative items for some features, but not for all.
+
+### Additional Interest Measures
+
+Many different interest measures can be calculated for existing rules
+(or itemsets) using the function
+`interestMeasure()`.
 
 ```{r }
 interestMeasure(rules[1:10], measure = c("phi", "gini"),
   trans = trans)
 ```
 
-Add measures to the rules
+To store the new interest measures with the rule set, we have 
+to add them to the quality slot.
 
 ```{r }
 quality(rules) <- cbind(quality(rules),
@@ -342,7 +391,8 @@ quality(rules) <- cbind(quality(rules),
     trans = trans))
 ```
 
-Find rules which score high for Phi correlation
+Find rules which score high for Phi correlation between the LHS and RHS of the 
+rule.
 
 ```{r }
 rules |> head(by = "phi") |> inspect()
@@ -350,29 +400,67 @@ rules |> head(by = "phi") |> inspect()
 
 ### Mine Using Templates
 
-Sometimes it is beneficial to specify what items should be where in the
-rule. For apriori we can use the parameter appearance to specify this
+Sometimes it is beneficial to specify what items should be where in the found
+rule. For` apriori()` we can use the parameter `appearance` to specify this
 (see
 [`? APappearance`](https://www.rdocumentation.org/packages/arules/topics/APappearance)).
 In the following we restrict rules to an animal `type` in the RHS and
-any item in the LHS.
+any item in the LHS. We first create all type related items.
 
 ```{r }
 type <- grep("type=", itemLabels(trans), value = TRUE)
 type
+```
 
+Now, we can restrict the appearance in the RHS.
+
+```{r }
 rules_type <- apriori(trans, appearance= list(rhs = type))
+```
 
+```{r}
 rules_type |> sort(by = "lift") |> head() |> inspect()
 ```
 
-Saving rules as a CSV-file to be opened with Excel or other tools.
+### Redundant Rules
+
+Association rule mining is prone to generate too many very specific rules.
+A rule can be defined as redundant if a more general rules with the same 
+or a higher confidence exists.
+
+```{r}
+rules_type
+table(size(rules_type))
+```
+
+```{r }
+rules_type_non_redundant <- rules_type[!is.redundant(rules_type)]
+rules_type_non_redundant
+table(size(rules_type_non_redundant))
+```
+
+```{r}
+inspect(rules_type_non_redundant)
+```
+We see that this simple redundancy check results in a rule set of a manageable size
+which can can be easily analyzed by a human.
+
+### Saving Rules for External Tools
+
+Rules can be saved as a CSV-file to be opened with Excel or other tools.
 
 `write(rules, file = "rules.csv", quote = TRUE)`
 
+Another option is to export rules in PMML (Predictive Model Markup Language) 
+format. See `pmml()`.
+
+
 ## Compact Representation of Frequent Itemsets
 
-Find maximal frequent itemsets (no superset if frequent)
+An itemset is maximal in a set if no proper superset of the itemset is 
+contained in the set. Since we are often interest in the most specific itemsets
+with the largest number of items this is often useful for reducing the 
+size of the set for manual inspection.
 
 ```{r }
 its_max <- its[is.maximal(its)]
@@ -380,20 +468,33 @@ its_max
 its_max |> head(by = "support") |> inspect()
 ```
 
-Find closed frequent itemsets (no superset if frequent)
+
+Another compact representation is the idea of closed itemsets.
+The closure of an itemset is its largest proper superset which has the same support (is contained in exactly the same transactions). An itemset is closed, if it is its own closure. 
+This is similar to the idea of maximal itemsets but only removes itemsets if
+a superset with the same support exists.
 
 ```{r }
 its_closed <- its[is.closed(its)]
 its_closed
+```
 
+```{r }
 its_closed |> head(by = "support") |> inspect()
+```
 
+```{r}
 counts <- c(
   frequent=length(its),
   closed=length(its_closed),
   maximal=length(its_max)
 )
+```
 
+Here is a comparison of the number of frequent itemsets with closed and maximal 
+itemsets.
+
+```{r }
 ggplot(as_tibble(counts, rownames = "Itemsets"),
   aes(Itemsets, counts)) + geom_bar(stat = "identity")
 ```
@@ -494,7 +595,7 @@ fish share eggs.
 Interactive visualizations let the user explore the large number of 
 rules and itemsets and learn about the structure of the data. The overview article
 [arulesViz: Interactive Visualization of Association Rules with R](https://journal.r-project.org/archive/2017/RJ-2017-047/RJ-2017-047.pdf)
-provides an indepth discussion of interactive association rule visualization.
+provides an in-depth discussion of interactive association rule visualization.
 
 
 We will use the association rules mined from the Iris dataset for the

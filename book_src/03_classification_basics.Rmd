@@ -343,11 +343,11 @@ In order to select the model we need to split the training data into a
 The error rate on the validation set can then be used to choose 
 between several models.
 
-Caret has model selection build into the `train()` function. We will select
-between the default complexity `cp = 0.01` and a full tree `cp = 0` (set via `tuneGrid`).
+Caret has model selection build into the `train()` function. We will compare two trees 
+one with the default complexity `cp = 0.01` and a full tree `cp = 0`. The values are set via `tuneGrid`.
 `trControl` specified how the validation set is obtained. We use 
 Leave Group Out Cross-Validation (`LGOCV`) which
-picks randomly the proportion `p` of data to train and uses the rest as 
+picks randomly a proportion `p` of data to train and uses the rest as 
 the validation set. To get a better estimate of the 
 error, this process is repeated `number` of times and the errors are averaged.
 
@@ -368,7 +368,8 @@ fit
 ```
 
 We see that in this case, the full tree model performs slightly better.
-However, given the small dataset, this may not be a significant difference 
+However, given the small dataset of 101 animals and the tiny validation 
+set (20% of the animals), this may not be a significant difference 
 and we will look at a statistical
 test for this later.
 
@@ -395,8 +396,8 @@ Zoo_train <- Zoo |> slice(inTrain)
 Zoo_test <- Zoo |> slice(-inTrain)
 ```
 
-Now we can train on the test set and get the generalization error on the 
-test set.
+Now we can train on the `Zoo_train` set and get the generalization error on the 
+`Zoo_test` set.
 
 ### Cross-Validation Methods
 
@@ -799,10 +800,12 @@ to try these types of feature selection.
 #subset
 ```
 
-### Using Dummy Variables for Factors
+## Using Dummy Variables for Nominal Features*
 
 Nominal features (factors) are often encoded as a series of 0-1 dummy
-variables. For example, let us try to predict if an animal is a predator
+variables. This approach is in machine learning often called one-hot encoding.
+
+For example, let us try to predict if an animal is a predator
 given the type. First we use the original encoding of type as a factor
 with several values.
 
@@ -814,10 +817,11 @@ rpart.plot(tree_predator, extra = 2, roundint = FALSE)
 
 **Note:** Some splits use multiple values. Building the tree will become
 extremely slow if a factor has many levels (different values) since the
-tree has to check all possible splits into two subsets. This situation
+tree has to check all possible splits into two subsets which has a 
+time complexity of $O(2^n)$ where $n$ is the number of different values. This situation
 should be avoided.
 
-Convert type into a set of 0-1 dummy variables using `class2ind`. See
+We can convert the factor `type` into a set of 0-1 dummy variables using caret's `class2ind()`. See
 also `? dummyVars` in package `caret`.
 
 ```{r }
