@@ -1307,11 +1307,12 @@ sensitivity/specificity will not be correctly calculated.</p>
 <h3>
 <span class="header-section-number">4.11.2</span> Option 2: Balance Data With Resampling<a class="anchor" aria-label="anchor" href="#option-2-balance-data-with-resampling"><i class="fas fa-link"></i></a>
 </h3>
-<p>We use stratified sampling with replacement (to oversample the
-minority/positive class). You could also use SMOTE (in package <strong>DMwR</strong>)
-or other sampling strategies (e.g., from package <strong>unbalanced</strong>). We use
-50+50 observations here (<strong>Note:</strong> many samples of the positive/minority class
-will be chosen several times).</p>
+<p>A popular choice is to balance the class distribution by using <a href="https://en.wikipedia.org/wiki/Stratified_sampling">stratified sampling</a> with replacement to oversample the
+minority/positive class. Other options include <a href="https://en.wikipedia.org/wiki/Synthetic_minority_oversampling_technique">SMOTE</a> (in package <strong>DMwR</strong>)
+or other sampling strategies (e.g., from package <strong>unbalanced</strong>).</p>
+<p>Here, we use stratified sampling with
+50 observations per class. <strong>Note:</strong> many samples of the positive/minority class
+will be chosen several times.</p>
 <div class="sourceCode" id="cb174"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">sampling</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
@@ -1362,7 +1363,7 @@ will be chosen several times).</p>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">finalModel</span>, extra <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-172-1.png" width="672"></div>
 <p>The resulting tree has a reasonable accuracy/kappa on the balanced data.<br>
-Howevver, the real data does not have the distribution of the balanced data, so
+However, the real data does not have the distribution of the balanced data, so
 we check the model on the unbalanced testing data.</p>
 <div class="sourceCode" id="cb176"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/confusionMatrix.html">confusionMatrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">testing_reptile</span><span class="op">)</span>,</span>
@@ -1394,12 +1395,12 @@ we check the model on the unbalanced testing data.</p>
 <span><span class="co">##                                         </span></span>
 <span><span class="co">##        'Positive' Class : reptile       </span></span>
 <span><span class="co">## </span></span></code></pre></div>
-<p><strong>The accuracy is below the no information rate!</strong> However,
-kappa (improvement of accuracy over randomness) has increased. More importantly,
+<p><strong>The accuracy is below the no information rate and
+kappa is close to 0!</strong> However,
 sensitivity (the
 ability to identify reptiles) is now one meaning that the classifier is able to
 identify all reptiles.</p>
-<p>There is a tradeoff between sensitivity and specificity (how many of the
+<p>We have to make a tradeoff between sensitivity (identifying reptiles) and specificity (how many of the
 identified animals are really reptiles). The tradeoff can be controlled
 using the sample proportions. We can sample more reptiles to increase
 sensitivity at the cost of lower specificity (this effect cannot be seen
@@ -2388,7 +2389,7 @@ models?</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-11-10.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-12-08.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

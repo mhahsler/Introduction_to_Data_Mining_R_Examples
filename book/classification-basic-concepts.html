@@ -638,11 +638,11 @@ model selection.</p>
 <strong>validation set</strong> and the training set that is actually used to train model.
 The error rate on the validation set can then be used to choose
 between several models.</p>
-<p>Caret has model selection build into the <code><a href="https://rdrr.io/pkg/caret/man/train.html">train()</a></code> function. We will select
-between the default complexity <code>cp = 0.01</code> and a full tree <code>cp = 0</code> (set via <code>tuneGrid</code>).
+<p>Caret has model selection build into the <code><a href="https://rdrr.io/pkg/caret/man/train.html">train()</a></code> function. We will compare two trees
+one with the default complexity <code>cp = 0.01</code> and a full tree <code>cp = 0</code>. The values are set via <code>tuneGrid</code>.
 <code>trControl</code> specified how the validation set is obtained. We use
 Leave Group Out Cross-Validation (<code>LGOCV</code>) which
-picks randomly the proportion <code>p</code> of data to train and uses the rest as
+picks randomly a proportion <code>p</code> of data to train and uses the rest as
 the validation set. To get a better estimate of the
 error, this process is repeated <code>number</code> of times and the errors are averaged.</p>
 <div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
@@ -677,7 +677,8 @@ error, this process is repeated <code>number</code> of times and the errors are 
 <span><span class="co">##  the largest value.</span></span>
 <span><span class="co">## The final value used for the model was cp = 0.</span></span></code></pre></div>
 <p>We see that in this case, the full tree model performs slightly better.
-However, given the small dataset, this may not be a significant difference
+However, given the small dataset of 101 animals and the tiny validation
+set (20% of the animals), this may not be a significant difference
 and we will look at a statistical
 test for this later.</p>
 </div>
@@ -702,8 +703,8 @@ testing.</p>
 <code class="sourceCode R"><span><span class="va">inTrain</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/createDataPartition.html">createDataPartition</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">Zoo</span><span class="op">$</span><span class="va">type</span>, p <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">Zoo_train</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="va">inTrain</span><span class="op">)</span></span>
 <span><span class="va">Zoo_test</span> <span class="op">&lt;-</span> <span class="va">Zoo</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="va">inTrain</span><span class="op">)</span></span></code></pre></div>
-<p>Now we can train on the test set and get the generalization error on the
-test set.</p>
+<p>Now we can train on the <code>Zoo_train</code> set and get the generalization error on the
+<code>Zoo_test</code> set.</p>
 </div>
 <div id="cross-validation-methods" class="section level3" number="3.6.2">
 <h3>
@@ -1254,7 +1255,7 @@ Here we pick the 5 highest-ranked features.</p>
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/FSelector/man/as.simple.formula.html">as.simple.formula</a></span><span class="op">(</span><span class="va">subset</span>, <span class="st">"type"</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
 <span><span class="co">## type ~ feathers + milk + backbone + toothed + eggs</span></span>
-<span><span class="co">## &lt;environment: 0x5b61f2448f88&gt;</span></span>
+<span><span class="co">## &lt;environment: 0x561ad8db53a8&gt;</span></span>
 <span><span class="va">m</span> <span class="op">&lt;-</span> <span class="va">Zoo_train</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">_</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">m</span>, extra <span class="op">=</span> <span class="fl">2</span>, roundint <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-124-1.png" width="672"></div>
@@ -1342,12 +1343,14 @@ to try these types of feature selection.</p>
 <span><span class="co">#subset &lt;- hill.climbing.search(features, evaluator)</span></span>
 <span><span class="co">#subset</span></span></code></pre></div>
 </div>
-<div id="using-dummy-variables-for-factors" class="section level3" number="3.10.3">
-<h3>
-<span class="header-section-number">3.10.3</span> Using Dummy Variables for Factors<a class="anchor" aria-label="anchor" href="#using-dummy-variables-for-factors"><i class="fas fa-link"></i></a>
-</h3>
+</div>
+<div id="using-dummy-variables-for-nominal-features" class="section level2" number="3.11">
+<h2>
+<span class="header-section-number">3.11</span> Using Dummy Variables for Nominal Features*<a class="anchor" aria-label="anchor" href="#using-dummy-variables-for-nominal-features"><i class="fas fa-link"></i></a>
+</h2>
 <p>Nominal features (factors) are often encoded as a series of 0-1 dummy
-variables. For example, let us try to predict if an animal is a predator
+variables. This approach is in machine learning often called one-hot encoding.</p>
+<p>For example, let us try to predict if an animal is a predator
 given the type. First we use the original encoding of type as a factor
 with several values.</p>
 <div class="sourceCode" id="cb132"><pre class="downlit sourceCode r">
@@ -1357,9 +1360,10 @@ with several values.</p>
 <div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-130-1.png" width="672"></div>
 <p><strong>Note:</strong> Some splits use multiple values. Building the tree will become
 extremely slow if a factor has many levels (different values) since the
-tree has to check all possible splits into two subsets. This situation
+tree has to check all possible splits into two subsets which has a
+time complexity of <span class="math inline">\(O(2^n)\)</span> where <span class="math inline">\(n\)</span> is the number of different values. This situation
 should be avoided.</p>
-<p>Convert type into a set of 0-1 dummy variables using <code>class2ind</code>. See
+<p>We can convert the factor <code>type</code> into a set of 0-1 dummy variables using caret’s <code><a href="https://rdrr.io/pkg/caret/man/dummyVars.html">class2ind()</a></code>. See
 also <code><a href="https://rdrr.io/pkg/caret/man/dummyVars.html">? dummyVars</a></code> in package <code>caret</code>.</p>
 <div class="sourceCode" id="cb133"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Zoo_train_dummy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/dummyVars.html">class2ind</a></span><span class="op">(</span><span class="va">Zoo_train</span><span class="op">$</span><span class="va">type</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -1419,10 +1423,9 @@ tries to consistently work with all of them.</p>
 <p><em>Note:</em> To use a fixed value for the tuning parameter <code>cp</code>, we have to
 create a tuning grid that only contains that value.</p>
 </div>
-</div>
-<div id="exercises-1" class="section level2" number="3.11">
+<div id="exercises-1" class="section level2" number="3.12">
 <h2>
-<span class="header-section-number">3.11</span> Exercises*<a class="anchor" aria-label="anchor" href="#exercises-1"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.12</span> Exercises*<a class="anchor" aria-label="anchor" href="#exercises-1"><i class="fas fa-link"></i></a>
 </h2>
 <p>We will use again the Palmer penguin data for the exercises.</p>
 <div class="sourceCode" id="cb135"><pre class="downlit sourceCode r">
@@ -1493,10 +1496,10 @@ the most important? What variables do not matter?</li>
 <a class="nav-link" href="#feature-selection"><span class="header-section-number">3.10</span> Feature Selection*</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#univariate-feature-importance-score"><span class="header-section-number">3.10.1</span> Univariate Feature Importance Score</a></li>
 <li><a class="nav-link" href="#feature-subset-selection-1"><span class="header-section-number">3.10.2</span> Feature Subset Selection</a></li>
-<li><a class="nav-link" href="#using-dummy-variables-for-factors"><span class="header-section-number">3.10.3</span> Using Dummy Variables for Factors</a></li>
 </ul>
 </li>
-<li><a class="nav-link" href="#exercises-1"><span class="header-section-number">3.11</span> Exercises*</a></li>
+<li><a class="nav-link" href="#using-dummy-variables-for-nominal-features"><span class="header-section-number">3.11</span> Using Dummy Variables for Nominal Features*</a></li>
+<li><a class="nav-link" href="#exercises-1"><span class="header-section-number">3.12</span> Exercises*</a></li>
 </ul>
 
       <div class="book-extra">
@@ -1514,7 +1517,7 @@ the most important? What variables do not matter?</li>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-11-10.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-12-08.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
