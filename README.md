@@ -5,24 +5,24 @@
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 <a href="https://www-users.cs.umn.edu/~kumar001/dmbook/index.php">
-  <img src="assets/book_small_e2.jpg" align="right">
+  <img src="assets/book_small_e2.jpg" class="book-image">
 </a>
 
 <a href="https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/">
-  <img src="assets/cover_small.png" align="right">
+  <img src="assets/cover_small.png" class="book-image">
 </a>
 
-R and [tidyverse](https://www.tidyverse.org/) are very popular for data mining.
-This repository contains slides and documented R examples to accompany several
+R is very popular for data mining.
+This repository contains slides and a companion book with detailed R examples to accompany several
 chapters of the popular data mining textbook:
 
 > Pang-Ning Tan, Michael Steinbach, Anuj Karpatne and Vipin Kumar, 
 > [_Introduction to Data Mining,_](https://www-users.cs.umn.edu/~kumar001/dmbook/index.php) 
 > Addison Wesley, 1st or 2nd edition.
 
-The examples use tidyverse for data manipulation and visualization, and use
-`caret` for the supervised modeling workflows. `tidymodels` is not used in the
-book's examples.
+The examples use
+`tidyverse` for data handling, `ggplot2` for visualizations, and
+`caret` for the supervised modeling workflows. 
 
 The slides and examples are used in my course _CS 5/7331 Data Mining_ taught at
 [SMU](https://www.smu.edu/). The materials are maintained and revised as needed.
@@ -30,8 +30,7 @@ The code examples are compiled into the free online book [An R Companion for
 Introduction to Data
 Mining](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/)
 which is published under the Creative Commons Attribution license and you can
-share and adapt them freely. Please open an [issue](issues) for corrections or
-to suggest improvements. 
+share and adapt them freely. Please open an [issue](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples/issues) for corrections or to suggest improvements. 
 
 
 ## Content
