@@ -6,10 +6,10 @@ editor_options:
 
 # Cluster Analysis
 
-This chapter introduces cluster analysis using K-means, hierarchical clustering
-and DBSCAN. We will discuss how to choose the number of clusters and how 
-to evaluate the quality clusterings. In addition, we will introduce more 
-clustering algorithms and how clustering is influenced by outliers.
+This chapter introduces cluster analysis using k-means, hierarchical clustering,
+and DBSCAN. It discusses how to choose the number of clusters, evaluate
+clusterings, and assess the effects of outliers. Additional clustering
+algorithms are also introduced.
 
 ## Learning Objectives
 
@@ -68,7 +68,7 @@ Algorithms](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM
 library(tidyverse)
 ```
 
-We will use here a small and very clean toy dataset called Ruspini which is
+We use a small, clean toy dataset called Ruspini, which is
 included in the R package **cluster**.
 
 ```{r }
@@ -136,8 +136,8 @@ average.
 
 [k-means](https://en.wikipedia.org/wiki/K-means_clustering) implicitly
 assumes Euclidean distances. We use $k = 4$ clusters and run the
-algorithm 10 times with random initialized centroids. The best result is
-returned.
+algorithm 10 times with random initial centroids. The result with the smallest
+within-cluster sum of squares is returned.
 
 ```{r }
 km <- kmeans(ruspini_scaled, centers = 4, nstart = 10)
@@ -369,7 +369,8 @@ but also ignore smaller structures with fewer than `minPts`.
 `eps` is the radius of the epsilon neighborhood around a point in which the
 number of points is counted.
 
-Users typically first select minPts. We use here `minPts = 4`.
+Choose `minPts` based on the dataset and the scale of the expected clusters.
+We use `minPts = 4` in this example.
 To decide on epsilon, the knee in the kNN distance plot is often used.
 All points are sorted by their kNN distance. The idea is that points with
 a low kNN distance are located in a dense area which should become a cluster. 

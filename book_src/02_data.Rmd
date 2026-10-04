@@ -333,11 +333,11 @@ and computational resources.
 [Dimensionality reduction](https://en.wikipedia.org/wiki/Dimensionality_reduction)
  tries to represent high-dimensional data in a low-dimensional space so that the 
 low-dimensional representation retains some meaningful properties (e.g., information about similarity or distances) of the original data. Dimensionality reduction is 
-used for visualization and as a prepossessing technique before using other 
+used for visualization and as a preprocessing technique before using other
 data mining methods like clustering and classification. 
 
-Recently, data embeddings using artificial neural networks have become very popular.
-These approaches can not only reduce the dimensionality of the data, but 
+Nonlinear embedding methods, including methods based on artificial neural
+networks, can reduce the dimensionality of data and
 learn a better representation of various kinds of data (e.g., text). As such
 these approaches can be seen as automatically engineering features from the 
 high-dimensional original data.
@@ -680,7 +680,7 @@ Remember, objects are rows in our data. We call one row the feature vector for t
 It is the opposite of dissimilarity. The best-known 
 way to measure dissimilarity is [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance), but [dissimilarity and similarity](https://en.wikipedia.org/wiki/Similarity_measure) can be measured in many different ways depending on the information we have about the objects.
 
-R stores similarity information always as a dissimilarities/distances matrices. 
+Base R's `dist` object stores pairwise dissimilarities rather than similarities.
 Similarities are converted to dissimilarities. 
 Distances are symmetric, i.e.,
 the distance from A to B is the same as the distance from B to A. R
@@ -907,5 +907,3 @@ observations by their features.
 * **Standardization:** transforming values to a common scale, often to mean 0
   and standard deviation 1.
 * **Dissimilarity:** a numerical measure of how different two observations are.
-
-

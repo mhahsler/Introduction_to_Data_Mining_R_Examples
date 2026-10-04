@@ -45,10 +45,9 @@ Sections with names followed by an asterisk
 contain code examples for methods that are not included in the data
 mining textbook.
 
-This book assumes that you are
-familiar with the basics of R, how to run R code, and install packages.
-The rest of this chapter will provide an overview and point you to where 
-you can learn more about R and the used packages.
+This book assumes basic programming and statistics knowledge, but no prior R
+experience. This chapter introduces the R basics used throughout the examples
+and points to further resources.
 
 ## Learning Objectives
 
@@ -65,15 +64,15 @@ using a computer is helpful. Install R before working through the code examples.
 
 ## Used Software
 
-To use this book, you need to have the current version of
-[R](https://cran.r-project.org/) (at least R 4.4+) and [RStudio
+To use this book, install [R](https://cran.r-project.org/) version 4.4 or later
+and [RStudio
 Desktop](https://posit.co/products/open-source/rstudio/) installed.
 
 Each book chapter will use a set of packages that must be installed.
 We use `pak` as the package manager which needs to be installed via:
 
 ```{r setup_00, message=FALSE}
-install.packages("pak", quite = TRUE)
+install.packages("pak", quiet = TRUE)
 ```
 
 The
@@ -92,14 +91,19 @@ source("format_pkgs.R")
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
-The code examples in this book use the R package collection `tidyverse` 
-[@R-tidyverse] to manipulate data. Tidyverse also includes the package 
-`ggplot2` [@R-ggplot2] for visualization. Tidyverse packages make
-working with data in R very convenient. Data analysis and data mining 
-reports are typically done by creating 
-R Markdown documents. Everything in R is built on top of the 
-core R programming language and the packages that are automatically 
-installed with R. This is referred to as Base-R.
+The code examples use the R package collection `tidyverse` [@R-tidyverse] to
+manipulate data. It includes `ggplot2` [@R-ggplot2] for visualization. Data
+analysis reports can be written as R Markdown documents, combining code,
+results, and explanation. R's core language and the packages installed with R
+are commonly referred to as base R.
+
+For supervised modeling examples, this book uses `caret` for model fitting,
+resampling, tuning, and evaluation. The algorithms themselves are provided by
+specialist R packages. This book teaches the `caret` workflow; it does not
+provide parallel `tidymodels` examples. `tidymodels` is a separate modeling
+framework with its own packages and workflow. See the [caret
+documentation](https://topepo.github.io/caret/) and [tidymodels
+website](https://www.tidymodels.org/) for their respective guides.
 
 ## Base-R
 
@@ -108,15 +112,17 @@ R](https://cran.r-project.org/doc/manuals/r-release/R-intro.html). The
 most important differences between R and many other programming languages
 like Python are:
 
-* R is a functional programming language (with some extensions).
-* R only uses vectors and operations are vectorized. You rarely will see loops.
-* R starts indexing into vectors with 1 not 0.
-* R uses `<-` for assignment. Do not use `=` for assignment.
+* R supports functional programming as well as other programming styles.
+* R is vector-oriented and many operations work on whole vectors; loops are
+  also available when they are useful.
+* R indexing starts at 1.
+* `<-` is commonly used for assignment. `=` can also assign values, but is
+  usually reserved for naming function arguments.
 
 ### Vectors
 
-The basic data structure in R is a vector of real numbers called `numeric`.
-Scalars do not exist, they are just vectors of length 1. 
+The basic data structure in R is a vector. A numeric vector stores real
+numbers; a single number is represented as a numeric vector of length 1.
 
 We can combine values into a vector using the combine function `c()`. 
 Special values for infinity (`Inf`) and missing values (`NA`) can be used.

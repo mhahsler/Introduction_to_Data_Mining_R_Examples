@@ -48,17 +48,11 @@ source("format_pkgs.R")
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
-In the examples in this book, we use the popular machine learning R package [`caret`](https://topepo.github.io/caret/). It makes preparing
-training sets, building classification (and regression) models and
-evaluation easier. A great cheat sheet can be found
-[here](https://ugoproto.github.io/ugo_r_doc/pdf/caret.pdf).
-
-A newer R framework for machine learning
-is [`tidymodels`](https://www.tidymodels.org/), a set of packages that 
-integrate more naturally with tidyverse. Using tidymodels, or any other 
-framework (e.g., Python's [scikit-learn](https://scikit-learn.org/)) should 
-be relatively easy after 
-learning the concepts using caret. 
+This book uses [`caret`](https://topepo.github.io/caret/) for the classification
+workflows in its examples, including resampling, tuning, and evaluation. Model
+algorithms are supplied by their own R packages. [`tidymodels`](https://www.tidymodels.org/)
+is a separate R modeling framework and is not used in this book; its workflows
+are not interchangeable line-for-line with `caret`.
 
 ## Basic Concepts
 
@@ -67,13 +61,14 @@ function of the form
 
 $$y = f(\mathbf{x}),$$ 
 
-where $\mathbf{x}$ is called the attribute set and $y$ the class label. The attribute set
-consists of feature which describe an object. These features can be measured using any scale 
-(i.e., nominal, interval, ...). The class label is a nominal attribute. It it is a binary 
-attribute, then the problem is called a binary classification problem.
+where $\mathbf{x}$ is the feature vector and $y$ is the class label. The
+features describe an object and may be measured on different scales (for
+example, nominal or numeric). The class label is categorical. If it has two
+possible values, the task is binary classification.
 
-Classification learns the classification model from training data where both the features and 
-the correct class label are available. This is why it is called a [supervised learning problem](https://en.wikipedia.org/wiki/Supervised_learning).
+Classification learns a model from training data containing both features and
+their known labels. It is therefore a [supervised learning
+problem](https://en.wikipedia.org/wiki/Supervised_learning).
 
 A related supervised learning problem is [regression](https://en.wikipedia.org/wiki/Linear_regression), 
 where $y$ is a number instead of a label.
@@ -96,20 +91,16 @@ Supervised learning has two steps:
 1. Induction: Training a model on **training data** with known class labels.
 2. Deduction: Predicting class labels for new data.
 
-We often test model by predicting the class for data where we know the 
-correct label. We test the model on **test data** with known labels
-and can then calculate the error by comparing the prediction with the 
-known correct label.
-It is tempting to measure how well the model has learned the 
-training data, by testing it on the training data. The error on the 
-training data is called **resubstitution error.** It does not 
-help us to find out if the model generalizes well to new data that 
-was not part of the training. 
+We evaluate a model by predicting classes for observations whose labels are
+known, then comparing the predictions with those labels. When the observations
+were not used to fit the model, they form test data. Measuring performance on
+the training data gives the **resubstitution error**; this is not a reliable
+estimate of performance on new data because the model was fitted to those same
+observations.
 
-We typically want to 
-evaluate how well the model generalizes new data, so it is important that
-the test data and the training data do not overlap. We call the 
-error on proper test data the **generalization error.**
+We typically want to estimate how well the model generalizes to new data, so
+the test data and training data do not overlap. Error measured on a test set
+estimates the model's **generalization error**.
 
 This chapter builds up the needed concepts.
 A complete example of how to perform model selection and estimate 
@@ -161,9 +152,9 @@ summary(Zoo)
 
 ## Decision Tree Classifiers
 
-We use here the recursive partitioning implementation (rpart) which follows largely 
-CART and uses the Gini index to make
-splitting decisions and then it uses early stopping (also called pre-pruning).
+We use `rpart`, an implementation of recursive partitioning that follows the
+CART approach. For classification, it uses the Gini index by default to choose
+splits and can stop splitting early (pre-pruning).
 
 ```{r }
 library(rpart)
@@ -312,7 +303,7 @@ selection using cross-validation can be found in section [Hyperparameter Tuning]
 
 We are tempted to create the largest possible tree
 to get the most accurate model. This can be achieved by 
-changing the algorithms hyperparameter (parameters that 
+changing the algorithm's hyperparameters (settings that
 change how the algorithm works). We
 set the complexity parameter `cp` to 0 (split
 even if it does not improve the fit) and we set the minimum number of
@@ -339,7 +330,7 @@ pred_full <- predict(tree_full, Zoo, type = "class")
 accuracy(pred_full, Zoo |> pull(type))
 ```
 
-We see that the error is smaller then for the pruned tree. This,
+The training error is lower than that of the pruned tree. This,
 however, does not mean that the model is better. It actually is overfitting 
 the training data (it just memorizes it) and it likely has worse generalization 
 performance on new data. This effect
@@ -349,15 +340,14 @@ is called overfitting the training data and needs to be avoided.
 
 We often can create many different models for a classification problem.
 Above, we have created a decision tree using the default settings and also
-a full tree. The question is: Which one should we use. This problem is called 
-model selection.
+a full tree. The question is which model to use. This is called model selection.
 
 In order to select the model we need to split the training data into a 
 **validation set** and the training set that is actually used to train model. 
 The error rate on the validation set can then be used to choose 
 between several models.
 
-Caret has model selection build into the `train()` function. We will compare two trees 
+`caret` supports model selection through its `train()` function. We will compare two trees
 one with the default complexity `cp = 0.01` and a full tree `cp = 0`. The values are set via `tuneGrid`.
 `trControl` specified how the validation set is obtained. We use 
 Leave Group Out Cross-Validation (`LGOCV`) which
@@ -422,16 +412,18 @@ holds one fold back for testing and trains on the other $k-1$ folds. This is
 done with each fold and the resulting statistic (e.g., accuracy) is averaged.
 This method uses the data more efficiently than the holdout method.
 
-Cross validation can be directly used in `train()` using 
+Cross-validation can be used in `train()` with
 `trControl = trainControl(method = "cv", number = 10)`.
-If no model selection is necessary then this will give the 
-generalization error.
+Cross-validation estimates predictive performance when the analysis is
+specified in advance. If the same cross-validation results are used to choose
+among many models, that estimate can be optimistic; use nested resampling or a
+separate test set for a final assessment.
 
 Cross-validation runs are independent and can be done faster in
 parallel. To enable multi-core support, `caret` uses the package
 `foreach` and you need to load a `do` backend. For Linux, you can use
 `doMC` with 4 cores. Windows needs different backend like `doParallel`
-(see `caret` cheat sheet above).
+(see the [caret documentation](https://topepo.github.io/caret/)).
 
 ```{r }
 ## Linux backend
@@ -448,7 +440,7 @@ parallel. To enable multi-core support, `caret` uses the package
 ## Hyperparameter Tuning
 
 **Note:** This section contains a complete code example of how data should be used.
-It first holds out a test set and then performing hyperparameter selection 
+It first holds out a test set and then performs hyperparameter selection
 using cross-validation.
 
 Hyperparameters are parameters that change how a
@@ -573,26 +565,27 @@ in caret's [confusion matrix man page](https://rdrr.io/cran/caret/man/confusionM
 
 ## Pitfalls of Model Selection and Evaluation
 
-* Do not measure the error on the training set or
-  use the validation error as a generalization error estimate. 
-  Always use the generalization error on a test set!
-* The training data and the test sets cannot overlap or we will not 
-  evaluate the generalization performance. The training set can be come 
-  contaminated by things like preprocessing the all the data together.
+* Do not use training error as an estimate of performance on new data. If you
+  select a model using validation results, those results are not an independent
+  final assessment. Reserve a test set or use nested resampling for that purpose.
+* The training data and test data must not overlap, or the evaluation will not
+  measure performance on new data. Leakage can also occur if preprocessing or
+  feature selection uses the full dataset before the split.
 
 ## Model Comparison
 
-We will compare three models, a majority class baseline classifier, a 
-decision trees with a k-nearest neighbors (kNN)
-classifier. We will use 10-fold cross-validation for hyper parameter tuning. 
-Caret's `train()` function refits the selected model on all of the training data and
-performs cross-validation to estimate the generalization error. These cross-validation 
-results can be used to compare models statistically. 
+We will compare three models: a majority-class baseline, a decision tree, and
+a k-nearest neighbors (kNN) classifier. We will use 10-fold cross-validation
+for hyperparameter tuning.
+`caret::train()` selects tuning settings from the resampling results and fits a
+final model using all supplied training data. The resampling results estimate
+performance and support model comparison, but do not by themselves establish
+that one model is significantly better.
 
 ### Build models
 
-Caret does not provide a baseline classifier, but the package `basemodels` does.
-We first create a weak baseline model that always predicts the the majority 
+`caret` does not provide a baseline classifier, but the package `basemodels` does.
+We first create a simple baseline model that always predicts the majority
 class mammal.
 
 ```{r }
@@ -660,8 +653,11 @@ the 10 folds).
 bwplot(resamps, layout = c(3, 1))
 ```
 
-We see that the baseline has no predictive power and produces consistently a kappa of 0. KNN performs consistently the best.
-To find out if one models is statistically better than the other, we can use a statistical test.
+The baseline has no predictive power and consistently produces a kappa of 0.
+KNN has the highest accuracy and kappa in these resampling results.
+`diff()` reports paired comparisons of resampling results, including adjusted
+p-values. Resampling folds are not independent observations, so treat these
+tests as exploratory rather than definitive evidence that one model is better.
 
 ```{r }
 difs <- diff(resamps)
@@ -670,13 +666,11 @@ difs
 summary(difs)
 ```
 
-p-values gives us the probability of seeing an even more extreme value
-(difference between accuracy or kappa) given that the null hypothesis (difference
-= 0) is true. For a better classifier, the p-value should be "significant," i.e., less than
-.05 or 0.01. `diff` automatically applies Bonferroni correction for
-multiple comparisons to adjust the p-value upwards. In this case, CART and kNN perform significantly better 
-than the baseline classifiers. The difference between CART and kNN is only 
-significant at the 0.05 level, so kNN might be slightly better. 
+The p-values quantify compatibility with a zero mean difference under the
+test's assumptions; they are not the probability that the null hypothesis is
+true. `diff()` applies a Bonferroni adjustment for multiple comparisons. In
+this small example, inspect the estimated differences and their uncertainty,
+and use an independent test set for the final performance assessment.
 
 ## Feature Selection*
 

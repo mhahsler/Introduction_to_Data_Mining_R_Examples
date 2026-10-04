@@ -2,8 +2,8 @@
 
 This chapter discusses a few advanced concepts of association analysis.
 First, we look at how categorical and continuous attributes are converted
-into items. The we look at integrating item hierarchies into the analysis.
-Finally, sequence pattern mining is introduced.
+into items. Then we integrate item hierarchies into the analysis and introduce
+sequence pattern mining.
 
 ## Learning Objectives
 

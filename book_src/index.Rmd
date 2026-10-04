@@ -45,8 +45,8 @@ The code examples collected in this book were developed for the course
 _CS 5/7331 Data Mining_ taught 
 at the advanced undergraduate and graduate level
 at the [Computer Science Department](https://www.smu.edu/lyle/departments/cs) at
-Southern Methodist University (SMU) since Spring 2013 and will be regularly
-updated and improved. 
+Southern Methodist University (SMU) since Spring 2013. The online text is
+maintained and revised as needed; its rendered build date appears below.
 The learning method used in this book is learning-by-doing. 
 The code examples throughout this book are
 written in a self-contained manner so you can copy and paste a portion of the code,
@@ -59,10 +59,11 @@ with a complete set of lecture slides (PDF and PowerPoint)
 is provided on the
 [book's GitHub page.](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples)
 
-The latest update includes the use of the popular
-packages in the meta-package `tidyverse` [@R-tidyverse] including
-`ggplot2` [@R-ggplot2] for data wrangling and visualization, along with
-`caret` [@R-caret] for model building and evaluation. 
+The examples use `tidyverse` [@R-tidyverse], including `ggplot2` [@R-ggplot2],
+for data wrangling and visualization. For supervised model building,
+resampling, tuning, and evaluation, the examples use `caret` [@R-caret]. The
+2024 date in the citation below identifies the original Figshare release; the
+online book may include later revisions.
 Please use the edit function within this book or visit the [book's
 GitHub project
 page](https://github.com/mhahsler/Introduction_to_Data_Mining_R_Examples)

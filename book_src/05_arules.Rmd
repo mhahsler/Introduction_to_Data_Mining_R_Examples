@@ -67,7 +67,7 @@ an itemset $X$ is defined as the proportion of transactions in the data set whic
 Itemsets with a support which surpasses a user-defined threshold $\sigma$ are called frequent itemsets. The
 confidence of a rule is defined as $conf(X \Rightarrow Y) = supp(X \cup Y)/supp(X)$. Association rules are rules
 with $supp(X \cup Y) \ge \sigma$ and $conf(X) \ge \delta$ where $\sigma$ and $\delta$ are user-defined thresholds.
-The found set of association rules is then used reason about the data.
+The resulting set of association rules can then be used to reason about the data.
 
 You can read the free sample chapter from the textbook [@Tan2005]:
 [Chapter 5. Association Analysis: Basic Concepts and
@@ -354,7 +354,7 @@ rules <- sort(rules, by = "lift")
 rules |> head(n = 10) |> inspect()
 ```
 
-We see that most high-lift rules are about fish. The reason may be since fish 
+Most high-lift rules in this example involve fish. This is because fish
 have very specific features that are very different from the other animal types
 in the data.
 
@@ -382,7 +382,7 @@ r |> head(n = 10, by = "lift") |> inspect()
 ```
 
 The rules are similar, but now show 
-that fish do not breathe (air) or give milk. It is often benficial to introduce
+that fish do not breathe (air) or give milk. It is often beneficial to introduce
 negative items for some features, but not for all.
 
 ### Additional Interest Measures
@@ -559,9 +559,8 @@ The default plot for association rules is a support/confidence scatterplot.
 plot(rules)
 ```
 
-Each rules is represented by a point. Note that some jitter (randomly move points) 
-was added to show how many
-rules have the same confidence and support value. Without jitter:
+Each rule is represented by a point. Jitter (small random offsets) shows how
+many rules have the same confidence and support values. Without jitter:
 
 ```{r }
 plot(rules, control = list(jitter = 0))
@@ -587,7 +586,7 @@ items and the type fish.
 This plot can also be used interactively using the parameter 
 `engine = "interactive"`.
 
-#### Gaph-based Visualization
+#### Graph-based Visualization
 Graph-based techniques visualize association rules using vertices and edges,
 where vertices typically represent items or itemsets and edges indicate relationships
 in terms of rules. Interest measures are typically added to the plot as labels on the

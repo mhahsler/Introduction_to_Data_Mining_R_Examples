@@ -720,7 +720,7 @@ Sepal.Width and the red blocks show that the bottom 50 flowers are
 larger for most features.
 
 Often, reordering data matrices help with visualization. A reordering
-technique is called seriation. Ir reorders rows and columns to place
+technique is called seriation. It reorders rows and columns to place
 more similar points closer together.
 
 ```{r }
@@ -858,7 +858,7 @@ following questions.
 3. Create scatterplots and a scatterplot matrix. Can you identify correlations?
 4. Create a reordered correlation matrix visualization. What does the visualizations show?
 
-Make sure your markdown document contains now a well formatted report.
+Make sure your R Markdown document contains a well-formatted report.
 Use the `Knit` button to create a HTML document.
 
 ## Chapter Summary
@@ -879,4 +879,3 @@ questions rather than treating them as proof of a conclusion.
 * **Facet:** a set of small plots split by the values of one or more variables.
 * **Correlation matrix:** a table of pairwise correlation values, often shown
   with a color scale.
-

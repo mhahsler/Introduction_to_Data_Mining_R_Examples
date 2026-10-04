@@ -52,47 +52,46 @@ The packages used for this chapter are:
 
 Recall that classification predicts one of a small set of discrete (i.e., nominal) labels (e.g., yes or no, 
 small, medium or large). 
-Regression is also a supervised learning problem, but the goal is to 
-predict the value of a continuous value given a set of predictors. 
+Regression is also a supervised learning problem, but its goal is to predict
+a numeric response from a set of predictors.
 We start with the popular linear regression and will later discuss alternative 
 regression methods.
 
-Linear regression models the value of a dependent variable $y$ (also called
-the response) as
-as linear function of independent variables $X_1, X_2, ..., X_p$
-(also called the regressors, predictors, exogenous variables, explanatory variables,
-or covariates).
-If we use more than one explanatory variable, then we often call this 
-multiple or multivariate linear regression.
+Linear regression models a response $y$ as a linear function of predictors
+$X_1, X_2, ..., X_p$ (also called explanatory variables or covariates). With
+multiple predictors, the model is called multiple linear regression.
 The linear regression model is:
-$$\hat{y}_i = f(\mathbf{x}_i) = \beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip} + \epsilon_i = \beta_0 + \sum_{j = 1}^p{\left(\beta_jx_{ij}\right) + \epsilon_i},$$
+$$y_i = \beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip} + \epsilon_i, \qquad
+\hat{y}_i = \beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip},$$
 
 where $\beta_0$ is the intercept, $\boldsymbol{\beta}$ is a $p+1$-dimensional parameter
-vector learned from the data, and $\epsilon$ is the error term
-(called the residuals). This is often also written in vector notation as
-$$\hat{\mathbf{y}} = \mathbf{X} \boldsymbol{\beta} + \epsilon,$$ 
-where $\hat{\mathbf{y}}$ 
-and $\boldsymbol{\beta}$ are vectors and $\mathbf{X}$ is the matrix
-with the covariates (called the design matrix).
+vector learned from the data, and $\epsilon_i$ is the random error term. The
+observed residual is $e_i = y_i - \hat{y}_i$. In vector notation, the model is
+$$\mathbf{y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\epsilon},$$
+and its fitted values are
+$$\hat{\mathbf{y}} = \mathbf{X} \boldsymbol{\beta}.$$
+Here, $\mathbf{X}$ is the design matrix containing the predictors.
 
 The error that is often minimized in regression problems is the squared error defined
 as:
 
 $$SE= \sum_i (y_i - f(\mathbf{x}_i))^2$$
 
-The parameter vector is found by minimizing the squared error the training data.
+The parameter vector is estimated by minimizing the sum of squared residuals in
+the training data.
 
 Linear regression makes several assumptions that should be checked:
 
-* _Linearity:_ There is a linear relationship between dependent
-  and independent variables.
-* _Homoscedasticity:_ The variance of the error ($\epsilon$)
-  does not change (increase) with the predicted value.
-* _Independence of errors:_ Errors between observations are uncorrelated.
-* _No multicollinearity of predictors:_ Predictors cannot be
-  perfectly correlated or the parameter vector cannot be identified. _Note_
-  that highly correlated predictors lead to unstable results and should be
-  avoided using, e.g., variable selection.
+* _Linearity:_ The conditional mean of the response is linear in the predictors.
+* _Homoscedasticity:_ The error variance is constant across fitted values.
+* _Independence:_ Errors are independent across observations, as appropriate
+  for the sampling design.
+* _No perfect multicollinearity:_ No predictor is an exact linear combination
+  of other predictors. Strong correlations can make coefficient estimates
+  unstable, though they do not always invalidate predictions.
+* _Normal errors:_ A normal error assumption is used for some small-sample
+  confidence intervals and tests; it is not required for least-squares
+  coefficient estimation itself.
 
 ## A First Linear Regression Model
 
@@ -152,16 +151,17 @@ be displayed using the summary function.
 summary(model1)
 ```
 
-The summary shows:
+The summary reports coefficient estimates and tests of whether each coefficient
+is zero, conditional on the other predictors and the model assumptions. Here,
+`Petal.Length` has a small p-value and the coefficient for `useless` is close
+to zero. Such tests do not establish that a predictor is causally important,
+and p-values can be optimistic after model selection.
 
-* Which coefficients are significantly different from 0. Here only `Petal.Length`
-  is significant and the coefficient for `useless` is very close to 0. 
-  Look at the scatter plot matrix above and see why this is the case.
-* R-squared (coefficient of determination): Proportion (in the range $[0,1]$) of the variability of 
-  the dependent variable explained by the model. It is better to look at the 
-  adjusted R-square (adjusted for number of dependent variables). Typically, 
-  an R-squared of greater than $0.7$ is considered good, but this is just a rule of thumb and 
-  we should rather use a test set for evaluation.
+R-squared (the coefficient of determination) is the proportion of the response
+variation explained by the fitted model on these data. Adjusted R-squared
+accounts for the number of predictors, but neither statistic is a substitute
+for evaluating predictions on held-out data. There is no universal cutoff for
+what counts as a good R-squared.
 
 Plotting the model produces diagnostic plots (see `plot.lm()`). For example,
 to check that the error term has a mean of 0 and is homoscedastic, 
@@ -178,9 +178,9 @@ plot(model1, which = 1:2)
 In this case, the two plots look fine.
 
 ## Comparing Nested Models
-Here we perform model selection to compare several linear models. 
-Nested means that all models use a subset of the same set of features.
-We create a simpler model by removing the feature useless from the model above. 
+Here we compare nested linear models. Models are nested when one model's terms
+are a subset of the other's, with the same response and observations. We first
+remove the random `useless` predictor.
 
 ```{r}
 model2 <- lm(Petal.Width ~ Sepal.Length + 
@@ -189,7 +189,9 @@ model2 <- lm(Petal.Width ~ Sepal.Length +
 summary(model2)
 ```
 
-We can remove the intercept by adding `-1` to the formula.
+The next example removes the intercept by adding `-1` to the formula. This
+changes the model assumptions and should only be done when a zero response at
+zero predictors is scientifically appropriate.
 
 ```{r}
 model3 <- lm(Petal.Width ~ Sepal.Length + 
@@ -206,22 +208,24 @@ model4 <- lm(Petal.Width ~ Petal.Length -1,
 summary(model4)
 ```
 
-We need a statistical test to compare all these nested models. The appropriate test is called
-[ANOVA](https://en.wikipedia.org/wiki/Analysis_of_variance) (analysis of variance) 
-which is a generalization of the t-test to check if all the treatments 
-(i.e., models) have the same effect. 
-__Important note:__ This only works for _nested models._ Models are nested only if one model contains all the predictors of the other model.
+For nested linear models, `anova()` performs a partial F-test of whether the
+additional terms reduce residual error enough to support the larger model.
+Compare only nested models fitted to the same observations. Here, models 1 and
+2 form one nested pair, and models 3 and 4 form another. Models 2 and 3 differ
+in their intercept structure and are not compared with the same test.
 
 ```{r}
-anova(model1, model2, model3, model4)
+anova(model1, model2)
+anova(model3, model4)
 ```
 
 
-Models 1 is not significantly better than model 2. Model 2 is not significantly better than model 3. Model 3 is not significantly better than model 4! Use model 4, the simplest model.
-See `anova.lm()` for the manual page for ANOVA for linear models. 
+Interpret each test in light of its assumptions and the model purpose; a
+non-significant result does not prove that the smaller model is correct. See
+`?anova.lm` for details.
 
 ## Stepwise Variable Selection
-Stepwise variable section performs backward (or forward) model selection for linear models
+Stepwise variable selection performs backward (or forward) model selection for linear models
 and uses the smallest AIC ([Akaike information criterion](https://en.wikipedia.org/wiki/Akaike_information_criterion)) to decide 
 what variable to remove and when to stop.
 
@@ -250,20 +254,21 @@ predictors.
 We can create a model with an interaction terms between `Sepal.Length`,  `Sepal.Width` and 
 `Petal.Length`.
 ```{r}
-model5 <- step(lm(Petal.Width ~ Sepal.Length * 
-                    Sepal.Width * Petal.Length,
-             data = train))
+model5 <- lm(Petal.Width ~ Sepal.Length *
+               Sepal.Width * Petal.Length,
+             data = train)
 
 summary(model5)
 
-anova(model5, model4)
+anova(model2, model5)
 ```
-Some interaction terms are significant in the new model, but ANOVA shows that
-model 5 is not significantly better than model 4
+The models are nested, so the ANOVA comparison assesses whether the interaction
+terms improve fit over the main-effects model. Check predictive performance on
+held-out data before choosing a model for prediction.
 
 ## Prediction
 
-We preform here a prediction for the held out test set.
+We make predictions for the held-out test set.
 
 ```{r}
 test[1:5,]

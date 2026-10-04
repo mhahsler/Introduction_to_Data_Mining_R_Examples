@@ -117,8 +117,9 @@ The companion resource has been used successfully in the department of Computer
 Science at Southern Methodist University for many years and by several
 instructors as a key component of an introductory data mining course delivered
 in person and in a distance education setting.  It is also linked on the
-textbook website as an official resource.  Faculty at the department actively
-maintains the resource, and we will update it with new R tools like tidymodels
-[@tidymodels2020] over time.
+textbook website as an official resource. Faculty at the department actively
+maintains the resource. The current supervised modeling examples use `caret`;
+`tidymodels` is a separate R modeling framework and is not currently covered in
+this resource.
 
 # References

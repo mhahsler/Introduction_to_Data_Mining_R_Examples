@@ -6,8 +6,7 @@ editor_options:
 
 # Logistic Regression {#appendix_logistic_regression}
 
-This chapter introduces the popular classification method 
-logistic regression more in detail. Logistic regression is introduced
+This chapter examines logistic regression in more detail. Logistic regression is introduced
 as an alternative classification method in Chapter 4 of Introduction to Data Mining.
 
 ## Learning Objectives
@@ -42,23 +41,18 @@ all_pkgs <- union(all_pkgs, pkgs)
 
 ## Introduction
 
-Logistic regression contains the word regression, but it is actually a 
-statistical classification
-model to predict the probability $p$ of a binary outcome given a set of features.
-It is a very powerful classification model that can be fit very quickly. It is one of the 
-first classification models you should try on new data.
+Despite its name, logistic regression is a classification model for estimating
+the probability $p$ of a binary outcome from a set of features. It is a common
+baseline because it is interpretable and often fits quickly.
 
-Logistic regression is a [generalized linear model](https://en.wikipedia.org/wiki/Generalized_linear_model) 
-with the logit as the link function and a binomial error distribution. 
-It can 
-be thought of as a linear regression with the
-log odds ratio (logit) 
-of the binary outcome as the dependent variable:
+Logistic regression is a [generalized linear model](https://en.wikipedia.org/wiki/Generalized_linear_model)
+with the logit link and a binomial response distribution. It models the log
+odds of the binary outcome as a linear function of the predictors:
 
 $$logit(p) = ln\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...$$
 
-The logit function links the probability p to the linear regression by converting 
-a number in the probability range $[0,1]$ to the range $[-\infty,+\infty]$.
+The logit function maps a probability $p$ in $(0,1)$ to the real line
+$(-\infty,+\infty)$.
 
 ```{r}
 logit  <- function(p) log(p/(1-p))
@@ -68,26 +62,25 @@ abline(h = 0.5, lty = 2)
 abline(v = 0, lty = 2)
 ```
 
-The figure above shows actually the inverse of the logit function.
-The inverse of the logit function is called [logistic (or sigmoid) function](https://en.wikipedia.org/wiki/Logistic_function) ($\sigma(\cdot)$) which is 
-often used in ML, and especially for artificial neural networks, 
-to squash the set of real numbers to the $[0,1]$ interval.
+The plotted curve is the inverse logit, also called the [logistic or sigmoid
+function](https://en.wikipedia.org/wiki/Logistic_function). It maps real-valued
+linear predictors to probabilities in $(0,1)$.
 Using the inverse function, we see that the probability of the outcome $p$ 
 is modeled by the logistic function of the linear regression:
 
 $$ p = \frac{e^{\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...}}{1 +  e^{\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...}} = \frac{1}{1+e^{-(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...)}} = \sigma(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + ...)$$
 
-After the $\boldsymbol{\beta} = (\beta_0, \beta_1,...)$ parameter vector is fitted using training data by
-minimizing the log loss (i.e., cross-entropy loss), 
-the equation above can be used to predict
-the probability $p$ given a new data point $\mathbf{x} = (x_1, x_2, ...)$. If the predicted $p > .5$
-then we predict that the event happens, otherwise we predict that it does not happen.
+After estimating $\boldsymbol{\beta} = (\beta_0, \beta_1,...)$ from training
+data by maximizing the binomial likelihood (equivalently, minimizing log loss),
+the equation above predicts
+the probability $p$ for a new data point $\mathbf{x} = (x_1, x_2, ...)$. With a
+default threshold of 0.5, we predict the event when $p > .5$ and otherwise
+predict that it does not occur.
 
-The outcome itself is binary and therefore has a Bernoulli distribution. Since we have 
-multiple examples in our data we draw several times from this distribution resulting
-in a Binomial distribution for the number of successful events drawn. Logistic 
-regression therefore uses a logit link function to link the probability of the event 
-to the linear regression and the distribution family is Binomial.
+Each binary outcome is modeled with a Bernoulli distribution. Across multiple
+observations, the number of positive outcomes has a binomial distribution.
+Logistic regression uses the logit link to relate the event probability to the
+linear predictor.
 
 ## Data Preparation
 We load and shuffle the data. We also add a useless variable to see if the logistic regression removes it.
@@ -195,7 +188,7 @@ hist(pr, breaks = 20, main = "Predicted Probability vs. True Class")
 hist(pr[x$virginica == TRUE], col = "red", breaks = 20, add = TRUE)
 ```
 
-## Check Classification Performance
+## Illustrate In-Sample Classification Performance
 
 Here we perform in-sample evaluation on the training set. To get an estimate for
 generalization error, we should calculate the performance on a held out test set.
@@ -225,7 +218,9 @@ caret::confusionMatrix(
   data = factor(pred, labels = c("Yes", "No"), levels = c(TRUE, FALSE)))
 ```
 
-We see that the model performs well with a very high accuracy and kappa value.
+These in-sample accuracy and kappa values describe performance on the data used
+to fit the model and are likely optimistic. Use the held-out test set, as
+discussed in the previous chapter, to estimate performance on new observations.
 
 ## Regularized Logistic Regression
 

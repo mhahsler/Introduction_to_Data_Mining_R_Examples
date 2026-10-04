@@ -32,7 +32,7 @@ cross-validation, confusion matrices, and probability is assumed.
 pkgs <- c("basemodels", "C50", "caret", "e1071", "klaR", 
           "lattice", "MASS", "mlbench", "nnet", "palmerpenguins", 
           "randomForest", "rpart", "RWeka", "scales", "tidyverse", 
-          "xgboost", "sampling")
+          "xgboost")
 
 pak::pkg_install(pkgs)
 ```
@@ -74,10 +74,10 @@ Zoo <- as_tibble(Zoo)
 Zoo
 ```
 
-We will use the package [**caret**](https://topepo.github.io/caret/) to
-make preparing training sets and building classification (and
-regression) models easier. A great cheat sheet can be found
-[here](https://ugoproto.github.io/ugo_r_doc/pdf/caret.pdf).
+The examples use [**caret**](https://topepo.github.io/caret/) for data splitting,
+model fitting, and tuning, while specialist packages provide the algorithms.
+This book uses the `caret` interface; it does not implement the same examples
+with `tidymodels`.
 
 ```{r message=FALSE, warning=FALSE}
 library(caret)
@@ -359,7 +359,7 @@ xgboostFit$finalModel
 
 ## Model Comparison
 
-We first create a weak baseline model that always predicts the the majority 
+We first create a simple baseline model that always predicts the majority
 class mammal.
 
 ```{r }
@@ -394,9 +394,9 @@ resamps <- resamples(list(
 resamps
 ```
 
-The summary statistics shows the performance. We see that all
-methods do well on this easy data set, only the baseline model performs 
-as expected poorly.
+The summary statistics show performance across resamples. All methods perform
+well on this relatively simple dataset; the baseline performs poorly, as
+expected.
 
 ```{r }
 summary(resamps)
@@ -405,23 +405,19 @@ library(lattice)
 bwplot(resamps, layout = c(3, 1))
 ```
 
-Perform inference about differences between models. For each metric, all
-pair-wise differences are computed and tested to assess if the
-difference is equal to zero. By default Bonferroni correction for
-multiple comparison is used. Differences are shown in the upper triangle
-and p-values are in the lower triangle.
+Compare paired resampling results for each metric. The output shows estimated
+differences and adjusted p-values. Because resampling folds are not independent,
+use these comparisons as descriptive evidence rather than definitive tests of
+which model is best. Bonferroni correction is applied for multiple comparisons.
 
 ```{r }
 difs <- diff(resamps)
 summary(difs)
 ```
 
-All perform similarly well except the baseline model (differences in the first row
-are negative and the p-values in the first column are \<.05 indicating
-that the null-hypothesis of a difference of 0 can be rejected).
-Most models do similarly well on the data. We choose here the random
-forest model and evaluate its generalization performance on the held-out
-test set.
+The models have similar resampling performance except for the baseline.
+We select the random forest for illustration and evaluate it once on the
+held-out test set. The test set remains the final performance assessment.
 
 ```{r }
 pr <- predict(randomForestFit, Zoo_test)
@@ -436,16 +432,12 @@ confusionMatrix(pr, reference = Zoo_test$type)
 
 ## Class Imbalance
 
-Classifiers have a hard time to learn from data where we have much more
-observations for one class (called the majority class). This is called
-the **class imbalance problem** which is especially problematic when it is
-important to identify members of the minority class. In this setting the minority 
-class is also often called the positive class since it has the property 
-that we want to identify. An example would be that we want to identify the 
-patients that are positive for a rare disease.
-
-Here is a very good [article about the problem and
-solutions.](http://www.kdnuggets.com/2016/08/learning-from-imbalanced-classes.html)
+Class imbalance occurs when one class has substantially more observations than
+another. It can reduce performance on the minority class, especially when
+identifying that class is important (for example, detecting a rare disease).
+In a binary problem, the class of interest is often called the positive class.
+The examples below compare resampling, threshold adjustment, and
+cost-sensitive fitting.
 
 For the examples, we will use the Zoo dataset.
 
@@ -455,17 +447,15 @@ library(rpart.plot)
 data(Zoo, package = "mlbench")
 ```
 
-You always need to check if you have a class imbalance problem. Just look at the class
-distribution.
+Check the class distribution before fitting a classifier.
 
 ```{r }
 ggplot(Zoo, aes(y = type)) + geom_bar()
 ```
 
-We see that there is moderate class imbalance with very many mammals and few
-amphibians and reptiles in the data set. If we build a classifier, then 
-it is very likely that it will not perform well for identifying amphibians 
-or reptiles. This effect was seen when building a simple decision tree.
+The Zoo data contain many mammals and few amphibians and reptiles. A
+classifier that favors the majority class may therefore have poor recall for
+the rarer classes, as the simple decision tree below illustrates.
 
 ```{r }
 tree_default <- Zoo |> 
@@ -477,10 +467,11 @@ rpart.plot(tree_default, extra = 2)
 ```
 
 
-The resulting tree has no leaf nodes for these rare animal types meaning that 
-it cannot identify them.
+The resulting tree has no leaf nodes for these rare animal types, so it cannot
+predict them.
 
-Deciding if an animal is a reptile or not is a very class imbalanced problem.
+Predicting whether an animal is a reptile is a highly imbalanced binary
+classification problem.
 We set up this problem by changing the class variable to make it into a binary
 reptile/non-reptile classification problem.
 
@@ -491,11 +482,11 @@ Zoo_reptile <- Zoo |>
                        labels = c("nonreptile", "reptile")))
 ```
 
-Do not forget to make the class variable a factor (a nominal variable)
-or you will get a regression tree instead of a classification tree.
+Keep the class variable as a factor (categorical); otherwise `rpart` fits a
+regression tree instead of a classification tree.
 
-By checking the class distribution, we see that classification model is now
-highly imbalances with only 5 reptiles vs. 96 non-reptiles.
+The class distribution shows that this classification problem is now
+highly imbalanced, with 5 reptiles and 96 non-reptiles.
 
 
 ```{r }
@@ -506,14 +497,13 @@ summary(Zoo_reptile)
 ggplot(Zoo_reptile, aes(y = type)) + geom_bar()
 ```
 
-The graph shows that the data is highly imbalanced with encountering a non-reptile 
-being about 20 times more likely then encountering a reptile. 
-We will try several 
-different options in the next few subsections.
+The graph shows that a non-reptile is about 20 times as common as a reptile in
+this dataset. We will compare several ways to address this imbalance.
 
-We split the data into test and training data so we can evaluate how well the 
-classifiers for the different options work. I use here a 50/50 split to make sure
-that the test set has some samples of the rare reptile class.
+We split the data into training and test sets so we can evaluate each approach
+on observations not used for fitting. A 50/50 split increases the chance that
+the small test set includes reptiles. Estimates remain highly uncertain
+because there are only five reptiles in total.
 
 ```{r }
 set.seed(1234)
@@ -523,10 +513,10 @@ training_reptile <- Zoo_reptile |> slice(inTrain)
 testing_reptile <- Zoo_reptile |> slice(-inTrain)
 ```
 
-### Option 1: Use the Data As Is and Hope For The Best
+### Option 1: Use the Original Class Distribution
 
 ```{r }
-fit <- training_reptile |> 
+fit <- training_reptile |>
   train(type ~ .,
         data = _,
         method = "rpart",
@@ -551,106 +541,64 @@ confusionMatrix(data = predict(fit, testing_reptile),
                 ref = testing_reptile$type, positive = "reptile")
 ```
 
-Accuracy is high, but it is exactly the same as the no-information rate
-and kappa is zero. Sensitivity is also zero, meaning that we do not
-identify any positive (reptile). If the cost of missing a positive is
-much larger than the cost associated with misclassifying a negative,
-then accuracy is not a good measure! By dealing with imbalance, we are
-**not** concerned with accuracy, but we want to increase the
-sensitivity, i.e., the chance to identify positive examples. 
-**This approach does not work!**
+Accuracy equals the no-information rate and kappa is zero. Sensitivity is also
+zero: the model identifies no reptiles. When missing a positive case is more
+costly than misclassifying a negative, accuracy alone is not an adequate
+metric. Sensitivity, specificity, and the costs of each type of error should
+also be considered.
 
 **Note:** The positive class value (the one that you want to detect) is
 set manually to reptile using `positive = "reptile"`. Otherwise
 sensitivity/specificity will not be correctly calculated.
 
-### Option 2: Balance Data With Resampling
+### Option 2: Upsample Within Resampling
 
-A popular choice is to balance the class distribution by using [stratified sampling](https://en.wikipedia.org/wiki/Stratified_sampling) with replacement to oversample the
-minority/positive class. Other options include [SMOTE](https://en.wikipedia.org/wiki/Synthetic_minority_oversampling_technique) (in package **DMwR**)
-or other sampling strategies (e.g., from package **unbalanced**). 
-
-Here, we use stratified sampling with
-50 observations per class. **Note:** many samples of the positive/minority class
-will be chosen several times.
+A common approach is to upsample the minority class by drawing observations
+with replacement. Upsampling must happen within each resampling iteration;
+otherwise, duplicate observations can appear in both the fold used for fitting
+and the fold used for validation. `caret` supports this through the `sampling`
+argument to `trainControl()` (see the [caret subsampling
+guide](https://topepo.github.io/caret/subsampling-for-class-imbalances.html)).
 
 ```{r }
-library(sampling)
 set.seed(1000) # for repeatability
 
-id <- strata(training_reptile, stratanames = "type", 
-             size = c(50, 50), method = "srswr")
-training_reptile_balanced <- training_reptile |> 
-  slice(id$ID_unit)
-
-table(training_reptile_balanced$type)
-```
-
-Build a tree using the balanced data.
-
-```{r}
-fit <- training_reptile_balanced |> 
+fit <- training_reptile |>
   train(type ~ .,
         data = _,
         method = "rpart",
-        trControl = trainControl(method = "cv"),
+        trControl = trainControl(method = "cv", sampling = "up"),
         control = rpart.control(minsplit = 5))
 
 fit
 rpart.plot(fit$finalModel, extra = 2)
 ```
 
-The resulting tree has a reasonable accuracy/kappa on the balanced data.  
-However, the real data does not have the distribution of the balanced data, so 
-we check the model on the unbalanced testing data.
+Upsampling is applied only to each analysis fold; validation folds and the
+held-out test set keep the observed class distribution. Evaluate the fitted
+model on that untouched test set:
 
 ```{r }
 confusionMatrix(data = predict(fit, testing_reptile),
                 ref = testing_reptile$type, positive = "reptile")
 ```
 
-**The accuracy is below the no information rate and
-kappa is close to 0!** However,
-sensitivity (the
-ability to identify reptiles) is now one meaning that the classifier is able to 
-identify all reptiles.
+Compare accuracy, sensitivity, and specificity with the unresampled model.
+Because the test set contains very few reptiles, each metric can change
+substantially if even one observation is classified differently.
 
-We have to make a tradeoff between sensitivity (identifying reptiles) and specificity (how many of the
-identified animals are really reptiles). The tradeoff can be controlled
-using the sample proportions. We can sample more reptiles to increase
-sensitivity at the cost of lower specificity (this effect cannot be seen
-in the data since the test set has only a few reptiles).
-
-
-```{r }
-id <- strata(training_reptile, stratanames = "type", 
-             size = c(50, 500), method = "srswr")
-training_reptile_balanced <- training_reptile |> 
-  slice(id$ID_unit)
-table(training_reptile_balanced$type)
-
-fit <- training_reptile_balanced |> 
-  train(type ~ .,
-        data = _,
-        method = "rpart",
-        trControl = trainControl(method = "cv"),
-        control = rpart.control(minsplit = 5))
-
-confusionMatrix(data = predict(fit, testing_reptile),
-                ref = testing_reptile$type, positive = "reptile")
-```
-
-**Note:** We have used a sample ratio of 1:10 meaning that we value identifying
-1 reptile as much as misscassifying 10 non-reptiles. This is related to the cost 
-usd by the cost-sensitive classifier introduced in Option 4 below.
+Upsampling changes the class balance seen during fitting, but it does not
+directly specify the relative costs of false positives and false negatives.
+Choose a decision threshold or use a cost-sensitive method when you need to
+express that tradeoff; see Options 3 and 4.
 
 ### Option 3: Build A Larger Tree and use Predicted Probabilities
 
-Increase complexity and require less data for splitting a node. Here I
-also use AUC (area under the ROC) as the tuning metric. You need to
-specify the two class summary function. Note that the tree still trying
-to improve accuracy on the data and not AUC! I also enable class
-probabilities since I want to predict probabilities later.
+We increase tree complexity and require fewer observations to split a node.
+Here we tune using the area under the ROC curve (ROC AUC). `twoClassSummary`
+requires class probabilities, which we also need for the threshold example
+below. The tree is still fit using its standard splitting criterion; ROC AUC
+is the metric used to select the tuning parameter.
 
 ```{r }
 fit <- training_reptile |> 
@@ -672,20 +620,16 @@ confusionMatrix(data = predict(fit, testing_reptile),
                 ref = testing_reptile$type, positive = "reptile")
 ```
 
-**Note:** Accuracy is high, but it is close or below to the
-no-information rate!
+**Note:** Accuracy is close to the no-information rate on this small dataset.
 
 #### Create A Biased Classifier
 
-We can create a classifier which will detect more reptiles at the
-expense of misclassifying non-reptiles. This is equivalent to increasing
-the cost of misclassifying a reptile as a non-reptile. The usual rule is
-to predict in each node the majority class from the test data in the
-node. For a binary classification problem that means a probability of
-\>50%. In the following, we reduce this threshold to 1% or more. This
-means that if the new observation ends up in a leaf node with 1% or more
-reptiles from training then the observation will be classified as a
-reptile. The data set is small and this works better with more data.
+We can lower the classification threshold to identify more reptiles at the
+cost of misclassifying more non-reptiles. For a binary classifier, the default
+threshold is often 0.5. Lowering it predicts more positives, typically
+increasing sensitivity at the cost of specificity. The 0.01 threshold below
+is illustrative; a real threshold should be selected using validation data
+and application-specific costs.
 
 ```{r }
 prob <- predict(fit, testing_reptile, type = "prob")
@@ -697,10 +641,9 @@ confusionMatrix(data = pred,
                 ref = testing_reptile$type, positive = "reptile")
 ```
 
-**Note** that accuracy goes down and is below the no information rate.
-However, both measures are based on the idea that all errors have the
-same cost. What is important is that we are now able to find more
-reptiles.
+This lower threshold trades accuracy and specificity for sensitivity on this
+split. Accuracy treats all errors equally and does not capture the cost of
+missing a reptile.
 
 #### Plot the ROC Curve
 
@@ -708,10 +651,11 @@ Since we have a binary classification problem and a classifier that
 predicts a probability for an observation to be a reptile, we can also
 use a [receiver operating characteristic
 (ROC)](https://en.wikipedia.org/wiki/Receiver_operating_characteristic)
-curve. For the ROC curve all different cutoff thresholds for the
-probability are used and then connected with a line. The area under the
-curve represents a single number for how well the classifier works (the
-closer to one, the better).
+curve. The ROC curve shows sensitivity against the false-positive rate over
+different probability thresholds. Its area (ROC AUC) summarizes ranking
+performance: 0.5 corresponds to chance ranking and 1 to perfect ranking. It
+does not select an operating threshold or account for application-specific
+error costs.
 
 ```{r }
 library("pROC")
@@ -721,19 +665,24 @@ r
 ggroc(r) + geom_abline(intercept = 1, slope = 1, color = "darkgrey")
 ```
 
+This ROC curve is calculated on the test set for illustration. Do not choose a
+threshold from this curve and then report performance on the same test set; use
+validation data to choose the threshold and reserve the test set for the final
+evaluation.
+
 ### Option 4: Use a Cost-Sensitive Classifier
 
-The implementation of CART in `rpart` can use a cost matrix for making
-splitting decisions (as parameter `loss`). The matrix has the form
-
+The CART implementation in `rpart` accepts a loss matrix through the `loss`
+parameter. Rows represent actual classes and columns represent predicted
+classes. The diagonal entries (correct predictions) have zero cost. We assign
+a false negative a cost of 100 and a false positive a cost of 1:
 
 ```
-TP FP 
-FN TN
+                 predicted
+actual       nonreptile reptile
+nonreptile       0         1
+reptile         100        0
 ```
-
-where TP and TN have to be 0. We make FN very expensive with
-a cost of 100 compared to the cost for FP of 1. 
 
 ```{r }
 cost <- matrix(c(
@@ -751,9 +700,9 @@ fit <- training_reptile |>
 ```
 
 The warning *"There were missing values in resampled performance
-measures"* means that some folds did not contain any reptiles (because of
-the class imbalance) and thus the performance measures could not be
-calculates.
+measures"* means that some validation folds did not contain both classes.
+With only a few reptiles, this can make cross-validation metrics unstable or
+undefined.
 
 ```{r }
 fit
@@ -764,16 +713,14 @@ confusionMatrix(data = predict(fit, testing_reptile),
                 ref = testing_reptile$type, positive = "reptile")
 ```
 
-The high cost for false negatives results in a classifier that does not
-miss any reptile.
+In this split, the high false-negative cost results in a classifier that
+identifies all reptiles. This result is specific to this small split; it does
+not guarantee perfect sensitivity on new data.
 
-**Note:** Using a cost-sensitive classifier is often the best option.
-Unfortunately, most classification algorithms (or their
-implementation) do not have the ability to consider misclassification
-cost. Cost-sensitivity can be added to ANNs by changing the optimized 
-loss function from pure cross-entropy loss to a 
-weighted version. Using a custom loss function is possible in most 
-deep learning libraries.
+Cost-sensitive fitting is useful when error costs are known and the chosen
+algorithm supports them. Other approaches include adjusting a decision
+threshold or using weighted loss functions; availability depends on the model
+and software implementation.
 
 
 ## Comparing Decision Boundaries of Popular Classification Techniques*
@@ -1276,8 +1223,8 @@ a larger number of neurons leads to overfitting the training data.
 
 ## More Information on Classification with R
 
--   Package caret: <http://topepo.github.io/caret/index.html>
--   Tidymodels (machine learning with tidyverse):
+-   The `caret` framework used in this book: <https://topepo.github.io/caret/>
+-   Alternative modeling framework (not used in these examples):
     <https://www.tidymodels.org/>
 -   R taskview on machine learning:
     <http://cran.r-project.org/web/views/MachineLearning.html>

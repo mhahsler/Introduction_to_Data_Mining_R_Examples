@@ -20,9 +20,13 @@ chapters of the popular data mining textbook:
 > [_Introduction to Data Mining,_](https://www-users.cs.umn.edu/~kumar001/dmbook/index.php) 
 > Addison Wesley, 1st or 2nd edition.
 
+The examples use tidyverse for data manipulation and visualization, and use
+`caret` for the supervised modeling workflows. `tidymodels` is not used in the
+book's examples.
+
 The slides and examples are used in my course _CS 5/7331 Data Mining_ taught at
-[SMU](https://www.smu.edu/) and will be regularly updated and improved.  The
-code examples are now compiled into the free online book [An R Companion for
+[SMU](https://www.smu.edu/). The materials are maintained and revised as needed.
+The code examples are compiled into the free online book [An R Companion for
 Introduction to Data
 Mining](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/)
 which is published under the Creative Commons Attribution license and you can
