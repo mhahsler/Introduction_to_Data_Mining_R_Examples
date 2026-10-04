@@ -10,11 +10,24 @@ This chapter introduces the popular classification method
 logistic regression more in detail. Logistic regression is introduced
 as an alternative classification method in Chapter 4 of Introduction to Data Mining.
 
+## Learning Objectives
+
+After this chapter, you should be able to:
+
+* fit a binary logistic regression model and interpret its coefficients;
+* convert model scores into class probabilities and predicted labels;
+* assess classification performance on held-out data; and
+* recognize when regularized or multinomial logistic regression is appropriate.
+
+## Prerequisites
+
+Read [Classification: Basic Concepts] and [Regression]. Familiarity with
+probability, odds, model formulas, and train/test evaluation is assumed.
+
 ```{r setup_logreg}
 pkgs <- c("glmnet", "caret")
 
-pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
-if(length(pkgs_install)) install.packages(pkgs_install)
+pak::pkg_install(pkgs)
 ```
 
 The packages used for this chapter are: 
@@ -81,7 +94,7 @@ We load and shuffle the data. We also add a useless variable to see if the logis
 
 ```{r}
 data(iris)
-set.seed(100) # for reproducability
+set.seed(100) # for reproducibility
 
 x <- iris[sample(1:nrow(iris)),]
 x <- cbind(x, useless = rnorm(nrow(x)))
@@ -311,3 +324,23 @@ Create an R markdown document that performs the following:
 3. What do the parameters for for each of the selected features tell you?
 4. Predict the sex of the penguins in the test set. Create a 
   confusion table and calculate the accuracy and discuss how well the model works.
+
+## Chapter Summary
+
+Logistic regression models the probability of a categorical outcome through a
+linear predictor and a link function. Coefficients describe changes in log
+odds, while predicted probabilities can be converted into labels using a
+decision threshold. Evaluate predictions on held-out data, and use
+regularization when many or correlated predictors make the fit unstable.
+
+## Key Terms
+
+* **Logit:** the logarithm of the odds of an event.
+* **Odds:** the probability of an event divided by the probability it does not
+  occur.
+* **Logistic function:** a transformation that maps a real-valued score to a
+  probability between 0 and 1.
+* **Odds ratio:** the multiplicative change in odds associated with a one-unit
+  predictor change, holding other terms fixed.
+* **Regularization:** a penalty on coefficient size used to improve stability
+  and reduce overfitting.

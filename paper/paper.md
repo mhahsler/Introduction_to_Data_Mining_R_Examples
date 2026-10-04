@@ -33,7 +33,7 @@ The materials have been made publicly available at: <https://github.com/mhahsler
 The textbook _Introduction to Data Mining_ [@Tan2018] has been one of the most
 popular choices to learn and teach data mining concepts.  Several
 chapters have been made available for free by the authors on the
-[books's website](https://www-users.cse.umn.edu/~kumar001/dmbook/index.php).
+[book's website](https://www-users.cse.umn.edu/~kumar001/dmbook/index.php).
 One of the authors also provides Python Jupyter notebooks with examples, but
 complete R code examples were still needed. Given the R community's interest in
 data analysis, data science, and machine learning, and the broad support of R
@@ -52,10 +52,10 @@ learning objectives are to:
 * perform association analysis, and
 * perform cluster analysis.
 
-The resource presents self-contained and annotated R code examples that work
-with small datasets carefully chosen to show the learner many important aspects
-of data mining. The learner can copy and paste the examples into a new R
-markdown notebook to experiment with the code and the provided example data.
+The resource presents self-contained, annotated R code examples that use
+small datasets carefully chosen to demonstrate important aspects of data
+mining. Learners can copy and paste the examples into a new R Markdown
+notebook to experiment with the code and the provided example data.
 Small exercises encourage the learner to modify the code by applying it to a
 different dataset. This learning-by-doing approach has worked well in
 preparing students to work with more complex real-world datasets by initially
@@ -92,8 +92,8 @@ be studied by the students outside of class or used by the instructor in class.
 
 Designing assignments and assessments is left to the instructor since they
 depend on the level and field of study of the students (e.g., computer science,
-statistic, economics, or business).  For example, for undergraduates, we
-suggest to ask the students to apply the data mining techniques to a small,
+statistics, economics, or business). For example, for undergraduates, we
+suggest asking students to apply data mining techniques to a small,
 clean instructional data set (sample exercises are available in the resource at
 the end of each chapter), while graduate students may be asked to analyze
 larger real-world data sets, which may require a significant amount of cleaning
@@ -105,12 +105,12 @@ Since starting to teach data mining with R in the Spring of 2013, I have been
 developing the Companion for Introduction to Data Mining resource mainly based
 on caret [@caret2008], and a set of packages developed with students to better
 support different data mining tasks (e.g., arules [@arules2005], seriation
-[@seriation2008] arulesViz [@arulesViz2017], and dbscan [@dbscan2019]).  The
+[@seriation2008], arulesViz [@arulesViz2017], and dbscan [@dbscan2019]). The
 resource grew from a collection of short, unconnected R scripts to a complete
 set of documented code examples that walk the learner step-by-step through how
 to implement data mining methods, and how to interpret the results.  It went
 through an update to incorporate the popular tidyverse package collection
-[@tidyverse2019] and a transition from the 1st edition of the  Introduction to
+[@tidyverse2019] and a transition from the first edition of the _Introduction to
 Data Mining textbook to the second.
 
 The companion resource has been used successfully in the department of Computer

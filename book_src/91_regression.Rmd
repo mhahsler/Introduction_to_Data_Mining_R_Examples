@@ -15,13 +15,26 @@ and multiple linear regression. In addition,
 alternative models like regression trees and regularized regression
 are discussed.
 
+## Learning Objectives
+
+After this chapter, you should be able to:
+
+* fit and interpret a multiple linear regression model;
+* compare nested models and assess interactions and categorical predictors;
+* generate predictions and explain their uncertainty and limitations; and
+* compare linear regression with tree-based and regularized alternatives.
+
+## Prerequisites
+
+Read [Classification: Basic Concepts] for the train/test distinction. Basic
+knowledge of descriptive statistics, correlation, and algebra is assumed.
+
 ### Packages Used in this Chapter {.unnumbered}
 
 ```{r setup_linear_regression}
 pkgs <- c('lars', 'rpart', 'rpart.plot', 'nnet')
   
-pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
-if(length(pkgs_install)) install.packages(pkgs_install)
+pak::pkg_install(pkgs)
 ```
 
 ```{r setup_linear_regression2, include=FALSE}
@@ -153,7 +166,7 @@ The summary shows:
 Plotting the model produces diagnostic plots (see `plot.lm()`). For example,
 to check that the error term has a mean of 0 and is homoscedastic, 
 the residual vs. predicted value scatter plot 
-should have a red line that stays clode to 0 and 
+should have a red line that stays close to 0 and
 not look like a funnel where they are increasing when the fitted values increase.
 To check if the residuals are approximately normally distributed,
 the Q-Q plot should be close to the straight diagonal line.
@@ -548,3 +561,23 @@ Create an R markdown document that performs the following:
 6. Create a regression tree. Look at the tree and explain what it does. 
   Then use the regression tree to predict the weight for the above penguin. 
 
+## Chapter Summary
+
+Regression predicts a numeric response from one or more features. Linear models
+provide interpretable coefficients and can incorporate categorical predictors
+and interactions. Compare candidate models carefully, check their assumptions,
+and evaluate predictions on data not used to fit or select the model.
+Regression trees and regularization offer alternatives when a simple linear
+model is not adequate.
+
+## Key Terms
+
+* **Response:** the numeric outcome a regression model predicts.
+* **Coefficient:** the estimated change in response associated with a predictor,
+  holding other model terms fixed.
+* **Interaction:** a model term allowing the effect of one predictor to depend
+  on another predictor.
+* **Residual:** the difference between an observed response and its fitted
+  value.
+* **Regularization:** a method that constrains model coefficients to reduce
+  overfitting.

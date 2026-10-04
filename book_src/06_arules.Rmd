@@ -5,13 +5,25 @@ First, we look at how categorical and continuous attributes are converted
 into items. The we look at integrating item hierarchies into the analysis.
 Finally, sequence pattern mining is introduced.
 
+## Learning Objectives
+
+After this chapter, you should be able to:
+
+* encode categorical and continuous attributes as transaction items;
+* use a concept hierarchy to analyze patterns at multiple levels; and
+* explain how sequential patterns represent ordered events over time.
+
+## Prerequisites
+
+Read [Association Analysis: Basic Concepts]. Familiarity with transactions,
+frequent itemsets, support, and confidence is assumed.
+
 ### Packages Used in this Chapter {.unnumbered}
 
 ```{r setup_06}
 pkgs <- c("arules", "arulesSequences", "tidyverse")
 
-pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
-if(length(pkgs_install)) install.packages(pkgs_install)
+pak::pkg_install(pkgs)
 ```
 
 ```{r setup_06-2, include=FALSE}
@@ -251,3 +263,22 @@ rules |> inspect()
 ```
 
 The usual measures of confidence and lift are used.
+
+## Chapter Summary
+
+Advanced association analysis extends transaction mining to categorical and
+continuous attributes, hierarchical item categories, and ordered sequences.
+Encoding and aggregation choices affect which patterns can be discovered.
+Sequence mining also accounts for event order and may constrain gaps or time
+windows.
+
+## Key Terms
+
+* **Concept hierarchy:** a tree or ordered structure that groups items at
+  different levels of detail.
+* **Discretization:** mapping continuous values into categorical intervals
+  before transaction mining.
+* **Sequence:** an ordered list of events associated with an entity.
+* **Sequential pattern:** a recurring ordered pattern of events or itemsets.
+* **Gap constraint:** a limit on the space or time allowed between matched
+  events in a sequence.

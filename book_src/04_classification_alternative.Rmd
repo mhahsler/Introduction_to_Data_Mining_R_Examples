@@ -12,6 +12,20 @@ to deal with it. In addition, this chapter compares visually the
 decision boundaries used by different algorithms. This will provide a 
 better understanding of the model bias that different algorithms have.
 
+## Learning Objectives
+
+After this chapter, you should be able to:
+
+* describe the basic behavior of several common classification algorithms;
+* compare models using a baseline and a consistent evaluation procedure;
+* explain how class imbalance affects predictions and metrics; and
+* compare decision boundaries and adjust a classifier's decision threshold.
+
+## Prerequisites
+
+Read [Classification: Basic Concepts]. Familiarity with model training,
+cross-validation, confusion matrices, and probability is assumed.
+
 ### Packages Used in this Chapter {.unnumbered}
 
 ```{r setup_04}
@@ -20,8 +34,7 @@ pkgs <- c("basemodels", "C50", "caret", "e1071", "klaR",
           "randomForest", "rpart", "RWeka", "scales", "tidyverse", 
           "xgboost", "sampling")
 
-pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
-if(length(pkgs_install)) install.packages(pkgs_install)
+pak::pkg_install(pkgs)
 ```
 
 ```{r setup_04-2, include=FALSE}
@@ -1285,4 +1298,21 @@ Create a R markdown file with the code and do the following below.
   performs the best? Does it perform significantly better than the other 
   models?
 
+## Chapter Summary
 
+Different classifiers make different assumptions and produce different
+decision boundaries. Compare them against a simple baseline using the same
+training and evaluation splits. With imbalanced classes, accuracy alone can be
+misleading; resampling, costs, and probability thresholds change the balance
+between detecting positives and avoiding false alarms.
+
+## Key Terms
+
+* **Baseline classifier:** a simple reference model used to contextualize
+  performance.
+* **Class imbalance:** a large difference in the number of examples per class.
+* **Decision boundary:** the feature-space boundary separating predicted
+  classes.
+* **Sensitivity:** the fraction of actual positive cases correctly identified.
+* **Threshold:** a probability cutoff used to turn predicted probabilities
+  into class labels.

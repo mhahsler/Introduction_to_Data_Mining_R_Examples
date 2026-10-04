@@ -9,6 +9,21 @@ editor_options:
 This chapter introduces decision trees for classification and discusses
 how models are built and evaluated. 
 
+## Learning Objectives
+
+After this chapter, you should be able to:
+
+* train and interpret a decision tree classifier;
+* distinguish training, validation, and test data;
+* tune model hyperparameters without using the test set; and
+* evaluate classification performance with a confusion matrix and suitable
+  metrics.
+
+## Prerequisites
+
+Read [Introduction] and [Data]. Basic familiarity with R formulas, factors,
+probability, and summary statistics is assumed.
+
 The corresponding chapter of 
 the data mining textbook is available online: 
 [Chapter 3: Classification: Basic Concepts and Techniques.](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/ch3_classification.pdf)
@@ -20,8 +35,7 @@ pkgs <- c("basemodels", "caret", "FSelector", "lattice", "mlbench",
           "palmerpenguins", "party", "pROC", "rpart", 
           "rpart.plot", "tidyverse")
 
-pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
-if(length(pkgs_install)) install.packages(pkgs_install)
+pak::pkg_install(pkgs)
 ```
 
 The packages used for this chapter are: 
@@ -401,12 +415,12 @@ Now we can train on the `Zoo_train` set and get the generalization error on the
 
 ### Cross-Validation Methods
 
-There are several cross-validation methods that can use the available datsa more efficiently 
-then the holdout method.
+There are several cross-validation methods that can use the available data more efficiently
+than the holdout method.
 The most popular method is k-fold cross-validation which splits the data randomly into $k$ folds. It then
 holds one fold back for testing and trains on the other $k-1$ folds. This is 
 done with each fold and the resulting statistic (e.g., accuracy) is averaged.
-This method uses the data more efficiently then the holdout method.
+This method uses the data more efficiently than the holdout method.
 
 Cross validation can be directly used in `train()` using 
 `trControl = trainControl(method = "cv", number = 10)`.
@@ -880,3 +894,20 @@ model was chosen.
 5. Calculate the variable importance from the fitted model. What variables are
 the most important? What variables do not matter?
 6. Use the test set to evaluate the generalization error and accuracy.
+
+## Chapter Summary
+
+Classification learns a mapping from features to class labels. Decision trees
+provide an interpretable starting point, but can overfit. Use training data to
+fit models, validation or cross-validation to select settings, and a held-out
+test set for a final estimate of generalization. Match evaluation metrics to
+the problem, especially when classes are imbalanced.
+
+## Key Terms
+
+* **Classifier:** a model that predicts a categorical class label.
+* **Resubstitution error:** error measured on the same data used to fit a model.
+* **Cross-validation:** repeated fitting and validation across data folds.
+* **Hyperparameter:** a user-chosen setting that controls how a learning
+  algorithm fits a model.
+* **Generalization error:** expected prediction error on new, unseen data.

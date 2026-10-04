@@ -14,6 +14,21 @@ and how to measure similarities between objects and features.
 After this chapter, you can read Appendix A [Data Exploration and Visualization] 
 to learn more about data exploration and visualization in R.
 
+## Learning Objectives
+
+After this chapter, you should be able to:
+
+* distinguish common attribute types and measurement scales;
+* identify missing values, noise, outliers, and other data quality issues;
+* apply sampling, dimensionality reduction, discretization, and scaling; and
+* select an appropriate similarity or distance measure for a dataset.
+
+## Prerequisites
+
+Read [Introduction] for basic R and tidyverse operations. Familiarity with
+descriptive statistics and vectors or matrices will help with the preprocessing
+and distance examples.
+
 ### Packages Used in this Chapter {.unnumbered}
 
 ```{r setup_02}
@@ -21,8 +36,7 @@ pkgs <- c("arules", "caret", "factoextra", "GGally",
           "palmerpenguins", "plotly", 
           "proxy", "Rtsne", "tidyverse")
 
-pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
-if(length(pkgs_install)) install.packages(pkgs_install)
+pak::pkg_install(pkgs)
 ```
 
 The packages used for this chapter are: 
@@ -170,7 +184,7 @@ The plot tries to pick a good number of bins for the histogram
 unimodal or highly skewed. Also, we can see if the different groups are overlapping 
 or separable for each feature. For example, the three distributions for `Sepal.Width`
 are almost identical meaning that it is hard to distinguish between 
-the different species using this feature alone. `Petal.Lenght` and `Petal.Width`
+the different species using this feature alone. `Petal.Length` and `Petal.Width`
 are much better.
 
 * The lower-left triangle panels contain scatterplots for all pairs features. These 
@@ -673,9 +687,9 @@ the distance from A to B is the same as the distance from B to A. R
 therefore stores only a triangle (typically the lower triangle) of the
 distance matrix.
 
-### Minkowsky Distances
+### Minkowski Distances
 
-The [Minkowsky
+The [Minkowski
 distance](https://en.wikipedia.org/wiki/Minkowski_distance) is a family
 of distances including Euclidean and Manhattan distance. It is defined
 between two feature vectors $\mathbf{p} = (p_1, p_2, ..., p_n)$ and 
@@ -702,7 +716,7 @@ iris_sample <- iris.scaled |>
 iris_sample
 ```
 
-Different types of Minkowsky distance matrices between the first 5
+Different types of Minkowski distance matrices between the first 5
 flowers can be calculated using `dist()`.
 
 ```{r }
@@ -876,5 +890,22 @@ following questions.
 Make sure your markdown document contains now a well formatted report.
 Use the `Knit` button to create a HTML document.
 
+## Chapter Summary
+
+Data preparation starts by understanding attribute types and checking data
+quality. Sampling and transformations can prepare data for analysis, while
+dimensionality reduction and feature selection reduce its representation.
+Scaling and an appropriate distance measure matter whenever methods compare
+observations by their features.
+
+## Key Terms
+
+* **Attribute:** a variable that describes an object or observation.
+* **Measurement scale:** the type of information a variable encodes, such as
+  nominal, ordinal, interval, or ratio.
+* **Discretization:** converting a continuous variable into intervals or bins.
+* **Standardization:** transforming values to a common scale, often to mean 0
+  and standard deviation 1.
+* **Dissimilarity:** a numerical measure of how different two observations are.
 
 

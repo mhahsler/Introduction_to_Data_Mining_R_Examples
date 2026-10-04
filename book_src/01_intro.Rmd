@@ -50,21 +50,40 @@ familiar with the basics of R, how to run R code, and install packages.
 The rest of this chapter will provide an overview and point you to where 
 you can learn more about R and the used packages.
 
+## Learning Objectives
+
+After this chapter, you should be able to:
+
+* use core R objects and operations to inspect and transform data;
+* use tibbles and common `tidyverse` verbs for basic data manipulation; and
+* create a simple visualization with `ggplot2` and explain the role of its layers.
+
+## Prerequisites
+
+No prior R experience is required. Basic familiarity with files, folders, and
+using a computer is helpful. Install R before working through the code examples.
+
 ## Used Software
 
 To use this book, you need to have the current version of
-[R](https://cran.r-project.org/) and [RStudio
+[R](https://cran.r-project.org/) (at least R 4.4+) and [RStudio
 Desktop](https://posit.co/products/open-source/rstudio/) installed.
 
-Each book chapter will use a set of packages that must be installed. The
+Each book chapter will use a set of packages that must be installed.
+We use `pak` as the package manager which needs to be installed via:
+
+```{r setup_00, message=FALSE}
+install.packages("pak", quite = TRUE)
+```
+
+The
 installation code can be found at the beginning of each chapter. Here is
 the code to install the packages used in this chapter:
 
 ```{r setup_01, message=FALSE}
 pkgs <- c('tidyverse')
 
-pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
-if(length(pkgs_install)) install.packages(pkgs_install)
+pak::pkg_install(pkgs)
 ```
 
 ```{r setup_01-2, include=FALSE}
@@ -548,3 +567,19 @@ Note that `geom_bar` by default uses the `stat_count` function to
 aggregate data by counting, but we just want to visualize the value in
 the tibble, so we specify the identity function instead.
 
+## Chapter Summary
+
+R represents data with objects such as vectors, lists, matrices, and data
+frames. Vectorized operations and subsetting help transform those objects.
+Tibbles and `dplyr` provide a consistent way to manipulate tabular data, while
+`ggplot2` builds visualizations by combining data, mappings, and geometric
+layers.
+
+## Key Terms
+
+* **Vector:** a one-dimensional collection of values of a common type.
+* **Data frame / tibble:** a table whose columns are vectors and whose rows
+  represent observations.
+* **Pipe:** an operator that passes the result of one expression into the next.
+* **Aesthetic mapping:** a connection between a variable and a visual property
+  such as position, color, or size in `ggplot2`.

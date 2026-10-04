@@ -71,7 +71,7 @@ the beginning of each chapter.
 The textbook Introduction to Data Mining has been one of the most
 popular choices for learning and teaching data mining concepts.  Some of the most
 important chapters have been made available for free by the authors on the
-[books's website](https://www-users.cse.umn.edu/~kumar001/dmbook/index.php).
+[book's website](https://www-users.cse.umn.edu/~kumar001/dmbook/index.php).
 One of the authors also provides Python Jupyter notebooks with examples, but
 complete R code examples were still needed. Given the R community's interest in
 data analysis, data science, and machine learning, and the broad support of R
@@ -115,4 +115,3 @@ You can also report an issue or submit a pull request on the
 
 ![Creative Commons Attribution 4.0 International License](https://i.creativecommons.org/l/by/4.0/88x31.png)
  
-

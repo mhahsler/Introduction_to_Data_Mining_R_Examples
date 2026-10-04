@@ -11,6 +11,20 @@ and DBSCAN. We will discuss how to choose the number of clusters and how
 to evaluate the quality clusterings. In addition, we will introduce more 
 clustering algorithms and how clustering is influenced by outliers.
 
+## Learning Objectives
+
+After this chapter, you should be able to:
+
+* prepare and scale data for distance-based clustering;
+* apply k-means, hierarchical clustering, and DBSCAN;
+* assess cluster structure and choose algorithm parameters; and
+* explain how outliers and feature scaling affect clustering results.
+
+## Prerequisites
+
+Read [Data] and [Data Exploration and Visualization]. Familiarity with
+similarity measures, scatterplots, and basic descriptive statistics is assumed.
+
 The corresponding chapter of 
 the data mining textbook is available online: 
 [Chapter 7: Cluster Analysis: Basic Concepts and Algorithms.](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/ch7_clustering.pdf)
@@ -22,8 +36,7 @@ pkgs <- c("cluster", "dbscan", "e1071", "factoextra", "fpc",
           "GGally", "kernlab", "mclust", "mlbench", "scatterpie", 
           "seriation", "tidyverse")
   
-pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
-if(length(pkgs_install)) install.packages(pkgs_install)
+pak::pkg_install(pkgs)
 ```
 
 ```{r setup_07-2, include=FALSE}
@@ -41,7 +54,7 @@ The packages used for this chapter are:
 [Cluster analysis or clustering](https://en.wikipedia.org/wiki/Cluster_analysis) 
 is the task of grouping a set of objects in such a way that objects in the same group (called a cluster) are more similar (in some sense) to each other than to those in other groups (clusters).
 
-Clustering is also called unsupervised learning, because it tries to directly learns the structure of the data
+Clustering is also called unsupervised learning because it tries to learn the structure of the data directly
 and does not rely on the availability of a correct answer or class label as supervised learning does.
 Clustering is often used for exploratory analysis or to preprocess data by grouping.   
 
@@ -62,7 +75,7 @@ included in the R package **cluster**.
 data(ruspini, package = "cluster")
 ```
 
-The Ruspini data set, consisting of 75 points in four groups that is
+The Ruspini data set consists of 75 points in four groups and is
 popular for illustrating clustering techniques. It is a very simple data
 set with well separated clusters. The original dataset has the points
 ordered by group. We can shuffle the data (rows) using `sample_frac`
@@ -83,15 +96,15 @@ summary(ruspini)
 ```
 
 For most clustering algorithms it is necessary to handle missing values
-and outliers (e.g., remove the observations). For details see Section
+and outliers (e.g., by removing observations). For details, see Section
 "Outlier removal" below. This data set has not missing values or strong
-outlier and looks like it has some very clear groups.i
+outliers, and it appears to have some very clear groups.
 
 ### Scale data
 
 Clustering algorithms use distances and the variables with the largest
 number range will dominate distance calculation. The summary above shows
-that this is not an issue for the Ruspini dataset with both, x and y,
+that this is not an issue for the Ruspini dataset, with both x and y
 being roughly between 0 and 150. Most data analysts will still scale
 each column in the data to zero mean and unit standard deviation
 ([z-scores](https://en.wikipedia.org/wiki/Standard_score)). 
@@ -351,7 +364,7 @@ means that the other one also has to be adjusted.
 `minPts` defines how many points are needed in the epsilon
 neighborhood to make a point a core point for a cluster. It is often chosen
 as a smoothing parameter, where larger values smooth the density estimation more 
-but also ignore smaller structures with less then minPts. 
+but also ignore smaller structures with fewer than `minPts`.
 
 `eps` is the radius of the epsilon neighborhood around a point in which the
 number of points is counted.
@@ -619,7 +632,7 @@ presents average distance values above the diagonal to make the structure betwee
 easier to evaluate. Above, we see a clear structure with
 the four clusters.
 
-Next, we look at two examples wherethe number of clusters
+Next, we look at two examples where the number of clusters
 was misspecified.
 
 ```{r }
@@ -634,7 +647,7 @@ shows two separated triangles for the largest cluster
 indicating that it contains two separate structures which should be their own clusters. For the example with
 9 clusters, the plot tries to rearrange the clusters into 
 four larger blocks indicating that the number of clusters 
-shoulsd be 4.
+should be 4.
 
 
 #### Dunn Index
@@ -1239,8 +1252,8 @@ library("GGally")
 ggpairs(ruspini_outlier, progress = FALSE)
 ```
 
-The tope left panel in the plot shows that therw is an outlier in the x axis.
-The x value of regular points is way less then 2500 and we can use this information 
+The top-left panel in the plot shows an outlier on the x-axis.
+The x values of regular points are much less than 2500, and we can use this information
 to identify outliers. 
 We can find the row number by  
 
@@ -1355,5 +1368,21 @@ Create a R markdown file with the code and discussion for the following below.
   Create a dendrogram and discuss what it means.
 5. Apply DBSCAN. How do you choose the parameters? How well does it work? 
 
+## Chapter Summary
 
+Clustering groups observations according to a chosen representation and
+similarity measure. K-means, hierarchical clustering, and DBSCAN identify
+structure in different ways and require different choices. Scale features when
+their ranges would otherwise dominate distances, assess results with visual and
+quantitative methods, and consider whether the data has meaningful cluster
+tendency before interpreting groups.
 
+## Key Terms
+
+* **Centroid:** the mean feature vector of a cluster, used by k-means.
+* **Dendrogram:** a tree visualization of hierarchical merges or splits.
+* **Density-based clustering:** grouping dense regions while labeling sparse
+  observations as noise, as in DBSCAN.
+* **Silhouette width:** a measure comparing an observation's cohesion with its
+  cluster to its separation from other clusters.
+* **Cluster tendency:** evidence that data contains non-random group structure.

@@ -10,6 +10,21 @@ This chapter introduces association rules mining using the APRIORI
 algorithm. In addition, analyzing sets of association rules 
 using visualization techniques is demonstrated. 
 
+## Learning Objectives
+
+After this chapter, you should be able to:
+
+* represent categorical or binary data as transactions;
+* mine frequent itemsets and generate association rules;
+* interpret support, confidence, and lift; and
+* inspect and visualize rules while recognizing redundant results.
+
+## Prerequisites
+
+Read [Data] and [Data Exploration and Visualization]. Basic familiarity with
+data frames, factors, and proportions is helpful. No prior association mining
+experience is required.
+
 The corresponding chapter of 
 the data mining textbook is available online: 
 [Chapter 5: Association Analysis: Basic Concepts and Algorithms.](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/ch5_association_analysis.pdf)
@@ -20,8 +35,7 @@ the data mining textbook is available online:
 pkgs <- c("arules", "arulesViz", "mlbench", 
           "palmerpenguins", "tidyverse")
 
-pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
-if(length(pkgs_install)) install.packages(pkgs_install)
+pak::pkg_install(pkgs)
 ```
 
 ```{r setup_05-2, include=FALSE}
@@ -735,3 +749,20 @@ created for the transaction data set.
 2. Use the _Graph_ visualization. Use select by id to highlight different species and
   different islands and then hover over some of the rules. What do you see?
 
+## Chapter Summary
+
+Association analysis converts observations into transactions, finds frequent
+itemsets, and derives rules that describe co-occurrence. Support measures
+frequency, confidence measures conditional frequency, and lift compares that
+frequency with what independence would suggest. Rule counts can grow quickly,
+so filtering, inspecting redundancy, and visualizing patterns are important.
+
+## Key Terms
+
+* **Transaction:** a set of items associated with one observation.
+* **Frequent itemset:** a set of items whose support meets a chosen threshold.
+* **Support:** the proportion of transactions containing an itemset.
+* **Confidence:** the proportion of transactions containing the rule's premise
+  that also contain its conclusion.
+* **Lift:** confidence divided by the conclusion's support; values above 1
+  indicate positive association relative to independence.

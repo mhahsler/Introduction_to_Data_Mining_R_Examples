@@ -13,6 +13,19 @@ data exploration. For space reasons, this chapter was moved from the
 printed textbook to this 
 [Data Exploration Web Chapter.](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM_chapters/data_exploration_1st_edition.pdf)
 
+## Learning Objectives
+
+After this chapter, you should be able to:
+
+* summarize numeric and categorical variables, including grouped summaries;
+* examine distributions, quantiles, and relationships between variables; and
+* choose and create visualizations that reveal patterns in a dataset.
+
+## Prerequisites
+
+Read [Introduction] and [Data]. Basic familiarity with data frames, variable
+types, and tidyverse verbs is assumed.
+
 
 ### Packages Used in this Chapter {.unnumbered}
 
@@ -20,8 +33,7 @@ printed textbook to this
 pkgs <- c("arules", "GGally", 
           "ggcorrplot", "hexbin", "palmerpenguins", "plotly", "seriation", "tidyverse")
 
-pkgs_install <- pkgs[!(pkgs %in% installed.packages()[,"Package"])]
-if(length(pkgs_install)) install.packages(pkgs_install)
+pak::pkg_install(pkgs)
 ```
 
 The packages used for this chapter are: 
@@ -849,5 +861,22 @@ following questions.
 Make sure your markdown document contains now a well formatted report.
 Use the `Knit` button to create a HTML document.
 
+## Chapter Summary
 
+Exploratory analysis combines numerical summaries with visual inspection.
+Grouped calculations describe differences between subsets, while distribution
+plots, scatterplots, and correlation displays reveal shape and relationships.
+Choose visual encodings that match the variable types and use plots to ask
+questions rather than treating them as proof of a conclusion.
+
+## Key Terms
+
+* **Quantile:** a value below which a specified fraction of observations falls.
+* **Correlation:** a measure of association between two variables; it does not
+  by itself establish causation.
+* **Kernel density estimate:** a smoothed estimate of a continuous
+  distribution.
+* **Facet:** a set of small plots split by the values of one or more variables.
+* **Correlation matrix:** a table of pairwise correlation values, often shown
+  with a color scale.
 
