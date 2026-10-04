@@ -889,6 +889,12 @@ model was chosen.
 the most important? What variables do not matter?
 6. Use the test set to evaluate the generalization error and accuracy.
 
+**A good answer should** describe the split and missing-value handling, and
+show that tuning was done using training data only. Explain the selected
+`minsplit`, the tree's main splits, and what variable importance can and
+cannot tell you. Report test-set results with enough detail to judge errors
+across species, and distinguish this final evaluation from model selection.
+
 ## Chapter Summary
 
 Classification learns a mapping from features to class labels. Decision trees

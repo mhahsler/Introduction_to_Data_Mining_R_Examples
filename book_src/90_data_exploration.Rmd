@@ -861,6 +861,13 @@ following questions.
 Make sure your R Markdown document contains a well-formatted report.
 Use the `Knit` button to create a HTML document.
 
+**A good answer should** report meaningful group differences and describe
+distribution shape, spread, and notable outliers in the plots. Label plots
+clearly, explain which relationships the scatterplots and reordered
+correlation display suggest, and distinguish correlation from causation.
+Include a readable knitted report that connects the figures to the written
+interpretation.
+
 ## Chapter Summary
 
 Exploratory analysis combines numerical summaries with visual inspection.

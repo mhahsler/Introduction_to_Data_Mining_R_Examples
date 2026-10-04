@@ -1369,6 +1369,13 @@ Create a R markdown file with the code and discussion for the following below.
   Create a dendrogram and discuss what it means.
 5. Apply DBSCAN. How do you choose the parameters? How well does it work? 
 
+**A good answer should** justify the features, missing-value treatment,
+scaling, and distance measure. Explain how the number of k-means clusters and
+DBSCAN parameters were chosen, then compare the scaled and unscaled results
+with visual or quantitative evidence. Describe what the dendrogram shows and
+how DBSCAN assigns noise points; interpret any clusters cautiously, since
+different choices can reveal different groupings.
+
 ## Chapter Summary
 
 Clustering groups observations according to a chosen representation and

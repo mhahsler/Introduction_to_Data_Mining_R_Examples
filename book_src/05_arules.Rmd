@@ -748,6 +748,13 @@ created for the transaction data set.
 2. Use the _Graph_ visualization. Use select by id to highlight different species and
   different islands and then hover over some of the rules. What do you see?
 
+**A good answer should** explain what the conversion warnings indicate and
+describe the first transactions using the actual items shown. For the rule
+with the highest lift, state the rule and interpret its LHS, RHS, support,
+confidence, and lift in the context of the data. Summarize patterns observed
+in the graph when highlighting species and islands, noting that visual
+patterns describe associations rather than causes.
+
 ## Chapter Summary
 
 Association analysis converts observations into transactions, finds frequent

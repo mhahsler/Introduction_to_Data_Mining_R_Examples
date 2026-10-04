@@ -320,6 +320,13 @@ Create an R markdown document that performs the following:
 4. Predict the sex of the penguins in the test set. Create a 
   confusion table and calculate the accuracy and discuss how well the model works.
 
+**A good answer should** state how the training and test sets were formed and
+keep variable selection within the training data. Identify the selected
+predictors and interpret their coefficients with the outcome coding and
+reference levels made clear. Use the test confusion table to discuss both
+correct and incorrect predictions; interpret accuracy in light of the class
+distribution.
+
 ## Chapter Summary
 
 Logistic regression models the probability of a categorical outcome through a

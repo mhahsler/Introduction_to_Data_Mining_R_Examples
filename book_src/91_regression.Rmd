@@ -566,6 +566,13 @@ Create an R markdown document that performs the following:
 6. Create a regression tree. Look at the tree and explain what it does. 
   Then use the regression tree to predict the weight for the above penguin. 
 
+**A good answer should** explain the response and predictors, interpret
+coefficients with their units and reference levels, and describe what
+R-squared and the significance results do and do not establish. Explain the
+stepwise selection process, report the prediction for the specified penguin,
+and describe the tree's splits and prediction. Where possible, assess
+prediction quality on data not used to fit or select the model.
+
 ## Chapter Summary
 
 Regression predicts a numeric response from one or more features. Linear models

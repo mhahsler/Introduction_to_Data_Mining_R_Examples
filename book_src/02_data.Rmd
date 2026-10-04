@@ -890,6 +890,12 @@ following questions.
 Make sure your markdown document contains now a well formatted report.
 Use the `Knit` button to create a HTML document.
 
+**A good answer should** identify each variable's measurement scale with a
+reason, quantify missingness, and interpret summary statistics in context.
+For the similarity calculation, explain the chosen measure, whether scaling
+is needed, and how the mix of categorical and numeric variables affects the
+comparison. Include readable code, results, and a knitted report.
+
 ## Chapter Summary
 
 Data preparation starts by understanding attribute types and checking data
