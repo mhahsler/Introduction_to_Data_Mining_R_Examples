@@ -7,7 +7,7 @@
 '`
 
 
-```{r include=FALSE}
+```{r ch99_references_001, include=FALSE}
 knitr::write_bib(c(
   .packages(), unique(all_pkgs)), 'packages.bib')
 ```

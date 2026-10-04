@@ -4,6 +4,12 @@ editor_options:
     wrap: 72
 ---
 
+```{r ch04_clean_R, include=FALSE}
+source("clean_R.R")
+source("_common.R")
+source("format_pkgs.R")
+```
+
 # Classification: Alternative Techniques
 
 This chapter introduces different types of classifiers. It also 
@@ -28,18 +34,15 @@ cross-validation, confusion matrices, and probability is assumed.
 
 ### Packages Used in this Chapter {.unnumbered}
 
-```{r setup_04}
+```{r ch04_packages_used_in_this_ch_001, results='hide', message=FALSE}
 pkgs <- c("basemodels", "C50", "caret", "e1071", "klaR", 
           "lattice", "MASS", "mlbench", "nnet", "palmerpenguins", 
-          "randomForest", "rpart", "RWeka", "scales", "tidyverse", 
-          "xgboost")
+          "randomForest", "rpart", "RWeka", "scales", "tidyverse")
 
 pak::pkg_install(pkgs)
 ```
 
-```{r setup_04-2, include=FALSE}
-source("_common.R")
-source("format_pkgs.R")
+```{r ch04_packages_used_in_this_ch_002, include=FALSE}
 all_pkgs <- union(all_pkgs, pkgs)
 set.seed(1234)
 ```
@@ -66,7 +69,7 @@ catsize, type). We convert the data frame into a tidyverse tibble
 (optional).
 
 
-```{r message=FALSE, warning=FALSE}
+```{r ch04_set_up_the_training_and_003, message=FALSE, warning=FALSE}
 library(tidyverse)
 data(Zoo, package = "mlbench")
 
@@ -79,7 +82,7 @@ model fitting, and tuning, while specialist packages provide the algorithms.
 This book uses the `caret` interface; it does not implement the same examples
 with `tidymodels`.
 
-```{r message=FALSE, warning=FALSE}
+```{r ch04_set_up_the_training_and_004, message=FALSE, warning=FALSE}
 library(caret)
 ```
 
@@ -88,7 +91,7 @@ commented out here because it does not work with rJava used by the RWeka-based
 classifiers
 below.
 
-```{r }
+```{r ch04_set_up_the_training_and_005}
 ##library(doMC, quietly = TRUE)
 ##registerDoMC(cores = 4)
 ##getDoParWorkers()
@@ -98,7 +101,7 @@ Test data is not used in the model building process and needs to be set
 aside purely for testing the model after it is completely built. Here I
 use 80% for training.
 
-```{r }
+```{r ch04_set_up_the_training_and_006}
 inTrain <- createDataPartition(y = Zoo$type, p = .8)[[1]]
 Zoo_train <- Zoo |> slice(inTrain)
 Zoo_test <- Zoo |> slice(-inTrain)
@@ -117,7 +120,7 @@ understand error message.
 
 ## Rule-based classifier: PART
 
-```{r }
+```{r ch04_rule_based_classifier_pa_007}
 rulesFit <- Zoo_train |> train(type ~ .,
   method = "PART",
   data = _,
@@ -127,7 +130,7 @@ rulesFit
 ```
 The model selection results are shown in the table. This is the selected model:
 
-```{r }
+```{r ch04_rule_based_classifier_pa_008}
 rulesFit$finalModel
 ```
 
@@ -147,7 +150,7 @@ preprocessing in `train` using the parameter `preProcess = "scale"`.
 
 The $k$ value is typically choose as an odd number so we get a clear majority.
 
-```{r }
+```{r ch04_nearest_neighbor_classif_009}
 knnFit <- Zoo_train |> train(type ~ .,
   method = "knn",
   data = _,
@@ -157,7 +160,7 @@ knnFit <- Zoo_train |> train(type ~ .,
 knnFit
 ```
 
-```{r }
+```{r ch04_nearest_neighbor_classif_010}
 knnFit$finalModel
 ```
 
@@ -170,7 +173,7 @@ keep the complete dataset. This is why the final model just gives us a summary s
 Caret's train formula interface translates logicals and factors into dummy 
 variables which the classifier interprets as numbers so it would used a [Gaussian naive Bayes](https://en.wikipedia.org/wiki/Naive_Bayes_classifier#Gaussian_naive_Bayes) estimation. To avoid this, I directly specify `x` and `y`.
 
-```{r }
+```{r ch04_naive_bayes_classifier_011}
 NBFit <- train(x = as.data.frame(Zoo_train[, -ncol(Zoo_train)]), 
                y = pull(Zoo_train, "type"),
                method = "nb",
@@ -181,7 +184,7 @@ NBFit
 ```
 
 The final model contains the prior probabilities for each class.
-```{r }
+```{r ch04_naive_bayes_classifier_012}
 NBFit$finalModel$apriori
 ```
 
@@ -191,7 +194,7 @@ the condition probability
 $P(\text{hair} = \text{TRUE} | \text{class} = \text{mammal})$ is 
 `r NBFit$finalModel$tables$hair["mammal", "TRUE"]`.
 
-```{r }
+```{r ch04_naive_bayes_classifier_013}
 NBFit$finalModel$tables[1:3]
 ```
 
@@ -216,7 +219,7 @@ also called a log-linear model
 which is an extension of logistic regresses for multi-class problems.
 Caret uses `nnet::multinom()` which implements penalized multinomial regression.
 
-```{r }
+```{r ch04_logistic_regression_logr_014}
 logRegFit <- Zoo_train |> train(type ~ .,
   method = "multinom",
   data = _,
@@ -225,7 +228,7 @@ logRegFit <- Zoo_train |> train(type ~ .,
 logRegFit
 ```
 
-```{r }
+```{r ch04_logistic_regression_logr_015}
 logRegFit$finalModel
 ```
 The coefficients are log odds ratios
@@ -241,7 +244,7 @@ bird but `feathers=TRUE` has a large positive coefficient.
 Standard networks have an input layer, an output layer and in between
 a single hidden layer.
 
-```{r }
+```{r ch04_artificial_neural_networ_016}
 nnetFit <- Zoo_train |> train(type ~ .,
   method = "nnet",
   data = _,
@@ -260,7 +263,7 @@ resulting in `r length(nnetFit$finalModel$wts)` learned weights.
 Since the model is considered a black-box model only the network architecture
 and the used variables are shown as a summary.
 
-```{r }
+```{r ch04_artificial_neural_networ_017}
 nnetFit$finalModel
 ```
 
@@ -270,7 +273,7 @@ and [Keras](https://keras3.posit.co/).
 
 ## Support Vector Machines
 
-```{r }
+```{r ch04_support_vector_machines_018}
 svmFit <- Zoo_train |> train(type ~.,
   method = "svmLinear",
   data = _,
@@ -285,7 +288,7 @@ Support vector machines can use kernels to create non-linear decision boundaries
 use kernels. The choice of kernel is typically make by experimentation.
 
 The support vectors determining the decision boundary are stored in the model.
-```{r }
+```{r ch04_support_vector_machines_019}
 svmFit$finalModel
 ```
 
@@ -296,7 +299,7 @@ popular methods.
 
 ### Random Forest
 
-```{r }
+```{r ch04_random_forest_020}
 randomForestFit <- Zoo_train |> train(type ~ .,
   method = "rf",
   data = _,
@@ -311,7 +314,7 @@ at each split. This number is a tradeoff where a larger number allows each tree
 to pick better splits, but a smaller
 number increases the independence between trees.
 
-```{r }
+```{r ch04_random_forest_021}
 randomForestFit$finalModel
 ```
 
@@ -325,44 +328,12 @@ generalization error. The model above also shows the confusion matrix based on
 the OOB error.
 
 
-### Gradient Boosted Decision Trees (xgboost)
-
-The idea of gradient boosting is to learn a base model and then to learn
-successive models to predict and correct the error of all previous models.
-Typically, tree models are used.
-
-```{r }
-xgboostFit <- Zoo_train |> train(type ~ .,
-  method = "xgbTree",
-  data = _,
-  tuneLength = 5,
-  trControl = trainControl(method = "cv"),
-  tuneGrid = expand.grid(
-    nrounds = 20,
-    max_depth = 3,
-    colsample_bytree = .6,
-    eta = 0.1,
-    gamma=0,
-    min_child_weight = 1,
-    subsample = .5
-  ))
-xgboostFit
-```
-
-The final model is a complicated set of trees, so only some summary information
-is shown.
-
-```{r }
-xgboostFit$finalModel
-```
-
-
 ## Model Comparison
 
 We first create a simple baseline model that always predicts the majority
 class mammal.
 
-```{r }
+```{r ch04_model_comparison_024}
 baselineFit <- Zoo_train |> train(type ~ .,
   method = basemodels::dummyClassifier,
   data = _,
@@ -379,7 +350,7 @@ The kappa of 0 clearly indicates that the baseline model has no power.
 We collect the performance metrics from the models trained on the same
 data.
 
-```{r }
+```{r ch04_model_comparison_025}
 resamps <- resamples(list(
   baseline = baselineFit,
   PART = rulesFit,
@@ -388,8 +359,7 @@ resamps <- resamples(list(
   logReg = logRegFit,
   ANN = nnetFit,
   SVM = svmFit,
-  RandomForest = randomForestFit,
-  XGBoost = xgboostFit
+  RandomForest = randomForestFit
     ))
 resamps
 ```
@@ -398,7 +368,7 @@ The summary statistics show performance across resamples. All methods perform
 well on this relatively simple dataset; the baseline performs poorly, as
 expected.
 
-```{r }
+```{r ch04_model_comparison_026}
 summary(resamps)
 
 library(lattice)
@@ -410,7 +380,7 @@ differences and adjusted p-values. Because resampling folds are not independent,
 use these comparisons as descriptive evidence rather than definitive tests of
 which model is best. Bonferroni correction is applied for multiple comparisons.
 
-```{r }
+```{r ch04_model_comparison_027}
 difs <- diff(resamps)
 summary(difs)
 ```
@@ -419,14 +389,14 @@ The models have similar resampling performance except for the baseline.
 We select the random forest for illustration and evaluate it once on the
 held-out test set. The test set remains the final performance assessment.
 
-```{r }
+```{r ch04_model_comparison_028}
 pr <- predict(randomForestFit, Zoo_test)
 pr
 ```
 
 Calculate the confusion matrix for the held-out test data.
 
-```{r }
+```{r ch04_model_comparison_029}
 confusionMatrix(pr, reference = Zoo_test$type)
 ```
 
@@ -441,7 +411,7 @@ cost-sensitive fitting.
 
 For the examples, we will use the Zoo dataset.
 
-```{r }
+```{r ch04_class_imbalance_030}
 library(rpart)
 library(rpart.plot)
 data(Zoo, package = "mlbench")
@@ -449,7 +419,7 @@ data(Zoo, package = "mlbench")
 
 Check the class distribution before fitting a classifier.
 
-```{r }
+```{r ch04_class_imbalance_031}
 ggplot(Zoo, aes(y = type)) + geom_bar()
 ```
 
@@ -457,7 +427,7 @@ The Zoo data contain many mammals and few amphibians and reptiles. A
 classifier that favors the majority class may therefore have poor recall for
 the rarer classes, as the simple decision tree below illustrates.
 
-```{r }
+```{r ch04_class_imbalance_032}
 tree_default <- Zoo |> 
   rpart(type ~ ., data = _)
 tree_default
@@ -475,7 +445,7 @@ classification problem.
 We set up this problem by changing the class variable to make it into a binary
 reptile/non-reptile classification problem.
 
-```{r }
+```{r ch04_class_imbalance_033}
 Zoo_reptile <- Zoo |> 
   mutate(type = factor(Zoo$type == "reptile", 
                        levels = c(FALSE, TRUE),
@@ -489,11 +459,11 @@ The class distribution shows that this classification problem is now
 highly imbalanced, with 5 reptiles and 96 non-reptiles.
 
 
-```{r }
+```{r ch04_class_imbalance_034}
 summary(Zoo_reptile)
 ```
 
-```{r }
+```{r ch04_class_imbalance_035}
 ggplot(Zoo_reptile, aes(y = type)) + geom_bar()
 ```
 
@@ -505,7 +475,7 @@ on observations not used for fitting. A 50/50 split increases the chance that
 the small test set includes reptiles. Estimates remain highly uncertain
 because there are only five reptiles in total.
 
-```{r }
+```{r ch04_class_imbalance_036}
 set.seed(1234)
 
 inTrain <- createDataPartition(y = Zoo_reptile$type, p = .5)[[1]]
@@ -515,7 +485,7 @@ testing_reptile <- Zoo_reptile |> slice(-inTrain)
 
 ### Option 1: Use the Original Class Distribution
 
-```{r }
+```{r ch04_option_1_use_the_origina_037}
 fit <- training_reptile |>
   train(type ~ .,
         data = _,
@@ -528,7 +498,7 @@ measures." means that some test folds used in hyper parameter tuning
 did not contain examples of both
 classes. This is very likely with strong class imbalance and small datasets.
 
-```{r }
+```{r ch04_option_1_use_the_origina_038}
 fit
 rpart.plot(fit$finalModel, extra = 2)
 ```
@@ -536,7 +506,7 @@ rpart.plot(fit$finalModel, extra = 2)
 The tree predicts everything as non-reptile. Have a look at the error on
 the test set.
 
-```{r }
+```{r ch04_option_1_use_the_origina_039}
 confusionMatrix(data = predict(fit, testing_reptile),
                 ref = testing_reptile$type, positive = "reptile")
 ```
@@ -560,7 +530,7 @@ and the fold used for validation. `caret` supports this through the `sampling`
 argument to `trainControl()` (see the [caret subsampling
 guide](https://topepo.github.io/caret/subsampling-for-class-imbalances.html)).
 
-```{r }
+```{r ch04_option_2_upsample_within_040}
 set.seed(1000) # for repeatability
 
 fit <- training_reptile |>
@@ -578,7 +548,7 @@ Upsampling is applied only to each analysis fold; validation folds and the
 held-out test set keep the observed class distribution. Evaluate the fitted
 model on that untouched test set:
 
-```{r }
+```{r ch04_option_2_upsample_within_041}
 confusionMatrix(data = predict(fit, testing_reptile),
                 ref = testing_reptile$type, positive = "reptile")
 ```
@@ -600,7 +570,7 @@ requires class probabilities, which we also need for the threshold example
 below. The tree is still fit using its standard splitting criterion; ROC AUC
 is the metric used to select the tuning parameter.
 
-```{r }
+```{r ch04_option_3_build_a_larger_042}
 fit <- training_reptile |> 
   train(type ~ .,
         data = _,
@@ -631,7 +601,7 @@ increasing sensitivity at the cost of specificity. The 0.01 threshold below
 is illustrative; a real threshold should be selected using validation data
 and application-specific costs.
 
-```{r }
+```{r ch04_create_a_biased_classifi_043}
 prob <- predict(fit, testing_reptile, type = "prob")
 tail(prob)
 pred <- ifelse(prob[,"reptile"] >= 0.01, "reptile", "nonreptile") |> 
@@ -657,7 +627,7 @@ performance: 0.5 corresponds to chance ranking and 1 to perfect ranking. It
 does not select an operating threshold or account for application-specific
 error costs.
 
-```{r }
+```{r ch04_plot_the_roc_curve_044}
 library("pROC")
 r <- roc(testing_reptile$type == "reptile", prob[,"reptile"])
 r
@@ -684,7 +654,7 @@ nonreptile       0         1
 reptile         100        0
 ```
 
-```{r }
+```{r ch04_option_4_use_a_cost_sens_045}
 cost <- matrix(c(
   0,   1,
   100, 0
@@ -704,7 +674,7 @@ measures"* means that some validation folds did not contain both classes.
 With only a few reptiles, this can make cross-validation metrics unstable or
 undefined.
 
-```{r }
+```{r ch04_option_4_use_a_cost_sens_046}
 fit
 
 rpart.plot(fit$finalModel, extra = 2)
@@ -740,14 +710,14 @@ at evenly spaced grid points. Note that low resolution will make
 evaluation faster but it also will make the decision boundary look like it has
 small steps even if it is a straight line.
 
-```{r message=FALSE, warning=FALSE}
+```{r ch04_comparing_decision_bound_047, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(ggplot2)
 library(scales)
 library(caret)
 ```
 
-```{r }
+```{r ch04_comparing_decision_bound_048}
 decisionplot <- function(model, data, class_var, 
   predict_type = c("class", "prob"), resolution = 3 * 72) {
   # resolution is set to 72 dpi for 3 inches wide images. 
@@ -832,7 +802,7 @@ decisionplot <- function(model, data, class_var,
 
 For easier visualization, we use two dimensions of the Iris dataset.
 
-```{r }
+```{r ch04_iris_dataset_049}
 set.seed(1000)
 data(iris)
 iris <- as_tibble(iris)
@@ -859,7 +829,7 @@ You could use `geom_jitter()` instead of `geom_point()`.
 
 We try several values for $k$.
 
-```{r }
+```{r ch04_nearest_neighbor_classif_050}
 model <- x |> caret::knn3(Species ~ ., data = _, k = 1)
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "kNN (1 neighbor)")
@@ -887,7 +857,7 @@ classifier randomly selects a class.
 
 Use a Gaussian naive Bayes classifier.
 
-```{r }
+```{r ch04_naive_bayes_classifier_051}
 model <- x |> e1071::naiveBayes(Species ~ ., data = _)
 decisionplot(model, x, class_var = "Species", 
              predict_type = c("class", "raw")) + 
@@ -900,7 +870,7 @@ The GBN finds a good model with the advantage that no hyperparameters are needed
 
 LDA finds linear decision boundaries.
 
-```{r }
+```{r ch04_linear_discriminant_anal_052}
 model <- x |> MASS::lda(Species ~ ., data = _)
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "LDA")
@@ -913,7 +883,7 @@ Linear decision boundaries work for this dataset so LDA works well.
 Multinomial logistic regression is an extension of logistic regression
 to problems with more than two classes.
 
-```{r }
+```{r ch04_multinomial_logistic_reg_053}
 model <- x |> nnet::multinom(Species ~., data = _)
 decisionplot(model, x, class_var = "Species") + 
   labs(titel = "Multinomial Logistic Regression")
@@ -924,7 +894,7 @@ decisionplot(model, x, class_var = "Species") +
 
 Compare different types of decision trees.
 
-```{r }
+```{r ch04_decision_trees_054}
 model <- x |> rpart::rpart(Species ~ ., data = _)
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "CART")
@@ -943,7 +913,7 @@ decisionplot(model, x, class_var = "Species") +
 
 Use an ensemble method.
 
-```{r }
+```{r ch04_ensemble_random_forest_055}
 model <- x |> randomForest::randomForest(Species ~ ., data = _)
 decisionplot(model, x, class_var = "Species") + 
   labs(title = "Random Forest")
@@ -956,7 +926,7 @@ training data. More data would probably alleviate this issue.
 
 Compare SVMs with different kernel functions. 
 
-```{r }
+```{r ch04_support_vector_machine_056}
 model <- x |> e1071::svm(Species ~ ., data = _, 
                          kernel = "linear", probability = TRUE)
 decisionplot(model, x, class_var = "Species") + 
@@ -993,7 +963,7 @@ Use a simple network with one hidden layer. We will try a
 different number of 
 neurons for the hidden layer.
 
-```{r }
+```{r ch04_single_layer_feed_forwar_057}
 set.seed(1234)
 
 model <- x |> nnet::nnet(Species ~ ., data = _, 
@@ -1047,7 +1017,7 @@ the ANN with so many neurons is high.
 ### Circle Dataset
 
 
-```{r }
+```{r ch04_circle_dataset_058}
 set.seed(1000)
 
 x <- mlbench::mlbench.circle(500)
@@ -1074,7 +1044,7 @@ the optimal decision boundary is a circle around the class in the center.
 Compare kNN classifiers with different values for $k$.
 
 
-```{r }
+```{r ch04_nearest_neighbor_classif_059}
 model <- x |> caret::knn3(class ~ ., data = _, k = 1)
 decisionplot(model, x, class_var = "class") + 
   labs(title = "kNN (1 neighbor)")
@@ -1092,7 +1062,7 @@ overfit the training data at low values for $k$.
 The Gaussian naive Bayes classifier works very well on the data. 
 
 
-```{r }
+```{r ch04_naive_bayes_classifier_060}
 model <- x |> e1071::naiveBayes(class ~ ., data = _)
 decisionplot(model, x, class_var = "class", 
   predict_type = c("class", "raw")) + 
@@ -1106,7 +1076,7 @@ decisionplot(model, x, class_var = "class",
 LDA cannot find a good model since the true decision boundary is not
 linear.
 
-```{r }
+```{r ch04_linear_discriminant_anal_061}
 model <- x |> MASS::lda(class ~ ., data = _)
 decisionplot(model, x, class_var = "class") + labs(title = "LDA")
 ```
@@ -1118,7 +1088,7 @@ decisionplot(model, x, class_var = "class") + labs(title = "LDA")
 Multinomial logistic regression is an extension of logistic regression
 to problems with more than two classes. 
 
-```{r }
+```{r ch04_multinomial_logistic_reg_062}
 model <- x |> nnet::multinom(class ~., data = _)
 decisionplot(model, x, class_var = "class") + 
   labs(titel = "Multinomial Logistic Regression")
@@ -1131,7 +1101,7 @@ decision boundary and fails.
 
 Compare different decision tree algorithms.
 
-```{r }
+```{r ch04_decision_trees_063}
 model <- x |> rpart::rpart(class ~ ., data = _)
 decisionplot(model, x, class_var = "class") + 
   labs(title = "CART")
@@ -1153,7 +1123,7 @@ cuts parallel to the axes.
 
 Try random forest on the dataset.
 
-```{r}
+```{r ch04_ensemble_random_forest_064}
 library(randomForest)
 model <- x |> randomForest(class ~ ., data = _)
 decisionplot(model, x, class_var = "class") + 
@@ -1165,7 +1135,7 @@ decisionplot(model, x, class_var = "class") +
 
 Compare SVMs with different kernels.
 
-```{r }
+```{r ch04_support_vector_machine_065}
 model <- x |> e1071::svm(class ~ ., data = _, 
                          kernel = "linear", probability = TRUE)
 decisionplot(model, x, class_var = "class") + 
@@ -1197,7 +1167,7 @@ Use a simple network with one hidden layer. We will try a
 different number of 
 neurons for the hidden layer.
 
-```{r }
+```{r ch04_single_layer_feed_forwar_066}
 model <- x |> nnet::nnet(class ~ ., data = _, size = 1, trace = FALSE)
 decisionplot(model, x, class_var = "class", 
   predict_type = c("class", "raw")) + labs(title = "ANN (1 neuron)")
@@ -1233,7 +1203,7 @@ a larger number of neurons leads to overfitting the training data.
 
 We will again use the Palmer penguin data for the exercises.
 
-```{r }
+```{r ch04_exercises_067}
 library(palmerpenguins)
 head(penguins)
 ```
@@ -1254,11 +1224,7 @@ small difference in reported accuracy.
 
 ## Chapter Summary
 
-Different classifiers make different assumptions and produce different
-decision boundaries. Compare them against a simple baseline using the same
-training and evaluation splits. With imbalanced classes, accuracy alone can be
-misleading; resampling, costs, and probability thresholds change the balance
-between detecting positives and avoiding false alarms.
+This chapter compares rule-based PART, nearest-neighbor, naive Bayes, Bayesian network, logistic regression, neural network, support vector machine, and ensemble classifiers including random forests. These methods make different assumptions and can produce different decision boundaries, so compare them against a baseline using the same training and test data and suitable metrics. For imbalanced classes, accuracy can hide poor detection of the minority class; options include retaining the original distribution, upsampling within resampling, adjusting probability thresholds, and using cost-sensitive learning. Visualizing boundaries on iris and synthetic circle data helps show how model choices shape predictions.
 
 ## Key Terms
 

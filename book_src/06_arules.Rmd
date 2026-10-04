@@ -1,3 +1,9 @@
+```{r ch06_clean_R, include=FALSE}
+source("clean_R.R")
+source("_common.R")
+source("format_pkgs.R")
+```
+
 # Association Analysis: Advanced Concepts
 
 This chapter discusses a few advanced concepts of association analysis.
@@ -20,15 +26,13 @@ frequent itemsets, support, and confidence is assumed.
 
 ### Packages Used in this Chapter {.unnumbered}
 
-```{r setup_06}
+```{r ch06_packages_used_in_this_ch_001, results='hide', message=FALSE}
 pkgs <- c("arules", "arulesSequences", "tidyverse")
 
 pak::pkg_install(pkgs)
 ```
 
-```{r setup_06-2, include=FALSE}
-source("_common.R")
-source("format_pkgs.R")
+```{r ch06_packages_used_in_this_ch_002, include=FALSE}
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
@@ -64,7 +68,7 @@ converted into 3 items, one for each level. Discretization is described in funct
 We give a short example using the iris dataset. We add an extra `logical` column
 to show how Boolean attributes are converted in to items.
 
-```{r }
+```{r ch06_handling_continuous_attr_003}
 data(iris)
 
 ## add a Boolean attribute
@@ -76,7 +80,7 @@ The first step is to
 discretize continuous attributes (marked as `<dbl>` in the table above).
 We discretize the two Petal features.
 
-```{r }
+```{r ch06_add_a_boolean_attribute_004}
 library(tidyverse)
 library(arules)
 
@@ -97,7 +101,7 @@ head(iris_disc)
 
 Next, we convert the dataset into transactions.
 
-```{r }
+```{r ch06_add_a_boolean_attribute_005}
 trans <- transactions(iris_disc)
 trans
 ```
@@ -106,7 +110,7 @@ The conversion creates a warning because there are still two undiscretized colum
 in the data. The warning indicates that the default discretization is used 
 automatically.
 
-```{r }
+```{r ch06_add_a_boolean_attribute_006}
 itemLabels(trans)
 ```
 
@@ -132,14 +136,14 @@ To perform analysis at a group level of the item hierarchy, `aggregate()` produc
 We use the Groceries data set in this example. It contains 1 month (30 days) of real-world point-of-sale transaction data from a typical local grocery outlet. The items 
 are 169 products categories.
 
-```{r }
+```{r ch06_aggregation_007}
 data("Groceries")
 Groceries
 ```
 
 The dataset also contains two aggregation levels.
 
-```{r }
+```{r ch06_aggregation_008}
 head(itemInfo(Groceries))
 ```
 
@@ -147,14 +151,14 @@ We aggregate to level1 stored in Groceries. All items with the same level2 label
 will become a single item with that name. This reduces the number of items to
 the 55 level2 categories
 
-```{r }
+```{r ch06_aggregation_009}
 Groceries_level2 <- aggregate(Groceries, by = "level2")
 Groceries_level2
 head(itemInfo(Groceries_level2)) ## labels are alphabetically sorted!
 ```
 We can now compare an original transaction with the aggregated transaction.
 
-```{r }
+```{r ch06_aggregation_010}
 inspect(head(Groceries, 3))
 inspect(head(Groceries_level2, 3))
 ```
@@ -163,7 +167,7 @@ Note that the order of items in a transaction is not important, so it might chan
 during aggregation.
 
 It is now easy to mine rules on the aggregated data.
-```{r }
+```{r ch06_aggregation_011}
 rules <- apriori(Groceries_level2, support = 0.005)
 rules |> head(3, by = "support") |> inspect()
 ```
@@ -176,7 +180,7 @@ for details.
 
 To analyze relationships between individual items and item groups at the same time, `addAggregate()` can be used to create a new transactions object which contains both, the original items and group-level items.
 
-```{r}
+```{r ch06_multi_level_analysis_012}
 Groceries_multilevel <- addAggregate(Groceries, "level2")
 Groceries_multilevel |> head(n=3) |> inspect()
 ```
@@ -184,7 +188,7 @@ Groceries_multilevel |> head(n=3) |> inspect()
 The added group-level items are marked with an \* after the name. Now we can mine rules 
 including items from multiple levels.
 
-```{r }
+```{r ch06_multi_level_analysis_013}
 rules <- apriori(Groceries_multilevel,
   parameter = list(support = 0.005))
 rules
@@ -193,7 +197,7 @@ rules
 Mining rules with group-level items added will 
 create many spurious rules of the type
 
-```{r eval=FALSE}
+```{r ch06_multi_level_analysis_014, eval=FALSE}
 ⁠item A => group of item A⁠
 ```
 
@@ -201,7 +205,7 @@ with a confidence of 1.
 This will also happen if you mine itemsets. `filterAggregate()` 
 can be used to filter these spurious rules or itemsets.
 
-```{r }
+```{r ch06_multi_level_analysis_015}
 rules <- filterAggregate(rules)
 rules
 
@@ -226,7 +230,7 @@ follow each other frequently. These are called frequent sequential pattern.
 We will look at a small example dataset that comes with the package
 arulesSequences.
 
-```{r}
+```{r ch06_sequential_patterns_016}
 library(arulesSequences)
 data(zaki)
 
@@ -244,7 +248,7 @@ using cspade is very similar to using apriori.
 Here we set support so we will find patterns that occur in 50% of the 
 sequences.
 
-```{r}
+```{r ch06_sequential_patterns_017}
 fsp <- cspade(zaki, parameter = list(support = .5))
 fsp |> inspect()
 ```
@@ -257,7 +261,7 @@ and windows. Details can be found in the manual page for `cspade`.
 
 Rules, similar to regular association rules can be generated 
 from frequent sequence patterns using `ruleInduction()`.
-```{r }
+```{r ch06_sequential_patterns_018}
 rules <- ruleInduction(fsp, confidence = .8)
 rules |> inspect()
 ```
@@ -266,11 +270,7 @@ The usual measures of confidence and lift are used.
 
 ## Chapter Summary
 
-Advanced association analysis extends transaction mining to categorical and
-continuous attributes, hierarchical item categories, and ordered sequences.
-Encoding and aggregation choices affect which patterns can be discovered.
-Sequence mining also accounts for event order and may constrain gaps or time
-windows.
+Advanced association analysis extends transaction mining beyond simple categorical items. Categorical attributes can be encoded as items, continuous attributes can be discretized into intervals, and Boolean attributes can be added directly. Concept hierarchies support aggregation and multi-level mining, allowing patterns to be examined at different levels of detail. Sequential pattern mining captures ordered events, so it can identify recurring subsequences that ordinary transaction rules cannot represent. Encoding, aggregation, and sequence constraints shape which patterns are found.
 
 ## Key Terms
 

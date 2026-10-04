@@ -25,7 +25,7 @@ classoption:
 
 # Preface {.unnumbered}
 
-```{r fig.align='center', out.width="50%", echo=FALSE, include=identical(knitr:::pandoc_to(), 'html')}
+```{r ch00_preface_unnumbered_001, fig.align='center', out.width="50%", echo=FALSE, include=identical(knitr:::pandoc_to(), 'html')}
 knitr::include_graphics('images/cover.png', dpi = NA)
 ```
 
@@ -86,7 +86,7 @@ Michael Hahsler
 \vfill
 
 
-```{r echo=FALSE, results='asis'}
+```{r ch00_preface_unnumbered_002, echo=FALSE, results='asis'}
 if (knitr::is_latex_output()) {
   cat('![Creative Commons License](images/by.pdf)&nbsp;')
 } else {
@@ -105,7 +105,7 @@ BY
 2.0](https://creativecommons.org/licenses/by/2.0/?ref=ccsearch&atype=rich).
 
 
-```{r echo=FALSE, results='asis'}
+```{r ch00_preface_unnumbered_003, echo=FALSE, results='asis'}
   cat('This book was built on', date(), paste0('(latest GitHub tag: ', 
                                          system2("git", c("describe", "--tags", "--abbrev=0"), stdout = TRUE),
                                          ')'), '\n\n')

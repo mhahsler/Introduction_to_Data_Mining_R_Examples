@@ -4,6 +4,12 @@ editor_options:
     wrap: 72
 ---
 
+```{r ch03_clean_R, include=FALSE}
+source("clean_R.R")
+source("_common.R")
+source("format_pkgs.R")
+```
+
 # Classification: Basic Concepts
 
 This chapter introduces decision trees for classification and discusses
@@ -30,7 +36,7 @@ the data mining textbook is available online:
 
 ### Packages Used in this Chapter {.unnumbered}
 
-```{r setup_03}
+```{r ch03_packages_used_in_this_ch_001, results='hide', message=FALSE}
 pkgs <- c("basemodels", "caret", "FSelector", "lattice", "mlbench", 
           "palmerpenguins", "party", "pROC", "rpart", 
           "rpart.plot", "tidyverse")
@@ -42,9 +48,7 @@ The packages used for this chapter are:
 
 `r format_pkgs(pkgs)`
 
-```{r setup_03-2, include=FALSE}
-source("_common.R")
-source("format_pkgs.R")
+```{r ch03_packages_used_in_this_ch_002, include=FALSE}
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
@@ -119,7 +123,7 @@ called type is the class label $y$.
 We convert the data frame into a tidyverse tibble
 (optional).
 
-```{r }
+```{r ch03_the_zoo_dataset_003}
 data(Zoo, package="mlbench")
 head(Zoo)
 ```
@@ -129,7 +133,7 @@ animal name as the row names. tibbles from `tidyverse` do not support
 row names. To keep the animal name you can add a column with the animal
 name.
 
-```{r }
+```{r ch03_the_zoo_dataset_004}
 library(tidyverse)
 Zoo <- as_tibble(Zoo, rownames = "animal")
 Zoo
@@ -141,7 +145,7 @@ I translate all the TRUE/FALSE values into factors (nominal). This is
 often needed for building models. Always check `summary()` to make sure
 the data is ready for model learning.
 
-```{r }
+```{r ch03_the_zoo_dataset_005}
 Zoo <- Zoo |>
   mutate(across(where(is.logical), 
          function (x) factor(x, levels = c(TRUE, FALSE)))) |>
@@ -156,7 +160,7 @@ We use `rpart`, an implementation of recursive partitioning that follows the
 CART approach. For classification, it uses the Gini index by default to choose
 splits and can stop splitting early (pre-pruning).
 
-```{r }
+```{r ch03_decision_tree_classifier_006}
 library(rpart)
 ```
 
@@ -166,13 +170,13 @@ We create first a tree with the default settings (see `? rpart.control`). It is
 very important to not use the identifier column or the algorithm will only use this
 column and potentially run out of memory.
 
-```{r }
+```{r ch03_create_tree_007}
 Zoo <- Zoo |> select(-animal)
 ```
 
 Alternatively, you can use `. - animal` as the formula below.
 
-```{r }
+```{r ch03_create_tree_008}
 tree_default <- Zoo |> 
   rpart(type ~ ., data = _)
 tree_default
@@ -192,7 +196,7 @@ tree_default
 
 We can plot the resulting decision tree.
 
-```{r }
+```{r ch03_create_tree_009}
 library(rpart.plot)
 rpart.plot(tree_default, extra = 2)
 ```
@@ -205,7 +209,7 @@ training data falling into that node (correct/total).
 
 I will make up my own animal: A lion with feathered wings.
 
-```{r }
+```{r ch03_make_predictions_for_new_010}
 my_animal <- tibble(hair = TRUE, feathers = TRUE, eggs = FALSE,
   milk = TRUE, airborne = TRUE, aquatic = FALSE, predator = TRUE,
   toothed = TRUE, backbone = TRUE, breathes = TRUE, 
@@ -216,7 +220,7 @@ my_animal <- tibble(hair = TRUE, feathers = TRUE, eggs = FALSE,
 The data types need to match the original data so we
 change the columns to be factors like in the training set.
 
-```{r }
+```{r ch03_make_predictions_for_new_011}
 my_animal <- my_animal |> 
   mutate(across(where(is.logical), 
                 function(x) factor(x, levels = c(TRUE, FALSE))))
@@ -225,7 +229,7 @@ my_animal
 
 Next, we make a prediction using the default tree
 
-```{r }
+```{r ch03_make_predictions_for_new_012}
 predict(tree_default , my_animal, type = "class")
 ```
 
@@ -236,7 +240,7 @@ so we see how it is calculated. The over all error (i.e., number of incorrectly
 classified examples) can be broken down into the error for each class. This information
 is typically presented in the form of a _confusion matrix_.
 
-```{r }
+```{r ch03_calculation_of_the_resub_013}
 predict(tree_default, Zoo) |> head ()
 
 pred <- predict(tree_default, Zoo, type="class")
@@ -246,7 +250,7 @@ head(pred)
 We can easily tabulate the true and predicted labels to create a 
 confusion matrix.
 
-```{r}
+```{r ch03_calculation_of_the_resub_014}
 confusion_table <- with(Zoo, table(type, pred))
 confusion_table
 ```
@@ -256,7 +260,7 @@ counts represent errors (i.e., confusions).
 
 We can summarize the confusion matrix using the accuracy measure.
 
-```{r}
+```{r ch03_calculation_of_the_resub_015}
 correct <- confusion_table |> diag() |> sum()
 correct
 error <- confusion_table |> sum() - correct
@@ -265,14 +269,14 @@ error
 
 Accuracy is just 1 $-$ error rate and give the proportion of correctly classified 
 examples.
-```{r}
+```{r ch03_calculation_of_the_resub_016}
 accuracy <- correct / (correct + error)
 accuracy
 ```
 
 Here is the accuracy calculation as a simple function.
 
-```{r }
+```{r ch03_calculation_of_the_resub_017}
 accuracy <- function(prediction, truth) {
     tbl <- table(truth, prediction)
     sum(diag(tbl))/sum(tbl)
@@ -285,7 +289,7 @@ The caret package provides a convenient way to calculate and
 analyze classification errors with the confusion matrix. It only needs the
 predicted class labels and the correct class labels as the reference.
 
-```{r }
+```{r ch03_calculation_of_the_resub_018}
 library(caret)
 confusionMatrix(data = pred, 
                 reference = Zoo |> pull(type))
@@ -311,7 +315,7 @@ observations in a node needed to split to the smallest value of 2 (see:
 `?rpart.control`). *Note:* This is not a good idea! 
 As we will see later, full trees overfit the training data!
 
-```{r }
+```{r ch03_model_overfitting_019}
 tree_full <- Zoo |> 
   rpart(type ~ . , data = _, 
         control = rpart.control(minsplit = 2, cp = 0))
@@ -324,7 +328,7 @@ tree_full
 
 Error on the training set of the full tree
 
-```{r }
+```{r ch03_model_overfitting_020}
 pred_full <- predict(tree_full, Zoo, type = "class")
 
 accuracy(pred_full, Zoo |> pull(type))
@@ -356,7 +360,7 @@ the validation set. To get a better estimate of the
 error, this process is repeated `number` of times and the errors are averaged.
 
 
-```{r }
+```{r ch03_model_selection_021}
 fit <- Zoo |>
   train(type ~ .,
     data = _ ,
@@ -384,7 +388,7 @@ training set. We typically split the data using random sampling.
 To get reproducible results, 
 we set random number generator seed.
 
-```{r }
+```{r ch03_model_evaluation_022}
 set.seed(2000)
 ```
 
@@ -394,7 +398,7 @@ Test data is not used in the model building process and set aside purely
 for testing the model. Here, we partition data the 80% training and 20%
 testing.
 
-```{r }
+```{r ch03_holdout_method_023}
 inTrain <- createDataPartition(y = Zoo$type, p = .8)[[1]]
 Zoo_train <- Zoo |> slice(inTrain)
 Zoo_test <- Zoo |> slice(-inTrain)
@@ -425,7 +429,7 @@ parallel. To enable multi-core support, `caret` uses the package
 `doMC` with 4 cores. Windows needs different backend like `doParallel`
 (see the [caret documentation](https://topepo.github.io/caret/)).
 
-```{r }
+```{r ch03_cross_validation_methods_024}
 ## Linux backend
 # library(doMC)
 # registerDoMC(cores = 4)
@@ -452,7 +456,7 @@ We typically first use the holdout method to create a test set and then use
 cross validation using the training data for model selection. Let us use
 80% for training and hold out 20% for testing.
 
-```{r }
+```{r ch03_hyperparameter_tuning_025}
 inTrain <- createDataPartition(y = Zoo$type, p = .8)[[1]]
 Zoo_train <- Zoo |> slice(inTrain)
 Zoo_test <- Zoo |> slice(-inTrain)
@@ -470,7 +474,7 @@ have not much data. **Note:** Parameters used for tuning (in this case
 `cp`) need to be set using a data.frame in the argument `tuneGrid`!
 Setting it in control will be ignored.
 
-```{r }
+```{r ch03_hyperparameter_tuning_026}
 fit <- Zoo_train |>
   train(type ~ .,
     data = _ ,
@@ -489,7 +493,7 @@ averages on the validation folds.
 A model using the best tuning parameters and using all the data supplied
 to `train()` is available as `fit$finalModel`.
 
-```{r }
+```{r ch03_hyperparameter_tuning_027}
 library(rpart.plot)
 rpart.plot(fit$finalModel, extra = 2,
   box.palette = list("Gy", "Gn", "Bu", "Bn", "Or", "Rd", "Pu"))
@@ -500,13 +504,13 @@ splits (splits which would be runners up, but do not get chosen by the
 tree) for rpart models (see `? varImp`). Toothed is the runner up for
 many splits, but it never gets chosen!
 
-```{r }
+```{r ch03_hyperparameter_tuning_028}
 varImp(fit)
 ```
 
 Here is the variable importance without competing splits.
 
-```{r }
+```{r ch03_hyperparameter_tuning_029}
 imp <- varImp(fit, compete = FALSE)
 imp
 
@@ -521,7 +525,7 @@ the model (see `? varImp`)!
 Now, we can estimate the generalization error of the best model on the 
 held out test data.
 
-```{r }
+```{r ch03_hyperparameter_tuning_030}
 pred <- predict(fit, newdata = Zoo_test)
 pred
 ```
@@ -531,7 +535,7 @@ intervals, kappa and many more evaluation metrics. You need to use
 separate test data to create a confusion matrix based on the
 generalization error.
 
-```{r }
+```{r ch03_hyperparameter_tuning_031}
 confusionMatrix(data = pred, 
                 ref = Zoo_test |> pull(type))
 ```
@@ -588,7 +592,7 @@ that one model is significantly better.
 We first create a simple baseline model that always predicts the majority
 class mammal.
 
-```{r }
+```{r ch03_build_models_032}
 baseline <- Zoo_train |> train(type ~ .,
   method = basemodels::dummyClassifier,
   data = _,
@@ -602,7 +606,7 @@ baseline
 
 The second model is a default decision tree.
 
-```{r }
+```{r ch03_build_models_033}
 rpartFit <- Zoo_train |> 
   train(type ~ .,
         data = _,
@@ -620,7 +624,7 @@ variables is compatible, we
 ask `train` to scale the data using
 `preProcess = "scale"`. 
 
-```{r }
+```{r ch03_build_models_034}
 knnFit <- Zoo_train |> 
   train(type ~ .,
         data = _,
@@ -635,7 +639,7 @@ knnFit
 
 Compare the accuracy and kappa distributions of the final model over all folds.
 
-```{r }
+```{r ch03_build_models_035}
 resamps <- resamples(list(
 	baseline = baseline,	
   CART = rpartFit,
@@ -649,7 +653,7 @@ summary(resamps)
 example, a boxplot to compare the accuracy and kappa distribution (over
 the 10 folds).
 
-```{r }
+```{r ch03_build_models_036}
 bwplot(resamps, layout = c(3, 1))
 ```
 
@@ -659,7 +663,7 @@ KNN has the highest accuracy and kappa in these resampling results.
 p-values. Resampling folds are not independent observations, so treat these
 tests as exploratory rather than definitive evidence that one model is better.
 
-```{r }
+```{r ch03_build_models_037}
 difs <- diff(resamps)
 difs
 
@@ -682,7 +686,7 @@ model selection.
 
 
 Many feature selection methods are implemented in the FSelector package.
-```{r }
+```{r ch03_feature_selection_038}
 library(FSelector)
 ```
 
@@ -692,7 +696,7 @@ These scores measure how related each feature is to the class variable.
 For discrete features (as in our case), the chi-square statistic can be
 used to derive a score.
 
-```{r }
+```{r ch03_univariate_feature_impor_039}
 weights <- Zoo_train |> 
   chi.squared(type ~ ., data = _) |>
   as_tibble(rownames = "feature") |>
@@ -704,7 +708,7 @@ weights
 We can plot the importance in descending order (using `reorder` to order factor
 levels used by `ggplot`).
 
-```{r }
+```{r ch03_univariate_feature_impor_040}
 ggplot(weights,
   aes(x = attr_importance, 
       y = reorder(feature, attr_importance))) +
@@ -716,7 +720,7 @@ ggplot(weights,
 Picking the best features is called the feature ranking approach.
 Here we pick the 5 highest-ranked features.
 
-```{r }
+```{r ch03_univariate_feature_impor_041}
 subset <- cutoff.k(weights |> 
                    column_to_rownames("feature"), 
                    5)
@@ -726,7 +730,7 @@ subset
 Use only the selected features to build a model (`Fselector` provides
 `as.simple.formula`).
 
-```{r }
+```{r ch03_univariate_feature_impor_042}
 f <- as.simple.formula(subset, "type")
 f
 
@@ -739,7 +743,7 @@ scores (see package FSelector). Some of them (also) work for continuous
 features. One example is the information gain ratio based on entropy as
 used in decision tree induction.
 
-```{r }
+```{r ch03_univariate_feature_impor_043}
 Zoo_train |> 
   gain.ratio(type ~ ., data = _) |>
   as_tibble(rownames = "feature") |>
@@ -752,7 +756,7 @@ Often, features are related and calculating importance for each feature
 independently is not optimal. We can use greedy search heuristics. For
 example `cfs` uses correlation/entropy with best first search.
 
-```{r }
+```{r ch03_feature_subset_selection_044}
 Zoo_train |> 
   cfs(type ~ ., data = _)
 ```
@@ -769,7 +773,7 @@ quality score. We use here the average for 5 bootstrap samples
 (`method = "cv"` can also be used instead), no tuning (to be faster),
 and the average accuracy as the score.
 
-```{r }
+```{r ch03_feature_subset_selection_045}
 evaluator <- function(subset) {
   model <- Zoo_train |> 
     train(as.simple.formula(subset, "type"),
@@ -790,7 +794,7 @@ evaluator <- function(subset) {
 
 Start with all features (but not the class variable `type`)
 
-```{r }
+```{r ch03_feature_subset_selection_046}
 features <- Zoo_train |> 
   colnames() |> 
   setdiff("type")
@@ -800,7 +804,7 @@ There are several (greedy) search strategies available. These run for a
 while so they commented out below. Remove the comment for one at a time
 to try these types of feature selection.
 
-```{r }
+```{r ch03_feature_subset_selection_047}
 #subset <- backward.search(features, evaluator)
 #subset <- forward.search(features, evaluator)
 #subset <- best.first.search(features, evaluator)
@@ -817,7 +821,7 @@ For example, let us try to predict if an animal is a predator
 given the type. First we use the original encoding of type as a factor
 with several values.
 
-```{r }
+```{r ch03_using_dummy_variables_fo_048}
 tree_predator <- Zoo_train |> 
   rpart(predator ~ type, data = _)
 rpart.plot(tree_predator, extra = 2, roundint = FALSE)
@@ -832,7 +836,7 @@ should be avoided.
 We can convert the factor `type` into a set of 0-1 dummy variables using caret's `class2ind()`. See
 also `? dummyVars` in package `caret`.
 
-```{r }
+```{r ch03_using_dummy_variables_fo_049}
 Zoo_train_dummy <- as_tibble(class2ind(Zoo_train$type)) |> 
   mutate(across(everything(), as.factor)) |>
   add_column(predator = Zoo_train$predator)
@@ -850,7 +854,7 @@ factors (here type) into 0-1 dummy variables (e.g., `typeinsect = 0`).
 The reason is that some models cannot directly use factors and `caret`
 tries to consistently work with all of them.
 
-```{r }
+```{r ch03_using_dummy_variables_fo_050}
 fit <- Zoo_train |> 
   train(predator ~ type, 
         data = _, 
@@ -869,7 +873,7 @@ create a tuning grid that only contains that value.
 
 We will use again the Palmer penguin data for the exercises.
 
-```{r }
+```{r ch03_exercises_051}
 library(palmerpenguins)
 head(penguins)
 ```
@@ -897,11 +901,7 @@ across species, and distinguish this final evaluation from model selection.
 
 ## Chapter Summary
 
-Classification learns a mapping from features to class labels. Decision trees
-provide an interpretable starting point, but can overfit. Use training data to
-fit models, validation or cross-validation to select settings, and a held-out
-test set for a final estimate of generalization. Match evaluation metrics to
-the problem, especially when classes are imbalanced.
+Classification uses labeled examples to learn a mapping from input features to class labels. Decision trees provide an interpretable model, but a tree that fits its training data too closely may overfit. Separate data for fitting, model selection, and final evaluation; use holdout or cross-validation methods to estimate performance, tune hyperparameters without using the test set, and compare candidate models on consistent resamples. Choose evaluation measures that reflect the task and class distribution, and avoid leakage and other pitfalls in model selection. The chapter also introduces feature importance and subset selection, and dummy-variable encoding for nominal predictors.
 
 ## Key Terms
 

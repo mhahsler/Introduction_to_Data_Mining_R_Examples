@@ -4,6 +4,12 @@ editor_options:
     wrap: 72
 ---
 
+```{r ch01_clean_R, include=FALSE}
+source("clean_R.R")
+source("_common.R")
+source("format_pkgs.R")
+```
+
 # Introduction
 
 [Data mining](https://en.wikipedia.org/wiki/Data_mining) has the goal of
@@ -71,7 +77,7 @@ Desktop](https://posit.co/products/open-source/rstudio/) installed.
 Each book chapter will use a set of packages that must be installed.
 We use `pak` as the package manager which needs to be installed via:
 
-```{r setup_00, message=FALSE}
+```{r ch01_used_software_001, message=FALSE}
 install.packages("pak", quiet = TRUE)
 ```
 
@@ -79,15 +85,13 @@ The
 installation code can be found at the beginning of each chapter. Here is
 the code to install the packages used in this chapter:
 
-```{r setup_01, message=FALSE}
-pkgs <- c('tidyverse')
+```{r ch01_used_software_002, results='hide', message=FALSE}
+pkgs <- c('tidyverse', 'ggplot2')
 
 pak::pkg_install(pkgs)
 ```
 
-```{r setup_01-2, include=FALSE}
-source("_common.R")
-source("format_pkgs.R")
+```{r ch01_used_software_003, include=FALSE}
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
@@ -127,7 +131,7 @@ numbers; a single number is represented as a numeric vector of length 1.
 We can combine values into a vector using the combine function `c()`. 
 Special values for infinity (`Inf`) and missing values (`NA`) can be used.
 
-```{r }
+```{r ch01_vectors_004}
 x <- c(10.4, 5.6, Inf, NA, 21.7)
 x
 ```
@@ -135,13 +139,13 @@ x
 We often use sequences. A simple sequence of integers can be produced using
 the colon operator in the form `from:to`.
 
-```{r }
+```{r ch01_vectors_005}
 3:10
 ```
 
 More complicated sequences can be created using `seq()`.
 
-```{r }
+```{r ch01_vectors_006}
 y <- seq(from = 0, to = 1, length.out = 5)
 y
 ```
@@ -151,14 +155,14 @@ y
 Operations are vectorized and applied to each element, 
 so loops are typically not necessary in R.
 
-```{r }
+```{r ch01_vectorized_operations_007}
 x + 1
 ```
 
 Comparisons are also vectorized and are performed element-wise. They 
 return a `logical` vector (R's name for the datatype Boolean).
 
-```{r }
+```{r ch01_vectorized_operations_008}
 x > y
 ```
 
@@ -169,18 +173,18 @@ programming languages but the index always starts at 1.
 
 We can select elements 1 through 3 using an index sequence.
 
-```{r}
+```{r ch01_subsetting_009}
 x[1:3]
 ```
 
 Negative indices remove elements. We can select all but the first element.
-```{r}
+```{r ch01_subsetting_010}
 x[-1]
 ```
 
 We can use any function that creates a `logical` vector for subsetting.
 Here we select all non-missing values using the function `is.na()`.
-```{r}
+```{r ch01_subsetting_011}
 is.na(x)
 x[!is.na(x)] # select all non-missing values
 ```
@@ -188,7 +192,7 @@ x[!is.na(x)] # select all non-missing values
 We can also assign values to a selection. For example, this code gets rid of
 infinite values.
 
-```{r}
+```{r ch01_subsetting_012}
 x[!is.finite(x)] <- NA
 x
 ```
@@ -199,7 +203,7 @@ Another useful thing is that vectors and many other data structures in R support
 names. For example, we can store the count of cars with different colors in the 
 following way.
 
-```{r}
+```{r ch01_names_013}
 counts <- c(12, 5, 18, 13)
 names(counts) <- c("black", "red", "white", "silver")
 
@@ -209,7 +213,7 @@ counts
 Names can then be used for subsetting and we do not have to remember what entry 
 is associated with what color.
 
-```{r}
+```{r ch01_names_014}
 counts[c("red", "silver")]
 ```
 
@@ -217,7 +221,7 @@ counts[c("red", "silver")]
 
 Lists can store a sequence of elements of different datatypes.
 
-```{r}
+```{r ch01_lists_015}
 lst <- list(name = "Fred", spouse = "Mary", no.children = 3,
   child.ages = c(4, 7, 9))
 lst
@@ -225,7 +229,7 @@ lst
 
 Elements can be accessed by index or name.
 
-```{r}
+```{r ch01_lists_016}
 lst[[2]]
 lst$child.ages
 ```
@@ -237,7 +241,7 @@ Many functions in R return a list.
 A data frame looks like a spread sheet and represents a matrix-like structure
 with rows and columns where different columns can contain different data types.
 
-```{r}
+```{r ch01_data_frames_017}
 df <-  data.frame(name = c("Michael", "Mark", "Maggie"), 
                   children = c(2, 0, 2), age = c(40, 30, 50))
 df
@@ -247,7 +251,7 @@ Data frames are stored as a list of columns. We can access elements using
 matrix subsetting (missing indices mean the whole row or column) or list 
 subsetting. Here are some examples
 
-```{r}
+```{r ch01_data_frames_018}
 df[1,1]
 df[, 2]
 df$name
@@ -262,7 +266,7 @@ Some data mining algorithms require a numeric matrix as the input. The numeric p
 Data frames can be coerced into a matrix. In the following example we cast the last two columns
 of `df` into a matrix. Column names are taken from the data frame and we add manually row names.
 
-```{r }
+```{r ch01_matrices_019}
 x <- as.matrix(df[, -1])
 rownames(x) <- df[, 1]
 x
@@ -277,14 +281,14 @@ R uses `character` vectors where the datatype `character` represents a string
 and not like in other programming language just a single character. 
 R accepts double or single quotation marks to delimit strings.
 
-```{r }
+```{r ch01_strings_020}
 string <- c("Hello", "Goodbye")
 string
 ```
 
 Strings can be combined using `paste()`.
 
-```{r}
+```{r ch01_strings_021}
 paste(string, "World!")
 ```
 
@@ -304,19 +308,19 @@ and `factor`. In R, everything is an object. Objects are printed by
 either just using the object's name or put it explicitly into the
 `print()` function.
 
-```{r }
+```{r ch01_objects_022}
 x
 ```
 
 For many objects, a summary can be created.
 
-```{r }
+```{r ch01_objects_023}
 summary(x)
 ```
 
 Objects have a class. 
 
-```{r }
+```{r ch01_objects_024}
 class(x)
 ```
 
@@ -331,7 +335,7 @@ specifying the class with the dot can help finding the documentation.
 It is often useful to know what information it stored in an object.
 `str()` returns a humanly readable string representation of the object.
 
-```{r}
+```{r ch01_objects_025}
 str(x)
 ```
 
@@ -341,7 +345,7 @@ Functions work like in many other languages. However, they also operate
 vectorized and arguments can be specified positional or by named. An
 increment function can be defined as:
 
-```{r }
+```{r ch01_functions_026}
 inc <- function(x, by = 1) { 
     x + by 
   }
@@ -353,7 +357,7 @@ explicitly use `return(return_value)`.
 
 Calling the increment function on vector with the numbers 1 through 10.
 
-```{r }
+```{r ch01_functions_027}
 v <- 1:10
 inc(v, by = 2)
 ```
@@ -368,7 +372,7 @@ R has many built-in functions like `min()`, `max()`, `mean()`, and
 
 Basic plotting in Base-R is done by calling `plot()`.
 
-```{r eval=FALSE}
+```{r ch01_plotting_028, eval=FALSE}
 plot(x, y)
 ```
 
@@ -415,14 +419,14 @@ In this book, we will typically use
 -   the pipe operator `|>` to chain functions together, and
 -   data transformation functions like `filter()`, `arrange()`,
     `select()`, `group_by()`, and `mutate()` provided by the tidyverse
-    package `dplyr` [@R-dplyr].
+    package `dplyr`.
 
 A good introduction can be found in the [Section on Data
 Transformation](https://r4ds.hadley.nz/data-transform) [@Wickham2023].
 
 To use tidyverse, we first have to load the tidyverse meta package.
 
-```{r}
+```{r ch01_tidyverse_029}
 library(tidyverse)
 ```
 
@@ -438,7 +442,7 @@ We create a tibble with the price in dollars per pound and the
 vitamin C content in milligrams (mg) per pound for five different fruits.
 
 
-```{r }
+```{r ch01_tibbles_030}
 fruit <- tibble(
   name = c("apple", "banana", "mango", "orange", "lime"), 
   price = c(2.5, 2.0, 4.0, 3.5, 2.5), 
@@ -457,7 +461,7 @@ that a dollar buys using `mutate()`. Then we filter only rows with
 fruit that provides more than 20 mg per dollar, and finally we arrange the data
 rows by the vitamin C per dollar from largest to smallest.
 
-```{r }
+```{r ch01_transformations_031}
 affordable_vitamin_c_sources <- fruit |>
   mutate(vitamin_c_per_dollar = vitamin_c / price) |> 
   filter(vitamin_c_per_dollar > 20) |>
@@ -480,7 +484,7 @@ result is assigned with `<-` to a variable.
 
 We can create summary statistics of price using `summarize()`.
 
-```{r }
+```{r ch01_transformations_032}
 affordable_vitamin_c_sources |> 
   summarize(min = min(price), 
             mean = mean(price), 
@@ -491,7 +495,7 @@ We can also calculate statistics for groups by first grouping the data
 with `group_by()`. Here 
 we produce statistics for fruit types.
 
-```{r }
+```{r ch01_transformations_033}
 affordable_vitamin_c_sources |> 
   group_by(type) |>
   summarize(min = min(price), 
@@ -503,7 +507,7 @@ affordable_vitamin_c_sources |>
 Often, we want to apply the same function to multiple columns. This can
 be achieved using `across(columns, function)`.
 
-```{r }
+```{r ch01_transformations_034}
 affordable_vitamin_c_sources |> 
   summarize(across(c(price, vitamin_c), mean))
 ```
@@ -529,7 +533,7 @@ main idea is that every graph is built from the same basic components:
 The main plotting function is `ggplot()`. The components of the plot 
 are combined using the `+` operator.
 
-```{r eval=FALSE}
+```{r ch01_ggplot2_035, eval=FALSE}
 ggplot(data, mapping = aes(x = ..., y = ..., color = ...)) +
   geom_point()
 ```
@@ -546,7 +550,7 @@ and very useful is [RStudio's Data Visualization Cheatsheet](https://rstudio.git
 
 We can visualize our fruit data as a scatter plot.
 
-```{r }
+```{r ch01_ggplot2_036}
 ggplot(fruit, aes(x = price, y = vitamin_c)) + 
   geom_point()
 ```
@@ -555,7 +559,7 @@ It is easy to add more geoms. For example, we can add a regression line
 using `geom_smooth` with the method `"lm"` (linear model). We suppress
 the confidence interval since we only have 3 data points.
 
-```{r }
+```{r ch01_ggplot2_037}
 ggplot(fruit, aes(x = price, y = vitamin_c)) + 
   geom_point() +
   geom_smooth(method = "lm", se = FALSE)
@@ -564,7 +568,7 @@ ggplot(fruit, aes(x = price, y = vitamin_c)) +
 Alternatively, we can visualize each fruit's vitamin C content per
 dollar using a bar chart.
 
-```{r }
+```{r ch01_ggplot2_038}
 ggplot(fruit, aes(x = name, y = vitamin_c)) + 
   geom_bar(stat = "identity")
 ```
@@ -575,11 +579,7 @@ the tibble, so we specify the identity function instead.
 
 ## Chapter Summary
 
-R represents data with objects such as vectors, lists, matrices, and data
-frames. Vectorized operations and subsetting help transform those objects.
-Tibbles and `dplyr` provide a consistent way to manipulate tabular data, while
-`ggplot2` builds visualizations by combining data, mappings, and geometric
-layers.
+R programs manipulate objects, including atomic vectors, lists, matrices, and data frames. Vectorized operations apply computations across values, and indexing and subsetting select or update parts of an object. Names and attributes add structure; functions package reusable computations, while plotting provides a first way to inspect data. The chapter also introduces strings, R objects and their classes, and R Markdown for combining code, output, and explanation. For tabular work, tibbles provide a modern data-frame interface, `dplyr` verbs support filtering, selecting, transforming, and summarizing data, and `ggplot2` builds plots from data, aesthetic mappings, and geometric layers.
 
 ## Key Terms
 

@@ -4,6 +4,12 @@ editor_options:
     wrap: 72
 ---
 
+```{r ch92_clean_R, include=FALSE}
+source("clean_R.R")
+source("_common.R")
+source("format_pkgs.R")
+```
+
 # Logistic Regression {#appendix_logistic_regression}
 
 This chapter examines logistic regression in more detail. Logistic regression is introduced
@@ -23,7 +29,7 @@ After this chapter, you should be able to:
 Read [Classification: Basic Concepts] and [Regression]. Familiarity with
 probability, odds, model formulas, and train/test evaluation is assumed.
 
-```{r setup_logreg}
+```{r ch92_prerequisites_001, results='hide', message=FALSE}
 pkgs <- c("glmnet", "caret")
 
 pak::pkg_install(pkgs)
@@ -33,9 +39,7 @@ The packages used for this chapter are:
 
 `r format_pkgs(pkgs)`
 
-```{r setup_logreg-2, include=FALSE}
-source("_common.R")
-source("format_pkgs.R")
+```{r ch92_prerequisites_002, include=FALSE}
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
@@ -54,7 +58,7 @@ $$logit(p) = ln\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 
 The logit function maps a probability $p$ in $(0,1)$ to the real line
 $(-\infty,+\infty)$.
 
-```{r}
+```{r ch92_introduction_003}
 logit  <- function(p) log(p/(1-p))
 p <- seq(0, 1, length.out = 100)
 plot(logit(p), p, type = "l")
@@ -85,7 +89,7 @@ linear predictor.
 ## Data Preparation
 We load and shuffle the data. We also add a useless variable to see if the logistic regression removes it.
 
-```{r}
+```{r ch92_data_preparation_004}
 data(iris)
 set.seed(100) # for reproducibility
 
@@ -98,7 +102,7 @@ asking if a flower is of species Virginica or not.
 We create new logical variable called `virginica` and remove the 
 `Species` column.
 
-```{r}
+```{r ch92_data_preparation_005}
 x$virginica <- x$Species == "virginica"
 x$Species <- NULL
 ```
@@ -107,7 +111,7 @@ We can visualize the data using a scatter plot matrix and use the color red for
 `virginica == TRUE` and black for the other flowers.
 
 
-```{r}
+```{r ch92_data_preparation_006}
 plot(x, col=x$virginica + 1)
 ```
 
@@ -117,20 +121,20 @@ link function and a binomial distribution. The `glm()` function is provided by
 the R core package `stats` which is installed with R and automatically loads
 when R is started.
 
-```{r}
+```{r ch92_a_first_logistic_regress_007}
 model <- glm(virginica ~ .,
   family = binomial(logit), data = x)
 ```
 
 *About the warning:* glm.fit: fitted probabilities numerically 0 or 1 occurred means that the data is possibly linearly separable.
 
-```{r}
+```{r ch92_a_first_logistic_regress_008}
 model
 ```
 
 Check which features are significant?
 
-```{r}
+```{r ch92_a_first_logistic_regress_009}
 summary(model)
 ```
 
@@ -155,7 +159,7 @@ variables by trying to remove one variable at a time
 as long as the model does not significantly deteriorate (according to the AIC).
 This variable selection process is done automatically by the `step()` function.
 
-```{r}
+```{r ch92_stepwise_variable_select_010}
 model2 <- step(model, data = x)
 summary(model2)
 ```
@@ -173,7 +177,7 @@ other two predictors.
 from. To get a generalization error estimate you should use a test set or
 cross-validation!
 
-```{r}
+```{r ch92_calculate_the_response_011}
 pr <- predict(model2, x, type = "response")
 round(pr[1:10], 2)
 ```
@@ -183,7 +187,7 @@ Virginica. The probabilities of the first 10 flowers are shown. Below is
 a histogram of predicted probabilities. The color is used to show the 
 examples that have the true class Virginica.
 
-```{r}
+```{r ch92_calculate_the_response_012}
 hist(pr, breaks = 20, main = "Predicted Probability vs. True Class")
 hist(pr[x$virginica == TRUE], col = "red", breaks = 20, add = TRUE)
 ```
@@ -196,12 +200,12 @@ generalization error, we should calculate the performance on a held out test set
 The predicted class is calculated by checking if the predicted probability 
 is larger than .5.  
 
-```{r }
+```{r ch92_illustrate_in_sample_cla_013}
 pred <- pr > .5
 ```
 
 Now we can create a confusion table and calculate the accuracy.
-```{r}
+```{r ch92_illustrate_in_sample_cla_014}
 tbl <- table(predicted = pred, actual = x$virginica)
 tbl
 
@@ -212,7 +216,7 @@ We can also use caret's more advanced function `caret::confusionMatrix()`. Our c
 above uses `logical` vectors. For caret, we need to make sure that both, 
 the reference and the predictions are coded as `factor`.
 
-```{r }
+```{r ch92_illustrate_in_sample_cla_015}
 caret::confusionMatrix(
   reference = factor(x$virginica, labels = c("Yes", "No"), levels = c(TRUE, FALSE)), 
   data = factor(pred, labels = c("Yes", "No"), levels = c(TRUE, FALSE)))
@@ -231,7 +235,7 @@ glmnet can use cross-validation to find an appropriate
 value. glmnet does not have a function interface, so we have
 to supply a matrix for `X` and a vector of responses for `y`.
 
-```{r }
+```{r ch92_regularized_logistic_reg_016}
 library(glmnet)
 
 X <- as.matrix(x[, 1:5])
@@ -245,7 +249,7 @@ There are several selection rules for lambda, we look at the
 coefficients of the logistic regression using the 
 lambda that  gives the most regularized model such that the cross-validated error is within one standard error of the minimum cross-validated error.
 
-```{r}
+```{r ch92_regularized_logistic_reg_017}
 coef(fit, s = fit$lambda.1se)
 ```
 
@@ -257,7 +261,7 @@ A predict function is provided. We need to specify
 what regularization to use and that we want to predict a class
 label.
 
-```{r}
+```{r ch92_regularized_logistic_reg_018}
 predict(fit, newx = X[1:5,], s = fit$lambda.1se, type = "class")
 ```
 
@@ -278,7 +282,7 @@ For multinomial logistic regression, one neuron is used for each class and the
 probability distribution is calculated with the softmax activation.
 This extension is implemented in `nnet::multinom()`.
 
-```{r}
+```{r ch92_multinomial_logistic_reg_019}
 set.seed(100)
 x <- iris[sample(1:nrow(iris)), ]
 
@@ -293,7 +297,7 @@ class more likely and a negative number means the opposite.
 
 Predict the class for the first 5 flowers in the training data. 
 
-```{r}
+```{r ch92_multinomial_logistic_reg_020}
 x[1:5, ]
 predict(model, x[1:5,])
 ```
@@ -306,7 +310,7 @@ The package glmnet implements also multinomial logistic regression using
 
 We will again use the Palmer penguin data for the exercises.
 
-```{r }
+```{r ch92_exercises_021}
 library(palmerpenguins)
 head(penguins)
 ```
@@ -329,11 +333,7 @@ distribution.
 
 ## Chapter Summary
 
-Logistic regression models the probability of a categorical outcome through a
-linear predictor and a link function. Coefficients describe changes in log
-odds, while predicted probabilities can be converted into labels using a
-decision threshold. Evaluate predictions on held-out data, and use
-regularization when many or correlated predictors make the fit unstable.
+Logistic regression models the probability of a categorical response using a linear predictor and a link function. After preparing data and fitting a binary model, interpret coefficients on the log-odds scale and use predicted probabilities to classify cases at a chosen threshold. In-sample performance illustrates how predictions compare with observed labels, but held-out evaluation is needed to estimate generalization. Stepwise selection provides one approach to choosing predictors, while regularized logistic regression can stabilize models with many or correlated predictors. Multinomial logistic regression extends the method to outcomes with more than two classes.
 
 ## Key Terms
 

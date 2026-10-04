@@ -4,6 +4,12 @@ editor_options:
     wrap: 72
 ---
 
+```{r ch02_clean_R, include=FALSE}
+source("clean_R.R")
+source("_common.R")
+source("format_pkgs.R")
+```
+
 # Data
 
 Data for data mining is typically organized in tabular form, with rows containing
@@ -31,7 +37,7 @@ and distance examples.
 
 ### Packages Used in this Chapter {.unnumbered}
 
-```{r setup_02}
+```{r ch02_packages_used_in_this_ch_001, results='hide', message=FALSE}
 pkgs <- c("arules", "caret", "factoextra", "GGally", 
           "palmerpenguins", "plotly", 
           "proxy", "Rtsne", "tidyverse")
@@ -43,9 +49,7 @@ The packages used for this chapter are:
 
 `r format_pkgs(pkgs)`
 
-```{r setup_02-2, include=FALSE}
-source("_common.R")
-source("format_pkgs.R")
+```{r ch02_packages_used_in_this_ch_002, include=FALSE}
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
@@ -73,13 +77,13 @@ not need to calculate percentages or other statistics that require a meaningful 
 Nominal data is created using `factor()`. If the factor levels
 are not specified, then they are created in alphabetical order.
 
-```{r}
+```{r ch02_attributes_and_measureme_003}
 factor(c("red", "green", "green", "blue"))
 ```
 
 Ordinal data is created using `ordered()`. The levels specify the order. 
 
-```{r}
+```{r ch02_attributes_and_measureme_004}
 ordered(c("S", "L", "M", "S"), 
        levels = c("S", "M", "L"))
 ```
@@ -87,7 +91,7 @@ ordered(c("S", "L", "M", "S"),
 
 Ratio/interval data is created as a simple vector.
 
-```{r}
+```{r ch02_attributes_and_measureme_005}
 c(1, 2, 3, 4, 3, 3)
 ```
 
@@ -107,7 +111,7 @@ We load the iris data set. Datasets that come with R or R packages can
 be loaded with `data()`. The standard format for data in R is a
 data.frame. We convert the data.frame into a tidyverse tibble.
 
-```{r }
+```{r ch02_the_iris_dataset_006}
 library(tidyverse)
 data(iris)
 iris <- as_tibble(iris)
@@ -120,7 +124,7 @@ not fit the screen width. We can call `print` and define how many rows
 to show using parameter `n` and force print to show all features by
 changing the `width` to infinity.
 
-```{r }
+```{r ch02_the_iris_dataset_007}
 print(iris, n = 3, width = Inf)
 ```
 
@@ -131,7 +135,7 @@ using the data. Start with summary statistics for each column to
 identify outliers and missing values. The easiest way is to use the base R
 function `summary()`.
 
-```{r }
+```{r ch02_data_quality_008}
 summary(iris)
 ```
 
@@ -145,7 +149,7 @@ or `rename()`.
 You can also summarize 
 individual columns using tidyverse's dplyr functions.
 
-```{r }
+```{r ch02_data_quality_009}
 iris |> 
   summarize(mean = mean(Sepal.Length))
 ```
@@ -153,7 +157,7 @@ iris |>
 Using `across()`, multiple columns can be summarized. Un the following,
 we calculate all numeric columns using the `mean` function.
 
-```{r }
+```{r ch02_data_quality_010}
 iris |> 
   summarize(across(where(is.numeric), mean))
 ```
@@ -168,7 +172,7 @@ use here `ggpairs()` from package `GGally`). In this plot, we can
 visually identify noise data points and outliers (points that are far
 from the majority of other points).
 
-```{r }
+```{r ch02_data_quality_011}
 library(GGally)
 ggpairs(iris, aes(color = Species), progress = FALSE)
 ```
@@ -212,7 +216,7 @@ contain missing values (`NA`). To remove missing values and duplicates
 (identical data points which might be a mistake in the data), we often
 do this:
 
-```{r }
+```{r ch02_data_quality_012}
 clean.data <- iris |> 
   drop_na() |> 
   unique()
@@ -238,7 +242,7 @@ Data often contains groups and we want to compare these groups. We group
 the iris dataset by species and then calculate a summary statistic for
 each group.
 
-```{r }
+```{r ch02_aggregation_013}
 iris |> 
   group_by(Species) |> 
   summarize(across(everything(), mean))
@@ -263,7 +267,7 @@ data for working with supervised models (e.g., classification models).
 The built-in sample function can sample from a vector. Here we sample
 with replacement.
 
-```{r }
+```{r ch02_random_sampling_014}
 sample(c("A", "B", "C"), size = 10, replace = TRUE)
 ```
 
@@ -272,7 +276,7 @@ sampling without replacement from a vector with row indices (using the
 functions `seq()` and `nrow()`). The sample vector is then used to
 subset the rows of the dataset.
 
-```{r }
+```{r ch02_random_sampling_015}
 take <- sample(seq(nrow(iris)), size = 15)
 take
 
@@ -283,7 +287,7 @@ iris[take, ]
 `slice_sample()`. I set the random number generator seed to make the
 results reproducible.
 
-```{r }
+```{r ch02_random_sampling_016}
 set.seed(1000)
 s <- iris |> 
   slice_sample(n = 15)
@@ -307,7 +311,7 @@ each. This can be achieved by first grouping the data by species and
 then sampling a number of flowers from each group.
 
 
-```{r }
+```{r ch02_stratified_sampling_017}
 set.seed(1000)
 
 s2 <- iris |> 
@@ -359,7 +363,7 @@ We can use an interactive 3-d plot (from package `plotly`) to look at
 three of the four dimensions of the iris dataset. Note that it is hard
 to visualize more than 3 dimensions.
 
-```{r eval = knitr::is_html_output()}
+```{r ch02_principal_components_ana_018, eval = knitr::is_html_output()}
 plotly::plot_ly(iris, 
                 x = ~Sepal.Length, 
                 y = ~Petal.Length, 
@@ -368,7 +372,7 @@ plotly::plot_ly(iris,
   plotly::add_markers()
 ```
 
-```{r eval = !knitr::is_html_output(), echo=FALSE, results='asis'}
+```{r ch02_principal_components_ana_019, eval = !knitr::is_html_output(), echo=FALSE, results='asis'}
 cat('_The resulting interactive plot can be seen in the [online version of this book.](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/book/data.html#dimensionality-reduction)_')
 ```
 
@@ -377,7 +381,7 @@ function `prcomp()`. We select all numeric columns (by unselecting the
 species column) and convert the tibble into a matrix before the
 calculation.
 
-```{r }
+```{r ch02_principal_components_ana_020}
 pc <- iris |> 
   select(-Species) |> 
   as.matrix() |> 
@@ -391,7 +395,7 @@ function for the result of the `prcomp` function visualizes how much
 variability in the data is explained by each additional principal
 component.
 
-```{r }
+```{r ch02_principal_components_ana_021}
 plot(pc, type = "line")
 ```
 
@@ -401,7 +405,7 @@ variability in the iris dataset.
 To find out what information is stored in the object `pc`, we can
 inspect the raw object (display *str*ucture).
 
-```{r }
+```{r ch02_principal_components_ana_022}
 str(pc)
 ```
 
@@ -412,7 +416,7 @@ add the species column from the original dataset back (since the rows
 are in the same order), and then display the data projected on the first
 two principal components.
 
-```{r }
+```{r ch02_principal_components_ana_023}
 iris_projected <- as_tibble(pc$x) |> 
   add_column(Species = iris$Species)
 
@@ -425,7 +429,7 @@ close together in the original 4-dimensional space. Since the first
 principal component represents most of the variability, we can also show
 the data projected only on PC1.
 
-```{r }
+```{r ch02_principal_components_ana_024}
 ggplot(iris_projected, 
   aes(x = PC1, y = 0, color = Species)) + 
   geom_point() +
@@ -443,14 +447,14 @@ called a [biplot](https://en.wikipedia.org/wiki/Biplot). If the arrows
 (original axes) align roughly with the axes of the projection, then they
 are correlated (linearly dependent).
 
-```{r message=FALSE}
+```{r ch02_principal_components_ana_025, message=FALSE}
 library(factoextra)
 fviz_pca(pc)
 ```
 
 We can also display only the old and new axes.
 
-```{r }
+```{r ch02_principal_components_ana_026}
 fviz_pca_var(pc)
 ```
 
@@ -477,7 +481,7 @@ PCA.
 First, we calculate a distance matrix (Euclidean distances) from the 4-d
 space of the iris dataset.
 
-```{r }
+```{r ch02_multi_dimensional_scalin_027}
 d <- iris |> 
   select(-Species) |> 
   dist()
@@ -487,7 +491,7 @@ Metric (classic) MDS tries to construct a space where points with lower
 distances are placed closer together. We project the data represented by
 a distance matrix on `k = 2` dimensions.
 
-```{r }
+```{r ch02_multi_dimensional_scalin_028}
 fit <- cmdscale(d, k = 2)
 colnames(fit) <- c("comp1", "comp2")
 fit <- as_tibble(fit) |> 
@@ -522,7 +526,7 @@ representation. Popular methods are:
   embedding the 4-dimensional iris data using tsne. The embedding algorithm 
   requires unique data points.
   
-  ```{r }
+  ```{r ch02_embeddings_nonlinear_dim_029 }
   iris_distinct <- iris |> distinct(Sepal.Length, Sepal.Width, 
                                     Petal.Length, Petal.Width, 
                                     .keep_all = TRUE)
@@ -571,7 +575,7 @@ us an idea how we should group the continuous values into a set of
 discrete values. A histogram visualizes the distribution of a single
 continuous feature.
 
-```{r }
+```{r ch02_discretization_030}
 ggplot(iris, aes(x = Petal.Width)) + 
   geom_histogram(binwidth = .2)
 ```
@@ -581,7 +585,7 @@ width. The R function `cut()` performs equal interval width
 discretization creating a vector of type `factor` where each level
 represents an interval.
 
-```{r }
+```{r ch02_discretization_031}
 iris |> 
   pull(Sepal.Width) |> 
   cut(breaks = 3)
@@ -593,7 +597,7 @@ packages. We use here the implementation in package `arules` and
 visualize the results as histograms with blue lines to separate
 intervals assigned to each discrete value.
 
-```{r }
+```{r ch02_discretization_032}
 library(arules)
 iris |> pull(Petal.Width) |> 
   discretize(method = "interval", breaks = 3)
@@ -603,7 +607,7 @@ To show the differences between the methods, we use the three
 discretization methods and draw blue lines in the histogram to show
 how they cut the data.
 
-```{r }
+```{r ch02_discretization_033}
 ggplot(iris, aes(Petal.Width)) + geom_histogram(binwidth = .2) +
   geom_vline(
       xintercept = iris |> 
@@ -653,14 +657,14 @@ R-base provides the function `scale()` to standardize the columns in a data.fram
 make one It mutates all numeric columns using an anonymous function
 that calculates the z-score. 
 
-```{r }
+```{r ch02_variable_transformation_034}
 scale_numeric <- function(x) 
   x |> 
   mutate(across(where(is.numeric), 
                 function(y) (y - mean(y, na.rm = TRUE)) / sd(y, na.rm = TRUE)))
 ```
 
-```{r }
+```{r ch02_variable_transformation_035}
 iris.scaled <- iris |> 
   scale_numeric()
 iris.scaled
@@ -709,7 +713,7 @@ To avoid
 one feature to dominate the distance calculation, scaled data is
 typically used. We select the first 5 flowers for this example.
 
-```{r }
+```{r ch02_minkowski_distances_036}
 iris_sample <- iris.scaled |> 
   select(-Species) |> 
   slice(1:5)
@@ -719,7 +723,7 @@ iris_sample
 Different types of Minkowski distance matrices between the first 5
 flowers can be calculated using `dist()`.
 
-```{r }
+```{r ch02_minkowski_distances_037}
 dist(iris_sample, method = "euclidean")
 dist(iris_sample, method = "manhattan")
 dist(iris_sample, method = "maximum")
@@ -733,7 +737,7 @@ We see that only the lower triangle of the distance matrices are stored
 Binary data can be encodes as `0` and `1` (numeric) or `TRUE` and
 `FALSE` (logical).
 
-```{r }
+```{r ch02_distances_for_binary_dat_038}
 b <- rbind(
   c(0,0,0,1,1,1,1,0,0,1),
   c(0,0,1,1,1,0,0,1,0,0)
@@ -751,7 +755,7 @@ is the number of mismatches between two binary vectors. For 0-1 data
 this is equivalent to the Manhattan distance and also the squared
 Euclidean distance.
 
-```{r }
+```{r ch02_hamming_distance_039}
 dist(b, method = "manhattan")
 dist(b, method = "euclidean")^2
 ```
@@ -762,7 +766,7 @@ The [Jaccard index](https://en.wikipedia.org/wiki/Jaccard_index) is a
 similarity measure that focuses on matching 1s. R converts the
 similarity into a dissimilarity using $d_{J} = 1 - s_{J}$.
 
-```{r }
+```{r ch02_jaccard_index_040}
 dist(b, method = "binary")
 ```
 
@@ -771,7 +775,7 @@ dist(b, method = "binary")
 Most distance measures work only on numeric data. Often, we have a
 mixture of numbers and nominal or ordinal features like this data:
 
-```{r }
+```{r ch02_distances_for_mixed_data_041}
 people <- tibble(
   height = c(      160,    185,    170),
   weight = c(       52,     90,     75),
@@ -783,7 +787,7 @@ people
 It is important that nominal features are stored as factors and not
 character (`<chr>`).
 
-```{r }
+```{r ch02_distances_for_mixed_data_042}
 people <- people |> 
   mutate(across(where(is.character), factor))
 people
@@ -796,7 +800,7 @@ calculating the appropriate similarity for each feature and then
 aggregating them into a single measure. The package `proxy` implements
 Gower's coefficient converted into a distance.
 
-```{r }
+```{r ch02_gower_s_coefficient_043}
 library(proxy)
 d_Gower <- dist(people, method = "Gower")
 d_Gower
@@ -815,7 +819,7 @@ measure.
 
 We use package `caret` to create dummy variables.
 
-```{r }
+```{r ch02_using_euclidean_distance_044}
 library(caret)
 data_dummy <- dummyVars(~., people) |> 
   predict(people)
@@ -826,7 +830,7 @@ Note that feature sex has now two columns. If we want that height,
 weight and sex have the same influence on the distance measure, then we
 need to weight the sex columns by 1/2 after scaling.
 
-```{r }
+```{r ch02_using_euclidean_distance_045}
 weight_matrix <- matrix(c(1, 1, 1/2, 1/2), 
                         ncol = 4, 
                         nrow = nrow(data_dummy), 
@@ -841,7 +845,7 @@ The distance using dummy variables is consistent with Gower's distance.
 However, note that Gower's distance is scaled between 0 and 1 while the
 Euclidean distance is not.
 
-```{r }
+```{r ch02_using_euclidean_distance_046}
 ggplot(tibble(d_dummy, d_Gower), aes(x = d_dummy, y = d_Gower)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE)
@@ -852,7 +856,7 @@ ggplot(tibble(d_dummy, d_Gower), aes(x = d_dummy, y = d_Gower)) +
 The package `proxy` implements a wide array of proximity measures
 (similarity measures are converted into distances).
 
-```{r }
+```{r ch02_more_proximity_measures_047}
 library(proxy)
 pr_DB$get_entry_names()
 ```
@@ -871,7 +875,7 @@ The R package **palmerpenguins** contains measurements for penguin of different
 species from the Palmer Archipelago, Antarctica. Install the package.
 It provides a CSV file which can be read in the following way:
 
-```{r }
+```{r ch02_exercises_048}
 library("palmerpenguins")
 penguins <- read_csv(path_to_file("penguins.csv"))
 head(penguins)
@@ -898,11 +902,7 @@ comparison. Include readable code, results, and a knitted report.
 
 ## Chapter Summary
 
-Data preparation starts by understanding attribute types and checking data
-quality. Sampling and transformations can prepare data for analysis, while
-dimensionality reduction and feature selection reduce its representation.
-Scaling and an appropriate distance measure matter whenever methods compare
-observations by their features.
+Data mining data can contain nominal, ordinal, interval, and ratio attributes, and the attribute type guides suitable summaries and methods. Begin by exploring data quality, including missing values, noise, outliers, and inconsistent values. Preprocessing can aggregate observations, draw samples, reduce dimensions, select useful features, discretize numeric variables, and transform or standardize measurements. Similarity and dissimilarity measures quantify how alike observations are: Minkowski distances cover common numeric cases, binary measures distinguish different kinds of matches, and mixed-data measures handle multiple attribute types. Feature scales and the chosen distance measure can strongly affect downstream analyses.
 
 ## Key Terms
 

@@ -4,6 +4,12 @@ editor_options:
     wrap: 72
 ---
 
+```{r ch07_clean_R, include=FALSE}
+source("clean_R.R")
+source("_common.R")
+source("format_pkgs.R")
+```
+
 # Cluster Analysis
 
 This chapter introduces cluster analysis using k-means, hierarchical clustering,
@@ -31,7 +37,7 @@ the data mining textbook is available online:
 
 ### Packages Used in this Chapter {.unnumbered}
 
-```{r setup_07}
+```{r ch07_packages_used_in_this_ch_001, results='hide', message=FALSE}
 pkgs <- c("cluster", "dbscan", "e1071", "factoextra", "fpc", 
           "GGally", "kernlab", "mclust", "mlbench", "scatterpie", 
           "seriation", "tidyverse")
@@ -39,9 +45,7 @@ pkgs <- c("cluster", "dbscan", "e1071", "factoextra", "fpc",
 pak::pkg_install(pkgs)
 ```
 
-```{r setup_07-2, include=FALSE}
-source("_common.R")
-source("format_pkgs.R")
+```{r ch07_packages_used_in_this_ch_002, include=FALSE}
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
@@ -64,14 +68,14 @@ Algorithms](https://mhahsler.github.io/Introduction_to_Data_Mining_R_Examples/DM
 
 ### Data Preparation
 
-```{r }
+```{r ch07_data_preparation_003}
 library(tidyverse)
 ```
 
 We use a small, clean toy dataset called Ruspini, which is
 included in the R package **cluster**.
 
-```{r }
+```{r ch07_data_preparation_004}
 data(ruspini, package = "cluster")
 ```
 
@@ -81,7 +85,7 @@ set with well separated clusters. The original dataset has the points
 ordered by group. We can shuffle the data (rows) using `sample_frac`
 which samples by default 100%.
 
-```{r }
+```{r ch07_data_preparation_005}
 ruspini <- as_tibble(ruspini) |> 
   sample_frac()
 ruspini
@@ -89,7 +93,7 @@ ruspini
 
 ### Data cleaning
 
-```{r }
+```{r ch07_data_cleaning_006}
 ggplot(ruspini, aes(x = x, y = y)) + geom_point()
 
 summary(ruspini)
@@ -113,7 +117,7 @@ each column in the data to zero mean and unit standard deviation
 matrix so we implement a function for a single vector and apply it to
 all numeric columns.
 
-```{r }
+```{r ch07_scale_data_007}
 ## I use this till tidyverse implements a scale function
 scale_numeric <- function(x) {
   x |> mutate(across(where(is.numeric), 
@@ -121,7 +125,7 @@ scale_numeric <- function(x) {
 }
 ```
 
-```{r }
+```{r ch07_i_use_this_till_tidyvers_008}
 ruspini_scaled <- ruspini |> 
   scale_numeric()
 summary(ruspini_scaled)
@@ -139,14 +143,14 @@ assumes Euclidean distances. We use $k = 4$ clusters and run the
 algorithm 10 times with random initial centroids. The result with the smallest
 within-cluster sum of squares is returned.
 
-```{r }
+```{r ch07_k_means_009}
 km <- kmeans(ruspini_scaled, centers = 4, nstart = 10)
 km
 ```
 
 `km` is an R object implemented as a list. 
 
-```{r}
+```{r ch07_k_means_010}
 str(km)
 ```
 
@@ -155,7 +159,7 @@ containing the cluster assignment for each data row and can be accessed
 using `km$cluster`. I add the cluster assignment as a column to the
 original dataset (I make it a factor since it represents a nominal label).
 
-```{r }
+```{r ch07_k_means_011}
 ruspini_clustered <- ruspini |> 
   add_column(cluster = factor(km$cluster))
 ruspini_clustered
@@ -168,7 +172,7 @@ Add the centroids to the plot. The centroids are scaled, so we need to unscale t
 to plot them over the original data. The second `geom_points` uses 
 not the original data but specifies the centroids as its dataset.
 
-```{r }
+```{r ch07_k_means_012}
 unscale <- function(x, original_data) {
   if (ncol(x) != ncol(original_data))
     stop("Function needs matching columns!")
@@ -192,7 +196,7 @@ ggplot(ruspini_clustered, aes(x = x, y = y)) +
 The `factoextra` package provides also a good visualization with object labels
 and ellipses for clusters. 
 
-```{r }
+```{r ch07_k_means_013}
 library(factoextra)
 fviz_cluster(km, data = ruspini_scaled, centroids = TRUE, 
              repel = TRUE, ellipse.type = "norm")
@@ -208,7 +212,7 @@ To group the plots by cluster, we have to change the data format to the
 "long"-format using a pivot operation. I use colors to match the
 clusters in the scatter plots.
 
-```{r, fig.dim = c(7, 2)}
+```{r ch07_inspect_clusters_014, fig.dim = c(7, 2)}
 ggplot(pivot_longer(centroids, 
                     cols = c(x, y), 
                     names_to = "feature"),
@@ -224,7 +228,7 @@ You need is to filter the rows corresponding to the cluster index. The
 next example calculates summary statistics and then plots all data
 points of cluster 1.
 
-```{r }
+```{r ch07_extract_a_single_cluster_015}
 cluster1 <- ruspini_clustered |> 
   filter(cluster == 1)
 cluster1
@@ -236,7 +240,7 @@ ggplot(cluster1, aes(x = x, y = y)) + geom_point() +
 
 What happens if we try to cluster with 8 centers?
 
-```{r }
+```{r ch07_extract_a_single_cluster_016}
 fviz_cluster(kmeans(ruspini_scaled, centers = 8), data = ruspini_scaled,
   centroids = TRUE,  geom = "point", ellipse.type = "norm")
 ```
@@ -259,7 +263,7 @@ number of points to cluster.
 
 ### Creating a Dendrogram
 
-```{r }
+```{r ch07_creating_a_dendrogram_017}
 d <- dist(ruspini_scaled)
 ```
 
@@ -269,7 +273,7 @@ The linkage function defines how the distance between two clusters (sets of poin
 is calculated. We specify the complete-link method where the distance between two groups 
 is measured by the distance between the two farthest apart points in the two groups.
 
-```{r }
+```{r ch07_creating_a_dendrogram_018}
 hc <- hclust(d, method = "complete")
 ```
 
@@ -278,13 +282,13 @@ dendrogram object which shows how the objects on the x-axis are successively joi
 when going up along the y-axis. The y-axis represents the distance at which groups of points
 are joined together. The standard plot function displays the dendrogram.
 
-```{r }
+```{r ch07_creating_a_dendrogram_019}
 plot(hc)
 ```
 
 The package `factoextra` provides a ggplot function to plot dendrograms. 
 
-```{r warning=FALSE}
+```{r ch07_creating_a_dendrogram_020, warning=FALSE}
 fviz_dend(hc)
 ```
 
@@ -297,7 +301,7 @@ Partitional clusterings with cluster assignments can be extracted from a dendrog
 by cutting the dendrogram horizontally using `cutree()`. Here we cut it into four parts
 and add the cluster id to the data.
 
-```{r }
+```{r ch07_extracting_a_partitional_021}
 clusters <- cutree(hc, k = 4)
 cluster_complete <- ruspini_scaled |>
   add_column(cluster = factor(clusters))
@@ -306,13 +310,13 @@ cluster_complete
 
 The 4 different clusters can be shown in the dendrogram using different colors.  
 
-```{r warning=FALSE}
+```{r ch07_extracting_a_partitional_022, warning=FALSE}
 fviz_dend(hc, k = 4)
 ```
 
 We can also color in the scatterplot.
 
-```{r}
+```{r ch07_extracting_a_partitional_023}
 ggplot(cluster_complete, aes(x, y, color = cluster)) +
   geom_point()
 ```
@@ -320,7 +324,7 @@ ggplot(cluster_complete, aes(x, y, color = cluster)) +
 The package `factoextra` provides an alternative visualization. Since it needs
 a partition object as the first argument, we create one as a simple list.
 
-```{r }
+```{r ch07_extracting_a_partitional_024}
 fviz_cluster(list(data = ruspini_scaled, 
                   cluster = cutree(hc, k = 4)), 
              geom = "point")
@@ -330,7 +334,7 @@ Here are the results if we use the single-link method to join clusters.
 Single-link measures the distance between two groups by the 
 by the distance between the two closest points from the two groups.
 
-```{r }
+```{r ch07_extracting_a_partitional_025}
 hc_single <- hclust(d, method = "single")
 fviz_dend(hc_single, k = 4)
 
@@ -351,7 +355,7 @@ Spatial Clustering of Applications with Noise." It groups together
 points that are closely packed together and treats points in low-density
 regions as outliers. DBSCAN is implemented in package `dbscan`.
 
-```{r }
+```{r ch07_dbscan_026}
 library(dbscan)
 ```
 
@@ -377,7 +381,7 @@ a low kNN distance are located in a dense area which should become a cluster.
 Points with a large kNN distance are in a low density area and most 
 likely represent outliers and noise.  
 
-```{r }
+```{r ch07_dbscan_parameters_027}
 kNNdistplot(ruspini_scaled, minPts = 4)
 abline(h = .32, col = "red")
 ```
@@ -395,7 +399,7 @@ core points during clustering at the specified parameters.
 
 Clustering with `dbscan()` returns a dbscan object.
 
-```{r }
+```{r ch07_cluster_using_dbscan_028}
 db <- dbscan(ruspini_scaled, eps = .32, minPts = 4)
 db
 
@@ -406,7 +410,7 @@ The `cluster` element is the cluster assignment with cluster labels. The
 special cluster label `0` means that the point is noise and not assigned to a 
 cluster.
 
-```{r }
+```{r ch07_cluster_using_dbscan_029}
 ggplot(ruspini_scaled |> add_column(cluster = factor(db$cluster)),
   aes(x, y, color = cluster)) + geom_point()
 ```
@@ -416,7 +420,7 @@ used to create a ggplot visualization.
 
 
 
-```{r }
+```{r ch07_cluster_using_dbscan_030}
 fviz_cluster(db, ruspini_scaled, geom = "point")
 ```
 
@@ -437,7 +441,7 @@ We will evaluate the k-means clustering from above.
 
 #### Visual Methods
 For data in 2 dimensions, a scatter plot will show if the clusters look right.
-```{r }
+```{r ch07_visual_methods_031}
 ggplot(ruspini_scaled, 
        aes(x, y, color = factor(km$cluster))) + 
   geom_point()
@@ -449,7 +453,7 @@ matrix.
 First, we calculate a distance matrix and 
  inspect the distance matrix between the first 5 objects.
 
-```{r}
+```{r ch07_visual_methods_032}
 d <- dist(ruspini_scaled)
 
 as.matrix(d)[1:5, 1:5]
@@ -460,7 +464,7 @@ Matrix visualizations with reordering are provided in package `seriation`.
 Matrix visualization creates 
 a false-color image where each value in the matrix as a pixel with the color representing the value.
 
-```{r}
+```{r ch07_visual_methods_033}
 library(seriation)
 
 pimage(d, main = "Unordered")
@@ -479,7 +483,7 @@ columns based on cluster labels and adds lines for cluster borders. It also
 presents average distance values above the diagonal to make the structure between clusters
 easier to evaluate.
 
-```{r}
+```{r ch07_visual_methods_034}
 dissplot(d, km$cluster)
 ```
 
@@ -496,7 +500,7 @@ width](https://en.wikipedia.org/wiki/Silhouette_(clustering)). Look at
 A comprehensive set of evaluation metric is calculated by `cluster.stats()` in 
 package `fpc`.
 
-```{r }
+```{r ch07_evaluation_metrics_035}
 # library(fpc)
 fpc::cluster.stats(d, as.integer(km$cluster))
 ```
@@ -519,7 +523,7 @@ Read the man page for `cluster.stats()` for an explanation of all the available 
 
 
 We can compare different clusterings.
-```{r }
+```{r ch07_library_fpc_036}
 sapply(
   list(
     km_4 = km$cluster,
@@ -543,7 +547,7 @@ measures.
 Next, we look at the silhouette using a 
 silhouette plot.
 
-```{r }
+```{r ch07_library_fpc_037}
 library(cluster)
 plot(silhouette(km$cluster, d))
 ```
@@ -554,7 +558,7 @@ new plotting device with `windows()`, `x11()` or `quartz()`.
 
 ggplot visualization using `factoextra`
 
-```{r }
+```{r ch07_library_fpc_038}
 fviz_silhouette(silhouette(km$cluster, d))
 ```
 
@@ -567,7 +571,7 @@ is therefor an important task before we can cluster data. We will apply differen
 to the scaled Ruspini data set.
 
 
-```{r }
+```{r ch07_determining_the_correct_039}
 ggplot(ruspini_scaled, aes(x, y)) + geom_point()
 
 ## We will use different methods and try 1-10 clusters.
@@ -583,7 +587,7 @@ elbow](https://en.wikipedia.org/wiki/Elbow_method_(clustering)) in the
 plot. We use `nstart = 5` to restart k-means 5 times and return the best
 solution.
 
-```{r }
+```{r ch07_elbow_method_within_clus_040}
 WCSS <- sapply(ks, FUN = function(k) {
   kmeans(ruspini_scaled, centers = k, nstart = 5)$tot.withinss
   })
@@ -599,7 +603,7 @@ Another popular method (often preferred for clustering methods starting with a d
 is to plot the average silhouette width for different numbers of clusters and
 look for the maximum in the plot.
 
-```{r }
+```{r ch07_average_silhouette_width_041}
 ASW <- sapply(ks, FUN=function(k) {
   fpc::cluster.stats(d, 
                      kmeans(ruspini_scaled, 
@@ -621,7 +625,7 @@ We can visualize a similarity matrix reordered by cluster labels to visually det
 a good fit for the data.
 Package `seriation` provides a dissimilarity plot to make this easy.
 
-```{r }
+```{r ch07_similarity_matrix_visual_042}
 ggdissplot(d, labels = km$cluster, 
          options = list(main = "k-means with k=4"))
 ```
@@ -636,7 +640,7 @@ the four clusters.
 Next, we look at two examples where the number of clusters
 was misspecified.
 
-```{r }
+```{r ch07_similarity_matrix_visual_043}
 ggdissplot(d, 
          labels = kmeans(ruspini_scaled, centers = 3, nstart = 5)$cluster)
 
@@ -657,7 +661,7 @@ The [Dunn index](https://en.wikipedia.org/wiki/Dunn_index) is another
 internal measure given by the smallest separation between clusters scaled by 
 the largest cluster diameter.
 
-```{r }
+```{r ch07_dunn_index_044}
 DI <- sapply(ks, FUN = function(k) {
   fpc::cluster.stats(d, 
                      kmeans(ruspini_scaled, centers = k, 
@@ -677,7 +681,7 @@ a null model (see `clusGap()`). The default method is to choose the
 smallest k such that its value Gap(k) is not more than 1 standard error
 away from the first local maximum.
 
-```{r }
+```{r ch07_gap_statistic_045}
 library(cluster)
 k <- clusGap(ruspini_scaled, 
              FUN = kmeans,  
@@ -700,7 +704,7 @@ cluster tendency before attempting to cluster the data.
 
 We use again the smiley data.
 
-```{r }
+```{r ch07_clustering_tendency_046}
 library(mlbench)
 shapes <- mlbench.smiley(n = 500, sd1 = 0.1, sd2 = 0.05)$x
 colnames(shapes) <- c("x", "y")
@@ -711,7 +715,7 @@ shapes <- as_tibble(shapes)
 
 The first step is visual inspection using scatter plots.
 
-```{r }
+```{r ch07_scatter_plots_047}
 ggplot(shapes, aes(x = x, y = y)) + geom_point()
 ```
 
@@ -731,7 +735,7 @@ VAT reorders the objects to show potential clustering tendency as a
 block structure (dark blocks along the main diagonal). We scale the data
 before using Euclidean distance.
 
-```{r }
+```{r ch07_visual_analysis_for_clus_048}
 library(seriation)
 
 d_shapes <- dist(scale(shapes))
@@ -742,7 +746,7 @@ iVAT uses the largest distances for all possible paths between two
 objects instead of the direct distances to make the block structure
 better visible.
 
-```{r }
+```{r ch07_visual_analysis_for_clus_049}
 ggiVAT(d_shapes)
 ```
 
@@ -757,7 +761,7 @@ with a simulated dataset drawn from a random uniform distribution (see
 explanation](https://www.datanovia.com/en/lessons/assessing-clustering-tendency/#statistical-methods)).
 A values \>.5 indicates usually a clustering tendency.
 
-```{r }
+```{r ch07_hopkins_statistic_050}
 get_clust_tendency(shapes, n = 10)
 ```
 
@@ -765,14 +769,14 @@ Both plots show a strong cluster structure with 4 clusters.
 
 #### Data Without Clustering Tendency
 
-```{r }
+```{r ch07_data_without_clustering_051}
 data_random <- tibble(x = runif(500), y = runif(500))
 ggplot(data_random, aes(x, y)) + geom_point()
 ```
 
 No point clouds are visible, just noise.
 
-```{r }
+```{r ch07_data_without_clustering_052}
 d_random <- dist(data_random)
 ggVAT(d_random)
 ggiVAT(d_random)
@@ -790,7 +794,7 @@ discretization of the space.
 What happens if we perform k-means on data that has no inherent
 clustering structure?
 
-```{r }
+```{r ch07_k_means_on_data_without_053}
 km <- kmeans(data_random, centers = 4)
 
 random_clustered<- data_random |> 
@@ -811,7 +815,7 @@ class label not provided to the clustering algorithm.
 
 We use an artificial data set with known groups.
 
-```{r }
+```{r ch07_supervised_cluster_evalu_054}
 library(mlbench)
 set.seed(1234)
 shapes <- mlbench.smiley(n = 500, sd1 = 0.1, sd2 = 0.05)
@@ -821,7 +825,7 @@ plot(shapes)
 First, we prepare the data and hide the known class label which we will used 
 for evaluation after clustering.
 
-```{r }
+```{r ch07_supervised_cluster_evalu_055}
 truth <- as.integer(shapes$class)
 shapes <- shapes$x
 colnames(shapes) <- c("x", "y")
@@ -833,13 +837,13 @@ ggplot(shapes, aes(x, y)) + geom_point()
 
 Find optimal number of Clusters for k-means
 
-```{r }
+```{r ch07_supervised_cluster_evalu_056}
 ks <- 2:20
 ```
 
 Use within sum of squares (look for the knee)
 
-```{r }
+```{r ch07_supervised_cluster_evalu_057}
 WCSS <- sapply(ks, FUN = function(k) {
   kmeans(shapes, centers = k, nstart = 10)$tot.withinss
 })
@@ -849,7 +853,7 @@ ggplot(tibble(ks, WCSS), aes(ks, WCSS)) + geom_line()
 
 Looks like it could be 7 clusters?
 
-```{r }
+```{r ch07_supervised_cluster_evalu_058}
 km <- kmeans(shapes, centers = 7, nstart = 10)
 
 ggplot(shapes |> add_column(cluster = factor(km$cluster)), 
@@ -860,14 +864,14 @@ ggplot(shapes |> add_column(cluster = factor(km$cluster)),
 The mouth is an issue for k-means. We could use hierarchical clustering with single-linkage because of the mouth is
 non-convex and chaining may help.
 
-```{r }
+```{r ch07_supervised_cluster_evalu_059}
 d <- dist(shapes)
 hc <- hclust(d, method = "single")
 ```
 
 Find optimal number of clusters
 
-```{r }
+```{r ch07_supervised_cluster_evalu_060}
 ASW <- sapply(ks, FUN = function(k) {
   fpc::cluster.stats(d, cutree(hc, k))$avg.silwidth
 })
@@ -877,7 +881,7 @@ ggplot(tibble(ks, ASW), aes(ks, ASW)) + geom_line()
 
 The maximum is clearly at 4 clusters.
 
-```{r }
+```{r ch07_supervised_cluster_evalu_061}
 hc_4 <- cutree(hc, 4)
 
 ggplot(shapes |> add_column(cluster = factor(hc_4)), 
@@ -898,7 +902,7 @@ and
 `cluster_stats()` computes ARI and VI as comparative measures. I define
 functions for the purity and the entropy of a clustering given the ground truth here:
 
-```{r }
+```{r ch07_supervised_cluster_evalu_062}
 purity <- function(cluster, truth, show_table = FALSE) {
   if (length(cluster) != length(truth))
     stop("Cluster vector and ground truth vectors are not of the same length!")
@@ -937,7 +941,7 @@ entropy <- function(cluster, truth, show_table = FALSE) {
 We calculate the measures and add for comparison two random "clusterings" with
 4 and 6 clusters.
 
-```{r }
+```{r ch07_supervised_cluster_evalu_063}
 random_4 <- sample(1:4, nrow(shapes), replace = TRUE)
 random_6 <- sample(1:6, nrow(shapes), replace = TRUE)
 
@@ -1007,7 +1011,7 @@ distances. **Note:** The medoid is the most central data point in the
 middle of the cluster. PAM is a lot more computationally expensive compared to 
 k-means.
 
-```{r }
+```{r ch07_partitioning_around_medo_064}
 library(cluster)
 
 d <- dist(ruspini_scaled)
@@ -1019,7 +1023,7 @@ p
 
 Extract the clustering and medoids for visualization.
 
-```{r }
+```{r ch07_partitioning_around_medo_065}
 ruspini_clustered <- ruspini_scaled |> 
   add_column(cluster = factor(p$cluster))
 
@@ -1035,7 +1039,7 @@ ggplot(ruspini_clustered, aes(x = x, y = y, color = cluster)) +
 
 
 Alternative visualization using `fviz_cluster()`.
-```{r }
+```{r ch07_partitioning_around_medo_066}
 ## __Note:__ `fviz_cluster` needs the original data.
 fviz_cluster(c(p, list(data = ruspini_scaled)), 
              geom = "point", 
@@ -1044,7 +1048,7 @@ fviz_cluster(c(p, list(data = ruspini_scaled)),
 
 ### Gaussian Mixture Models
 
-```{r }
+```{r ch07_gaussian_mixture_models_067}
 library(mclust)
 ```
 
@@ -1058,7 +1062,7 @@ Bayesian Information Criterion (BIC) to find the number of clusters
 (model selection). BIC uses the likelihood and a penalty term to guard
 against overfitting.
 
-```{r }
+```{r ch07_gaussian_mixture_models_068}
 m <- Mclust(ruspini_scaled)
 summary(m)
 plot(m, what = "classification")
@@ -1066,7 +1070,7 @@ plot(m, what = "classification")
 
 Rerun with a fixed number of 4 clusters
 
-```{r }
+```{r ch07_gaussian_mixture_models_069}
 m <- Mclust(ruspini_scaled, G=4)
 summary(m)
 plot(m, what = "classification")
@@ -1079,7 +1083,7 @@ works by embedding the data points of the partitioning problem into the
 subspace of the k largest eigenvectors of a normalized affinity/kernel
 matrix. Then uses a simple clustering method like k-means.
 
-```{r }
+```{r ch07_spectral_clustering_070}
 library("kernlab")
 
 cluster_spec <- specc(as.matrix(ruspini_scaled), centers = 4)
@@ -1109,7 +1113,7 @@ The [fuzzy clustering](https://en.wikipedia.org/wiki/Fuzzy_clustering)
 version of the k-means clustering problem. Each data point has a degree
 of membership to for each cluster.
 
-```{r }
+```{r ch07_fuzzy_c_means_clustering_071}
 library("e1071")
 
 cluster_cmeans <- cmeans(as.matrix(ruspini_scaled), centers = 4)
@@ -1118,7 +1122,7 @@ cluster_cmeans
 
 Plot membership (shown as small pie charts)
 
-```{r }
+```{r ch07_fuzzy_c_means_clustering_072}
 library("scatterpie")
 ggplot()  +
   geom_scatterpie(
@@ -1135,18 +1139,18 @@ ggplot()  +
 To demonstrate this issue, I will use the unscaled Ruspini dataset and assume that
 we measure x in millimeters and y in meters. I do this by multiplying x by 1000. 
 
-```{r}
+```{r ch07_scale_issues_in_clusteri_073}
 ruspini_scale_issue <- ruspini |> mutate(x = x * 1000)
 summary(ruspini_scale_issue)
 ```
 
 If we cluster the data now, then the algorithm fails!
 
-```{r}
+```{r ch07_scale_issues_in_clusteri_074}
 km <- kmeans(ruspini_scale_issue, centers = 4)
 ```
 
-```{r}
+```{r ch07_scale_issues_in_clusteri_075}
 ruspini_clustered <- ruspini_scale_issue |> 
   add_column(cluster = factor(km$cluster))
 
@@ -1166,13 +1170,13 @@ Most clustering algorithms perform complete assignment (i.e., all data
 points need to be assigned to a cluster). Outliers will affect the
 clustering. 
 
-```{r }
+```{r ch07_outliers_in_clustering_076}
 library(dbscan)
 ```
 
 To show this effect, we add a clear outlier with a very large $x$ value to the Ruspini dataset.
 
-```{r }
+```{r ch07_outliers_in_clustering_077}
 ruspini_outlier <- ruspini |> add_case(x=10000, y=100)
 ggplot(ruspini_outlier, aes(x = x, y = y)) + 
   geom_point()
@@ -1183,7 +1187,7 @@ with an outlier will make the direction of the outlier (in this case $x$)
 the most important.
 
 
-```{r }
+```{r ch07_outliers_in_clustering_078}
 ruspini_scaled_outlier <- ruspini_outlier |> scale_numeric()
 
 km <- kmeans(ruspini_scaled_outlier, centers = 4, nstart = 10)
@@ -1205,7 +1209,7 @@ __But this does not work!__
 
 Here is the result with one additional cluster.
 
-```{r }
+```{r ch07_outliers_in_clustering_079}
 km <- kmeans(ruspini_scaled_outlier, centers = 5, nstart = 10)
 ruspini_scaled_outlier_km <- ruspini_scaled_outlier|>
   add_column(cluster = factor(km$cluster))
@@ -1226,7 +1230,7 @@ shows that the clustering just uses the $y$ axis to cut the data and completely
 ignors $x$.
 
 
-```{r }
+```{r ch07_outliers_in_clustering_080}
 ggplot(ruspini_scaled_outlier_km |> filter(row_number() <= n()-1), aes(x = x, y = y, color = cluster)) + 
   geom_point()
 ```
@@ -1248,7 +1252,7 @@ the single separate point in the scatter plot and as the long tail of
 the smoothed histogram for `x`. Remember, in scaled data, we expect most observations to
 fall in the range $[-3,3]$.
 
-```{r }
+```{r ch07_visual_identification_of_081}
 library("GGally")
 ggpairs(ruspini_outlier, progress = FALSE)
 ```
@@ -1258,7 +1262,7 @@ The x values of regular points are much less than 2500, and we can use this info
 to identify outliers. 
 We can find the row number by  
 
-```{r}
+```{r ch07_visual_identification_of_082}
 which(ruspini_outlier$x > 2500)
 ```
 
@@ -1286,7 +1290,7 @@ the LOF, a local neighborhood size (MinPts in DBSCAN) for density estimation
 needs to be chosen. I use 10 here since I expect my clusters to have each more 
 than 10 points. Note that LOF uses distances, so we need to scale the data first.
 
-```{r }
+```{r ch07_local_outlier_factor_083}
 ruspini_outlier_scaled <- ruspini_outlier |> scale_numeric()
 
 lof <- lof(ruspini_outlier_scaled, minPts= 10)
@@ -1302,7 +1306,7 @@ ggplot(ruspini_outlier_scaled,
 
 Plot the points sorted by increasing LOF and look for a knee.
 
-```{r }
+```{r ch07_local_outlier_factor_084}
 ggplot(tibble(index = seq_len(length(lof)), lof = sort(lof)), 
        aes(index, lof)) +
   geom_line()
@@ -1310,7 +1314,7 @@ ggplot(tibble(index = seq_len(length(lof)), lof = sort(lof)),
 
 We choose here a threshold above 2.
 
-```{r }
+```{r ch07_local_outlier_factor_085}
 ggplot(ruspini_outlier_scaled |> add_column(outlier = lof >= 2), 
        aes(x, y, color = outlier)) +
   geom_point()
@@ -1323,7 +1327,7 @@ To model the regular data, perform clustering on the regular data points
 without outliers. Note that the data needs to be rescaled after the outlier
 is removed. This will remove the scaling issues caused by the outlier.
 
-```{r}
+```{r ch07_local_outlier_factor_086}
 ruspini_scaled_clean <- ruspini_outlier_scaled |> 
   filter(lof < 2) |> 
   select(x, y) |> 
@@ -1351,7 +1355,7 @@ package [outliers](https://cran.r-project.org/package=outliers).
 
 We will again use the Palmer penguin data for the exercises.
 
-```{r }
+```{r ch07_exercises_087}
 library(palmerpenguins)
 head(penguins)
 ```
@@ -1378,12 +1382,7 @@ different choices can reveal different groupings.
 
 ## Chapter Summary
 
-Clustering groups observations according to a chosen representation and
-similarity measure. K-means, hierarchical clustering, and DBSCAN identify
-structure in different ways and require different choices. Scale features when
-their ranges would otherwise dominate distances, assess results with visual and
-quantitative methods, and consider whether the data has meaningful cluster
-tendency before interpreting groups.
+Clustering groups observations without class labels, so the representation, feature scaling, and similarity measure are central choices. K-means forms partitional clusters; agglomerative hierarchical clustering builds a dendrogram that can be cut into groups; DBSCAN identifies dense regions and can label sparse observations as noise. Evaluate structure with visual and quantitative unsupervised measures, investigate the number of clusters, and check whether the data has meaningful cluster tendency before interpreting results. The chapter also surveys PAM, Gaussian mixture models, spectral clustering, deep clustering, and fuzzy C-means. Finally, it examines scale-related problems and outlier detection, including visual methods and Local Outlier Factor.
 
 ## Key Terms
 

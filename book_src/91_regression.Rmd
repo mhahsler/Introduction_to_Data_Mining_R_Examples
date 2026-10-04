@@ -4,6 +4,12 @@ editor_options:
     wrap: 72
 ---
 
+```{r ch91_clean_R, include=FALSE}
+source("clean_R.R")
+source("_common.R")
+source("format_pkgs.R")
+```
+
 # Regression {#appendix_regression}
 
 Regression is an important statistical method that is covered 
@@ -31,15 +37,13 @@ knowledge of descriptive statistics, correlation, and algebra is assumed.
 
 ### Packages Used in this Chapter {.unnumbered}
 
-```{r setup_linear_regression}
-pkgs <- c('lars', 'rpart', 'rpart.plot', 'nnet')
+```{r ch91_packages_used_in_this_ch_001, results='hide', message=FALSE}
+pkgs <- c('lars', 'rpart', 'rpart.plot', 'nnet', 'tidyverse')
   
 pak::pkg_install(pkgs)
 ```
 
-```{r setup_linear_regression2, include=FALSE}
-source("_common.R")
-source("format_pkgs.R")
+```{r ch91_packages_used_in_this_ch_002, include=FALSE}
 all_pkgs <- union(all_pkgs, pkgs)
 ```
 
@@ -99,7 +103,7 @@ We will use the Iris dataset and try to predict
 the `Petal.Width` using the other variables. We first
 load and shuffle data since the flowers in the dataset are in order by species.
 
-```{r}
+```{r ch91_a_first_linear_regressio_003}
 data(iris)
 set.seed(2000) # make the sampling reproducible
 
@@ -110,7 +114,7 @@ plot(x, col=x$Species)
 The Iris data is very clean, so we make the data a little messy by adding a random error
 to each variable and introduce a useless, completely random feature.
 
-```{r}
+```{r ch91_a_first_linear_regressio_004}
 x[,1] <- x[,1] + rnorm(nrow(x))
 x[,2] <- x[,2] + rnorm(nrow(x))
 x[,3] <- x[,3] + rnorm(nrow(x))
@@ -127,7 +131,7 @@ We split the data into training and test data. Since the data is shuffled, we
 effectively perform holdout sampling. This is often not done in 
 statistical applications, but we use the machine learning approach here. 
 
-```{r}
+```{r ch91_a_first_linear_regressio_005}
 train <- x[1:100,]
 test <- x[101:150,]
 ```
@@ -137,7 +141,7 @@ part of the R core package `stats`.
 Like other modeling functions in R, `lm()` uses a formula interface. Here we create a formula
 to predict `Petal.Width` by all other variables other than `Species`.
 
-```{r}
+```{r ch91_a_first_linear_regressio_006}
 model1 <- lm(Petal.Width ~ Sepal.Length
             + Sepal.Width + Petal.Length + useless,
             data = train)
@@ -147,7 +151,7 @@ model1
 The result is a model with the fitted $\beta$ coefficients. More information can 
 be displayed using the summary function. 
 
-```{r}
+```{r ch91_a_first_linear_regressio_007}
 summary(model1)
 ```
 
@@ -171,7 +175,7 @@ not look like a funnel where they are increasing when the fitted values increase
 To check if the residuals are approximately normally distributed,
 the Q-Q plot should be close to the straight diagonal line.
 
-```{r}
+```{r ch91_a_first_linear_regressio_008}
 plot(model1, which = 1:2)
 ```
 
@@ -182,7 +186,7 @@ Here we compare nested linear models. Models are nested when one model's terms
 are a subset of the other's, with the same response and observations. We first
 remove the random `useless` predictor.
 
-```{r}
+```{r ch91_comparing_nested_models_009}
 model2 <- lm(Petal.Width ~ Sepal.Length + 
                Sepal.Width + Petal.Length,
              data = train)
@@ -193,7 +197,7 @@ The next example removes the intercept by adding `-1` to the formula. This
 changes the model assumptions and should only be done when a zero response at
 zero predictors is scientifically appropriate.
 
-```{r}
+```{r ch91_comparing_nested_models_010}
 model3 <- lm(Petal.Width ~ Sepal.Length + 
                Sepal.Width + Petal.Length - 1,
              data = train)
@@ -202,7 +206,7 @@ summary(model3)
 
 Here is a very simple model.
 
-```{r}
+```{r ch91_comparing_nested_models_011}
 model4 <- lm(Petal.Width ~ Petal.Length -1,
              data = train)
 summary(model4)
@@ -214,7 +218,7 @@ Compare only nested models fitted to the same observations. Here, models 1 and
 2 form one nested pair, and models 3 and 4 form another. Models 2 and 3 differ
 in their intercept structure and are not compared with the same test.
 
-```{r}
+```{r ch91_comparing_nested_models_012}
 anova(model1, model2)
 anova(model3, model4)
 ```
@@ -229,7 +233,7 @@ Stepwise variable selection performs backward (or forward) model selection for l
 and uses the smallest AIC ([Akaike information criterion](https://en.wikipedia.org/wiki/Akaike_information_criterion)) to decide 
 what variable to remove and when to stop.
 
-```{r}
+```{r ch91_stepwise_variable_select_013}
 s1 <- step(lm(Petal.Width ~ . -Species, data = train))
 
 summary(s1)
@@ -253,7 +257,7 @@ predictors.
 
 We can create a model with an interaction terms between `Sepal.Length`,  `Sepal.Width` and 
 `Petal.Length`.
-```{r}
+```{r ch91_modeling_with_interactio_014}
 model5 <- lm(Petal.Width ~ Sepal.Length *
                Sepal.Width * Petal.Length,
              data = train)
@@ -270,7 +274,7 @@ held-out data before choosing a model for prediction.
 
 We make predictions for the held-out test set.
 
-```{r}
+```{r ch91_prediction_015}
 test[1:5,]
 
 test[1:5,]$Petal.Width
@@ -282,7 +286,7 @@ The most used error measure for regression is the
 [RMSE](https://en.wikipedia.org/wiki/Root_mean_square_deviation)
 root-mean-square error.
 
-```{r}
+```{r ch91_prediction_016}
 RMSE <- function(predicted, true) mean((predicted-true)^2)^.5
 
 RMSE(predict(model4, test), test$Petal.Width)
@@ -291,7 +295,7 @@ RMSE(predict(model4, test), test$Petal.Width)
 We can also visualize the quality of the prediction using a simple scatter plot of
 predicted vs. actual values.
 
-```{r}
+```{r ch91_prediction_017}
 plot(test[,"Petal.Width"], predict(model4, test),
   xlim=c(0,3), ylim=c(0,3), 
   xlab = "actual", ylab = "predicted",
@@ -311,14 +315,14 @@ called one-hot encoding in machine learning is used for factors
 The first level of factors is automatically used as the reference and
 the other levels are presented as 0-1 dummy variables called contrasts.
 
-```{r}
+```{r ch91_using_nominal_variables_018}
 levels(train$Species)
 ```
 
 `model.matrix()` is used internally to create dummy variables when the design matrix 
 for the regression is created..
 
-```{r}
+```{r ch91_using_nominal_variables_019}
 head(model.matrix(Petal.Width ~ ., data=train))
 ```
 
@@ -331,14 +335,14 @@ function `relevel()` to change which factor is listed first.
 Let us perform model selection using AIC on the training data and then evaluate 
 the final model on the held out test set to estimate the generalization error. 
 
-```{r}
+```{r ch91_using_nominal_variables_020}
 model6 <- step(lm(Petal.Width ~ ., data=train))
 model6
 
 summary(model6)
 ```
 
-```{r}
+```{r ch91_using_nominal_variables_021}
 RMSE(predict(model6, test), test$Petal.Width)
 
 plot(test[,"Petal.Width"], predict(model6, test),
@@ -361,7 +365,7 @@ by estimating a value for each leaf note.
 Regression is always performed by `rpart()` when the response variable 
 is not a `factor()`.
 
-```{r}
+```{r ch91_regression_trees_022}
 library(rpart)
 library(rpart.plot)
 
@@ -377,14 +381,14 @@ by choosing the splits.
 
 Let's evaluate the regression tree by calculating the RMSE.
 
-```{r}
+```{r ch91_regression_trees_023}
 pred <- predict(model7, test)
 RMSE(pred, test$Petal.Width)
 ```
 
 And visualize the quality. 
 
-```{r}
+```{r ch91_regression_trees_024}
 plot(test[,"Petal.Width"], pred,
   xlim = c(0,3), ylim = c(0,3), 
   xlab = "actual", ylab = "predicted",
@@ -411,7 +415,7 @@ An implementation called
 the [elastic net](https://en.wikipedia.org/wiki/Elastic_net_regularization) 
 is available as the function `lars()` in package `lars`.
 
-```{r}
+```{r ch91_regularized_regression_025}
 library(lars)
 ```
 
@@ -419,14 +423,14 @@ We create a design matrix (with dummy variables and interaction terms).
 `lm()` did this automatically for us, but for this `lars()` implementation
 we have to do it manually.
 
-```{r}
+```{r ch91_regularized_regression_026}
 x <- model.matrix(~ . + Sepal.Length*Sepal.Width*Petal.Length ,
   data = train[, -4])
 head(x)
 y <- train[, 4]
 ```
 
-```{r}
+```{r ch91_regularized_regression_027}
 model_lars <- lars(x, y)
 
 plot(model_lars)
@@ -442,7 +446,7 @@ This creates a sequence of nested models where one variable is added at a time.
 To select the best model [Mallows's Cp statistic](https://en.wikipedia.org/wiki/Mallows's_Cp)
 can be used.
 
-```{r}
+```{r ch91_regularized_regression_028}
 plot(model_lars, plottype = "Cp")
 
 best <- which.min(model_lars$Cp)
@@ -454,27 +458,27 @@ The variables that are not selected have a $\beta$ coefficient of 0.
 To make predictions with this model, we first have to convert the test data 
 into a design matrix with the dummy variables and interaction terms.  
 
-```{r}
+```{r ch91_regularized_regression_029}
 x_test <- model.matrix(~ . + Sepal.Length*Sepal.Width*Petal.Length,
   data = test[, -4])
 head(x_test)
 ```
 Now we can compute the predictions.
 
-```{r}
+```{r ch91_regularized_regression_030}
 predict(model_lars, x_test[1:5,], s = best)
 ```
 
 The prediction is the `fit` element. We can calculate the RMSE.
 
-```{r}
+```{r ch91_regularized_regression_031}
 pred <- predict(model_lars, x_test, s = best)$fit
 RMSE(pred, test$Petal.Width)
 ```
 
 And visualize the prediction.
 
-```{r}
+```{r ch91_regularized_regression_032}
 plot(test[,"Petal.Width"], 
      pred,
      xlim=c(0,3), ylim=c(0,3), 
@@ -495,21 +499,21 @@ with typically a linear final layer.
 We will create a network using a single hidden layer 
 with 3 neurons (a manually tuned hyper parameter) and a linear output layer (set via `linout`).
 
-```{r}
+```{r ch91_anns_033}
 library(nnet)
 
 model_nnet <- nnet(Petal.Width ~ ., data = train, size = 3, linout = TRUE)
 model_nnet
 ```
 
-```{r}
+```{r ch91_anns_034}
 pred <- predict(model_nnet, test)
 RMSE(pred, test$Petal.Width)
 ```
 
 And visualize the quality. 
 
-```{r}
+```{r ch91_anns_035}
 plot(test[,"Petal.Width"], pred,
   xlim = c(0,3), ylim = c(0,3), 
   xlab = "actual", ylab = "predicted",
@@ -535,7 +539,7 @@ there was no need for scaling.
 
 We will again use the Palmer penguin data for the exercises.
 
-```{r }
+```{r ch91_exercises_036}
 library(palmerpenguins)
 head(penguins)
 ```
@@ -548,7 +552,9 @@ Create an R markdown document that performs the following:
 3. What variables are significant, what are not?
 4. Use stepwise variable selection to remove unnecessary variables. 
 5. Predict the weight for the following new penguin:
-   ```{r }
+   ```{r ch91_exercises_037 }
+   library("tibble")
+   
    new_penguin <- tibble(
      species = factor("Adelie", 
        levels = c("Adelie", "Chinstrap", "Gentoo")),
@@ -575,12 +581,7 @@ prediction quality on data not used to fit or select the model.
 
 ## Chapter Summary
 
-Regression predicts a numeric response from one or more features. Linear models
-provide interpretable coefficients and can incorporate categorical predictors
-and interactions. Compare candidate models carefully, check their assumptions,
-and evaluate predictions on data not used to fit or select the model.
-Regression trees and regularization offer alternatives when a simple linear
-model is not adequate.
+Regression predicts a numeric response from one or more explanatory variables. The chapter builds a linear model, interprets coefficients, compares nested models, and demonstrates stepwise variable selection and interaction terms. It shows how to generate predictions, work with nominal predictors, and assess models on data not used for fitting or selection. When ordinary linear regression is not suitable, regression trees, regularized regression, and artificial neural networks offer alternatives; other regression approaches are also surveyed. Model assumptions, complexity, and evaluation data should guide comparisons.
 
 ## Key Terms
 
