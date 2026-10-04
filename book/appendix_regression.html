@@ -7,7 +7,7 @@
 <title>B Regression | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
 <meta name="description" content="Regression is an important statistical method that is covered the freely available Appendix D of the data mining textbook. In this extra chapter, we introduce the regression problem and multiple...">
-<meta name="generator" content="bookdown 0.44 with bs4_book()">
+<meta name="generator" content="bookdown 0.48 with bs4_book()">
 <meta property="og:title" content="B Regression | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -106,94 +106,115 @@ of the data mining textbook.</p>
 and multiple linear regression. In addition,
 alternative models like regression trees and regularized regression
 are discussed.</p>
+<div id="learning-objectives-8" class="section level2" number="9.1">
+<h2>
+<span class="header-section-number">B.1</span> Learning Objectives<a class="anchor" aria-label="anchor" href="#learning-objectives-8"><i class="fas fa-link"></i></a>
+</h2>
+<p>After this chapter, you should be able to:</p>
+<ul>
+<li>fit and interpret a multiple linear regression model;</li>
+<li>compare nested models and assess interactions and categorical predictors;</li>
+<li>generate predictions and explain their uncertainty and limitations; and</li>
+<li>compare linear regression with tree-based and regularized alternatives.</li>
+</ul>
+</div>
+<div id="prerequisites-8" class="section level2" number="9.2">
+<h2>
+<span class="header-section-number">B.2</span> Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites-8"><i class="fas fa-link"></i></a>
+</h2>
+<p>Read <a href="classification-basic-concepts.html#classification-basic-concepts">Classification: Basic Concepts</a> for the train/test distinction. Basic
+knowledge of descriptive statistics, correlation, and algebra is assumed.</p>
 <div id="packages-used-in-this-chapter-7" class="section level3 unnumbered">
 <h3>Packages Used in this Chapter<a class="anchor" aria-label="anchor" href="#packages-used-in-this-chapter-7"><i class="fas fa-link"></i></a>
 </h3>
-<div class="sourceCode" id="cb474"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'lars'</span>, <span class="st">'rpart'</span>, <span class="st">'rpart.plot'</span>, <span class="st">'nnet'</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb471"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'lars'</span>, <span class="st">'rpart'</span>, <span class="st">'rpart.plot'</span>, <span class="st">'nnet'</span>, <span class="st">'tidyverse'</span><span class="op">)</span></span>
 <span>  </span>
-<span><span class="va">pkgs_install</span> <span class="op">&lt;-</span> <span class="va">pkgs</span><span class="op">[</span><span class="op">!</span><span class="op">(</span><span class="va">pkgs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span>,<span class="st">"Package"</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">pkgs_install</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="va">pkgs_install</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html">pkg_install</a></span><span class="op">(</span><span class="va">pkgs</span><span class="op">)</span></span></code></pre></div>
 <p>The packages used for this chapter are:</p>
 <ul>
 <li>
 <em>lars</em> <span class="citation">(<a href="references.html#ref-R-lars">Hastie and Efron 2022</a>)</span>
 </li>
 <li>
-<em>nnet</em> <span class="citation">(<a href="references.html#ref-R-nnet">Ripley 2025</a>)</span>
+<em>nnet</em> <span class="citation">(<a href="references.html#ref-R-nnet">B. Ripley 2026</a>)</span>
 </li>
 <li>
-<em>rpart</em> <span class="citation">(<a href="references.html#ref-R-rpart">Therneau and Atkinson 2025</a>)</span>
+<em>rpart</em> <span class="citation">(<a href="references.html#ref-R-rpart">Therneau and Atkinson 2026</a>)</span>
 </li>
 <li>
-<em>rpart.plot</em> <span class="citation">(<a href="references.html#ref-R-rpart.plot">Milborrow 2025</a>)</span>
+<em>rpart.plot</em> <span class="citation">(<a href="references.html#ref-R-rpart.plot">Milborrow 2026</a>)</span>
+</li>
+<li>
+<em>tidyverse</em> <span class="citation">(<a href="references.html#ref-R-tidyverse">Wickham 2023</a>)</span>
 </li>
 </ul>
 </div>
-<div id="introduction-1" class="section level2" number="9.1">
+</div>
+<div id="introduction-1" class="section level2" number="9.3">
 <h2>
-<span class="header-section-number">B.1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction-1"><i class="fas fa-link"></i></a>
+<span class="header-section-number">B.3</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction-1"><i class="fas fa-link"></i></a>
 </h2>
 <p>Recall that classification predicts one of a small set of discrete (i.e., nominal) labels (e.g., yes or no,
 small, medium or large).
-Regression is also a supervised learning problem, but the goal is to
-predict the value of a continuous value given a set of predictors.
+Regression is also a supervised learning problem, but its goal is to predict
+a numeric response from a set of predictors.
 We start with the popular linear regression and will later discuss alternative
 regression methods.</p>
-<p>Linear regression models the value of a dependent variable <span class="math inline">\(y\)</span> (also called
-the response) as
-as linear function of independent variables <span class="math inline">\(X_1, X_2, ..., X_p\)</span>
-(also called the regressors, predictors, exogenous variables, explanatory variables,
-or covariates).
-If we use more than one explanatory variable, then we often call this
-multiple or multivariate linear regression.
+<p>Linear regression models a response <span class="math inline">\(y\)</span> as a linear function of predictors
+<span class="math inline">\(X_1, X_2, ..., X_p\)</span> (also called explanatory variables or covariates). With
+multiple predictors, the model is called multiple linear regression.
 The linear regression model is:
-<span class="math display">\[\hat{y}_i = f(\mathbf{x}_i) = \beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip} + \epsilon_i = \beta_0 + \sum_{j = 1}^p{\left(\beta_jx_{ij}\right) + \epsilon_i},\]</span></p>
+<span class="math display">\[y_i = \beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip} + \epsilon_i, \qquad
+\hat{y}_i = \beta_0 + \beta_1 x_{i1} + \dots + \beta_p x_{ip},\]</span></p>
 <p>where <span class="math inline">\(\beta_0\)</span> is the intercept, <span class="math inline">\(\boldsymbol{\beta}\)</span> is a <span class="math inline">\(p+1\)</span>-dimensional parameter
-vector learned from the data, and <span class="math inline">\(\epsilon\)</span> is the error term
-(called the residuals). This is often also written in vector notation as
-<span class="math display">\[\hat{\mathbf{y}} = \mathbf{X} \boldsymbol{\beta} + \epsilon,\]</span>
-where <span class="math inline">\(\hat{\mathbf{y}}\)</span>
-and <span class="math inline">\(\boldsymbol{\beta}\)</span> are vectors and <span class="math inline">\(\mathbf{X}\)</span> is the matrix
-with the covariates (called the design matrix).</p>
+vector learned from the data, and <span class="math inline">\(\epsilon_i\)</span> is the random error term. The
+observed residual is <span class="math inline">\(e_i = y_i - \hat{y}_i\)</span>. In vector notation, the model is
+<span class="math display">\[\mathbf{y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\epsilon},\]</span>
+and its fitted values are
+<span class="math display">\[\hat{\mathbf{y}} = \mathbf{X} \boldsymbol{\beta}.\]</span>
+Here, <span class="math inline">\(\mathbf{X}\)</span> is the design matrix containing the predictors.</p>
 <p>The error that is often minimized in regression problems is the squared error defined
 as:</p>
 <p><span class="math display">\[SE= \sum_i (y_i - f(\mathbf{x}_i))^2\]</span></p>
-<p>The parameter vector is found by minimizing the squared error the training data.</p>
+<p>The parameter vector is estimated by minimizing the sum of squared residuals in
+the training data.</p>
 <p>Linear regression makes several assumptions that should be checked:</p>
 <ul>
 <li>
-<em>Linearity:</em> There is a linear relationship between dependent
-and independent variables.</li>
+<em>Linearity:</em> The conditional mean of the response is linear in the predictors.</li>
 <li>
-<em>Homoscedasticity:</em> The variance of the error (<span class="math inline">\(\epsilon\)</span>)
-does not change (increase) with the predicted value.</li>
+<em>Homoscedasticity:</em> The error variance is constant across fitted values.</li>
 <li>
-<em>Independence of errors:</em> Errors between observations are uncorrelated.</li>
+<em>Independence:</em> Errors are independent across observations, as appropriate
+for the sampling design.</li>
 <li>
-<em>No multicollinearity of predictors:</em> Predictors cannot be
-perfectly correlated or the parameter vector cannot be identified. <em>Note</em>
-that highly correlated predictors lead to unstable results and should be
-avoided using, e.g., variable selection.</li>
+<em>No perfect multicollinearity:</em> No predictor is an exact linear combination
+of other predictors. Strong correlations can make coefficient estimates
+unstable, though they do not always invalidate predictions.</li>
+<li>
+<em>Normal errors:</em> A normal error assumption is used for some small-sample
+confidence intervals and tests; it is not required for least-squares
+coefficient estimation itself.</li>
 </ul>
 </div>
-<div id="a-first-linear-regression-model" class="section level2" number="9.2">
+<div id="a-first-linear-regression-model" class="section level2" number="9.4">
 <h2>
-<span class="header-section-number">B.2</span> A First Linear Regression Model<a class="anchor" aria-label="anchor" href="#a-first-linear-regression-model"><i class="fas fa-link"></i></a>
+<span class="header-section-number">B.4</span> A First Linear Regression Model<a class="anchor" aria-label="anchor" href="#a-first-linear-regression-model"><i class="fas fa-link"></i></a>
 </h2>
 <p>We will use the Iris dataset and try to predict
 the <code>Petal.Width</code> using the other variables. We first
 load and shuffle data since the flowers in the dataset are in order by species.</p>
-<div class="sourceCode" id="cb475"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb472"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span> <span class="co"># make the sampling reproducible</span></span>
 <span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/arules/man/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">)</span>,<span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x</span>, col<span class="op">=</span><span class="va">x</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-428-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/ch91_a_first_linear_regressio_003-1.png" alt="" width="672"></div>
 <p>The Iris data is very clean, so we make the data a little messy by adding a random error
 to each variable and introduce a useless, completely random feature.</p>
-<div class="sourceCode" id="cb476"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb473"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">x</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">x</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
@@ -202,8 +223,8 @@ to each variable and introduce a useless, completely random feature.</p>
 <span>           Species <span class="op">=</span> <span class="va">x</span><span class="op">[</span>,<span class="fl">5</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x</span>, col<span class="op">=</span><span class="va">x</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-429-1.png" width="672"></div>
-<div class="sourceCode" id="cb477"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/ch91_a_first_linear_regressio_004-1.png" alt="" width="672"></div>
+<div class="sourceCode" id="cb474"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">##   Sepal.Length   Sepal.Width     Petal.Length   </span></span>
 <span><span class="co">##  Min.   :2.68   Min.   :0.611   Min.   :-0.713  </span></span>
@@ -237,14 +258,14 @@ to each variable and introduce a useless, completely random feature.</p>
 <p>We split the data into training and test data. Since the data is shuffled, we
 effectively perform holdout sampling. This is often not done in
 statistical applications, but we use the machine learning approach here.</p>
-<div class="sourceCode" id="cb478"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb475"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">train</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>,<span class="op">]</span></span>
 <span><span class="va">test</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="fl">101</span><span class="op">:</span><span class="fl">150</span>,<span class="op">]</span></span></code></pre></div>
 <p>Linear regression is done in R using the <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> (linear model) function which is
 part of the R core package <code>stats</code>.
 Like other modeling functions in R, <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> uses a formula interface. Here we create a formula
 to predict <code>Petal.Width</code> by all other variables other than <code>Species</code>.</p>
-<div class="sourceCode" id="cb479"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb476"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">Sepal.Length</span></span>
 <span>            <span class="op">+</span> <span class="va">Sepal.Width</span> <span class="op">+</span> <span class="va">Petal.Length</span> <span class="op">+</span> <span class="va">useless</span>,</span>
 <span>            data <span class="op">=</span> <span class="va">train</span><span class="op">)</span></span>
@@ -261,7 +282,7 @@ to predict <code>Petal.Width</code> by all other variables other than <code>Spec
 <span><span class="co">##      0.00392</span></span></code></pre></div>
 <p>The result is a model with the fitted <span class="math inline">\(\beta\)</span> coefficients. More information can
 be displayed using the summary function.</p>
-<div class="sourceCode" id="cb480"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb477"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model1</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
@@ -286,37 +307,36 @@ be displayed using the summary function.</p>
 <span><span class="co">## Residual standard error: 0.366 on 95 degrees of freedom</span></span>
 <span><span class="co">## Multiple R-squared:  0.778,  Adjusted R-squared:  0.769 </span></span>
 <span><span class="co">## F-statistic: 83.4 on 4 and 95 DF,  p-value: &lt;2e-16</span></span></code></pre></div>
-<p>The summary shows:</p>
-<ul>
-<li>Which coefficients are significantly different from 0. Here only <code>Petal.Length</code>
-is significant and the coefficient for <code>useless</code> is very close to 0.
-Look at the scatter plot matrix above and see why this is the case.</li>
-<li>R-squared (coefficient of determination): Proportion (in the range <span class="math inline">\([0,1]\)</span>) of the variability of
-the dependent variable explained by the model. It is better to look at the
-adjusted R-square (adjusted for number of dependent variables). Typically,
-an R-squared of greater than <span class="math inline">\(0.7\)</span> is considered good, but this is just a rule of thumb and
-we should rather use a test set for evaluation.</li>
-</ul>
+<p>The summary reports coefficient estimates and tests of whether each coefficient
+is zero, conditional on the other predictors and the model assumptions. Here,
+<code>Petal.Length</code> has a small p-value and the coefficient for <code>useless</code> is close
+to zero. Such tests do not establish that a predictor is causally important,
+and p-values can be optimistic after model selection.</p>
+<p>R-squared (the coefficient of determination) is the proportion of the response
+variation explained by the fitted model on these data. Adjusted R-squared
+accounts for the number of predictors, but neither statistic is a substitute
+for evaluating predictions on held-out data. There is no universal cutoff for
+what counts as a good R-squared.</p>
 <p>Plotting the model produces diagnostic plots (see <code>plot.lm()</code>). For example,
 to check that the error term has a mean of 0 and is homoscedastic,
 the residual vs. predicted value scatter plot
-should have a red line that stays clode to 0 and
+should have a red line that stays close to 0 and
 not look like a funnel where they are increasing when the fitted values increase.
 To check if the residuals are approximately normally distributed,
 the Q-Q plot should be close to the straight diagonal line.</p>
-<div class="sourceCode" id="cb481"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb478"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">model1</span>, which <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-433-1.png" width="672"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-433-2.png" width="672"></p>
+<p><img src="R-Companion-Data-Mining_files/figure-html/ch91_a_first_linear_regressio_008-1.png" alt="" width="672"><img src="R-Companion-Data-Mining_files/figure-html/ch91_a_first_linear_regressio_008-2.png" alt="" width="672"></p>
 <p>In this case, the two plots look fine.</p>
 </div>
-<div id="comparing-nested-models" class="section level2" number="9.3">
+<div id="comparing-nested-models" class="section level2" number="9.5">
 <h2>
-<span class="header-section-number">B.3</span> Comparing Nested Models<a class="anchor" aria-label="anchor" href="#comparing-nested-models"><i class="fas fa-link"></i></a>
+<span class="header-section-number">B.5</span> Comparing Nested Models<a class="anchor" aria-label="anchor" href="#comparing-nested-models"><i class="fas fa-link"></i></a>
 </h2>
-<p>Here we perform model selection to compare several linear models.
-Nested means that all models use a subset of the same set of features.
-We create a simpler model by removing the feature useless from the model above.</p>
-<div class="sourceCode" id="cb482"><pre class="downlit sourceCode r">
+<p>Here we compare nested linear models. Models are nested when one model’s terms
+are a subset of the other’s, with the same response and observations. We first
+remove the random <code>useless</code> predictor.</p>
+<div class="sourceCode" id="cb479"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">Sepal.Length</span> <span class="op">+</span> </span>
 <span>               <span class="va">Sepal.Width</span> <span class="op">+</span> <span class="va">Petal.Length</span>,</span>
 <span>             data <span class="op">=</span> <span class="va">train</span><span class="op">)</span></span>
@@ -343,8 +363,10 @@ We create a simpler model by removing the feature useless from the model above.<
 <span><span class="co">## Residual standard error: 0.365 on 96 degrees of freedom</span></span>
 <span><span class="co">## Multiple R-squared:  0.778,  Adjusted R-squared:  0.771 </span></span>
 <span><span class="co">## F-statistic:  112 on 3 and 96 DF,  p-value: &lt;2e-16</span></span></code></pre></div>
-<p>We can remove the intercept by adding <code>-1</code> to the formula.</p>
-<div class="sourceCode" id="cb483"><pre class="downlit sourceCode r">
+<p>The next example removes the intercept by adding <code>-1</code> to the formula. This
+changes the model assumptions and should only be done when a zero response at
+zero predictors is scientifically appropriate.</p>
+<div class="sourceCode" id="cb480"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">Sepal.Length</span> <span class="op">+</span> </span>
 <span>               <span class="va">Sepal.Width</span> <span class="op">+</span> <span class="va">Petal.Length</span> <span class="op">-</span> <span class="fl">1</span>,</span>
 <span>             data <span class="op">=</span> <span class="va">train</span><span class="op">)</span></span>
@@ -371,7 +393,7 @@ We create a simpler model by removing the feature useless from the model above.<
 <span><span class="co">## Multiple R-squared:  0.938,  Adjusted R-squared:  0.936 </span></span>
 <span><span class="co">## F-statistic:  486 on 3 and 97 DF,  p-value: &lt;2e-16</span></span></code></pre></div>
 <p>Here is a very simple model.</p>
-<div class="sourceCode" id="cb484"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb481"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">Petal.Length</span> <span class="op">-</span><span class="fl">1</span>,</span>
 <span>             data <span class="op">=</span> <span class="va">train</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model4</span><span class="op">)</span></span>
@@ -393,35 +415,40 @@ We create a simpler model by removing the feature useless from the model above.<
 <span><span class="co">## Residual standard error: 0.362 on 99 degrees of freedom</span></span>
 <span><span class="co">## Multiple R-squared:  0.937,  Adjusted R-squared:  0.936 </span></span>
 <span><span class="co">## F-statistic: 1.47e+03 on 1 and 99 DF,  p-value: &lt;2e-16</span></span></code></pre></div>
-<p>We need a statistical test to compare all these nested models. The appropriate test is called
-<a href="https://en.wikipedia.org/wiki/Analysis_of_variance">ANOVA</a> (analysis of variance)
-which is a generalization of the t-test to check if all the treatments
-(i.e., models) have the same effect.
-<strong>Important note:</strong> This only works for <em>nested models.</em> Models are nested only if one model contains all the predictors of the other model.</p>
-<div class="sourceCode" id="cb485"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">model1</span>, <span class="va">model2</span>, <span class="va">model3</span>, <span class="va">model4</span><span class="op">)</span></span>
+<p>For nested linear models, <code><a href="https://rdrr.io/r/stats/anova.html">anova()</a></code> performs a partial F-test of whether the
+additional terms reduce residual error enough to support the larger model.
+Compare only nested models fitted to the same observations. Here, models 1 and
+2 form one nested pair, and models 3 and 4 form another. Models 2 and 3 differ
+in their intercept structure and are not compared with the same test.</p>
+<div class="sourceCode" id="cb482"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">model1</span>, <span class="va">model2</span><span class="op">)</span></span>
 <span><span class="co">## Analysis of Variance Table</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Model 1: Petal.Width ~ Sepal.Length + Sepal.Width + Petal.Length + useless</span></span>
 <span><span class="co">## Model 2: Petal.Width ~ Sepal.Length + Sepal.Width + Petal.Length</span></span>
-<span><span class="co">## Model 3: Petal.Width ~ Sepal.Length + Sepal.Width + Petal.Length - 1</span></span>
-<span><span class="co">## Model 4: Petal.Width ~ Petal.Length - 1</span></span>
 <span><span class="co">##   Res.Df  RSS Df Sum of Sq    F Pr(&gt;F)</span></span>
 <span><span class="co">## 1     95 12.8                         </span></span>
-<span><span class="co">## 2     96 12.8 -1   -0.0016 0.01   0.91</span></span>
-<span><span class="co">## 3     97 12.9 -1   -0.1046 0.78   0.38</span></span>
-<span><span class="co">## 4     99 13.0 -2   -0.1010 0.38   0.69</span></span></code></pre></div>
-<p>Models 1 is not significantly better than model 2. Model 2 is not significantly better than model 3. Model 3 is not significantly better than model 4! Use model 4, the simplest model.
-See <code>anova.lm()</code> for the manual page for ANOVA for linear models.</p>
+<span><span class="co">## 2     96 12.8 -1  -0.00163 0.01   0.91</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">model3</span>, <span class="va">model4</span><span class="op">)</span></span>
+<span><span class="co">## Analysis of Variance Table</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model 1: Petal.Width ~ Sepal.Length + Sepal.Width + Petal.Length - 1</span></span>
+<span><span class="co">## Model 2: Petal.Width ~ Petal.Length - 1</span></span>
+<span><span class="co">##   Res.Df  RSS Df Sum of Sq    F Pr(&gt;F)</span></span>
+<span><span class="co">## 1     97 12.9                         </span></span>
+<span><span class="co">## 2     99 13.0 -2    -0.101 0.38   0.68</span></span></code></pre></div>
+<p>Interpret each test in light of its assumptions and the model purpose; a
+non-significant result does not prove that the smaller model is correct. See
+<code><a href="https://rdrr.io/r/stats/anova.lm.html">?anova.lm</a></code> for details.</p>
 </div>
-<div id="stepwise-variable-selection" class="section level2" number="9.4">
+<div id="stepwise-variable-selection" class="section level2" number="9.6">
 <h2>
-<span class="header-section-number">B.4</span> Stepwise Variable Selection<a class="anchor" aria-label="anchor" href="#stepwise-variable-selection"><i class="fas fa-link"></i></a>
+<span class="header-section-number">B.6</span> Stepwise Variable Selection<a class="anchor" aria-label="anchor" href="#stepwise-variable-selection"><i class="fas fa-link"></i></a>
 </h2>
-<p>Stepwise variable section performs backward (or forward) model selection for linear models
+<p>Stepwise variable selection performs backward (or forward) model selection for linear models
 and uses the smallest AIC (<a href="https://en.wikipedia.org/wiki/Akaike_information_criterion">Akaike information criterion</a>) to decide
 what variable to remove and when to stop.</p>
-<div class="sourceCode" id="cb486"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb483"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/step.html">step</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">.</span> <span class="op">-</span><span class="va">Species</span>, data <span class="op">=</span> <span class="va">train</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## Start:  AIC=-195.9</span></span>
 <span><span class="co">## Petal.Width ~ (Sepal.Length + Sepal.Width + Petal.Length + useless + </span></span>
@@ -481,9 +508,9 @@ what variable to remove and when to stop.</p>
 the one with the smallest AIC (in the first table <code>useless</code>) is removed. It stops
 with a small model that only uses <code>Petal.Length</code>.</p>
 </div>
-<div id="modeling-with-interaction-terms" class="section level2" number="9.5">
+<div id="modeling-with-interaction-terms" class="section level2" number="9.7">
 <h2>
-<span class="header-section-number">B.5</span> Modeling with Interaction Terms<a class="anchor" aria-label="anchor" href="#modeling-with-interaction-terms"><i class="fas fa-link"></i></a>
+<span class="header-section-number">B.7</span> Modeling with Interaction Terms<a class="anchor" aria-label="anchor" href="#modeling-with-interaction-terms"><i class="fas fa-link"></i></a>
 </h2>
 <p>Linear regression models the effect of each predictor separately
 using a <span class="math inline">\(\beta\)</span> coefficient.
@@ -496,19 +523,11 @@ means that a new predictor is created by multiplying the two original
 predictors.</p>
 <p>We can create a model with an interaction terms between <code>Sepal.Length</code>, <code>Sepal.Width</code> and
 <code>Petal.Length</code>.</p>
-<div class="sourceCode" id="cb487"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">model5</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/step.html">step</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">Sepal.Length</span> <span class="op">*</span> </span>
-<span>                    <span class="va">Sepal.Width</span> <span class="op">*</span> <span class="va">Petal.Length</span>,</span>
-<span>             data <span class="op">=</span> <span class="va">train</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">## Start:  AIC=-196.4</span></span>
-<span><span class="co">## Petal.Width ~ Sepal.Length * Sepal.Width * Petal.Length</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##                                         Df Sum of Sq  RSS</span></span>
-<span><span class="co">## &lt;none&gt;                                               11.9</span></span>
-<span><span class="co">## - Sepal.Length:Sepal.Width:Petal.Length  1     0.265 12.2</span></span>
-<span><span class="co">##                                          AIC</span></span>
-<span><span class="co">## &lt;none&gt;                                  -196</span></span>
-<span><span class="co">## - Sepal.Length:Sepal.Width:Petal.Length -196</span></span>
+<div class="sourceCode" id="cb484"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model5</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">Sepal.Length</span> <span class="op">*</span></span>
+<span>               <span class="va">Sepal.Width</span> <span class="op">*</span> <span class="va">Petal.Length</span>,</span>
+<span>             data <span class="op">=</span> <span class="va">train</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model5</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
@@ -545,23 +564,24 @@ predictors.</p>
 <span><span class="co">## Residual standard error: 0.36 on 92 degrees of freedom</span></span>
 <span><span class="co">## Multiple R-squared:  0.792,  Adjusted R-squared:  0.777 </span></span>
 <span><span class="co">## F-statistic: 50.2 on 7 and 92 DF,  p-value: &lt;2e-16</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">model5</span>, <span class="va">model4</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">model2</span>, <span class="va">model5</span><span class="op">)</span></span>
 <span><span class="co">## Analysis of Variance Table</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Model 1: Petal.Width ~ Sepal.Length * Sepal.Width * Petal.Length</span></span>
-<span><span class="co">## Model 2: Petal.Width ~ Petal.Length - 1</span></span>
+<span><span class="co">## Model 1: Petal.Width ~ Sepal.Length + Sepal.Width + Petal.Length</span></span>
+<span><span class="co">## Model 2: Petal.Width ~ Sepal.Length * Sepal.Width * Petal.Length</span></span>
 <span><span class="co">##   Res.Df  RSS Df Sum of Sq    F Pr(&gt;F)</span></span>
-<span><span class="co">## 1     92 11.9                         </span></span>
-<span><span class="co">## 2     99 13.0 -7     -1.01 1.11   0.36</span></span></code></pre></div>
-<p>Some interaction terms are significant in the new model, but ANOVA shows that
-model 5 is not significantly better than model 4</p>
+<span><span class="co">## 1     96 12.8                         </span></span>
+<span><span class="co">## 2     92 11.9  4     0.807 1.55   0.19</span></span></code></pre></div>
+<p>The models are nested, so the ANOVA comparison assesses whether the interaction
+terms improve fit over the main-effects model. Check predictive performance on
+held-out data before choosing a model for prediction.</p>
 </div>
-<div id="prediction" class="section level2" number="9.6">
+<div id="prediction" class="section level2" number="9.8">
 <h2>
-<span class="header-section-number">B.6</span> Prediction<a class="anchor" aria-label="anchor" href="#prediction"><i class="fas fa-link"></i></a>
+<span class="header-section-number">B.8</span> Prediction<a class="anchor" aria-label="anchor" href="#prediction"><i class="fas fa-link"></i></a>
 </h2>
-<p>We preform here a prediction for the held out test set.</p>
-<div class="sourceCode" id="cb488"><pre class="downlit sourceCode r">
+<p>We make predictions for the held-out test set.</p>
+<div class="sourceCode" id="cb485"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span></span>
 <span><span class="co">##     Sepal.Length Sepal.Width Petal.Length Petal.Width</span></span>
 <span><span class="co">## 128        8.017       1.541        3.515         1.8</span></span>
@@ -583,41 +603,41 @@ model 5 is not significantly better than model 4</p>
 <p>The most used error measure for regression is the
 <a href="https://en.wikipedia.org/wiki/Root_mean_square_deviation">RMSE</a>
 root-mean-square error.</p>
-<div class="sourceCode" id="cb489"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb486"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">RMSE</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">predicted</span>, <span class="va">true</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="op">(</span><span class="va">predicted</span><span class="op">-</span><span class="va">true</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">^</span><span class="fl">.5</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/postResample.html">RMSE</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model4</span>, <span class="va">test</span><span class="op">)</span>, <span class="va">test</span><span class="op">$</span><span class="va">Petal.Width</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.3874</span></span></code></pre></div>
 <p>We can also visualize the quality of the prediction using a simple scatter plot of
 predicted vs. actual values.</p>
-<div class="sourceCode" id="cb490"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb487"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model4</span>, <span class="va">test</span><span class="op">)</span>,</span>
 <span>  xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, </span>
 <span>  xlab <span class="op">=</span> <span class="st">"actual"</span>, ylab <span class="op">=</span> <span class="st">"predicted"</span>,</span>
 <span>  main <span class="op">=</span> <span class="st">"Petal.Width"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-442-1.png" width="672"></div>
-<div class="sourceCode" id="cb491"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/ch91_prediction_017-1.png" alt="" width="672"></div>
+<div class="sourceCode" id="cb488"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model4</span>, <span class="va">test</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.8636</span></span></code></pre></div>
 <p>Perfect predictions would be on the red line, the farther they are away,
 the larger the error.</p>
 </div>
-<div id="using-nominal-variables" class="section level2" number="9.7">
+<div id="using-nominal-variables" class="section level2" number="9.9">
 <h2>
-<span class="header-section-number">B.7</span> Using Nominal Variables<a class="anchor" aria-label="anchor" href="#using-nominal-variables"><i class="fas fa-link"></i></a>
+<span class="header-section-number">B.9</span> Using Nominal Variables<a class="anchor" aria-label="anchor" href="#using-nominal-variables"><i class="fas fa-link"></i></a>
 </h2>
 <p><a href="https://en.wikipedia.org/wiki/Dummy_variable_(statistics)">Dummy variables</a> also
 called one-hot encoding in machine learning is used for factors
 (i.e., levels are translated into individual 0-1 variable).
 The first level of factors is automatically used as the reference and
 the other levels are presented as 0-1 dummy variables called contrasts.</p>
-<div class="sourceCode" id="cb492"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb489"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">train</span><span class="op">$</span><span class="va">Species</span><span class="op">)</span></span>
 <span><span class="co">## [1] "setosa"     "versicolor" "virginica"</span></span></code></pre></div>
 <p><code><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix()</a></code> is used internally to create dummy variables when the design matrix
 for the regression is created..</p>
-<div class="sourceCode" id="cb493"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb490"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">.</span>, data<span class="op">=</span><span class="va">train</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">##     (Intercept) Sepal.Length Sepal.Width Petal.Length</span></span>
 <span><span class="co">## 85            1        2.980       1.464        5.227</span></span>
@@ -640,7 +660,7 @@ A simple way is to use the
 function <code><a href="https://rdrr.io/r/stats/relevel.html">relevel()</a></code> to change which factor is listed first.</p>
 <p>Let us perform model selection using AIC on the training data and then evaluate
 the final model on the held out test set to estimate the generalization error.</p>
-<div class="sourceCode" id="cb494"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb491"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model6</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/step.html">step</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">.</span>, data<span class="op">=</span><span class="va">train</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## Start:  AIC=-308.4</span></span>
 <span><span class="co">## Petal.Width ~ Sepal.Length + Sepal.Width + Petal.Length + useless + </span></span>
@@ -712,7 +732,7 @@ the final model on the held out test set to estimate the generalization error.</
 <span><span class="co">## Residual standard error: 0.205 on 96 degrees of freedom</span></span>
 <span><span class="co">## Multiple R-squared:  0.93,   Adjusted R-squared:  0.928 </span></span>
 <span><span class="co">## F-statistic:  427 on 3 and 96 DF,  p-value: &lt;2e-16</span></span></code></pre></div>
-<div class="sourceCode" id="cb495"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb492"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/postResample.html">RMSE</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model6</span>, <span class="va">test</span><span class="op">)</span>, <span class="va">test</span><span class="op">$</span><span class="va">Petal.Width</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.1885</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model6</span>, <span class="va">test</span><span class="op">)</span>,</span>
@@ -720,26 +740,26 @@ the final model on the held out test set to estimate the generalization error.</
 <span>  xlab <span class="op">=</span> <span class="st">"actual"</span>, ylab <span class="op">=</span> <span class="st">"predicted"</span>,</span>
 <span>  main <span class="op">=</span> <span class="st">"Petal.Width"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-446-1.png" width="672"></div>
-<div class="sourceCode" id="cb496"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/ch91_using_nominal_variables_021-1.png" alt="" width="672"></div>
+<div class="sourceCode" id="cb493"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model6</span>, <span class="va">test</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.9696</span></span></code></pre></div>
 <p>We see that the <code>Species</code> variable provides information to improve the regression model.</p>
 </div>
-<div id="alternative-regression-models" class="section level2" number="9.8">
+<div id="alternative-regression-models" class="section level2" number="9.10">
 <h2>
-<span class="header-section-number">B.8</span> Alternative Regression Models<a class="anchor" aria-label="anchor" href="#alternative-regression-models"><i class="fas fa-link"></i></a>
+<span class="header-section-number">B.10</span> Alternative Regression Models<a class="anchor" aria-label="anchor" href="#alternative-regression-models"><i class="fas fa-link"></i></a>
 </h2>
-<div id="regression-trees" class="section level3" number="9.8.1">
+<div id="regression-trees" class="section level3" number="9.10.1">
 <h3>
-<span class="header-section-number">B.8.1</span> Regression Trees<a class="anchor" aria-label="anchor" href="#regression-trees"><i class="fas fa-link"></i></a>
+<span class="header-section-number">B.10.1</span> Regression Trees<a class="anchor" aria-label="anchor" href="#regression-trees"><i class="fas fa-link"></i></a>
 </h3>
 <p>Many models used for classification can also perform regression.
 For example CART implemented in rpart performs regression
 by estimating a value for each leaf note.
 Regression is always performed by <code><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart()</a></code> when the response variable
 is not a <code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code>.</p>
-<div class="sourceCode" id="cb497"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb494"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bethatkinson/rpart">rpart</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.milbo.org/rpart-plot/index.html">rpart.plot</a></span><span class="op">)</span></span>
 <span></span>
@@ -758,33 +778,33 @@ is not a <code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code>.
 <span><span class="co">##     7) Species=virginica 33  2.6010 2.0420 *</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html">rpart.plot</a></span><span class="op">(</span><span class="va">model7</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure">
-<img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-447-1.png" width="672">
+<img src="R-Companion-Data-Mining_files/figure-html/ch91_regression_trees_022-1.png" alt="" width="672">
 The regression tree shows the predicted value in as the top number in the node.
 Also, remember that tree-based models automatically variable selection
 by choosing the splits.</div>
 <p>Let’s evaluate the regression tree by calculating the RMSE.</p>
-<div class="sourceCode" id="cb498"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb495"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model7</span>, <span class="va">test</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/postResample.html">RMSE</a></span><span class="op">(</span><span class="va">pred</span>, <span class="va">test</span><span class="op">$</span><span class="va">Petal.Width</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.182</span></span></code></pre></div>
 <p>And visualize the quality.</p>
-<div class="sourceCode" id="cb499"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb496"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="va">pred</span>,</span>
 <span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, </span>
 <span>  xlab <span class="op">=</span> <span class="st">"actual"</span>, ylab <span class="op">=</span> <span class="st">"predicted"</span>,</span>
 <span>  main <span class="op">=</span> <span class="st">"Petal.Width"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-449-1.png" width="672"></div>
-<div class="sourceCode" id="cb500"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/ch91_regression_trees_024-1.png" alt="" width="672"></div>
+<div class="sourceCode" id="cb497"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="va">pred</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.9717</span></span></code></pre></div>
 <p>The plot and the correlation coefficient indicate that the model is very good.
 In the plot we see an important property of this method which is that it predicts
 exactly the same value when the data falls in the same leaf node.</p>
 </div>
-<div id="regularized-regression" class="section level3" number="9.8.2">
+<div id="regularized-regression" class="section level3" number="9.10.2">
 <h3>
-<span class="header-section-number">B.8.2</span> Regularized Regression<a class="anchor" aria-label="anchor" href="#regularized-regression"><i class="fas fa-link"></i></a>
+<span class="header-section-number">B.10.2</span> Regularized Regression<a class="anchor" aria-label="anchor" href="#regularized-regression"><i class="fas fa-link"></i></a>
 </h3>
 <p><a href="https://en.wikipedia.org/wiki/Lasso_(statistics)">LASSO</a> (least absolute shrinkage and selection operator)
 uses L1 regularization to reduce to perform automatic variable selection.
@@ -796,13 +816,13 @@ parameters used in the regression.
 An implementation called
 the <a href="https://en.wikipedia.org/wiki/Elastic_net_regularization">elastic net</a>
 is available as the function <code><a href="https://rdrr.io/pkg/lars/man/lars.html">lars()</a></code> in package <code>lars</code>.</p>
-<div class="sourceCode" id="cb501"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb498"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://doi.org/10.1214/009053604000000067">lars</a></span><span class="op">)</span></span>
 <span><span class="co">## Loaded lars 1.3</span></span></code></pre></div>
 <p>We create a design matrix (with dummy variables and interaction terms).
 <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> did this automatically for us, but for this <code><a href="https://rdrr.io/pkg/lars/man/lars.html">lars()</a></code> implementation
 we have to do it manually.</p>
-<div class="sourceCode" id="cb502"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb499"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span><span class="op">(</span><span class="op">~</span> <span class="va">.</span> <span class="op">+</span> <span class="va">Sepal.Length</span><span class="op">*</span><span class="va">Sepal.Width</span><span class="op">*</span><span class="va">Petal.Length</span> ,</span>
 <span>  data <span class="op">=</span> <span class="va">train</span><span class="op">[</span>, <span class="op">-</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
@@ -842,12 +862,12 @@ we have to do it manually.</p>
 <span><span class="co">## 143                                 61.30</span></span>
 <span><span class="co">## 142                                137.72</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">train</span><span class="op">[</span>, <span class="fl">4</span><span class="op">]</span></span></code></pre></div>
-<div class="sourceCode" id="cb503"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb500"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model_lars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lars/man/lars.html">lars</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">model_lars</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-452-1.png" width="672"></div>
-<div class="sourceCode" id="cb504"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/ch91_regularized_regression_027-1.png" alt="" width="672"></div>
+<div class="sourceCode" id="cb501"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model_lars</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
@@ -878,10 +898,10 @@ Then <code>Speciesvirginica</code> is added and so on.
 This creates a sequence of nested models where one variable is added at a time.
 To select the best model <a href="https://en.wikipedia.org/wiki/Mallows's_Cp">Mallows’s Cp statistic</a>
 can be used.</p>
-<div class="sourceCode" id="cb505"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb502"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">model_lars</span>, plottype <span class="op">=</span> <span class="st">"Cp"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-453-1.png" width="672"></div>
-<div class="sourceCode" id="cb506"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/ch91_regularized_regression_028-1.png" alt="" width="672"></div>
+<div class="sourceCode" id="cb503"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">best</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.min</a></span><span class="op">(</span><span class="va">model_lars</span><span class="op">$</span><span class="va">Cp</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">model_lars</span>, s <span class="op">=</span> <span class="va">best</span><span class="op">)</span></span>
@@ -910,7 +930,7 @@ can be used.</p>
 <p>The variables that are not selected have a <span class="math inline">\(\beta\)</span> coefficient of 0.</p>
 <p>To make predictions with this model, we first have to convert the test data
 into a design matrix with the dummy variables and interaction terms.</p>
-<div class="sourceCode" id="cb507"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb504"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span><span class="op">(</span><span class="op">~</span> <span class="va">.</span> <span class="op">+</span> <span class="va">Sepal.Length</span><span class="op">*</span><span class="va">Sepal.Width</span><span class="op">*</span><span class="va">Petal.Length</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">test</span><span class="op">[</span>, <span class="op">-</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">x_test</span><span class="op">)</span></span>
@@ -950,7 +970,7 @@ into a design matrix with the dummy variables and interaction terms.</p>
 <span><span class="co">## 8                                   27.10</span></span>
 <span><span class="co">## 58                                 153.31</span></span></code></pre></div>
 <p>Now we can compute the predictions.</p>
-<div class="sourceCode" id="cb508"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb505"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model_lars</span>, <span class="va">x_test</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span>, s <span class="op">=</span> <span class="va">best</span><span class="op">)</span></span>
 <span><span class="co">## $s</span></span>
 <span><span class="co">## 6 </span></span>
@@ -967,34 +987,34 @@ into a design matrix with the dummy variables and interaction terms.</p>
 <span><span class="co">##    128     92     50    134      8 </span></span>
 <span><span class="co">## 1.8237 1.5003 0.2505 1.9300 0.2439</span></span></code></pre></div>
 <p>The prediction is the <code>fit</code> element. We can calculate the RMSE.</p>
-<div class="sourceCode" id="cb509"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb506"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model_lars</span>, <span class="va">x_test</span>, s <span class="op">=</span> <span class="va">best</span><span class="op">)</span><span class="op">$</span><span class="va">fit</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/postResample.html">RMSE</a></span><span class="op">(</span><span class="va">pred</span>, <span class="va">test</span><span class="op">$</span><span class="va">Petal.Width</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.1907</span></span></code></pre></div>
 <p>And visualize the prediction.</p>
-<div class="sourceCode" id="cb510"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb507"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, </span>
 <span>     <span class="va">pred</span>,</span>
 <span>     xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, </span>
 <span>     xlab <span class="op">=</span> <span class="st">"actual"</span>, ylab <span class="op">=</span> <span class="st">"predicted"</span>,</span>
 <span>     main <span class="op">=</span> <span class="st">"Petal.Width"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-457-1.png" width="672"></div>
-<div class="sourceCode" id="cb511"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/ch91_regularized_regression_032-1.png" alt="" width="672"></div>
+<div class="sourceCode" id="cb508"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>,</span>
 <span>    <span class="va">pred</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.9686</span></span></code></pre></div>
 <p>The model shows good predictive power on the test set.</p>
 </div>
-<div id="anns" class="section level3" number="9.8.3">
+<div id="anns" class="section level3" number="9.10.3">
 <h3>
-<span class="header-section-number">B.8.3</span> ANNs<a class="anchor" aria-label="anchor" href="#anns"><i class="fas fa-link"></i></a>
+<span class="header-section-number">B.10.3</span> ANNs<a class="anchor" aria-label="anchor" href="#anns"><i class="fas fa-link"></i></a>
 </h3>
 <p>Regression can be performed using <a href="https://en.wikipedia.org/wiki/Neural_network_(machine_learning)">artificial neural networks</a>
 with typically a linear final layer.
 We will create a network using a single hidden layer
 with 3 neurons (a manually tuned hyper parameter) and a linear output layer (set via <code>linout</code>).</p>
-<div class="sourceCode" id="cb512"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb509"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">nnet</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">model_nnet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/nnet.html">nnet</a></span><span class="op">(</span><span class="va">Petal.Width</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">train</span>, size <span class="op">=</span> <span class="fl">3</span>, linout <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -1017,19 +1037,19 @@ with 3 neurons (a manually tuned hyper parameter) and a linear output layer (set
 <span><span class="co">## inputs: Sepal.Length Sepal.Width Petal.Length useless Speciesversicolor Speciesvirginica </span></span>
 <span><span class="co">## output(s): Petal.Width </span></span>
 <span><span class="co">## options were - linear output units</span></span></code></pre></div>
-<div class="sourceCode" id="cb513"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb510"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">model_nnet</span>, <span class="va">test</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/caret/man/postResample.html">RMSE</a></span><span class="op">(</span><span class="va">pred</span>, <span class="va">test</span><span class="op">$</span><span class="va">Petal.Width</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.2322</span></span></code></pre></div>
 <p>And visualize the quality.</p>
-<div class="sourceCode" id="cb514"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb511"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="va">pred</span>,</span>
 <span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3</span><span class="op">)</span>, </span>
 <span>  xlab <span class="op">=</span> <span class="st">"actual"</span>, ylab <span class="op">=</span> <span class="st">"predicted"</span>,</span>
 <span>  main <span class="op">=</span> <span class="st">"Petal.Width"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-460-1.png" width="672"></div>
-<div class="sourceCode" id="cb515"><pre class="downlit sourceCode r">
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/ch91_anns_035-1.png" alt="" width="672"></div>
+<div class="sourceCode" id="cb512"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">test</span><span class="op">[</span>,<span class="st">"Petal.Width"</span><span class="op">]</span>, <span class="va">pred</span><span class="op">)</span></span>
 <span><span class="co">##        [,1]</span></span>
 <span><span class="co">## [1,] 0.9546</span></span></code></pre></div>
@@ -1038,9 +1058,9 @@ It is very popular to scale all inputs
 to the ranges <span class="math inline">\([0,1]\)</span> or <span class="math inline">\([-1,1]\)</span>. The ranges of the Iris dataset are fine, so
 there was no need for scaling.</p>
 </div>
-<div id="other-types-of-regression" class="section level3" number="9.8.4">
+<div id="other-types-of-regression" class="section level3" number="9.10.4">
 <h3>
-<span class="header-section-number">B.8.4</span> Other Types of Regression<a class="anchor" aria-label="anchor" href="#other-types-of-regression"><i class="fas fa-link"></i></a>
+<span class="header-section-number">B.10.4</span> Other Types of Regression<a class="anchor" aria-label="anchor" href="#other-types-of-regression"><i class="fas fa-link"></i></a>
 </h3>
 <ul>
 <li>Robust regression: robust against violation of assumptions like heteroscedasticity and outliers
@@ -1050,25 +1070,30 @@ there was no need for scaling.</p>
 </ul>
 </div>
 </div>
-<div id="exercises-6" class="section level2" number="9.9">
+<div id="exercises-6" class="section level2" number="9.11">
 <h2>
-<span class="header-section-number">B.9</span> Exercises<a class="anchor" aria-label="anchor" href="#exercises-6"><i class="fas fa-link"></i></a>
+<span class="header-section-number">B.11</span> Exercises<a class="anchor" aria-label="anchor" href="#exercises-6"><i class="fas fa-link"></i></a>
 </h2>
 <p>We will again use the Palmer penguin data for the exercises.</p>
-<div class="sourceCode" id="cb516"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb513"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/">palmerpenguins</a></span><span class="op">)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Attaching package: 'palmerpenguins'</span></span>
+<span><span class="co">## The following objects are masked from 'package:datasets':</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     penguins, penguins_raw</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">penguins</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 6 × 8</span></span>
 <span><span class="co">##   species island    bill_length_mm bill_depth_mm</span></span>
-<span><span class="co">##   &lt;chr&gt;   &lt;chr&gt;              &lt;dbl&gt;         &lt;dbl&gt;</span></span>
+<span><span class="co">##   &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;</span></span>
 <span><span class="co">## 1 Adelie  Torgersen           39.1          18.7</span></span>
 <span><span class="co">## 2 Adelie  Torgersen           39.5          17.4</span></span>
 <span><span class="co">## 3 Adelie  Torgersen           40.3          18  </span></span>
 <span><span class="co">## 4 Adelie  Torgersen           NA            NA  </span></span>
 <span><span class="co">## 5 Adelie  Torgersen           36.7          19.3</span></span>
 <span><span class="co">## 6 Adelie  Torgersen           39.3          20.6</span></span>
-<span><span class="co">## # ℹ 4 more variables: flipper_length_mm &lt;dbl&gt;,</span></span>
-<span><span class="co">## #   body_mass_g &lt;dbl&gt;, sex &lt;chr&gt;, year &lt;dbl&gt;</span></span></code></pre></div>
+<span><span class="co">## # ℹ 4 more variables: flipper_length_mm &lt;int&gt;,</span></span>
+<span><span class="co">## #   body_mass_g &lt;int&gt;, sex &lt;fct&gt;, year &lt;int&gt;</span></span></code></pre></div>
 <p>Create an R markdown document that performs the following:</p>
 <ol style="list-style-type: decimal">
 <li><p>Create a linear regression model to predict the weight
@@ -1078,8 +1103,10 @@ of a penguin (<code>body_mass_g</code>).</p></li>
 <li><p>Use stepwise variable selection to remove unnecessary variables.</p></li>
 <li>
 <p>Predict the weight for the following new penguin:</p>
-<div class="sourceCode" id="cb517"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">new_penguin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb514"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://tibble.tidyverse.org/">"tibble"</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">new_penguin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
 <span>  species <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="st">"Adelie"</span>, </span>
 <span>    levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Adelie"</span>, <span class="st">"Chinstrap"</span>, <span class="st">"Gentoo"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  island <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="st">"Dream"</span>, </span>
@@ -1102,6 +1129,39 @@ of a penguin (<code>body_mass_g</code>).</p></li>
 <li><p>Create a regression tree. Look at the tree and explain what it does.
 Then use the regression tree to predict the weight for the above penguin.</p></li>
 </ol>
+<p><strong>A good answer should</strong> explain the response and predictors, interpret
+coefficients with their units and reference levels, and describe what
+R-squared and the significance results do and do not establish. Explain the
+stepwise selection process, report the prediction for the specified penguin,
+and describe the tree’s splits and prediction. Where possible, assess
+prediction quality on data not used to fit or select the model.</p>
+</div>
+<div id="chapter-summary-8" class="section level2" number="9.12">
+<h2>
+<span class="header-section-number">B.12</span> Chapter Summary<a class="anchor" aria-label="anchor" href="#chapter-summary-8"><i class="fas fa-link"></i></a>
+</h2>
+<p>Regression predicts a numeric response from one or more explanatory variables. The chapter builds a linear model, interprets coefficients, compares nested models, and demonstrates stepwise variable selection and interaction terms. It shows how to generate predictions, work with nominal predictors, and assess models on data not used for fitting or selection. When ordinary linear regression is not suitable, regression trees, regularized regression, and artificial neural networks offer alternatives; other regression approaches are also surveyed. Model assumptions, complexity, and evaluation data should guide comparisons.</p>
+</div>
+<div id="key-terms-8" class="section level2" number="9.13">
+<h2>
+<span class="header-section-number">B.13</span> Key Terms<a class="anchor" aria-label="anchor" href="#key-terms-8"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>
+<strong>Response:</strong> the numeric outcome a regression model predicts.</li>
+<li>
+<strong>Coefficient:</strong> the estimated change in response associated with a predictor,
+holding other model terms fixed.</li>
+<li>
+<strong>Interaction:</strong> a model term allowing the effect of one predictor to depend
+on another predictor.</li>
+<li>
+<strong>Residual:</strong> the difference between an observed response and its fitted
+value.</li>
+<li>
+<strong>Regularization:</strong> a method that constrains model coefficients to reduce
+overfitting.</li>
+</ul>
 </div>
 </div>
   <div class="chapter-nav">
@@ -1110,25 +1170,29 @@ Then use the regression tree to predict the weight for the above penguin.</p></l
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#appendix_regression"><span class="header-section-number">B</span> Regression</a></li>
+<li><a class="nav-link" href="#learning-objectives-8"><span class="header-section-number">B.1</span> Learning Objectives</a></li>
 <li>
-<a class="nav-link" href="#appendix_regression"><span class="header-section-number">B</span> Regression</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#packages-used-in-this-chapter-7">Packages Used in this Chapter</a></li></ul>
+<a class="nav-link" href="#prerequisites-8"><span class="header-section-number">B.2</span> Prerequisites</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#packages-used-in-this-chapter-7">Packages Used in this Chapter</a></li></ul>
 </li>
-<li><a class="nav-link" href="#introduction-1"><span class="header-section-number">B.1</span> Introduction</a></li>
-<li><a class="nav-link" href="#a-first-linear-regression-model"><span class="header-section-number">B.2</span> A First Linear Regression Model</a></li>
-<li><a class="nav-link" href="#comparing-nested-models"><span class="header-section-number">B.3</span> Comparing Nested Models</a></li>
-<li><a class="nav-link" href="#stepwise-variable-selection"><span class="header-section-number">B.4</span> Stepwise Variable Selection</a></li>
-<li><a class="nav-link" href="#modeling-with-interaction-terms"><span class="header-section-number">B.5</span> Modeling with Interaction Terms</a></li>
-<li><a class="nav-link" href="#prediction"><span class="header-section-number">B.6</span> Prediction</a></li>
-<li><a class="nav-link" href="#using-nominal-variables"><span class="header-section-number">B.7</span> Using Nominal Variables</a></li>
+<li><a class="nav-link" href="#introduction-1"><span class="header-section-number">B.3</span> Introduction</a></li>
+<li><a class="nav-link" href="#a-first-linear-regression-model"><span class="header-section-number">B.4</span> A First Linear Regression Model</a></li>
+<li><a class="nav-link" href="#comparing-nested-models"><span class="header-section-number">B.5</span> Comparing Nested Models</a></li>
+<li><a class="nav-link" href="#stepwise-variable-selection"><span class="header-section-number">B.6</span> Stepwise Variable Selection</a></li>
+<li><a class="nav-link" href="#modeling-with-interaction-terms"><span class="header-section-number">B.7</span> Modeling with Interaction Terms</a></li>
+<li><a class="nav-link" href="#prediction"><span class="header-section-number">B.8</span> Prediction</a></li>
+<li><a class="nav-link" href="#using-nominal-variables"><span class="header-section-number">B.9</span> Using Nominal Variables</a></li>
 <li>
-<a class="nav-link" href="#alternative-regression-models"><span class="header-section-number">B.8</span> Alternative Regression Models</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#regression-trees"><span class="header-section-number">B.8.1</span> Regression Trees</a></li>
-<li><a class="nav-link" href="#regularized-regression"><span class="header-section-number">B.8.2</span> Regularized Regression</a></li>
-<li><a class="nav-link" href="#anns"><span class="header-section-number">B.8.3</span> ANNs</a></li>
-<li><a class="nav-link" href="#other-types-of-regression"><span class="header-section-number">B.8.4</span> Other Types of Regression</a></li>
+<a class="nav-link" href="#alternative-regression-models"><span class="header-section-number">B.10</span> Alternative Regression Models</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#regression-trees"><span class="header-section-number">B.10.1</span> Regression Trees</a></li>
+<li><a class="nav-link" href="#regularized-regression"><span class="header-section-number">B.10.2</span> Regularized Regression</a></li>
+<li><a class="nav-link" href="#anns"><span class="header-section-number">B.10.3</span> ANNs</a></li>
+<li><a class="nav-link" href="#other-types-of-regression"><span class="header-section-number">B.10.4</span> Other Types of Regression</a></li>
 </ul>
 </li>
-<li><a class="nav-link" href="#exercises-6"><span class="header-section-number">B.9</span> Exercises</a></li>
+<li><a class="nav-link" href="#exercises-6"><span class="header-section-number">B.11</span> Exercises</a></li>
+<li><a class="nav-link" href="#chapter-summary-8"><span class="header-section-number">B.12</span> Chapter Summary</a></li>
+<li><a class="nav-link" href="#key-terms-8"><span class="header-section-number">B.13</span> Key Terms</a></li>
 </ul>
 
       <div class="book-extra">
@@ -1146,7 +1210,7 @@ Then use the regression tree to predict the weight for the above penguin.</p></l
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-12-08.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2026-10-03.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

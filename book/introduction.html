@@ -7,7 +7,7 @@
 <title>Chapter 1 Introduction | An R Companion for Introduction to Data Mining</title>
 <meta name="author" content="Michael Hahsler">
 <meta name="description" content="Data mining has the goal of finding patterns in large data sets. The popular data mining textbook Introduction to Data Mining (Tan et al. 2017) covers many important aspects of data mining. This...">
-<meta name="generator" content="bookdown 0.44 with bs4_book()">
+<meta name="generator" content="bookdown 0.48 with bs4_book()">
 <meta property="og:title" content="Chapter 1 Introduction | An R Companion for Introduction to Data Mining">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.png">
@@ -131,122 +131,149 @@ clustering results.</p></li>
 <p>Sections with names followed by an asterisk
 contain code examples for methods that are not included in the data
 mining textbook.</p>
-<p>This book assumes that you are
-familiar with the basics of R, how to run R code, and install packages.
-The rest of this chapter will provide an overview and point you to where
-you can learn more about R and the used packages.</p>
-<div id="used-software" class="section level2" number="1.1">
+<p>This book assumes basic programming and statistics knowledge, but no prior R
+experience. This chapter introduces the R basics used throughout the examples
+and points to further resources.</p>
+<div id="learning-objectives" class="section level2" number="1.1">
 <h2>
-<span class="header-section-number">1.1</span> Used Software<a class="anchor" aria-label="anchor" href="#used-software"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.1</span> Learning Objectives<a class="anchor" aria-label="anchor" href="#learning-objectives"><i class="fas fa-link"></i></a>
 </h2>
-<p>To use this book, you need to have the current version of
-<a href="https://cran.r-project.org/">R</a> and <a href="https://posit.co/products/open-source/rstudio/">RStudio
+<p>After this chapter, you should be able to:</p>
+<ul>
+<li>use core R objects and operations to inspect and transform data;</li>
+<li>use tibbles and common <code>tidyverse</code> verbs for basic data manipulation; and</li>
+<li>create a simple visualization with <code>ggplot2</code> and explain the role of its layers.</li>
+</ul>
+</div>
+<div id="prerequisites" class="section level2" number="1.2">
+<h2>
+<span class="header-section-number">1.2</span> Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"><i class="fas fa-link"></i></a>
+</h2>
+<p>No prior R experience is required. Basic familiarity with files, folders, and
+using a computer is helpful. Install R before working through the code examples.</p>
+</div>
+<div id="used-software" class="section level2" number="1.3">
+<h2>
+<span class="header-section-number">1.3</span> Used Software<a class="anchor" aria-label="anchor" href="#used-software"><i class="fas fa-link"></i></a>
+</h2>
+<p>To use this book, install <a href="https://cran.r-project.org/">R</a> version 4.4 or later
+and <a href="https://posit.co/products/open-source/rstudio/">RStudio
 Desktop</a> installed.</p>
-<p>Each book chapter will use a set of packages that must be installed. The
+<p>Each book chapter will use a set of packages that must be installed.
+We use <code>pak</code> as the package manager which needs to be installed via:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>The
 installation code can be found at the beginning of each chapter. Here is
 the code to install the packages used in this chapter:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'tidyverse'</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'tidyverse'</span>, <span class="st">'ggplot2'</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">pkgs_install</span> <span class="op">&lt;-</span> <span class="va">pkgs</span><span class="op">[</span><span class="op">!</span><span class="op">(</span><span class="va">pkgs</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span>,<span class="st">"Package"</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">pkgs_install</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="va">pkgs_install</span><span class="op">)</span></span></code></pre></div>
-<p>The code examples in this book use the R package collection <code>tidyverse</code>
-<span class="citation">(<a href="references.html#ref-R-tidyverse">Wickham 2023b</a>)</span> to manipulate data. Tidyverse also includes the package
-<code>ggplot2</code> <span class="citation">(<a href="references.html#ref-R-ggplot2">Wickham et al. 2025</a>)</span> for visualization. Tidyverse packages make
-working with data in R very convenient. Data analysis and data mining
-reports are typically done by creating
-R Markdown documents. Everything in R is built on top of the
-core R programming language and the packages that are automatically
-installed with R. This is referred to as Base-R.</p>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html">pkg_install</a></span><span class="op">(</span><span class="va">pkgs</span><span class="op">)</span></span></code></pre></div>
+<p>The code examples use the R package collection <code>tidyverse</code> <span class="citation">(<a href="references.html#ref-R-tidyverse">Wickham 2023</a>)</span> to
+manipulate data. It includes <code>ggplot2</code> <span class="citation">(<a href="references.html#ref-R-ggplot2">Wickham et al. 2026</a>)</span> for visualization. Data
+analysis reports can be written as R Markdown documents, combining code,
+results, and explanation. R’s core language and the packages installed with R
+are commonly referred to as base R.</p>
+<p>For supervised modeling examples, this book uses <code>caret</code> for model fitting,
+resampling, tuning, and evaluation. The algorithms themselves are provided by
+specialist R packages. This book teaches the <code>caret</code> workflow; it does not
+provide parallel <code>tidymodels</code> examples. <code>tidymodels</code> is a separate modeling
+framework with its own packages and workflow. See the <a href="https://topepo.github.io/caret/">caret
+documentation</a> and <a href="https://www.tidymodels.org/">tidymodels
+website</a> for their respective guides.</p>
 </div>
-<div id="base-r" class="section level2" number="1.2">
+<div id="base-r" class="section level2" number="1.4">
 <h2>
-<span class="header-section-number">1.2</span> Base-R<a class="anchor" aria-label="anchor" href="#base-r"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.4</span> Base-R<a class="anchor" aria-label="anchor" href="#base-r"><i class="fas fa-link"></i></a>
 </h2>
 <p>Base-R is covered in detail in <a href="https://cran.r-project.org/doc/manuals/r-release/R-intro.html">An Introduction to
 R</a>. The
 most important differences between R and many other programming languages
 like Python are:</p>
 <ul>
-<li>R is a functional programming language (with some extensions).</li>
-<li>R only uses vectors and operations are vectorized. You rarely will see loops.</li>
-<li>R starts indexing into vectors with 1 not 0.</li>
-<li>R uses <code>&lt;-</code> for assignment. Do not use <code>=</code> for assignment.</li>
+<li>R supports functional programming as well as other programming styles.</li>
+<li>R is vector-oriented and many operations work on whole vectors; loops are
+also available when they are useful.</li>
+<li>R indexing starts at 1.</li>
+<li>
+<code>&lt;-</code> is commonly used for assignment. <code>=</code> can also assign values, but is
+usually reserved for naming function arguments.</li>
 </ul>
-<div id="vectors" class="section level3" number="1.2.1">
+<div id="vectors" class="section level3" number="1.4.1">
 <h3>
-<span class="header-section-number">1.2.1</span> Vectors<a class="anchor" aria-label="anchor" href="#vectors"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.4.1</span> Vectors<a class="anchor" aria-label="anchor" href="#vectors"><i class="fas fa-link"></i></a>
 </h3>
-<p>The basic data structure in R is a vector of real numbers called <code>numeric</code>.
-Scalars do not exist, they are just vectors of length 1.</p>
+<p>The basic data structure in R is a vector. A numeric vector stores real
+numbers; a single number is represented as a numeric vector of length 1.</p>
 <p>We can combine values into a vector using the combine function <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>.
 Special values for infinity (<code>Inf</code>) and missing values (<code>NA</code>) can be used.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10.4</span>, <span class="fl">5.6</span>, <span class="cn">Inf</span>, <span class="cn">NA</span>, <span class="fl">21.7</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
 <span><span class="co">## [1] 10.4  5.6  Inf   NA 21.7</span></span></code></pre></div>
 <p>We often use sequences. A simple sequence of integers can be produced using
 the colon operator in the form <code>from:to</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fl">3</span><span class="op">:</span><span class="fl">10</span></span>
 <span><span class="co">## [1]  3  4  5  6  7  8  9 10</span></span></code></pre></div>
 <p>More complicated sequences can be created using <code><a href="https://rdrr.io/r/base/seq.html">seq()</a></code>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">1</span>, length.out <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">y</span></span>
 <span><span class="co">## [1] 0.00 0.25 0.50 0.75 1.00</span></span></code></pre></div>
 </div>
-<div id="vectorized-operations" class="section level3" number="1.2.2">
+<div id="vectorized-operations" class="section level3" number="1.4.2">
 <h3>
-<span class="header-section-number">1.2.2</span> Vectorized Operations<a class="anchor" aria-label="anchor" href="#vectorized-operations"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.4.2</span> Vectorized Operations<a class="anchor" aria-label="anchor" href="#vectorized-operations"><i class="fas fa-link"></i></a>
 </h3>
 <p>Operations are vectorized and applied to each element,
 so loops are typically not necessary in R.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">+</span> <span class="fl">1</span></span>
 <span><span class="co">## [1] 11.4  6.6  Inf   NA 22.7</span></span></code></pre></div>
 <p>Comparisons are also vectorized and are performed element-wise. They
 return a <code>logical</code> vector (R’s name for the datatype Boolean).</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&gt;</span> <span class="va">y</span></span>
 <span><span class="co">## [1] TRUE TRUE TRUE   NA TRUE</span></span></code></pre></div>
 </div>
-<div id="subsetting" class="section level3" number="1.2.3">
+<div id="subsetting" class="section level3" number="1.4.3">
 <h3>
-<span class="header-section-number">1.2.3</span> Subsetting<a class="anchor" aria-label="anchor" href="#subsetting"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.4.3</span> Subsetting<a class="anchor" aria-label="anchor" href="#subsetting"><i class="fas fa-link"></i></a>
 </h3>
 <p>We can select vector elements using the <code>[</code> operator like in other
 programming languages but the index always starts at 1.</p>
 <p>We can select elements 1 through 3 using an index sequence.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
 <span><span class="co">## [1] 10.4  5.6  Inf</span></span></code></pre></div>
 <p>Negative indices remove elements. We can select all but the first element.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span></span>
 <span><span class="co">## [1]  5.6  Inf   NA 21.7</span></span></code></pre></div>
 <p>We can use any function that creates a <code>logical</code> vector for subsetting.
 Here we select all non-missing values using the function <code><a href="https://rdrr.io/r/base/NA.html">is.na()</a></code>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">## [1] FALSE FALSE FALSE  TRUE FALSE</span></span>
 <span><span class="va">x</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">]</span> <span class="co"># select all non-missing values</span></span>
 <span><span class="co">## [1] 10.4  5.6  Inf 21.7</span></span></code></pre></div>
 <p>We can also assign values to a selection. For example, this code gets rid of
 infinite values.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/is.finite.html">is.finite</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
 <span><span class="va">x</span></span>
 <span><span class="co">## [1] 10.4  5.6   NA   NA 21.7</span></span></code></pre></div>
 </div>
-<div id="names" class="section level3" number="1.2.4">
+<div id="names" class="section level3" number="1.4.4">
 <h3>
-<span class="header-section-number">1.2.4</span> Names<a class="anchor" aria-label="anchor" href="#names"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.4.4</span> Names<a class="anchor" aria-label="anchor" href="#names"><i class="fas fa-link"></i></a>
 </h3>
 <p>Another useful thing is that vectors and many other data structures in R support
 names. For example, we can store the count of cars with different colors in the
 following way.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">5</span>, <span class="fl">18</span>, <span class="fl">13</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">counts</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"white"</span>, <span class="st">"silver"</span><span class="op">)</span></span>
 <span></span>
@@ -255,17 +282,17 @@ following way.</p>
 <span><span class="co">##     12      5     18     13</span></span></code></pre></div>
 <p>Names can then be used for subsetting and we do not have to remember what entry
 is associated with what color.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">counts</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"silver"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">##    red silver </span></span>
 <span><span class="co">##      5     13</span></span></code></pre></div>
 </div>
-<div id="lists" class="section level3" number="1.2.5">
+<div id="lists" class="section level3" number="1.4.5">
 <h3>
-<span class="header-section-number">1.2.5</span> Lists<a class="anchor" aria-label="anchor" href="#lists"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.4.5</span> Lists<a class="anchor" aria-label="anchor" href="#lists"><i class="fas fa-link"></i></a>
 </h3>
 <p>Lists can store a sequence of elements of different datatypes.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lst</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Fred"</span>, spouse <span class="op">=</span> <span class="st">"Mary"</span>, no.children <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  child.ages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">7</span>, <span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">lst</span></span>
@@ -281,20 +308,20 @@ is associated with what color.</p>
 <span><span class="co">## $child.ages</span></span>
 <span><span class="co">## [1] 4 7 9</span></span></code></pre></div>
 <p>Elements can be accessed by index or name.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lst</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">## [1] "Mary"</span></span>
 <span><span class="va">lst</span><span class="op">$</span><span class="va">child.ages</span></span>
 <span><span class="co">## [1] 4 7 9</span></span></code></pre></div>
 <p>Many functions in R return a list.</p>
 </div>
-<div id="data-frames" class="section level3" number="1.2.6">
+<div id="data-frames" class="section level3" number="1.4.6">
 <h3>
-<span class="header-section-number">1.2.6</span> Data Frames<a class="anchor" aria-label="anchor" href="#data-frames"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.4.6</span> Data Frames<a class="anchor" aria-label="anchor" href="#data-frames"><i class="fas fa-link"></i></a>
 </h3>
 <p>A data frame looks like a spread sheet and represents a matrix-like structure
 with rows and columns where different columns can contain different data types.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Michael"</span>, <span class="st">"Mark"</span>, <span class="st">"Maggie"</span><span class="op">)</span>, </span>
 <span>                  children <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>, age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">30</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">df</span></span>
@@ -305,7 +332,7 @@ with rows and columns where different columns can contain different data types.<
 <p>Data frames are stored as a list of columns. We can access elements using
 matrix subsetting (missing indices mean the whole row or column) or list
 subsetting. Here are some examples</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span><span class="op">[</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">]</span></span>
 <span><span class="co">## [1] "Michael"</span></span>
 <span><span class="va">df</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span></span>
@@ -314,15 +341,15 @@ subsetting. Here are some examples</p>
 <span><span class="co">## [1] "Michael" "Mark"    "Maggie"</span></span></code></pre></div>
 <p>Data frames are the most important way to represent data for data mining.</p>
 </div>
-<div id="matrices" class="section level3" number="1.2.7">
+<div id="matrices" class="section level3" number="1.4.7">
 <h3>
-<span class="header-section-number">1.2.7</span> Matrices<a class="anchor" aria-label="anchor" href="#matrices"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.4.7</span> Matrices<a class="anchor" aria-label="anchor" href="#matrices"><i class="fas fa-link"></i></a>
 </h3>
 <p>A matrix is similar to a data frame but it only contains values of the same data type.
 Some data mining algorithms require a numeric matrix as the input. The numeric part of
 Data frames can be coerced into a matrix. In the following example we cast the last two columns
 of <code>df</code> into a matrix. Column names are taken from the data frame and we add manually row names.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span></span>
 <span><span class="va">x</span></span>
@@ -333,19 +360,19 @@ of <code>df</code> into a matrix. Column names are taken from the data frame and
 <p>Data type coercion functions in R start with <code>as.</code>. Examples as <code><a href="https://rdrr.io/r/base/logical.html">as.logical()</a></code>,
 <code><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame()</a></code>, <code><a href="https://rdrr.io/r/base/list.html">as.list()</a></code>, etc.</p>
 </div>
-<div id="strings" class="section level3" number="1.2.8">
+<div id="strings" class="section level3" number="1.4.8">
 <h3>
-<span class="header-section-number">1.2.8</span> Strings<a class="anchor" aria-label="anchor" href="#strings"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.4.8</span> Strings<a class="anchor" aria-label="anchor" href="#strings"><i class="fas fa-link"></i></a>
 </h3>
 <p>R uses <code>character</code> vectors where the datatype <code>character</code> represents a string
 and not like in other programming language just a single character.
 R accepts double or single quotation marks to delimit strings.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">string</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Hello"</span>, <span class="st">"Goodbye"</span><span class="op">)</span></span>
 <span><span class="va">string</span></span>
 <span><span class="co">## [1] "Hello"   "Goodbye"</span></span></code></pre></div>
 <p>Strings can be combined using <code><a href="https://rdrr.io/r/base/paste.html">paste()</a></code>.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">string</span>, <span class="st">"World!"</span><span class="op">)</span></span>
 <span><span class="co">## [1] "Hello World!"   "Goodbye World!"</span></span></code></pre></div>
 <p>Note that paste is vectorized and the string <code>"World!"</code> is used twice to
@@ -355,22 +382,22 @@ vector’s length. The special case where one vector has one element is
 particularly often used. We have used it already above in the expression
 <code>x + 1</code> where one is recycled for each element in <code>x</code>.</p>
 </div>
-<div id="objects" class="section level3" number="1.2.9">
+<div id="objects" class="section level3" number="1.4.9">
 <h3>
-<span class="header-section-number">1.2.9</span> Objects<a class="anchor" aria-label="anchor" href="#objects"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.4.9</span> Objects<a class="anchor" aria-label="anchor" href="#objects"><i class="fas fa-link"></i></a>
 </h3>
 <p>Other often used data structures include <code>list</code>, <code>data.frame</code>, <code>matrix</code>,
 and <code>factor</code>. In R, everything is an object. Objects are printed by
 either just using the object’s name or put it explicitly into the
 <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> function.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span></span>
 <span><span class="co">##         children age</span></span>
 <span><span class="co">## Michael        2  40</span></span>
 <span><span class="co">## Mark           0  30</span></span>
 <span><span class="co">## Maggie         2  50</span></span></code></pre></div>
 <p>For many objects, a summary can be created.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">##     children         age    </span></span>
 <span><span class="co">##  Min.   :0.00   Min.   :30  </span></span>
@@ -380,7 +407,7 @@ either just using the object’s name or put it explicitly into the
 <span><span class="co">##  3rd Qu.:2.00   3rd Qu.:45  </span></span>
 <span><span class="co">##  Max.   :2.00   Max.   :50</span></span></code></pre></div>
 <p>Objects have a class.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">## [1] "matrix" "array"</span></span></code></pre></div>
 <p>Some functions are generic, meaning that they do something else
@@ -392,21 +419,21 @@ There also exists a default method. For plot, this method is
 specifying the class with the dot can help finding the documentation.</p>
 <p>It is often useful to know what information it stored in an object.
 <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> returns a humanly readable string representation of the object.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">##  num [1:3, 1:2] 2 0 2 40 30 50</span></span>
 <span><span class="co">##  - attr(*, "dimnames")=List of 2</span></span>
 <span><span class="co">##   ..$ : chr [1:3] "Michael" "Mark" "Maggie"</span></span>
 <span><span class="co">##   ..$ : chr [1:2] "children" "age"</span></span></code></pre></div>
 </div>
-<div id="functions" class="section level3" number="1.2.10">
+<div id="functions" class="section level3" number="1.4.10">
 <h3>
-<span class="header-section-number">1.2.10</span> Functions<a class="anchor" aria-label="anchor" href="#functions"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.4.10</span> Functions<a class="anchor" aria-label="anchor" href="#functions"><i class="fas fa-link"></i></a>
 </h3>
 <p>Functions work like in many other languages. However, they also operate
 vectorized and arguments can be specified positional or by named. An
 increment function can be defined as:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">inc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">by</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span> </span>
 <span>    <span class="va">x</span> <span class="op">+</span> <span class="va">by</span> </span>
 <span>  <span class="op">}</span></span></code></pre></div>
@@ -414,7 +441,7 @@ increment function can be defined as:</p>
 automatically returned by the function. The function can also
 explicitly use <code>return(return_value)</code>.</p>
 <p>Calling the increment function on vector with the numbers 1 through 10.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
 <span><span class="fu">inc</span><span class="op">(</span><span class="va">v</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">##  [1]  3  4  5  6  7  8  9 10 11 12</span></span></code></pre></div>
@@ -423,19 +450,19 @@ implementation.
 R has many built-in functions like <code><a href="https://rdrr.io/r/base/Extremes.html">min()</a></code>, <code><a href="https://rdrr.io/r/base/Extremes.html">max()</a></code>, <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code>, and
 <code><a href="https://rdrr.io/r/base/sum.html">sum()</a></code>.</p>
 </div>
-<div id="plotting" class="section level3" number="1.2.11">
+<div id="plotting" class="section level3" number="1.4.11">
 <h3>
-<span class="header-section-number">1.2.11</span> Plotting<a class="anchor" aria-label="anchor" href="#plotting"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.4.11</span> Plotting<a class="anchor" aria-label="anchor" href="#plotting"><i class="fas fa-link"></i></a>
 </h3>
 <p>Basic plotting in Base-R is done by calling <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code>.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span></code></pre></div>
 <p>Other plot functions are <code><a href="https://rdrr.io/r/graphics/pairs.html">pairs()</a></code>, <code><a href="https://rdrr.io/r/graphics/hist.html">hist()</a></code>, <code><a href="https://rdrr.io/r/graphics/barplot.html">barplot()</a></code>. In this book,
 we will focus on plots created with the ggplot2 package introduced below.</p>
 </div>
-<div id="more-on-r" class="section level3" number="1.2.12">
+<div id="more-on-r" class="section level3" number="1.4.12">
 <h3>
-<span class="header-section-number">1.2.12</span> More on R<a class="anchor" aria-label="anchor" href="#more-on-r"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.4.12</span> More on R<a class="anchor" aria-label="anchor" href="#more-on-r"><i class="fas fa-link"></i></a>
 </h3>
 <p>There is much to learn about R. It is highly recommended to go through
 the official
@@ -445,9 +472,9 @@ There is also a good <a href="https://github.com/rstudio/cheatsheets/blob/main/b
 available.</p>
 </div>
 </div>
-<div id="r-markdown" class="section level2" number="1.3">
+<div id="r-markdown" class="section level2" number="1.5">
 <h2>
-<span class="header-section-number">1.3</span> R Markdown<a class="anchor" aria-label="anchor" href="#r-markdown"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.5</span> R Markdown<a class="anchor" aria-label="anchor" href="#r-markdown"><i class="fas fa-link"></i></a>
 </h2>
 <p>R Markdown is a simple method to include R code inside a text document
 written using markdown syntax. Using R markdown is especially convention to analyze
@@ -464,48 +491,48 @@ into a complete document.</p>
 <a href="https://rmarkdown.rstudio.com/">RStudio’s R Markdown website</a> and in the
 <a href="https://rstudio.github.io/cheatsheets/html/rmarkdown.html">R Markdown Cheatsheet</a>.</p>
 </div>
-<div id="tidyverse" class="section level2" number="1.4">
+<div id="tidyverse" class="section level2" number="1.6">
 <h2>
-<span class="header-section-number">1.4</span> Tidyverse<a class="anchor" aria-label="anchor" href="#tidyverse"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.6</span> Tidyverse<a class="anchor" aria-label="anchor" href="#tidyverse"><i class="fas fa-link"></i></a>
 </h2>
-<p><code>tidyverse</code> <span class="citation">(<a href="references.html#ref-R-tidyverse">Wickham 2023b</a>)</span> is a collection of many useful packages that
+<p><code>tidyverse</code> <span class="citation">(<a href="references.html#ref-R-tidyverse">Wickham 2023</a>)</span> is a collection of many useful packages that
 work well together by sharing design principles and data structures.
-<code>tidyverse</code> also includes <code>ggplot2</code> <span class="citation">(<a href="references.html#ref-R-ggplot2">Wickham et al. 2025</a>)</span> for visualization.</p>
+<code>tidyverse</code> also includes <code>ggplot2</code> <span class="citation">(<a href="references.html#ref-R-ggplot2">Wickham et al. 2026</a>)</span> for visualization.</p>
 <p>In this book, we will typically use</p>
 <ul>
 <li>tidyverse tibbles to replace R’s built-in data.frames,</li>
 <li>the pipe operator <code>|&gt;</code> to chain functions together, and</li>
 <li>data transformation functions like <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code>,
 <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code>, and <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> provided by the tidyverse
-package <code>dplyr</code> <span class="citation">(<a href="references.html#ref-R-dplyr">Wickham et al. 2023</a>)</span>.</li>
+package <code>dplyr</code>.</li>
 </ul>
 <p>A good introduction can be found in the <a href="https://r4ds.hadley.nz/data-transform">Section on Data
 Transformation</a> <span class="citation">(<a href="references.html#ref-Wickham2023">Wickham, Çetinkaya-Rundel, and Grolemund 2023</a>)</span>.</p>
 <p>To use tidyverse, we first have to load the tidyverse meta package.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="co">## ── Attaching core tidyverse packages ──── tidyverse 2.0.0 ──</span></span>
-<span><span class="co">## ✔ dplyr     1.1.4     ✔ readr     2.1.5</span></span>
-<span><span class="co">## ✔ forcats   1.0.0     ✔ stringr   1.5.2</span></span>
-<span><span class="co">## ✔ ggplot2   4.0.0     ✔ tibble    3.3.0</span></span>
-<span><span class="co">## ✔ lubridate 1.9.4     ✔ tidyr     1.3.1</span></span>
-<span><span class="co">## ✔ purrr     1.1.0     </span></span>
+<span><span class="co">## ✔ dplyr     1.2.1     ✔ readr     2.2.0</span></span>
+<span><span class="co">## ✔ forcats   1.0.1     ✔ stringr   1.6.0</span></span>
+<span><span class="co">## ✔ ggplot2   4.0.3     ✔ tibble    3.3.1</span></span>
+<span><span class="co">## ✔ lubridate 1.9.5     ✔ tidyr     1.3.2</span></span>
+<span><span class="co">## ✔ purrr     1.2.2     </span></span>
 <span><span class="co">## ── Conflicts ────────────────────── tidyverse_conflicts() ──</span></span>
 <span><span class="co">## ✖ dplyr::filter() masks stats::filter()</span></span>
 <span><span class="co">## ✖ dplyr::lag()    masks stats::lag()</span></span>
 <span><span class="co">## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</span></span></code></pre></div>
 <p>Conflicts may indicate that base R functionality is changed by
 tidyverse packages.</p>
-<div id="tibbles" class="section level3" number="1.4.1">
+<div id="tibbles" class="section level3" number="1.6.1">
 <h3>
-<span class="header-section-number">1.4.1</span> Tibbles<a class="anchor" aria-label="anchor" href="#tibbles"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.6.1</span> Tibbles<a class="anchor" aria-label="anchor" href="#tibbles"><i class="fas fa-link"></i></a>
 </h3>
 <p>Tibbles are tidyverse’s replacement for R’s data.frame.
 Here is a short example that analyses the vitamin C content of different
 fruits that will get you familiar with the basic syntax.
 We create a tibble with the price in dollars per pound and the
 vitamin C content in milligrams (mg) per pound for five different fruits.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fruit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"mango"</span>, <span class="st">"orange"</span>, <span class="st">"lime"</span><span class="op">)</span>, </span>
 <span>  price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2.5</span>, <span class="fl">2.0</span>, <span class="fl">4.0</span>, <span class="fl">3.5</span>, <span class="fl">2.5</span><span class="op">)</span>, </span>
@@ -523,15 +550,15 @@ vitamin C content in milligrams (mg) per pound for five different fruits.</p>
 <p>Next, we will transform the data to find affordable fruits with
 a high vitamin C content and then visualize the data.</p>
 </div>
-<div id="transformations" class="section level3" number="1.4.2">
+<div id="transformations" class="section level3" number="1.6.2">
 <h3>
-<span class="header-section-number">1.4.2</span> Transformations<a class="anchor" aria-label="anchor" href="#transformations"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.6.2</span> Transformations<a class="anchor" aria-label="anchor" href="#transformations"><i class="fas fa-link"></i></a>
 </h3>
 <p>We can modify the table by adding a column with the vitamin C (in mg)
 that a dollar buys using <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>. Then we filter only rows with
 fruit that provides more than 20 mg per dollar, and finally we arrange the data
 rows by the vitamin C per dollar from largest to smallest.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">affordable_vitamin_c_sources</span> <span class="op">&lt;-</span> <span class="va">fruit</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>vitamin_c_per_dollar <span class="op">=</span> <span class="va">vitamin_c</span> <span class="op">/</span> <span class="va">price</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">vitamin_c_per_dollar</span> <span class="op">&gt;</span> <span class="fl">20</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -556,7 +583,7 @@ while <code>%&gt;%</code> is provided in the extension package <code>magrittr</c
 data and pipes it through three transformation functions. The final
 result is assigned with <code>&lt;-</code> to a variable.</p>
 <p>We can create summary statistics of price using <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code>.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">affordable_vitamin_c_sources</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">price</span><span class="op">)</span>, </span>
 <span>            mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">price</span><span class="op">)</span>, </span>
@@ -568,7 +595,7 @@ result is assigned with <code>&lt;-</code> to a variable.</p>
 <p>We can also calculate statistics for groups by first grouping the data
 with <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code>. Here
 we produce statistics for fruit types.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">affordable_vitamin_c_sources</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">type</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">price</span><span class="op">)</span>, </span>
@@ -581,7 +608,7 @@ we produce statistics for fruit types.</p>
 <span><span class="co">## 2 tropical   2       3   4</span></span></code></pre></div>
 <p>Often, we want to apply the same function to multiple columns. This can
 be achieved using <code>across(columns, function)</code>.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">affordable_vitamin_c_sources</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">price</span>, <span class="va">vitamin_c</span><span class="op">)</span>, <span class="va">mean</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 2</span></span>
@@ -596,9 +623,9 @@ which covers on two pages almost everything you will need and also
 contains contains simple example code that you can take and modify for
 your use case.</p>
 </div>
-<div id="ggplot2" class="section level3" number="1.4.3">
+<div id="ggplot2" class="section level3" number="1.6.3">
 <h3>
-<span class="header-section-number">1.4.3</span> ggplot2<a class="anchor" aria-label="anchor" href="#ggplot2"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.6.3</span> ggplot2<a class="anchor" aria-label="anchor" href="#ggplot2"><i class="fas fa-link"></i></a>
 </h3>
 <p>For visualization, we will use mainly <code>ggplot2</code>. The <em>gg</em> in <code>ggplot2</code>
 stands for <strong>Grammar of Graphics</strong> introduced by <span class="citation">Wilkinson (<a href="references.html#ref-Wilkinson2005">2005</a>)</span>. The
@@ -610,7 +637,7 @@ main idea is that every graph is built from the same basic components:</p>
 </ul>
 <p>The main plotting function is <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code>. The components of the plot
 are combined using the <code>+</code> operator.</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">data</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">...</span>, y <span class="op">=</span> <span class="va">...</span>, color <span class="op">=</span> <span class="va">...</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Since we typically use a Cartesian coordinate system, <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code> uses that
@@ -623,30 +650,52 @@ be found in the <a href="https://r4ds.hadley.nz/data-visualize">Section on Data
 Visualization</a> <span class="citation">(<a href="references.html#ref-Wickham2023">Wickham, Çetinkaya-Rundel, and Grolemund 2023</a>)</span>,
 and very useful is <a href="https://rstudio.github.io/cheatsheets/html/data-visualization.html">RStudio’s Data Visualization Cheatsheet</a>.</p>
 <p>We can visualize our fruit data as a scatter plot.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">price</span>, y <span class="op">=</span> <span class="va">vitamin_c</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-36-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/ch01_ggplot2_036-1.png" alt="" width="672"></div>
 <p>It is easy to add more geoms. For example, we can add a regression line
 using <code>geom_smooth</code> with the method <code>"lm"</code> (linear model). We suppress
 the confidence interval since we only have 3 data points.</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">price</span>, y <span class="op">=</span> <span class="va">vitamin_c</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, se <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">## `geom_smooth()` using formula = 'y ~ x'</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-37-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/ch01_ggplot2_037-1.png" alt="" width="672"></div>
 <p>Alternatively, we can visualize each fruit’s vitamin C content per
 dollar using a bar chart.</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">name</span>, y <span class="op">=</span> <span class="va">vitamin_c</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/unnamed-chunk-38-1.png" width="672"></div>
+<div class="inline-figure"><img src="R-Companion-Data-Mining_files/figure-html/ch01_ggplot2_038-1.png" alt="" width="672"></div>
 <p>Note that <code>geom_bar</code> by default uses the <code>stat_count</code> function to
 aggregate data by counting, but we just want to visualize the value in
 the tibble, so we specify the identity function instead.</p>
-
 </div>
+</div>
+<div id="chapter-summary" class="section level2" number="1.7">
+<h2>
+<span class="header-section-number">1.7</span> Chapter Summary<a class="anchor" aria-label="anchor" href="#chapter-summary"><i class="fas fa-link"></i></a>
+</h2>
+<p>R programs manipulate objects, including atomic vectors, lists, matrices, and data frames. Vectorized operations apply computations across values, and indexing and subsetting select or update parts of an object. Names and attributes add structure; functions package reusable computations, while plotting provides a first way to inspect data. The chapter also introduces strings, R objects and their classes, and R Markdown for combining code, output, and explanation. For tabular work, tibbles provide a modern data-frame interface, <code>dplyr</code> verbs support filtering, selecting, transforming, and summarizing data, and <code>ggplot2</code> builds plots from data, aesthetic mappings, and geometric layers.</p>
+</div>
+<div id="key-terms" class="section level2" number="1.8">
+<h2>
+<span class="header-section-number">1.8</span> Key Terms<a class="anchor" aria-label="anchor" href="#key-terms"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>
+<strong>Vector:</strong> a one-dimensional collection of values of a common type.</li>
+<li>
+<strong>Data frame / tibble:</strong> a table whose columns are vectors and whose rows
+represent observations.</li>
+<li>
+<strong>Pipe:</strong> an operator that passes the result of one expression into the next.</li>
+<li>
+<strong>Aesthetic mapping:</strong> a connection between a variable and a visual property
+such as position, color, or size in <code>ggplot2</code>.</li>
+</ul>
 </div>
 </div>
   <div class="chapter-nav">
@@ -656,31 +705,35 @@ the tibble, so we specify the identity function instead.</p>
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
 <li><a class="nav-link" href="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
-<li><a class="nav-link" href="#used-software"><span class="header-section-number">1.1</span> Used Software</a></li>
+<li><a class="nav-link" href="#learning-objectives"><span class="header-section-number">1.1</span> Learning Objectives</a></li>
+<li><a class="nav-link" href="#prerequisites"><span class="header-section-number">1.2</span> Prerequisites</a></li>
+<li><a class="nav-link" href="#used-software"><span class="header-section-number">1.3</span> Used Software</a></li>
 <li>
-<a class="nav-link" href="#base-r"><span class="header-section-number">1.2</span> Base-R</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#vectors"><span class="header-section-number">1.2.1</span> Vectors</a></li>
-<li><a class="nav-link" href="#vectorized-operations"><span class="header-section-number">1.2.2</span> Vectorized Operations</a></li>
-<li><a class="nav-link" href="#subsetting"><span class="header-section-number">1.2.3</span> Subsetting</a></li>
-<li><a class="nav-link" href="#names"><span class="header-section-number">1.2.4</span> Names</a></li>
-<li><a class="nav-link" href="#lists"><span class="header-section-number">1.2.5</span> Lists</a></li>
-<li><a class="nav-link" href="#data-frames"><span class="header-section-number">1.2.6</span> Data Frames</a></li>
-<li><a class="nav-link" href="#matrices"><span class="header-section-number">1.2.7</span> Matrices</a></li>
-<li><a class="nav-link" href="#strings"><span class="header-section-number">1.2.8</span> Strings</a></li>
-<li><a class="nav-link" href="#objects"><span class="header-section-number">1.2.9</span> Objects</a></li>
-<li><a class="nav-link" href="#functions"><span class="header-section-number">1.2.10</span> Functions</a></li>
-<li><a class="nav-link" href="#plotting"><span class="header-section-number">1.2.11</span> Plotting</a></li>
-<li><a class="nav-link" href="#more-on-r"><span class="header-section-number">1.2.12</span> More on R</a></li>
+<a class="nav-link" href="#base-r"><span class="header-section-number">1.4</span> Base-R</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#vectors"><span class="header-section-number">1.4.1</span> Vectors</a></li>
+<li><a class="nav-link" href="#vectorized-operations"><span class="header-section-number">1.4.2</span> Vectorized Operations</a></li>
+<li><a class="nav-link" href="#subsetting"><span class="header-section-number">1.4.3</span> Subsetting</a></li>
+<li><a class="nav-link" href="#names"><span class="header-section-number">1.4.4</span> Names</a></li>
+<li><a class="nav-link" href="#lists"><span class="header-section-number">1.4.5</span> Lists</a></li>
+<li><a class="nav-link" href="#data-frames"><span class="header-section-number">1.4.6</span> Data Frames</a></li>
+<li><a class="nav-link" href="#matrices"><span class="header-section-number">1.4.7</span> Matrices</a></li>
+<li><a class="nav-link" href="#strings"><span class="header-section-number">1.4.8</span> Strings</a></li>
+<li><a class="nav-link" href="#objects"><span class="header-section-number">1.4.9</span> Objects</a></li>
+<li><a class="nav-link" href="#functions"><span class="header-section-number">1.4.10</span> Functions</a></li>
+<li><a class="nav-link" href="#plotting"><span class="header-section-number">1.4.11</span> Plotting</a></li>
+<li><a class="nav-link" href="#more-on-r"><span class="header-section-number">1.4.12</span> More on R</a></li>
 </ul>
 </li>
-<li><a class="nav-link" href="#r-markdown"><span class="header-section-number">1.3</span> R Markdown</a></li>
+<li><a class="nav-link" href="#r-markdown"><span class="header-section-number">1.5</span> R Markdown</a></li>
 <li>
-<a class="nav-link" href="#tidyverse"><span class="header-section-number">1.4</span> Tidyverse</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#tibbles"><span class="header-section-number">1.4.1</span> Tibbles</a></li>
-<li><a class="nav-link" href="#transformations"><span class="header-section-number">1.4.2</span> Transformations</a></li>
-<li><a class="nav-link" href="#ggplot2"><span class="header-section-number">1.4.3</span> ggplot2</a></li>
+<a class="nav-link" href="#tidyverse"><span class="header-section-number">1.6</span> Tidyverse</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#tibbles"><span class="header-section-number">1.6.1</span> Tibbles</a></li>
+<li><a class="nav-link" href="#transformations"><span class="header-section-number">1.6.2</span> Transformations</a></li>
+<li><a class="nav-link" href="#ggplot2"><span class="header-section-number">1.6.3</span> ggplot2</a></li>
 </ul>
 </li>
+<li><a class="nav-link" href="#chapter-summary"><span class="header-section-number">1.7</span> Chapter Summary</a></li>
+<li><a class="nav-link" href="#key-terms"><span class="header-section-number">1.8</span> Key Terms</a></li>
 </ul>
 
       <div class="book-extra">
@@ -698,7 +751,7 @@ the tibble, so we specify the identity function instead.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2025-12-08.</p>
+    <p>"<strong>An R Companion for Introduction to Data Mining</strong>" was written by Michael Hahsler. It was last built on 2026-10-03.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
